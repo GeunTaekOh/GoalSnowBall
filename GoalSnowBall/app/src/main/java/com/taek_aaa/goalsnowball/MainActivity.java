@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity
     Bitmap photo;
     public static LayoutInflater inflater;
     ImageButton imageButton;
+    int viewHeight = 700;        //원하는 뷰의 높이. 이 높이대로 비율맞춰서 적
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity
 
         imageButton = (ImageButton)findViewById(R.id.mainImageView);
         imageButton.setBackgroundResource(R.drawable.addpicture32);
+
 
     }
 
@@ -120,9 +122,21 @@ public class MainActivity extends AppCompatActivity
                     Uri uri = data.getData();
                     photo = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                     inflater = getLayoutInflater();
-                    imageButton = (ImageButton) findViewById(R.id.mainImageView);
 
-                    imageButton.setImageBitmap(photo);
+                    float width = photo.getWidth();
+                    float height = photo.getHeight();
+                    if(height>viewHeight){
+                        float percente = height/100;
+                        float scale = viewHeight/percente;
+                        width*=scale/100;
+                        height*=scale/100;
+                    }
+                    Bitmap sizedPhoto = Bitmap.createScaledBitmap(photo,(int)width,(int)height,true);
+
+
+
+                    imageButton = (ImageButton) findViewById(R.id.mainImageView);
+                    imageButton.setImageBitmap(sizedPhoto);
                     Toast.makeText(getBaseContext(), "사진을 입력하였습니다.", Toast.LENGTH_SHORT).show();
 
                 } catch (Exception e) {
