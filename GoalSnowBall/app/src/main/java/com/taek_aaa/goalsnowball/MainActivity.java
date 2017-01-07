@@ -2,7 +2,6 @@ package com.taek_aaa.goalsnowball;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -48,8 +47,6 @@ public class MainActivity extends AppCompatActivity
 
         imageButton = (ImageButton) findViewById(R.id.mainImageView);
         imageButton.setBackgroundResource(R.drawable.addpicture32);
-
-
     }
 
     @Override
@@ -80,7 +77,6 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -96,8 +92,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
 
@@ -122,19 +116,17 @@ public class MainActivity extends AppCompatActivity
         switch (requestCode) {
             case PICK_FROM_ALBUM:
                 try {
+                    PictureData pictureData = new PictureData();
                     Uri uri = data.getData();
                     String uriPath = uri.getPath();
-                    String dataPath = data.getDataString();
                     Log.e("test", uriPath);
-                    Log.e("test2", dataPath);
                     photo = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
                     inflater = getLayoutInflater();
                     Bitmap rotatedPhoto;
-
                     ExifInterface exif = new ExifInterface(uriPath);
                     int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-                    int exifDegree = exifOrientationToDegrees(exifOrientation);
-                    rotatedPhoto = rotate(photo, exifDegree);
+                    int exifDegree = pictureData.exifOrientationToDegrees(exifOrientation);
+                    rotatedPhoto = pictureData.rotate(photo, exifDegree);
 
                     float width = photo.getWidth();
                     float height = photo.getHeight();
@@ -146,7 +138,6 @@ public class MainActivity extends AppCompatActivity
                     }
                     Bitmap sizedPhoto = Bitmap.createScaledBitmap(rotatedPhoto, (int) width, (int) height, true);
 
-
                     imageButton = (ImageButton) findViewById(R.id.mainImageView);
                     imageButton.setImageBitmap(sizedPhoto);
                     Toast.makeText(getBaseContext(), "사진을 입력하였습니다.", Toast.LENGTH_SHORT).show();
@@ -155,42 +146,5 @@ public class MainActivity extends AppCompatActivity
                     e.getStackTrace();
                 }
         }
-    }
-
-    public int exifOrientationToDegrees(int exifOrientation) {
-        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
-            return 90;
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
-            return 180;
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
-            return 270;
-        }
-        return 0;
-    }
-
-    public Bitmap rotate(Bitmap bitmap, int degrees)
-    {
-        if(degrees != 0 && bitmap != null)
-        {
-            Matrix m = new Matrix();
-            m.setRotate(degrees, (float) bitmap.getWidth() / 2,
-                    (float) bitmap.getHeight() / 2);
-
-            try
-            {
-                Bitmap converted = Bitmap.createBitmap(bitmap, 0, 0,
-                        bitmap.getWidth(), bitmap.getHeight(), m, true);
-                if(bitmap != converted)
-                {
-                    bitmap.recycle();
-                    bitmap = converted;
-                }
-            }
-            catch(OutOfMemoryError ex)
-            {
-                // 메모리가 부족하여 회전을 시키지 못할 경우 그냥 원본을 반환합니다.
-            }
-        }
-        return bitmap;
     }
 }
