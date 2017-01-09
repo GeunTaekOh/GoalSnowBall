@@ -3,21 +3,42 @@ package com.taek_aaa.goalsnowball;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.util.Log;
 
 /**
  * Created by taek_aaa on 2017. 1. 7..
  */
 
-public class PictureData {
+public class PictureController {      //최신폰은 버그로 exif 제대로 안되는듯 다이알로그만들어서 직접 수동 회전 하고 선택 할 수있게 하기
     public int exifOrientationToDegrees(int exifOrientation) {
+
+        Log.e("test",""+exifOrientation);
+        switch (exifOrientation){
+
+
+            case ExifInterface.ORIENTATION_ROTATE_90 :
+                return 90;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                return 180;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                return 270;
+
+
+        }
+/*
+
         if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
             return 90;
         } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
             return 180;
         } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
             return 270;
-        }
+        }               //switch로 바꾸기*/
+
+
         return 0;
+
+
     }
 
     public Bitmap rotate(Bitmap bitmap, int degrees) {
@@ -25,8 +46,7 @@ public class PictureData {
             Matrix m = new Matrix();
             m.setRotate(degrees, (float) bitmap.getWidth() / 2, (float) bitmap.getHeight() / 2);
             try {
-                Bitmap converted = Bitmap.createBitmap(bitmap, 0, 0,
-                        bitmap.getWidth(), bitmap.getHeight(), m, true);
+                Bitmap converted = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true);
                 if (bitmap != converted) {
                     bitmap.recycle();
                     bitmap = converted;

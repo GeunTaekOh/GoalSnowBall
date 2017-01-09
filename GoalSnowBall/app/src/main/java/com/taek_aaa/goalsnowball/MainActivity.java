@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity
     public static LayoutInflater inflater;
     ImageButton imageButton;
     int viewHeight = 700;        //원하는 뷰의 높이. 이 높이대로 비율맞춰서 적
+    Boolean isPicture = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,10 +106,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onClickMainImage(View v) {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-        intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(intent, PICK_FROM_ALBUM);
+        if(isPicture==false) {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+            intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, PICK_FROM_ALBUM);
+        }else{
+            PictureController pictureController = new PictureController();
+            Bitmap rotatedPicture;
+            rotatedPicture = pictureController.rotate(photo, 90);
+            imageButton = (ImageButton) findViewById(R.id.mainImageView);
+            imageButton.setImageBitmap(rotatedPicture);
+        }
     }
 
     @Override
@@ -116,7 +125,7 @@ public class MainActivity extends AppCompatActivity
         switch (requestCode) {
             case PICK_FROM_ALBUM:
                 try {
-                    PictureData pictureData = new PictureData();
+                    PictureController pictureController = new PictureController();
                     Uri uri = data.getData();
                     String uriPath = uri.getPath();
                     Log.e("test", uriPath);
@@ -125,11 +134,13 @@ public class MainActivity extends AppCompatActivity
                     Bitmap rotatedPhoto;
                     ExifInterface exif = new ExifInterface(uriPath);
                     int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-                    int exifDegree = pictureData.exifOrientationToDegrees(exifOrientation);
-                    rotatedPhoto = pictureData.rotate(photo, exifDegree);
+                    int exifDegree = pictureController.exifOrientationToDegrees(exifOrientation);
+                    Log.e("test",""+exifOrientation);
+                    Log.e("test",""+exifDegree);
+                    rotatedPhoto = pictureController.rotate(photo, exifDegree);
 
-                    float width = photo.getWidth();
-                    float height = photo.getHeight();
+                    float width = rotatedPhoto.getWidth();
+                    float height = rotatedPhoto.getHeight();
                     if (height > viewHeight) {
                         float percente = height / 100;
                         float scale = viewHeight / percente;
@@ -141,10 +152,13 @@ public class MainActivity extends AppCompatActivity
                     imageButton = (ImageButton) findViewById(R.id.mainImageView);
                     imageButton.setImageBitmap(sizedPhoto);
                     Toast.makeText(getBaseContext(), "사진을 입력하였습니다.", Toast.LENGTH_SHORT).show();
+                    isPicture = true;
 
                 } catch (Exception e) {
                     e.getStackTrace();
+                    isPicture=false;
                 }
+                break;
         }
     }
 }
