@@ -41,6 +41,8 @@ public class PictureController {      //최신폰은 버그로 exif 제대로 �
 
     }
 
+
+    //회전하는 거 그냥 뭐 Matrix.rotate이런거찾아보기 이미 구현된건 없으려나 사이즈가 너무 이상하게바뀜
     public Bitmap rotate(Bitmap bitmap, int degrees) {
         if (degrees != 0 && bitmap != null) {
             Matrix m = new Matrix();
