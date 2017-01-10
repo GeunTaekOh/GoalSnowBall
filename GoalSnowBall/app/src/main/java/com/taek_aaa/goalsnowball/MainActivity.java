@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -99,19 +98,18 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     public void onClickMainImage(View v) {
-        if(isPicture==false) {
+        if (isPicture == false) {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
             intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(intent, PICK_FROM_ALBUM);
-        }else{
+        } else {
             PictureController pictureController = new PictureController();
             Bitmap rotatedPicture;
             rotatedPicture = pictureController.rotate(photo, 90);
@@ -124,41 +122,45 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case PICK_FROM_ALBUM:
-                try {
-                    PictureController pictureController = new PictureController();
-                    Uri uri = data.getData();
-                    String uriPath = uri.getPath();
-                    Log.e("test", uriPath);
-                    photo = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                    inflater = getLayoutInflater();
-                    Bitmap rotatedPhoto;
-                    ExifInterface exif = new ExifInterface(uriPath);
-                    int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-                    int exifDegree = pictureController.exifOrientationToDegrees(exifOrientation);
-                    Log.e("test",""+exifOrientation);
-                    Log.e("test",""+exifDegree);
-                    rotatedPhoto = pictureController.rotate(photo, exifDegree);
-
-                    float width = rotatedPhoto.getWidth();
-                    float height = rotatedPhoto.getHeight();
-                    if (height > viewHeight) {
-                        float percente = height / 100;
-                        float scale = viewHeight / percente;
-                        width *= scale / 100;
-                        height *= scale / 100;
-                    }
-                    Bitmap sizedPhoto = Bitmap.createScaledBitmap(rotatedPhoto, (int) width, (int) height, true);
-
-                    imageButton = (ImageButton) findViewById(R.id.mainImageView);
-                    imageButton.setImageBitmap(sizedPhoto);
-                    Toast.makeText(getBaseContext(), "사진을 입력하였습니다.", Toast.LENGTH_SHORT).show();
-                    isPicture = true;
-
-                } catch (Exception e) {
-                    e.getStackTrace();
-                    isPicture=false;
-                }
+                pictureSet(data);
                 break;
         }
+    }
+
+    protected void pictureSet(Intent data) {
+        try {
+            PictureController pictureController = new PictureController();
+            Uri uri = data.getData();
+            String uriPath = uri.getPath();
+            Log.e("test", uriPath);
+            photo = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+            inflater = getLayoutInflater();
+            Bitmap rotatedPhoto;
+            ExifInterface exif = new ExifInterface(uriPath);
+            int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            int exifDegree = pictureController.exifOrientationToDegrees(exifOrientation);
+            Log.e("test", "" + exifOrientation);
+            Log.e("test", "" + exifDegree);
+            rotatedPhoto = pictureController.rotate(photo, exifDegree);
+
+            float width = rotatedPhoto.getWidth();
+            float height = rotatedPhoto.getHeight();
+            if (height > viewHeight) {
+                float percente = height / 100;
+                float scale = viewHeight / percente;
+                width *= scale / 100;
+                height *= scale / 100;
+            }
+            Bitmap sizedPhoto = Bitmap.createScaledBitmap(rotatedPhoto, (int) width, (int) height, true);
+
+            imageButton = (ImageButton) findViewById(R.id.mainImageView);
+            imageButton.setImageBitmap(sizedPhoto);
+            Toast.makeText(getBaseContext(), "사진을 입력하였습니다.", Toast.LENGTH_SHORT).show();
+            isPicture = true;
+        } catch (Exception e) {
+            e.getStackTrace();
+            isPicture = false;
+        }
+
     }
 }

@@ -14,33 +14,15 @@ public class PictureController {      //최신폰은 버그로 exif 제대로 �
 
         Log.e("test",""+exifOrientation);
         switch (exifOrientation){
-
-
             case ExifInterface.ORIENTATION_ROTATE_90 :
                 return 90;
             case ExifInterface.ORIENTATION_ROTATE_180:
                 return 180;
             case ExifInterface.ORIENTATION_ROTATE_270:
                 return 270;
-
-
         }
-/*
-
-        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
-            return 90;
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
-            return 180;
-        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
-            return 270;
-        }               //switch로 바꾸기*/
-
-
         return 0;
-
-
     }
-
 
     //회전하는 거 그냥 뭐 Matrix.rotate이런거찾아보기 이미 구현된건 없으려나 사이즈가 너무 이상하게바뀜
     public Bitmap rotate(Bitmap bitmap, int degrees) {
