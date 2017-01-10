@@ -19,14 +19,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     final int PICK_FROM_ALBUM = 101;
     Bitmap photo;
     public static LayoutInflater inflater;
     ImageButton imageButton;
-    int viewHeight = 700;        //원하는 뷰의 높이. 이 높이대로 비율맞춰서 적
+    int viewHeight = 700;        //원하는 뷰의 높이
     Boolean isPicture = false;
 
     @Override
@@ -87,15 +87,15 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_todayGoalSetting) {
+            (new TodayGoalDialog(MainActivity.this)).show();
+        } else if (id == R.id.nav_weekGoalSetting) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_monthGoaslSetting) {
+
+        } else if (id == R.id.nav_totalGoalSetting) {
 
         } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
 
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -122,12 +122,12 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case PICK_FROM_ALBUM:
-                pictureSet(data);
+                pictureSetToImageButton(data);
                 break;
         }
     }
 
-    protected void pictureSet(Intent data) {
+    protected void pictureSetToImageButton(Intent data) {
         try {
             PictureController pictureController = new PictureController();
             Uri uri = data.getData();
@@ -162,5 +162,17 @@ public class MainActivity extends AppCompatActivity
             isPicture = false;
         }
 
+    }
+
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.mainTodayGoalTv:
+                (new TodayGoalDialog(MainActivity.this)).show();
+                break;
+            case R.id.mainWeekGoalTv:
+                break;
+            case R.id.mainMonthGoalTv:
+                break;
+        }
     }
 }

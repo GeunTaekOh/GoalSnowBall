@@ -3,31 +3,37 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
+            android:id="@+id/nav_todayGoalSetting"
+            android:icon="@drawable/goaladd"
             android:title="오늘의 목표 추가/수정" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
+            android:id="@+id/nav_weekGoalSetting"
+            android:icon="@drawable/goaladd"
             android:title="이번주 목표 추가/수정" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:id="@+id/nav_monthGoaslSetting"
+            android:icon="@drawable/goaladd"
             android:title="이번달 목표 추가/수정" />
 
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="TotalGoal">
+        <menu>
+            <item
+                android:id="@+id/nav_totalGoalSetting"
+                android:icon="@drawable/goalsetting"
+                android:title="목표 관리" />
+        </menu>
+    </item>
+
+    <item android:title="Communication">
         <menu>
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
                 android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="목표 관리" />
         </menu>
+
     </item>
 
 </menu>

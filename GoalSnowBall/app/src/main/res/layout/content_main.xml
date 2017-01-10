@@ -254,6 +254,7 @@
                 android:text="오늘의 목표"
                 android:textStyle="bold"
                 android:layout_gravity="center_vertical"
+
                 />
             <View
                 android:layout_margin="2dp"
@@ -262,9 +263,12 @@
                 android:background="#5D8AA8"/>
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
+                android:onClick="onClick"
+                android:id="@+id/mainTodayGoalTv"
+                android:layout_gravity="center"
                 />
 
         </LinearLayout>
@@ -291,9 +295,12 @@
                 android:layout_height="50dp"
                 android:background="#5D8AA8"/>
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
+                android:onClick="onClick"
+                android:id="@+id/mainWeekGoalTv"
+                android:layout_gravity="center"
                 />
 
         </LinearLayout>
@@ -322,9 +329,12 @@
                 />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
+                android:onClick="onClick"
+                android:id="@+id/mainMonthGoalTv"
+                android:layout_gravity="center"
                 />
 
         </LinearLayout>
