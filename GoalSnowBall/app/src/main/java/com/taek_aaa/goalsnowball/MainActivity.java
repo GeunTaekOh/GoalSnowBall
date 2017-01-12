@@ -1,5 +1,6 @@
 package com.taek_aaa.goalsnowball;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.ExifInterface;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TextView todaytv;
     static GoalDataSet goalDataSet;
     public static LinkedList<DBData> llDBData = new LinkedList<DBData>();
+    TodayGoalDialog todayGoalDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,41 +57,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         imageButton.setBackgroundResource(R.drawable.addpicture32);
         todaytv = (TextView)findViewById(R.id.mainTodayGoalTv);
 
-        drawTodayGoal();
+        todayGoalDialog = new TodayGoalDialog(this) ;
+        todayGoalDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                drawTodayGoal();
+            }
+        });
     }
 
-    @Override
-    protected void onStart(){
-        super.onStart();
-        Log.e("test","onStart되었음.");
-        drawTodayGoal();
-    }
-    @Override
-    protected void onResume(){
-        super.onResume();
-        Log.e("test","onResume되었음.");
-        drawTodayGoal();
-    }
-    @Override
-    protected void onRestart(){
-        super.onRestart();
-        Log.e("test","onRestart되었음.");
-        drawTodayGoal();
-    }
 
-    @Override
-    protected void onPause(){
-        super.onPause();
-        Log.e("test","onPause.");
-        drawTodayGoal();
-    }
-
-    @Override
-    protected void onStop(){
-        super.onStop();
-        Log.e("test","onStop.");
-        drawTodayGoal();
-    }
 
     @Override
     public void onBackPressed() {
@@ -130,7 +107,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_todayGoalSetting) {
-            (new TodayGoalDialog(MainActivity.this)).show();
+            todayGoalDialog.show();
+            //(new TodayGoalDialog(MainActivity.this)).show();
         } else if (id == R.id.nav_weekGoalSetting) {
 
         } else if (id == R.id.nav_monthGoaslSetting) {
@@ -209,8 +187,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.mainTodayGoalTv:
-                (new TodayGoalDialog(MainActivity.this)).show();
-                //drawTodayGoal();
+                todayGoalDialog.show();
                 break;
             case R.id.mainWeekGoalTv:
                 break;

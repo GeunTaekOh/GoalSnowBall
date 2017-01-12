@@ -13,7 +13,7 @@ import static com.taek_aaa.goalsnowball.MainActivity.goalDataSet;
  * Created by taek_aaa on 2017. 1. 10..
  */
 
-public class TodayGoalDialog extends Dialog implements View.OnClickListener {
+public class TodayGoalDialog extends Dialog implements View.OnClickListener{
     EditText editText;
     String textContents;
     TextView todayGoaltv;
@@ -39,7 +39,6 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener {
                 Log.e("test",goalDataSet.getTodayGoal());
                 Log.e("test",""+goalDataSet.isTodayGoal);
                     //intent써서 값 메인으로 넘겨서 메인에서 그리고 문구 있음 없음 여부 생각해서 추가/수정 구현
-
                 dismiss();
                 break;
             case R.id.todayDialogExitButton:
