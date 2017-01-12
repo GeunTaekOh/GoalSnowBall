@@ -18,7 +18,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -28,6 +31,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ImageButton imageButton;
     int viewHeight = 700;        //원하는 뷰의 높이
     Boolean isPicture = false;
+    TextView todaytv;
+    static GoalDataSet goalDataSet;
+    public static LinkedList<DBData> llDBData = new LinkedList<DBData>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        goalDataSet = new GoalDataSet();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -47,6 +53,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         imageButton = (ImageButton) findViewById(R.id.mainImageView);
         imageButton.setBackgroundResource(R.drawable.addpicture32);
+        todaytv = (TextView)findViewById(R.id.mainTodayGoalTv);
+
+        drawTodayGoal();
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        Log.e("test","onStart되었음.");
+        drawTodayGoal();
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Log.e("test","onResume되었음.");
+        drawTodayGoal();
+    }
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        Log.e("test","onRestart되었음.");
+        drawTodayGoal();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        Log.e("test","onPause.");
+        drawTodayGoal();
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        Log.e("test","onStop.");
+        drawTodayGoal();
     }
 
     @Override
@@ -168,11 +210,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (v.getId()) {
             case R.id.mainTodayGoalTv:
                 (new TodayGoalDialog(MainActivity.this)).show();
+                //drawTodayGoal();
                 break;
             case R.id.mainWeekGoalTv:
                 break;
             case R.id.mainMonthGoalTv:
                 break;
+        }
+    }
+
+    public void drawTodayGoal(){
+        if(goalDataSet.isTodayGoal==true) {
+            todaytv.setText(goalDataSet.getTodayGoal());
+            Log.e("test",goalDataSet.getTodayGoal());
+        }else{
+            todaytv.setText("");
         }
     }
 }
