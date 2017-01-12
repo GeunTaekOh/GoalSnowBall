@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,7 +55,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         imageButton = (ImageButton) findViewById(R.id.mainImageView);
-        imageButton.setBackgroundResource(R.drawable.addpicture32);
+        imageButton.setBackgroundResource(R.drawable.profile);
+        //imageButton.setImageResource(R.drawable.profile);
         todaytv = (TextView)findViewById(R.id.mainTodayGoalTv);
 
         todayGoalDialog = new TodayGoalDialog(this) ;
@@ -199,6 +201,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void drawTodayGoal(){
         if(goalDataSet.isTodayGoal==true) {
             todaytv.setText(goalDataSet.getTodayGoal());
+            todaytv.setGravity(Gravity.CENTER);
             Log.e("test",goalDataSet.getTodayGoal());
         }else{
             todaytv.setText("");

@@ -48,8 +48,5 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener{
                 dismiss();
                 break;
         }
-
     }
-
-
 }
