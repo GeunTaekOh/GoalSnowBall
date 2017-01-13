@@ -6,7 +6,7 @@
     android:id="@+id/content_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#B2BEB5"
+    android:background="#F8F8FF"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.taek_aaa.goalsnowball.MainActivity"
     tools:showIn="@layout/app_bar_main">
@@ -24,10 +24,45 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/water">
 
-            <ImageButton
+            >
+
+
+            <RelativeLayout
+                android:id="@+id/backgroundRelative"
+                android:layout_width="wrap_content"
+                android:layout_height="140dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/fourth"
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:background="#88F0F8FF"
+                    android:orientation="vertical"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true">
+
+                    <TextView
+                        android:id="@+id/d_week"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="이번주 D-5" />
+
+                    <TextView
+                        android:id="@+id/d_month"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="이번달 D-24" />
+                </LinearLayout>
+            </RelativeLayout>
+            <ImageView
                 android:id="@+id/mainImageView"
                 android:layout_width="160dp"
                 android:layout_height="160dp"
@@ -38,31 +73,10 @@
                 android:background="@drawable/circle_border"
                 android:onClick="onClickMainImage"
 
-                 />
+                />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/mainImageView"
-                android:layout_marginLeft="15dp"
-                android:layout_marginStart="15dp"
-                android:layout_toEndOf="@+id/mainImageView"
-                android:layout_toRightOf="@+id/mainImageView"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/d_week"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="이번주 D-5" />
-
-                <TextView
-                    android:id="@+id/d_month"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="이번달 D-24" />
-            </LinearLayout>
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -85,8 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
                     android:text="브론즈"
-                    android:textSize="20dp"
-                    />
+                    android:textSize="20dp" />
 
                 <TextView
 
@@ -94,8 +107,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="60dp"
                     android:text="오근택"
-                    android:textSize="20dp"
-                    />
+                    android:textSize="20dp" />
 
                 <TextView
 
@@ -103,8 +115,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="90dp"
                     android:text="10G"
-                    android:textSize="20dp"
-                    />
+                    android:textSize="20dp" />
 
 
             </LinearLayout>
@@ -152,11 +163,11 @@
 
             </LinearLayout>
         </RelativeLayout>
+
         <View
-            android:layout_height="4dp"
             android:layout_width="match_parent"
-            android:background="#5D8AA8"
-            />
+            android:layout_height="2dp"
+            android:background="#B7AFA3" />
 
 
         <RelativeLayout
@@ -174,8 +185,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:text="오늘 목표\n 달성률"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold" />
 
 
             <TextView
@@ -184,8 +194,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:text="이번 주 목표\n 달성률"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -194,10 +203,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:text="이번 달 목표\n 달성률"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold" />
         </RelativeLayout>
-
 
 
         <RelativeLayout
@@ -234,115 +241,117 @@
         </RelativeLayout>
 
         <View
-            android:layout_height="4dp"
             android:layout_width="match_parent"
-            android:background="#5D8AA8"
-            />
+            android:layout_height="2dp"
+            android:background="#B7AFA3" />
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            >
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:text="오늘의 목표"
                 android:textStyle="bold"
-                android:layout_gravity="center_vertical"
 
                 />
+
             <View
-                android:layout_margin="2dp"
-                android:layout_width="3dp"
+                android:layout_width="2dp"
                 android:layout_height="50dp"
-                android:background="#5D8AA8"/>
+                android:layout_margin="2dp"
+                android:background="#B7AFA3" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:onClick="onClick"
                 android:id="@+id/mainTodayGoalTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                />
+                android:onClick="onClick"
+                android:text="" />
 
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#B7AFA3" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            >
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:text="이번주 목표"
-                android:textStyle="bold"
-                android:layout_gravity="center_vertical"
-                />
-            
+                android:textStyle="bold" />
+
             <View
-                android:layout_margin="2dp"
-                android:layout_width="3dp"
+                android:layout_width="2dp"
                 android:layout_height="50dp"
-                android:background="#5D8AA8"/>
+                android:layout_margin="2dp"
+                android:background="#B7AFA3" />
+
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:onClick="onClick"
                 android:id="@+id/mainWeekGoalTv"
-                android:layout_gravity="center"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:layout_margin="10dp"
-            >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="이번달 목표"
-                android:textStyle="bold"
-                android:layout_gravity="center_vertical"
-                />
-            <View
-                android:layout_margin="2dp"
-                android:layout_width="3dp"
-                android:layout_height="50dp"
-                android:background="#5D8AA8"
-
-                />
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:onClick="onClick"
-                android:id="@+id/mainMonthGoalTv"
                 android:layout_gravity="center"
-                />
+                android:onClick="onClick"
+                android:text="" />
 
         </LinearLayout>
 
         <View
-            android:layout_height="4dp"
             android:layout_width="match_parent"
-            android:background="#5D8AA8"
-            />
+            android:layout_height="2dp"
+            android:background="#B7AFA3" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="이번달 목표"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="50dp"
+                android:layout_margin="2dp"
+                android:background="#B7AFA3"
+
+                />
+
+            <TextView
+                android:id="@+id/mainMonthGoalTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="onClick"
+                android:text="" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#B7AFA3" />
     </LinearLayout>
 </ScrollView>

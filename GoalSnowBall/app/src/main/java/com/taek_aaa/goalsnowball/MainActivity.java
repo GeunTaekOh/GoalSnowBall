@@ -3,6 +3,7 @@ package com.taek_aaa.goalsnowball;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,7 +20,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     final int PICK_FROM_ALBUM = 101;
     Bitmap photo;
     public static LayoutInflater inflater;
-    ImageButton imageButton;
+    ImageView imageButton;
     int viewHeight = 700;        //원하는 뷰의 높이
     Boolean isPicture = false;
     TextView todaytv;
@@ -54,9 +55,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        imageButton = (ImageButton) findViewById(R.id.mainImageView);
-        imageButton.setBackgroundResource(R.drawable.profile);
+        imageButton = (ImageView) findViewById(R.id.mainImageView);
+//        imageButton.setBackgroundResource(R.drawable.profile);
         //imageButton.setImageResource(R.drawable.profile);
+
+        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.profile);
+        Bitmap bitmapDefault = drawable.getBitmap();
+
+
+        float width = bitmapDefault.getWidth();
+        float height = bitmapDefault.getHeight();
+        if (height > viewHeight) {
+            float percente = height / 100;
+            float scale = viewHeight / percente;
+            width *= scale / 100;
+            height *= scale / 100;
+        }
+        Bitmap sizedBitmapDefault = Bitmap.createScaledBitmap(bitmapDefault, (int) width, (int) height, true);
+
+
+
+
+        imageButton.setImageBitmap(sizedBitmapDefault);
+
         todaytv = (TextView)findViewById(R.id.mainTodayGoalTv);
 
         todayGoalDialog = new TodayGoalDialog(this) ;
@@ -135,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             PictureController pictureController = new PictureController();
             Bitmap rotatedPicture;
             rotatedPicture = pictureController.rotate(photo, 90);
-            imageButton = (ImageButton) findViewById(R.id.mainImageView);
+            imageButton = (ImageView) findViewById(R.id.mainImageView);
             imageButton.setImageBitmap(rotatedPicture);
         }
     }
@@ -164,6 +185,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Log.e("test", "" + exifOrientation);
             Log.e("test", "" + exifDegree);
             rotatedPhoto = pictureController.rotate(photo, exifDegree);
+                //이부분함수로만들기
 
             float width = rotatedPhoto.getWidth();
             float height = rotatedPhoto.getHeight();
@@ -175,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             Bitmap sizedPhoto = Bitmap.createScaledBitmap(rotatedPhoto, (int) width, (int) height, true);
 
-            imageButton = (ImageButton) findViewById(R.id.mainImageView);
+            imageButton = (ImageView) findViewById(R.id.mainImageView);
             imageButton.setImageBitmap(sizedPhoto);
             Toast.makeText(getBaseContext(), "사진을 입력하였습니다.", Toast.LENGTH_SHORT).show();
             isPicture = true;
@@ -207,4 +229,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             todaytv.setText("");
         }
     }
+
+
 }
