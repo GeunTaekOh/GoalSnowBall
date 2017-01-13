@@ -177,7 +177,6 @@
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:layout_weight="0.67"
-
             >
 
             <TextView

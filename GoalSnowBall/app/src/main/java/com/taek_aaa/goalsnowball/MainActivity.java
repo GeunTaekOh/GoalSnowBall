@@ -56,8 +56,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         imageButton = (ImageView) findViewById(R.id.mainImageView);
-//        imageButton.setBackgroundResource(R.drawable.profile);
-        //imageButton.setImageResource(R.drawable.profile);
 
         BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.profile);
         Bitmap bitmapDefault = drawable.getBitmap();

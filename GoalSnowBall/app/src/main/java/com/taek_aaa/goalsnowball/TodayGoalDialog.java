@@ -16,8 +16,8 @@ import static com.taek_aaa.goalsnowball.MainActivity.goalDataSet;
 public class TodayGoalDialog extends Dialog implements View.OnClickListener{
     EditText editText;
     String textContents;
-    TextView todayGoaltv;
-    TextView todaytv;
+    TextView title;
+
     public TodayGoalDialog(Context context) {
         super(context);
         setContentView(R.layout.dialog_todaygoal);
@@ -26,6 +26,7 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener{
         findViewById(R.id.todayDialogConfirmButton).setOnClickListener(this);
         findViewById(R.id.todayDialogExitButton).setOnClickListener(this);
         findViewById(R.id.todayDialogX).setOnClickListener(this);
+        title = (TextView)findViewById(R.id.title_today_dialog);
 
     }
 
@@ -34,11 +35,17 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener{
         switch (view.getId()) {
             case R.id.todayDialogConfirmButton:
                 textContents = editText.getText().toString();
-                Log.e("test", textContents);
+                /*if(textContents.equals("")){
+                    goalDataSet.isTodayGoal=false;
+                }*/
                 goalDataSet.setTodayGoal(textContents);
                 Log.e("test",goalDataSet.getTodayGoal());
                 Log.e("test",""+goalDataSet.isTodayGoal);
-                    //intent써서 값 메인으로 넘겨서 메인에서 그리고 문구 있음 없음 여부 생각해서 추가/수정 구현
+                if(goalDataSet.isTodayGoal==true){
+                    title.setText("오늘의 목표를 수정하세요.");
+                }else{
+                    title.setText("오늘의 목표를 추가하세요.");
+                }
                 dismiss();
                 break;
             case R.id.todayDialogExitButton:
