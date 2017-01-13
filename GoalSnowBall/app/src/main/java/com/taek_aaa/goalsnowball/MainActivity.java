@@ -34,11 +34,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ImageView imageButton;
     int viewHeight = 700;        //원하는 뷰의 높이
     Boolean isPicture = false;
-    TextView todaytv;
+    TextView todaytv, weektv, monthtv;
     static GoalDataSet goalDataSet;
     public static LinkedList<DBData> llDBData = new LinkedList<DBData>();
     TodayGoalDialog todayGoalDialog;
-
+    WeekGoalDialog weekGoalDialog;
+    MonthGoalDialog monthGoalDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,12 +78,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         imageButton.setImageBitmap(sizedBitmapDefault);
 
         todaytv = (TextView)findViewById(R.id.mainTodayGoalTv);
+        weektv = (TextView)findViewById(R.id.mainWeekGoalTv);
+        monthtv = (TextView)findViewById(R.id.mainMonthGoalTv);
 
         todayGoalDialog = new TodayGoalDialog(this) ;
         todayGoalDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
                 drawTodayGoal();
+            }
+        });
+        weekGoalDialog = new WeekGoalDialog(this);
+        weekGoalDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                drawWeekGoal();
+            }
+        });
+        monthGoalDialog = new MonthGoalDialog(this);
+        monthGoalDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                drawMonthGoal();
             }
         });
     }
@@ -129,11 +146,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_todayGoalSetting) {
             todayGoalDialog.show();
-            //(new TodayGoalDialog(MainActivity.this)).show();
         } else if (id == R.id.nav_weekGoalSetting) {
+            weekGoalDialog.show();
 
         } else if (id == R.id.nav_monthGoaslSetting) {
-
+            monthGoalDialog.show();
         } else if (id == R.id.nav_totalGoalSetting) {
 
         } else if (id == R.id.nav_share) {
@@ -212,8 +229,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 todayGoalDialog.show();
                 break;
             case R.id.mainWeekGoalTv:
+                weekGoalDialog.show();
                 break;
             case R.id.mainMonthGoalTv:
+                monthGoalDialog.show();
                 break;
         }
     }
@@ -226,6 +245,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }else{
             todaytv.setText("");
         }
+    }
+    public void drawWeekGoal(){
+        if(goalDataSet.isWeekGoal==true) {
+            weektv.setText(goalDataSet.getWeekGoal());
+            weektv.setGravity(Gravity.CENTER);
+            Log.e("test",goalDataSet.getWeekGoal());
+        }else{
+            weektv.setText("");
+        }
+
+    }
+    public void drawMonthGoal(){
+        if(goalDataSet.isMonthGoal==true) {
+            monthtv.setText(goalDataSet.getMonthGoal());
+            monthtv.setGravity(Gravity.CENTER);
+            Log.e("test",goalDataSet.getMonthGoal());
+        }else{
+            monthtv.setText("");
+        }
+
     }
 
 

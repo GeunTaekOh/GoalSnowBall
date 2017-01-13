@@ -27,7 +27,7 @@ public class GoalDataSet {
     public String getTodayGoal(){
         return this.todayGoal;
     }
-    public String getweekGoal(){
+    public String getWeekGoal(){
         return this.weekGoal;
     }
     public String getMonthGoal(){
