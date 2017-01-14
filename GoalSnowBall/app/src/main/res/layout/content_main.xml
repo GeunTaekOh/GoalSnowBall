@@ -24,7 +24,6 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-
             >
 
 
@@ -253,22 +252,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="오늘의 목표"
+                android:text="오늘의 목표 "
                 android:textStyle="bold"
-
+                android:layout_margin="20dp"
                 />
 
             <View
                 android:layout_width="2dp"
-                android:layout_height="50dp"
-                android:layout_margin="2dp"
+                android:layout_height="70dp"
                 android:background="#B7AFA3" />
 
             <TextView
@@ -289,21 +286,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="이번주 목표"
-                android:textStyle="bold" />
+                android:text="이번주 목표 "
+                android:textStyle="bold"
+                android:layout_margin="20dp"
+                />
 
             <View
                 android:layout_width="2dp"
-                android:layout_height="50dp"
-                android:layout_margin="2dp"
-                android:background="#B7AFA3" />
+                android:layout_height="70dp"
+                android:background="#B7AFA3"/>
 
             <TextView
                 android:id="@+id/mainWeekGoalTv"
@@ -324,7 +321,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -332,14 +328,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="이번달 목표"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_margin="20dp"
+                />
 
             <View
                 android:layout_width="2dp"
-                android:layout_height="50dp"
-                android:layout_margin="2dp"
+                android:layout_height="70dp"
                 android:background="#B7AFA3"
-
                 />
 
             <TextView

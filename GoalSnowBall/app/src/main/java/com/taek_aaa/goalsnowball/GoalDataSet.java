@@ -15,6 +15,11 @@ public class GoalDataSet {
     private int amountToday;
     private int unitToday;
 
+
+
+
+
+
     private String typeWeek;
     private int amountWeek;
     private int unitWeek;

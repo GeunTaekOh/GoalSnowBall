@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TodayGoalDialog todayGoalDialog;
     WeekGoalDialog weekGoalDialog;
     MonthGoalDialog monthGoalDialog;
+    public static String[] categoryPhysicalArrays = {"개", "쪽", "권", ""};
+    public static String[] categoryTimeArrays = {"이상", "이하"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
