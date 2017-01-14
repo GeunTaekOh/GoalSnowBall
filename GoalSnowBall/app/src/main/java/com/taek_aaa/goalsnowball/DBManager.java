@@ -80,7 +80,6 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
 
-
     /**
      * DB 선택한 부분의 마커 삭제
      **/

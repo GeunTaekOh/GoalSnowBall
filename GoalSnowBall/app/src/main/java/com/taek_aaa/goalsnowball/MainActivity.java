@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TodayGoalDialog todayGoalDialog;
     WeekGoalDialog weekGoalDialog;
     MonthGoalDialog monthGoalDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,15 +74,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Bitmap sizedBitmapDefault = Bitmap.createScaledBitmap(bitmapDefault, (int) width, (int) height, true);
 
 
-
-
         imageButton.setImageBitmap(sizedBitmapDefault);
 
-        todaytv = (TextView)findViewById(R.id.mainTodayGoalTv);
-        weektv = (TextView)findViewById(R.id.mainWeekGoalTv);
-        monthtv = (TextView)findViewById(R.id.mainMonthGoalTv);
+        todaytv = (TextView) findViewById(R.id.mainTodayGoalTv);
+        weektv = (TextView) findViewById(R.id.mainWeekGoalTv);
+        monthtv = (TextView) findViewById(R.id.mainMonthGoalTv);
 
-        todayGoalDialog = new TodayGoalDialog(this) ;
+        todayGoalDialog = new TodayGoalDialog(this);
         todayGoalDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
@@ -103,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
-
 
 
     @Override
@@ -200,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Log.e("test", "" + exifOrientation);
             Log.e("test", "" + exifDegree);
             rotatedPhoto = pictureController.rotate(photo, exifDegree);
-                //이부분함수로만들기
+            //이부분함수로만들기
 
             float width = rotatedPhoto.getWidth();
             float height = rotatedPhoto.getHeight();
@@ -237,31 +235,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void drawTodayGoal(){
-        if(goalDataSet.isTodayGoal==true) {
+    public void drawTodayGoal() {
+        if (goalDataSet.isTodayGoal == true) {
             todaytv.setText(goalDataSet.getTodayGoal());
             todaytv.setGravity(Gravity.CENTER);
-            Log.e("test",goalDataSet.getTodayGoal());
-        }else{
+            Log.e("test", goalDataSet.getTodayGoal());
+        } else {
             todaytv.setText("");
         }
     }
-    public void drawWeekGoal(){
-        if(goalDataSet.isWeekGoal==true) {
+
+    public void drawWeekGoal() {
+        if (goalDataSet.isWeekGoal == true) {
             weektv.setText(goalDataSet.getWeekGoal());
             weektv.setGravity(Gravity.CENTER);
-            Log.e("test",goalDataSet.getWeekGoal());
-        }else{
+            Log.e("test", goalDataSet.getWeekGoal());
+        } else {
             weektv.setText("");
         }
 
     }
-    public void drawMonthGoal(){
-        if(goalDataSet.isMonthGoal==true) {
+
+    public void drawMonthGoal() {
+        if (goalDataSet.isMonthGoal == true) {
             monthtv.setText(goalDataSet.getMonthGoal());
             monthtv.setGravity(Gravity.CENTER);
-            Log.e("test",goalDataSet.getMonthGoal());
-        }else{
+            Log.e("test", goalDataSet.getMonthGoal());
+        } else {
             monthtv.setText("");
         }
 

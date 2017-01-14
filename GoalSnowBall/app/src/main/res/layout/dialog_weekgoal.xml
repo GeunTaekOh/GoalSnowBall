@@ -30,7 +30,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="5dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:id="@+id/radioGroup_week"
+            >
 
             <RadioButton
                 android:id="@+id/amountOfPhysical_week"
@@ -62,6 +64,7 @@
                 android:layout_margin="5dp"
                 android:hint="양"
                 android:singleLine="true"
+                android:inputType="number"
                 />
 
             <Spinner

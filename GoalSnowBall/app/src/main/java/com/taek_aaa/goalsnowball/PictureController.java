@@ -12,9 +12,9 @@ import android.util.Log;
 public class PictureController {      //최신폰은 버그로 exif 제대로 안되는듯 다이알로그만들어서 직접 수동 회전 하고 선택 할 수있게 하기
     public int exifOrientationToDegrees(int exifOrientation) {
 
-        Log.e("test",""+exifOrientation);
-        switch (exifOrientation){
-            case ExifInterface.ORIENTATION_ROTATE_90 :
+        Log.e("test", "" + exifOrientation);
+        switch (exifOrientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
                 return 90;
             case ExifInterface.ORIENTATION_ROTATE_180:
                 return 180;
