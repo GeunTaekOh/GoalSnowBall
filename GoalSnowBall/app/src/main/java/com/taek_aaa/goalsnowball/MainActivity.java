@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -31,10 +33,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     final int PICK_FROM_ALBUM = 101;
     Bitmap photo;
     public static LayoutInflater inflater;
-    ImageView imageButton;
+    ImageView imageView;
     int viewHeight = 700;        //원하는 뷰의 높이
     Boolean isPicture = false;
-    TextView todaytv, weektv, monthtv;
+    TextView todaytv, weektv, monthtv, dDayWeektv, dDayMonthtv;
     static GoalDataSet goalDataSet;
     public static LinkedList<DBData> llDBData = new LinkedList<DBData>();
     TodayGoalDialog todayGoalDialog;
@@ -42,6 +44,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     MonthGoalDialog monthGoalDialog;
     public static String[] categoryPhysicalArrays = {"개", "쪽", "권", ""};
     public static String[] categoryTimeArrays = {"이상", "이하"};
+    public static float defaultHeight, defaultWidth;
+    Calendar today;
+    int cYear, hMonth, cMonth, cdate, dayOfWeekIndex;
+    public static String[] dayOfWeekArray = {"","일","월","화","수","목","금","토"};
+    public static int[] endOfMonth={31,28,31,30,31,30,31,31,30,31,30,31};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,56 +62,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        imageButton = (ImageView) findViewById(R.id.mainImageView);
-
-        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.profile);
-        Bitmap bitmapDefault = drawable.getBitmap();
-
-
-        float width = bitmapDefault.getWidth();
-        float height = bitmapDefault.getHeight();
-        if (height > viewHeight) {
-            float percente = height / 100;
-            float scale = viewHeight / percente;
-            width *= scale / 100;
-            height *= scale / 100;
-        }
-        Bitmap sizedBitmapDefault = Bitmap.createScaledBitmap(bitmapDefault, (int) width, (int) height, true);
-
-
-        imageButton.setImageBitmap(sizedBitmapDefault);
-
-        todaytv = (TextView) findViewById(R.id.mainTodayGoalTv);
-        weektv = (TextView) findViewById(R.id.mainWeekGoalTv);
-        monthtv = (TextView) findViewById(R.id.mainMonthGoalTv);
-
-        todayGoalDialog = new TodayGoalDialog(this);
-        todayGoalDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                drawTodayGoal();
-            }
-        });
-        weekGoalDialog = new WeekGoalDialog(this);
-        weekGoalDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                drawWeekGoal();
-            }
-        });
-        monthGoalDialog = new MonthGoalDialog(this);
-        monthGoalDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                drawMonthGoal();
-            }
-        });
+        drawDDay();
+        drawMainImage();
+        drawGoal();
     }
-
 
     @Override
     public void onBackPressed() {
@@ -171,8 +135,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             PictureController pictureController = new PictureController();
             Bitmap rotatedPicture;
             rotatedPicture = pictureController.rotate(photo, 90);
-            imageButton = (ImageView) findViewById(R.id.mainImageView);
-            imageButton.setImageBitmap(rotatedPicture);
+            imageView = (ImageView) findViewById(R.id.mainImageView);
+            imageView.setImageBitmap(rotatedPicture);
         }
     }
 
@@ -180,12 +144,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case PICK_FROM_ALBUM:
-                pictureSetToImageButton(data);
+                pictureSetToImageView(data);
                 break;
         }
     }
 
-    protected void pictureSetToImageButton(Intent data) {
+    protected void pictureSetToImageView(Intent data) {
         try {
             PictureController pictureController = new PictureController();
             Uri uri = data.getData();
@@ -193,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Log.e("test", uriPath);
             photo = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
             inflater = getLayoutInflater();
+
             Bitmap rotatedPhoto;
             ExifInterface exif = new ExifInterface(uriPath);
             int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
@@ -200,20 +165,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Log.e("test", "" + exifOrientation);
             Log.e("test", "" + exifDegree);
             rotatedPhoto = pictureController.rotate(photo, exifDegree);
-            //이부분함수로만들기
 
-            float width = rotatedPhoto.getWidth();
-            float height = rotatedPhoto.getHeight();
-            if (height > viewHeight) {
-                float percente = height / 100;
-                float scale = viewHeight / percente;
-                width *= scale / 100;
-                height *= scale / 100;
-            }
-            Bitmap sizedPhoto = Bitmap.createScaledBitmap(rotatedPhoto, (int) width, (int) height, true);
+            Bitmap sizedPhoto = setSizedImage(rotatedPhoto);
 
-            imageButton = (ImageView) findViewById(R.id.mainImageView);
-            imageButton.setImageBitmap(sizedPhoto);
+            imageView = (ImageView) findViewById(R.id.mainImageView);
+            imageView.setImageBitmap(sizedPhoto);
             Toast.makeText(getBaseContext(), "사진을 입력하였습니다.", Toast.LENGTH_SHORT).show();
             isPicture = true;
         } catch (Exception e) {
@@ -269,5 +225,173 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    public void drawGoal(){
+        todaytv = (TextView) findViewById(R.id.mainTodayGoalTv);
+        weektv = (TextView) findViewById(R.id.mainWeekGoalTv);
+        monthtv = (TextView) findViewById(R.id.mainMonthGoalTv);
 
+        todayGoalDialog = new TodayGoalDialog(this);
+        todayGoalDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                drawTodayGoal();
+            }
+        });
+        weekGoalDialog = new WeekGoalDialog(this);
+        weekGoalDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                drawWeekGoal();
+            }
+        });
+        monthGoalDialog = new MonthGoalDialog(this);
+        monthGoalDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                drawMonthGoal();
+            }
+        });
+    }
+    public void drawMainImage(){
+        imageView = (ImageView) findViewById(R.id.mainImageView);
+        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.profile);
+        Bitmap bitmapDefault = drawable.getBitmap();
+
+        Bitmap sizedBitmapDefault = setSizedImage(bitmapDefault);
+
+        defaultHeight = sizedBitmapDefault.getHeight();
+        defaultWidth = sizedBitmapDefault.getWidth();
+        Log.e("length",""+defaultHeight);
+        Log.e("length",""+defaultWidth);
+        imageView.setImageBitmap(sizedBitmapDefault);
+
+    }
+
+    public Bitmap setSizedImage(Bitmap bitmap){
+        float width = bitmap.getWidth();
+        float height = bitmap.getHeight();
+        if (height > viewHeight) {
+            float percente = height / 100;
+            float scale = viewHeight / percente;
+            width *= scale / 100;
+            height *= scale / 100;
+        }
+        Bitmap sizedBitmapDefault = Bitmap.createScaledBitmap(bitmap, (int) width, (int) height, true);
+        return sizedBitmapDefault;
+    }
+
+    public void drawDDay(){
+        dDayWeektv = (TextView)findViewById(R.id.d_week);
+        dDayMonthtv = (TextView)findViewById(R.id.d_month);
+        today = Calendar.getInstance();
+        cYear = today.get(Calendar.YEAR);
+        hMonth = today.get(Calendar.MONTH)+1;
+        cMonth = today.get(Calendar.MONTH);
+        cdate = today.get(Calendar.DAY_OF_MONTH);
+        dayOfWeekIndex = today.get(Calendar.DAY_OF_WEEK);
+        Log.e("qq",""+today);
+        Log.e("qq",""+cYear);
+        Log.e("qq",""+hMonth);
+        Log.e("qq",""+cMonth);
+        Log.e("qq",""+cdate);
+        Log.e("qq",""+dayOfWeekArray[dayOfWeekIndex]);
+
+        switch (dayOfWeekIndex){
+            case 1:
+                dDayWeektv.setText("이번주   D - 1");
+                break;
+            case 2:
+                dDayWeektv.setText("이번주   D - 7");
+                break;
+            case 3:
+                dDayWeektv.setText("이번주   D - 6");
+                break;
+            case 4:
+                dDayWeektv.setText("이번주   D - 5");
+                break;
+            case 5:
+                dDayWeektv.setText("이번주   D - 4");
+                break;
+            case 6:
+                dDayWeektv.setText("이번주   D - 3");
+                break;
+            case 7:
+                dDayWeektv.setText("이번주   D - 2");
+                break;
+
+        }
+        switch (cMonth){
+            case 0:
+                int tmp0;
+                tmp0 = endOfMonth[cMonth] - cdate;
+                dDayMonthtv.setText("이번달  D - "+""+tmp0);
+                break;
+            case 1:
+                boolean tempBoolean;
+                int tmp1;
+                tmp1 = endOfMonth[cMonth] - cdate;
+                tempBoolean = isYoonYear(cYear);
+                if(tempBoolean==true){
+                    dDayMonthtv.setText("이번달  D - "+""+(tmp1+1));
+                    Log.e("ttt",""+tempBoolean);
+                }else{
+                    dDayMonthtv.setText("이번달  D - "+""+tmp1);
+                }
+                break;
+            case 2:
+                int tmp2;
+                tmp2 = endOfMonth[cMonth] - cdate;
+                dDayMonthtv.setText("이번달  D - "+""+tmp2);
+                break;
+            case 3:
+                int tmp3;
+                tmp3 = endOfMonth[cMonth] - cdate;
+                dDayMonthtv.setText("이번달  D - "+""+tmp3);
+                break;
+            case 4:
+                int tmp4;
+                tmp4 = endOfMonth[cMonth] - cdate;
+                dDayMonthtv.setText("이번달  D - "+""+tmp4);
+                break;
+            case 5:
+                int tmp5;
+                tmp5 = endOfMonth[cMonth] - cdate;
+                dDayMonthtv.setText("이번달  D - "+""+tmp5);
+                break;
+            case 6:
+                int tmp6;
+                tmp6 = endOfMonth[cMonth] - cdate;
+                dDayMonthtv.setText("이번달  D - "+""+tmp6);
+                break;
+            case 7:
+                int tmp7;
+                tmp7 = endOfMonth[cMonth] - cdate;
+                dDayMonthtv.setText("이번달  D - "+""+tmp7);
+                break;
+            case 8:
+                int tmp8;
+                tmp8 = endOfMonth[cMonth] - cdate;
+                dDayMonthtv.setText("이번달  D - "+""+tmp8);
+                break;
+            case 9:
+                int tmp9;
+                tmp9 = endOfMonth[cMonth] - cdate;
+                dDayMonthtv.setText("이번달  D - "+""+tmp9);
+                break;
+            case 10:
+                int tmp10;
+                tmp10 = endOfMonth[cMonth] - cdate;
+                dDayMonthtv.setText("이번달  D - "+""+tmp10);
+                break;
+            case 11:
+                int tmp11;
+                tmp11 = endOfMonth[cMonth] - cdate;
+                dDayMonthtv.setText("이번달  D - "+""+tmp11);
+                break;
+        }
+    }
+    public Boolean isYoonYear(int year){
+        GregorianCalendar gr = new GregorianCalendar();
+        return gr.isLeapYear(year);
+    }
 }
