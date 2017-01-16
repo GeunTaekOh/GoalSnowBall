@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="#F8F8FF"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.taek_aaa.goalsnowball.MainActivity"
+    tools:context="com.taek_aaa.goalsnowball.activity.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
     <LinearLayout

@@ -1,4 +1,4 @@
-package com.taek_aaa.goalsnowball;
+package com.taek_aaa.goalsnowball.data;
 
 import android.content.Context;
 import android.database.Cursor;

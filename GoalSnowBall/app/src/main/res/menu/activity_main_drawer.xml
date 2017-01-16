@@ -4,16 +4,16 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_todayGoalSetting"
-            android:icon="@drawable/goaladd"
-            android:title="오늘의 목표 추가/수정" />
+            android:icon="@drawable/goalcheck"
+            android:title="오늘의 목표량 관리" />
         <item
             android:id="@+id/nav_weekGoalSetting"
-            android:icon="@drawable/goaladd"
-            android:title="이번주 목표 추가/수정" />
+            android:icon="@drawable/goalcheck"
+            android:title="이번주 목표량 관리" />
         <item
             android:id="@+id/nav_monthGoaslSetting"
-            android:icon="@drawable/goaladd"
-            android:title="이번달 목표 추가/수정" />
+            android:icon="@drawable/goalcheck"
+            android:title="이번달 목표량 관리" />
 
     </group>
 

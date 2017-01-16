@@ -1,4 +1,4 @@
-package com.taek_aaa.goalsnowball;
+package com.taek_aaa.goalsnowball.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -13,7 +13,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import static com.taek_aaa.goalsnowball.MainActivity.goalDataSet;
+import com.taek_aaa.goalsnowball.R;
+
+import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
 
 /**
  * Created by taek_aaa on 2017. 1. 14..

@@ -37,8 +37,13 @@ public class PictureController {      //최신폰은 버그로 exif 제대로 �
                 }
             } catch (OutOfMemoryError ex) {
                 // 메모리가 부족하여 회전을 시키지 못할 경우 그냥 원본을 반환
+                Log.e("picture","메모리 부족해서 회전 하지않음");
             }
         }
         return bitmap;
     }
+
+
+
+
 }

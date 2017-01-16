@@ -1,4 +1,4 @@
-package com.taek_aaa.goalsnowball;
+package com.taek_aaa.goalsnowball.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,6 +24,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.taek_aaa.goalsnowball.data.DBData;
+import com.taek_aaa.goalsnowball.data.GoalDataSet;
+import com.taek_aaa.goalsnowball.dialog.MonthGoalDialog;
+import com.taek_aaa.goalsnowball.PictureController;
+import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.dialog.TodayGoalDialog;
+import com.taek_aaa.goalsnowball.dialog.WeekGoalDialog;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
@@ -34,10 +42,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Bitmap photo;
     public static LayoutInflater inflater;
     ImageView imageView;
-    int viewHeight = 700;        //원하는 뷰의 높이
+    int viewHeight = 3336;        //원하는 뷰의 높이
     Boolean isPicture = false;
     TextView todaytv, weektv, monthtv, dDayWeektv, dDayMonthtv;
-    static GoalDataSet goalDataSet;
+    public static GoalDataSet goalDataSet;
     public static LinkedList<DBData> llDBData = new LinkedList<DBData>();
     TodayGoalDialog todayGoalDialog;
     WeekGoalDialog weekGoalDialog;
@@ -109,12 +117,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_todayGoalSetting) {
-            todayGoalDialog.show();
+            startActivity(new Intent(this, TodayGoalDoingActivity.class));
+
         } else if (id == R.id.nav_weekGoalSetting) {
-            weekGoalDialog.show();
+
 
         } else if (id == R.id.nav_monthGoaslSetting) {
-            monthGoalDialog.show();
+
         } else if (id == R.id.nav_totalGoalSetting) {
 
         } else if (id == R.id.nav_share) {
