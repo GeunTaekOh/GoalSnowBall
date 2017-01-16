@@ -124,7 +124,6 @@ public class MonthGoalDialog extends Dialog implements View.OnClickListener {
                     Toast.makeText(getContext(), "값을 모두 입력하세요.", Toast.LENGTH_SHORT).show();
                 }
 
-
                 break;
             case R.id.monthDialogExitButton:
                 dismiss();

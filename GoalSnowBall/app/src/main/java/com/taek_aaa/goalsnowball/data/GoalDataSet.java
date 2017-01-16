@@ -11,7 +11,7 @@ public class GoalDataSet {
     private int amountToday;
     private int unitToday;
     private int currentAmountToday;
-    private double currentMinuteToday;
+    private int currentMinuteToday;
 
 
     private String weekGoal;
@@ -20,7 +20,7 @@ public class GoalDataSet {
     private int amountWeek;
     private int unitWeek;
     private int currentAmountWeek=0;
-    private double currentMinuteWeek;
+    private int currentMinuteWeek;
 
 
     private String monthGoal;
@@ -29,7 +29,7 @@ public class GoalDataSet {
     private int amountMonth;
     private int unitMonth;
     private int currentAmountMonth;
-    private double currentMinuteMonth;
+    private int currentMinuteMonth;
 
 
     public void setTodayGoal(String str) {
@@ -159,10 +159,10 @@ public class GoalDataSet {
 
     public int getCurrentAmountMonth(){return this.currentAmountMonth;}
 
-    public double getCurrentMinuteToday(){return this.currentMinuteToday;}
+    public int getCurrentMinuteToday(){return this.currentMinuteToday;}
 
-    public double getCurrentMinuteWeek(){return this.currentMinuteWeek;}
+    public int getCurrentMinuteWeek(){return this.currentMinuteWeek;}
 
-    public double getCurrentMinuteMonth(){return this.currentMinuteMonth;}
+    public int getCurrentMinuteMonth(){return this.currentMinuteMonth;}
 
 }

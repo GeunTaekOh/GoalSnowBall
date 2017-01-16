@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="28dp">
+        android:layout_marginBottom="48dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -22,7 +22,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_gravity="center"
-                android:text="수행 시간 : " />
+                android:text="수행 시간 : "
+                android:id="@+id/doing_current_time_today"
+                />
 
 
             <TextView
@@ -31,16 +33,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
-                android:text="오늘의 목표 : " />
+                android:text="오늘의 목표 : "
+                android:textSize="27dp"
+                />
 
 
-            <TextView
-                android:id="@+id/doing_duration_today"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"
-                android:text="남은 기간 : " />
         </LinearLayout>
 
     </RelativeLayout>
@@ -65,7 +62,9 @@
                 android:id="@+id/doing_goalAmount_today"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="목표시간 : 40분"
+                android:text=""
+                android:textStyle="bold"
+                android:textColor="#ffffff"
 
                 />
 

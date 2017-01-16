@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawMainImage();
         drawGoal();
     }
-
+    /** 뒤로가기 눌렀을 때 **/
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @SuppressWarnings("StatementWithEmptyBody")
 
+    /** 네비게이션 바에서 메뉴 선택 시 **/
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -135,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
+    /** 이미지 뷰 클릭 했을 때 **/
     public void onClickMainImage(View v) {
         if (isPicture == false) {
             Intent intent = new Intent(Intent.ACTION_PICK);
@@ -151,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /** intent 결과 처리 **/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -159,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
     }
-
+    /** 골라온 이미지를 이미지뷰에 입힘 **/
     protected void pictureSetToImageView(Intent data) {
         try {
             PictureController pictureController = new PictureController();
@@ -189,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
     }
-
+    /** 목표 부분들을 누르면 다이알러그 보여줌 **/
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.mainTodayGoalTv:
@@ -203,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
     }
-
+    /** 오늘의 목표를 텍스트뷰에 출력 **/
     public void drawTodayGoal() {
         if (goalDataSet.isTodayGoal == true) {
             todaytv.setText(goalDataSet.getTodayGoal());
@@ -213,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             todaytv.setText("");
         }
     }
-
+    /** 이번주 목표를 텍스트뷰에 출력 **/
     public void drawWeekGoal() {
         if (goalDataSet.isWeekGoal == true) {
             weektv.setText(goalDataSet.getWeekGoal());
@@ -224,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
     }
-
+    /** 이번달 목표를 텍스트뷰에 출력 **/
     public void drawMonthGoal() {
         if (goalDataSet.isMonthGoal == true) {
             monthtv.setText(goalDataSet.getMonthGoal());
@@ -235,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
     }
-
+    /** 목표를 다이얼로그에서 설정하고 다이얼로그가 dismiss 되면 목표 출력 **/
     public void drawGoal(){
         todaytv = (TextView) findViewById(R.id.mainTodayGoalTv);
         weektv = (TextView) findViewById(R.id.mainWeekGoalTv);
@@ -263,6 +265,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
+    /** 이미지 선택 안했을 시에 이미지를 이미지뷰에 출력**/
     public void drawMainImage(){
         imageView = (ImageView) findViewById(R.id.mainImageView);
         BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.profile);
@@ -277,7 +280,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         imageView.setImageBitmap(sizedBitmapDefault);
 
     }
-
+    /** 이미지뷰 사이즈 변환 **/         //근데 안먹히는듯
     public Bitmap setSizedImage(Bitmap bitmap){
         float width = bitmap.getWidth();
         float height = bitmap.getHeight();
@@ -290,7 +293,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Bitmap sizedBitmapDefault = Bitmap.createScaledBitmap(bitmap, (int) width, (int) height, true);
         return sizedBitmapDefault;
     }
-
+    /** 오늘쪽 상단의 디데이를 출력 **/
     public void drawDDay(){
         dDayWeektv = (TextView)findViewById(R.id.d_week);
         dDayMonthtv = (TextView)findViewById(R.id.d_month);
@@ -401,6 +404,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
     }
+    /** 2월 윤년 계산 **/
     public Boolean isYoonYear(int year){
         GregorianCalendar gr = new GregorianCalendar();
         return gr.isLeapYear(year);

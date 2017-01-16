@@ -14,9 +14,6 @@ import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryPhysicalArrays;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryTimeArrays;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
@@ -39,7 +36,7 @@ public class TodayGoalDoingActivity extends Activity {
     int mins = 0;
     int hours = 0;
     Handler handler = new Handler();
-    TextView blackboardtv, didAmounttv;
+    TextView blackboardtv, timeOfCurrenttv;
     static int tmpAmount;
 
 
@@ -48,95 +45,92 @@ public class TodayGoalDoingActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         try {
+            /** 물리적 양 일때 **/
             if (goalDataSet.getTypeToday().equals("물리적양")) {
                 setContentView(R.layout.activity_today_goal_amount_doing);
                 Log.e("aa", "물리적양");
                 isAmount = true;
-                amountOfEdit = (EditText)findViewById(R.id.doing_current_amount_today);
-                //
+                amountOfEdit = (EditText) findViewById(R.id.doing_current_amount_today);
                 amountOfEdit.post(new Runnable() {
                     @Override
                     public void run() {
-                        amountOfEdit.setText(""+goalDataSet.getCurrentAmountToday());
-                        //amountOfEdit.setText("test");
+                        amountOfEdit.setText("" + goalDataSet.getCurrentAmountToday());
                     }
                 });
-
-
-                //didAmounttv = (TextView)findViewById(R.id.doing_current_amount_today);
-
             } else {
+                /** 시간적 양 일때 **/
                 setContentView(R.layout.activity_today_goal_time_doing);
                 Log.e("aa", "시간적양");
 
                 TextView stopWatchtv = (TextView) findViewById(R.id.timerTextView);
                 stopWatchtv.setText("00:00:00");
-
+                timeOfCurrenttv = (TextView) findViewById(R.id.doing_current_time_today);
+                timeOfCurrenttv.setText("수행 시간 : " + goalDataSet.getCurrentMinuteToday() + "분");
                 isAmount = false;
             }
-            blackboardtv = (TextView)findViewById(R.id.doing_goalAmount_today);
 
-
-
+            blackboardtv = (TextView) findViewById(R.id.doing_goalAmount_today);
             doingGoalTodaytv = (TextView) findViewById(R.id.doing_goal_today);
             doingGoalTodaytv.setText("오늘의 목표 : " + goalDataSet.getTodayGoal());
-
-
-            if(isAmount) {
+            if (isAmount) {
                 blackboardtv.setText("목표량 : " + goalDataSet.getAmountToday() + "" + categoryPhysicalArrays[goalDataSet.getUnitToday()]);
-                TextView unittv = (TextView)findViewById(R.id.doing_unit_today);
-                unittv.setText(""+categoryPhysicalArrays[goalDataSet.getUnitToday()]);
-            }else{
+                TextView unittv = (TextView) findViewById(R.id.doing_unit_today);
+                unittv.setText("" + categoryPhysicalArrays[goalDataSet.getUnitToday()]);
+            } else {
                 blackboardtv.setText("목표량 : " + goalDataSet.getAmountToday() + "분 " + categoryTimeArrays[goalDataSet.getUnitToday()]);
             }
-
-
-            tmpAmount=goalDataSet.getCurrentAmountToday();
+            tmpAmount = goalDataSet.getCurrentAmountToday();
         } catch (Exception e) {
+            /** 목표 설정 안되어 있을 때 **/
             Toast.makeText(this, "오늘의 목표를 먼저 설정하세요.", Toast.LENGTH_SHORT).show();
-            Log.e("error",""+e.getStackTrace());
-
-
+            Log.e("error", "" + e.getStackTrace());
             e.getStackTrace();
             finish();
         }
-
-
-
-
     }
 
-    public void saveCurrentAmountToEditText(){
+    /**
+     * 수행량 저장하는 함수
+     **/
+    public void saveCurrentAmountToEditText() {
         goalDataSet.setCurrentAmountToday(Integer.parseInt(amountOfEdit.getText().toString()));
-        Toast.makeText(getBaseContext(),"수행량이 저장되었습니다.",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
-    public void onClick(View v){
-        switch (v.getId()){
+    /**
+     * upButton, downButton 클릭 시
+     **/
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.upButton:
                 tmpAmount += 1;
-                if(tmpAmount>goalDataSet.getAmountToday()){
-                    tmpAmount=goalDataSet.getAmountToday();
+                if (tmpAmount > goalDataSet.getAmountToday()) {
+                    tmpAmount = goalDataSet.getAmountToday();
                 }
-                amountOfEdit.setText(""+tmpAmount);
+                amountOfEdit.setText("" + tmpAmount);
                 break;
             case R.id.downButton:
-                tmpAmount-=1;
-                if(tmpAmount<0){
-                    tmpAmount=0;
+                tmpAmount -= 1;
+                if (tmpAmount < 0) {
+                    tmpAmount = 0;
                 }
-                amountOfEdit.setText(""+tmpAmount);
+                amountOfEdit.setText("" + tmpAmount);
                 break;
         }
     }
 
-    public void onClickSaveBtnGoal(View v){
+    /**
+     * 목표 수행량 저장하는 함수
+     **/
+    public void onClickSaveBtnGoal(View v) {
         saveCurrentAmountToEditText();
 
     }
 
 
-    //timer start버튼
+    /**
+     * 타이머 start 버튼 클릭 시
+     **/
     public void onClickTimerStartbtn(View v) {
         Button startbtn = (Button) findViewById(R.id.timerStartbtn);
         final TextView timerTv = (TextView) findViewById(R.id.timerTextView);
@@ -159,14 +153,15 @@ public class TodayGoalDoingActivity extends Activity {
         }
     }
 
-    //timer end 버튼
+    /**
+     * 타이머 End 버튼 클릭시
+     **/
     public void onClickTimerEndbtn(View v) {
         String howlongtime;
         String shour;
         String sminute;
         String sseconds;
         int ihowlongtime;
-        String strText;
 
         TextView stopWatchtv = (TextView) findViewById(R.id.timerTextView);
         howlongtime = stopWatchtv.getText().toString();
@@ -174,11 +169,12 @@ public class TodayGoalDoingActivity extends Activity {
         sminute = howlongtime.substring(3, 5);
         sseconds = howlongtime.substring(6);
         ihowlongtime = Integer.valueOf(shour) * 60 * 60 + Integer.valueOf(sminute) * 60 + Integer.valueOf(sseconds);
+        ihowlongtime = ihowlongtime / 60;
 
-        SimpleDateFormat df = new SimpleDateFormat("MM/dd/hh:mm");
-        Log.e("ppq", "" + df);
-        Date clsTime = new Date();
-        String resulttime = df.format(clsTime);
+        int temp = goalDataSet.getCurrentMinuteToday();
+        temp += ihowlongtime;
+        goalDataSet.setCurrentMinuteToday(temp);
+        timeOfCurrenttv.setText("수행 시간 : " + goalDataSet.getCurrentMinuteToday() + "분");
 
         Log.i("test", String.valueOf(howlongtime));
         Button startbtn = (Button) findViewById(R.id.timerStartbtn);
@@ -196,7 +192,7 @@ public class TodayGoalDoingActivity extends Activity {
         isStartButtonClicked = true;
         Log.i("test", "찍힘");
 
-
+        Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
     }
 
 
