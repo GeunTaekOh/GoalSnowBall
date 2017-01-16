@@ -19,7 +19,7 @@ public class GoalDataSet {
     private String typeWeek;
     private int amountWeek;
     private int unitWeek;
-    private int currentAmountWeek;
+    private int currentAmountWeek=0;
     private double currentMinuteWeek;
 
 

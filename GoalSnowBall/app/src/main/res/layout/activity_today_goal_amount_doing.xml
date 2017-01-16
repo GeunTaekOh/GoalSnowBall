@@ -86,6 +86,8 @@
                 android:layout_height="50dp"
                 android:src="@drawable/upbuttonimage"
                 android:layout_marginLeft="80dp"
+                android:id="@+id/upButton"
+                android:onClick="onClick"
                 />
 
         </LinearLayout>
@@ -128,7 +130,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="저장" />
+                android:text="저장"
+                android:onClick="onClickSaveBtnGoal"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -140,6 +144,8 @@
                 android:layout_height="50dp"
                 android:src="@drawable/downbuttonimage"
                 android:layout_marginLeft="80dp"
+                android:onClick="onClick"
+                android:id="@+id/downButton"
                 />
 
         </LinearLayout>

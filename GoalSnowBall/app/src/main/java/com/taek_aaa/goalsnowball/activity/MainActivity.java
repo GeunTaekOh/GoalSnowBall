@@ -73,6 +73,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        goalDataSet.setCurrentAmountToday(0);   //나중에 디비로구현하면 삭제하기
+        goalDataSet.setCurrentMinuteToday(0);   //나중에 디비로구현하면 삭제하기
+
         drawDDay();
         drawMainImage();
         drawGoal();
