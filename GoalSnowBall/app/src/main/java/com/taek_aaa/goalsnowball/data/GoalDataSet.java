@@ -6,27 +6,30 @@ package com.taek_aaa.goalsnowball.data;
 
 public class GoalDataSet {
     private String todayGoal;
-    private String weekGoal;
-    private String monthGoal;
     public boolean isTodayGoal = false;
-    public boolean isWeekGoal = false;
-    public boolean isMonthGoal = false;
     private String typeToday;
     private int amountToday;
     private int unitToday;
+    private int currentAmountToday;
+    private double currentMinuteToday;
 
 
-
-
-
-
+    private String weekGoal;
+    public boolean isWeekGoal = false;
     private String typeWeek;
     private int amountWeek;
     private int unitWeek;
+    private int currentAmountWeek;
+    private double currentMinuteWeek;
 
+
+    private String monthGoal;
+    public boolean isMonthGoal = false;
     private String typeMonth;
     private int amountMonth;
     private int unitMonth;
+    private int currentAmountMonth;
+    private double currentMinuteMonth;
 
 
     public void setTodayGoal(String str) {
@@ -80,6 +83,28 @@ public class GoalDataSet {
         this.unitMonth = un;
     }
 
+    public void setCurrentAmountToday(int ca) {
+        this.currentAmountToday = ca;
+    }
+
+    public void setCurrentAmountWeek(int ca) {
+        this.currentAmountWeek = ca;
+    }
+
+    public void setCurrentAmountMonth(int ca) {
+        this.currentAmountMonth = ca;
+    }
+    public void setCurrentMinuteToday(int cm){
+        this.currentMinuteToday = cm;
+    }
+    public void setCurrentMinuteWeek(int cm){
+        this.currentMinuteWeek = cm;
+    }
+    public void setCurrentMinuteMonth(int cm){
+        this.currentMinuteMonth = cm;
+    }
+
+
     public String getTodayGoal() {
         return this.todayGoal;
     }
@@ -127,4 +152,17 @@ public class GoalDataSet {
     public int getUnitMonth() {
         return this.unitMonth;
     }
+
+    public int getCurrentAmountToday(){return this.currentAmountToday;}
+
+    public int getCurrentAmountWeek(){return this.currentAmountWeek;}
+
+    public int getCurrentAmountMonth(){return this.currentAmountMonth;}
+
+    public double getCurrentMinuteToday(){return this.currentMinuteToday;}
+
+    public double getCurrentMinuteWeek(){return this.currentMinuteWeek;}
+
+    public double getCurrentMinuteMonth(){return this.currentMinuteMonth;}
+
 }

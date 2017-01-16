@@ -109,6 +109,8 @@
                 android:hint="수행량"
                 android:inputType="number"
                 android:singleLine="true"
+                android:id="@+id/doing_current_amount_today"
+                android:cursorVisible="false"
 
                 />
 
@@ -117,7 +119,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="단위" />
+                android:text="단위"
+
+                />
 
             <Button
                 android:id="@+id/doing_confirmButton_today"

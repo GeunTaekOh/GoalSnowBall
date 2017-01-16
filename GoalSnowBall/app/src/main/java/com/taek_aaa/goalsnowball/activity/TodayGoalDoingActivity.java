@@ -16,6 +16,8 @@ import com.taek_aaa.goalsnowball.R;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryPhysicalArrays;
+import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryTimeArrays;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
 
 /**
@@ -35,6 +37,7 @@ public class TodayGoalDoingActivity extends Activity {
     int mins = 0;
     int hours = 0;
     Handler handler = new Handler();
+    TextView blackboardtv, didAmounttv;
 
 
     @Override
@@ -47,23 +50,37 @@ public class TodayGoalDoingActivity extends Activity {
                 Log.e("aa", "물리적양");
                 isAmount = true;
 
+
             } else {
                 setContentView(R.layout.activity_today_goal_time_doing);
                 Log.e("aa", "시간적양");
+
                 TextView stopWatchtv = (TextView) findViewById(R.id.timerTextView);
                 stopWatchtv.setText("00:00:00");
 
                 isAmount = false;
             }
+            blackboardtv = (TextView)findViewById(R.id.doing_goalAmount_today);
+            didAmounttv = (TextView)findViewById(R.id.doing_current_amount_today);
 
             doingGoalTodaytv = (TextView) findViewById(R.id.doing_goal_today);
             doingGoalTodaytv.setText("오늘의 목표 : " + goalDataSet.getTodayGoal());
+            if(isAmount) {
+                blackboardtv.setText("목표량 : " + goalDataSet.getAmountToday() + "" + categoryPhysicalArrays[goalDataSet.getUnitToday()]);
+                TextView unittv = (TextView)findViewById(R.id.doing_unit_today);
+                unittv.setText(""+categoryPhysicalArrays[goalDataSet.getUnitToday()]);
+            }else{
+                blackboardtv.setText("목표량 : " + goalDataSet.getAmountToday() + "분 " + categoryTimeArrays[goalDataSet.getUnitToday()]);
+            }
+
 
 
         } catch (Exception e) {
             Toast.makeText(this, "오늘의 목표를 먼저 설정하세요.", Toast.LENGTH_SHORT).show();
             finish();
         }
+
+
 
 
     }
