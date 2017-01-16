@@ -2,6 +2,7 @@ package com.taek_aaa.goalsnowball.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.taek_aaa.goalsnowball.R;
@@ -19,7 +20,14 @@ public class TodayGoalDoingActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_today_goal_doing);
+        if(goalDataSet.getTypeToday().equals("물리적양")){
+            setContentView(R.layout.activity_today_goal_amount_doing);
+            Log.e("aa","물리적양");
+        }else{
+            setContentView(R.layout.activity_today_goal_time_doing);
+            Log.e("aa","시간적양");
+        }
+
 
         doingGoalTodaytv = (TextView) findViewById(R.id.doing_goal_today);
         if(goalDataSet.isTodayGoal==false) {
