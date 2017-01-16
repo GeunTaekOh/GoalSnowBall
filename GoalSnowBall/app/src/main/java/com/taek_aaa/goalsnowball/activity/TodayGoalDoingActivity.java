@@ -40,6 +40,7 @@ public class TodayGoalDoingActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         try {
             if (goalDataSet.getTypeToday().equals("물리적양")) {
                 setContentView(R.layout.activity_today_goal_amount_doing);
@@ -49,13 +50,11 @@ public class TodayGoalDoingActivity extends Activity {
             } else {
                 setContentView(R.layout.activity_today_goal_time_doing);
                 Log.e("aa", "시간적양");
+                TextView stopWatchtv = (TextView) findViewById(R.id.timerTextView);
+                stopWatchtv.setText("00:00:00");
+
                 isAmount = false;
             }
-
-
-            TextView stopWatchtv = (TextView) findViewById(R.id.timerTextView);
-            stopWatchtv.setText("00:00:00");
-
 
             doingGoalTodaytv = (TextView) findViewById(R.id.doing_goal_today);
             doingGoalTodaytv.setText("오늘의 목표 : " + goalDataSet.getTodayGoal());
