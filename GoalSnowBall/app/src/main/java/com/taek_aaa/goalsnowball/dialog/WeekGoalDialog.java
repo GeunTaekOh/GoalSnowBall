@@ -127,7 +127,7 @@ public class WeekGoalDialog extends Dialog implements View.OnClickListener {
                         Log.e("data", "" + goalDataSet.getUnitWeek());
                         Log.e("data", goalDataSet.getWeekGoal());
                         Log.e("data", "" + goalDataSet.isWeekGoal);
-                        goalDataSet.setBettingGoldToday(Integer.parseInt(bettingGoldWeeket.getText().toString()));
+                        goalDataSet.setBettingGoldWeek(Integer.parseInt(bettingGoldWeeket.getText().toString()));
                         dismiss();
                     }
                 } catch (Exception e) {

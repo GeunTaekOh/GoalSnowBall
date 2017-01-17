@@ -127,7 +127,7 @@ public class MonthGoalDialog extends Dialog implements View.OnClickListener {
                         Log.e("data", "" + goalDataSet.getUnitMonth());
                         Log.e("data", goalDataSet.getMonthGoal());
                         Log.e("data", "" + goalDataSet.isMonthGoal);
-                        goalDataSet.setBettingGoldToday(Integer.parseInt(bettingGoldMonthet.getText().toString()));
+                        goalDataSet.setBettingGoldMonth(Integer.parseInt(bettingGoldMonthet.getText().toString()));
                         dismiss();
                     }
                 } catch (Exception e) {

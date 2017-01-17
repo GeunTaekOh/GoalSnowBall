@@ -112,7 +112,7 @@ public class GoalDataSet {
     public void setTotalGold(int gold){this.totalGold = gold;}
     public void setBettingGoldToday(int gold){this.bettingGoldToday = gold;}
     public void setBettingGoldWeek(int gold){this.bettingGoldWeek = gold;}
-    public void setBettingGoldMont(int gold){this.bettingGoldMonth = gold;}
+    public void setBettingGoldMonth(int gold){this.bettingGoldMonth = gold;}
 
 
     public String getTodayGoal() {
