@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         goalDataSet.setCurrentAmountToday(0);   //나중에 디비로구현하면 삭제하기
         goalDataSet.setCurrentMinuteToday(0);   //나중에 디비로구현하면 삭제하기
+        goalDataSet.setTotalGold(10);
 
         drawDDay();
         drawMainImage();

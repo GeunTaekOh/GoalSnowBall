@@ -22,7 +22,7 @@ import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
  */
 
 public class TodayGoalDialog extends Dialog implements View.OnClickListener {
-    EditText editTextContents, editTextAmonut;
+    EditText editTextContents, editTextAmonut, bettingGoldTodayet;
     String textContents;
     TextView title;
     RadioGroup radioGroup;
@@ -30,6 +30,7 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener {
     RadioButton timeRadio, physicalRadio;
     int checkedId;
     int default_radioButton_id_today;
+    int bettinggold;
 
     public TodayGoalDialog(Context context) {
         super(context);
@@ -48,6 +49,10 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener {
         physicalRadio.setChecked(true);
         default_radioButton_id_today = physicalRadio.getId();
         checkedId = radioGroup.getCheckedRadioButtonId();
+        bettingGoldTodayet = (EditText) findViewById(R.id.bettingGoldToday);
+        bettinggold = goalDataSet.getTotalGold()/2;
+        //bettinggold = (Integer.parseInt(bettingGoldTodayet.getText().toString())) / 2;
+        bettingGoldTodayet.setText(""+bettinggold);
 
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -87,6 +92,10 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener {
             case R.id.todayDialogConfirmButton:
                 Log.e("test", "" + checkedId);
                 try {
+                    if (Integer.parseInt(bettingGoldTodayet.getText().toString()) > bettinggold) {
+                        Toast.makeText(getContext(), "배팅액은 총 보유 골드의 절반을 넘을 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    } else {
+
                     int textAmount = Integer.parseInt(editTextAmonut.getText().toString());
                     textContents = editTextContents.getText().toString();
 
@@ -122,7 +131,12 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener {
                     Log.e("data", goalDataSet.getTodayGoal());
                     Log.e("data", "" + goalDataSet.isTodayGoal);
 
-                    dismiss();
+                        goalDataSet.setBettingGoldToday(Integer.parseInt(bettingGoldTodayet.getText().toString()));
+                        dismiss();
+                    }
+
+
+                    //dismiss();
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "값을 모두 입력하세요.", Toast.LENGTH_SHORT).show();
                 }

@@ -69,6 +69,7 @@ public class TodayGoalDoingActivity extends Activity {
                 isAmount = false;
             }
 
+
             blackboardtv = (TextView) findViewById(R.id.doing_goalAmount_today);
             doingGoalTodaytv = (TextView) findViewById(R.id.doing_goal_today);
             doingGoalTodaytv.setText("오늘의 목표 : " + goalDataSet.getTodayGoal());

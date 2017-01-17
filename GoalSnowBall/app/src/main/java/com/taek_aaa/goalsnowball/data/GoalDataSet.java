@@ -5,6 +5,9 @@ package com.taek_aaa.goalsnowball.data;
  */
 
 public class GoalDataSet {
+
+    private int totalGold;
+
     private String todayGoal;
     public boolean isTodayGoal = false;
     private String typeToday;
@@ -12,6 +15,7 @@ public class GoalDataSet {
     private int unitToday;
     private int currentAmountToday;
     private int currentMinuteToday;
+    private int bettingGoldToday;
 
 
     private String weekGoal;
@@ -21,7 +25,7 @@ public class GoalDataSet {
     private int unitWeek;
     private int currentAmountWeek=0;
     private int currentMinuteWeek;
-
+    private int bettingGoldWeek;
 
     private String monthGoal;
     public boolean isMonthGoal = false;
@@ -30,6 +34,7 @@ public class GoalDataSet {
     private int unitMonth;
     private int currentAmountMonth;
     private int currentMinuteMonth;
+    private int bettingGoldMonth;
 
 
     public void setTodayGoal(String str) {
@@ -104,6 +109,11 @@ public class GoalDataSet {
         this.currentMinuteMonth = cm;
     }
 
+    public void setTotalGold(int gold){this.totalGold = gold;}
+    public void setBettingGoldToday(int gold){this.bettingGoldToday = gold;}
+    public void setBettingGoldWeek(int gold){this.bettingGoldWeek = gold;}
+    public void setBettingGoldMont(int gold){this.bettingGoldMonth = gold;}
+
 
     public String getTodayGoal() {
         return this.todayGoal;
@@ -164,5 +174,13 @@ public class GoalDataSet {
     public int getCurrentMinuteWeek(){return this.currentMinuteWeek;}
 
     public int getCurrentMinuteMonth(){return this.currentMinuteMonth;}
+
+    public int getBettingGoldToday(){return this.bettingGoldToday;}
+
+    public int getBettingGoldWeek(){return this.bettingGoldWeek;}
+
+    public int getBettingGoldMonth(){return this.bettingGoldMonth;}
+
+    public int getTotalGold(){return  this.totalGold;}
 
 }

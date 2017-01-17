@@ -42,8 +42,4 @@ public class PictureController {      //최신폰은 버그로 exif 제대로 �
         }
         return bitmap;
     }
-
-
-
-
 }
