@@ -13,10 +13,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryPhysicalArrays;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryTimeArrays;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
+import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.SUCCESS_FROM_TODAY;
+import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.whereSuccess;
 
 /**
  * Created by taek_aaa on 2017. 1. 15..
@@ -38,6 +41,7 @@ public class TodayGoalDoingActivity extends Activity {
     Handler handler = new Handler();
     TextView blackboardtv, timeOfCurrenttv, successGetGoldtv;
     static int tmpAmount;
+    SuccessDialog successDialog;
 
 
     @Override
@@ -69,8 +73,9 @@ public class TodayGoalDoingActivity extends Activity {
                 isAmount = false;
             }
 
-            successGetGoldtv = (TextView)findViewById(R.id.successGetGoldtv);
-            successGetGoldtv.setText("성공시 획득 골드 : "+""+goalDataSet.getBettingGoldToday()+"Gold");
+
+            successGetGoldtv = (TextView) findViewById(R.id.successGetGoldtv);
+            successGetGoldtv.setText("성공시 획득 골드 : " + "" + goalDataSet.getBettingGoldToday() + "Gold");
             blackboardtv = (TextView) findViewById(R.id.doing_goalAmount_today);
             doingGoalTodaytv = (TextView) findViewById(R.id.doing_goal_today);
             doingGoalTodaytv.setText("오늘의 목표 : " + goalDataSet.getTodayGoal());
@@ -82,6 +87,8 @@ public class TodayGoalDoingActivity extends Activity {
                 blackboardtv.setText("목표량 : " + goalDataSet.getAmountToday() + "분 " + categoryTimeArrays[goalDataSet.getUnitToday()]);
             }
             tmpAmount = goalDataSet.getCurrentAmountToday();
+
+
         } catch (Exception e) {
             /** 목표 설정 안되어 있을 때 **/
             Toast.makeText(this, "오늘의 목표를 먼저 설정하세요.", Toast.LENGTH_SHORT).show();
@@ -126,6 +133,22 @@ public class TodayGoalDoingActivity extends Activity {
      **/
     public void onClickSaveBtnGoal(View v) {
         saveCurrentAmountToEditText();
+        Log.e("qq", "" + goalDataSet.getUnitToday());
+        Log.e("qq", "" + goalDataSet.getCurrentMinuteToday());
+        Log.e("qq", "" + goalDataSet.getAmountToday());
+
+        //물리적양일 경우임 저장버튼이 있는경우는 물리적 양일때만이기때문
+        //물리적양 일때 성공하면
+        if (goalDataSet.getAmountToday() == goalDataSet.getCurrentAmountToday()) {
+            whereSuccess=SUCCESS_FROM_TODAY;
+            int a = (goalDataSet.getBettingGoldToday()) + (goalDataSet.getTotalGold());
+            goalDataSet.setTotalGold(a);
+
+            successDialog = new SuccessDialog(this);
+            successDialog.show();
+
+          //  goalDataSet.setBettingGoldToday(0);
+        }
 
     }
 
@@ -195,6 +218,19 @@ public class TodayGoalDoingActivity extends Activity {
         Log.i("test", "찍힘");
 
         Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
+
+        if((goalDataSet.getUnitToday()==0) && (goalDataSet.getCurrentMinuteToday()>=goalDataSet.getAmountToday())){  //이상이고 성공하면
+            whereSuccess=SUCCESS_FROM_TODAY;
+
+            int a = (goalDataSet.getBettingGoldToday()) + (goalDataSet.getTotalGold());
+            goalDataSet.setTotalGold(a);
+
+            successDialog = new SuccessDialog(this);
+            successDialog.show();
+
+        }else{  //이하        나중에 이상이고 실패할때도 else if로 처리하기
+
+        }
     }
 
 

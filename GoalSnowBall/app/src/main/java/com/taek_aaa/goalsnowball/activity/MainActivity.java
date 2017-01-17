@@ -24,11 +24,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.controller.PictureController;
 import com.taek_aaa.goalsnowball.data.DBData;
 import com.taek_aaa.goalsnowball.data.GoalDataSet;
 import com.taek_aaa.goalsnowball.dialog.MonthGoalDialog;
-import com.taek_aaa.goalsnowball.PictureController;
-import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.dialog.TodayGoalDialog;
 import com.taek_aaa.goalsnowball.dialog.WeekGoalDialog;
 
@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static String[] dayOfWeekArray = {"","일","월","화","수","목","금","토"};
     public static int[] endOfMonth={31,28,31,30,31,30,31,31,30,31,30,31};
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,9 +80,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mainGoldtv = (TextView)findViewById(R.id.mainGoldtv);
         mainGoldtv.setText(""+goalDataSet.getTotalGold()+"Gold");
 
+
         drawDDay();
         drawMainImage();
         drawGoal();
+
+
+    }
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        mainGoldtv.setText(""+goalDataSet.getTotalGold()+"Gold");
     }
     /** 뒤로가기 눌렀을 때 **/
     @Override

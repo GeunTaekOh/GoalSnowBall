@@ -126,6 +126,7 @@ public class MonthGoalDoingActivity extends Activity {
      **/
     public void onClickSaveBtnGoal(View v) {
         saveCurrentAmountToEditText();
+        finish();
 
     }
 

@@ -1,4 +1,4 @@
-package com.taek_aaa.goalsnowball;
+package com.taek_aaa.goalsnowball.controller;
 
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
