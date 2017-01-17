@@ -18,13 +18,12 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/doing_current_time_today"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
                 android:layout_gravity="center"
-                android:text="수행 시간 : "
-                android:id="@+id/doing_current_time_today"
-                />
+                android:layout_margin="10dp"
+                android:text="수행 시간 : " />
 
 
             <TextView
@@ -34,8 +33,14 @@
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:text="오늘의 목표 : "
-                android:textSize="27dp"
-                />
+                android:textSize="27dp" />
+
+            <TextView
+                android:id="@+id/successGetGoldtv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="성공시 획득 골드 : " />
 
 
         </LinearLayout>
@@ -63,8 +68,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textStyle="bold"
                 android:textColor="#ffffff"
+                android:textStyle="bold"
 
                 />
 

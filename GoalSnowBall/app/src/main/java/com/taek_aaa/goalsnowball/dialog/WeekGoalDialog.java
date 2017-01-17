@@ -22,7 +22,7 @@ import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
  */
 
 public class WeekGoalDialog extends Dialog implements View.OnClickListener {
-    EditText editTextContents, editTextAmonut;
+    EditText editTextContents, editTextAmonut, bettingGoldWeeket;
     String textContents;
     TextView title;
     RadioGroup radioGroup;
@@ -30,6 +30,7 @@ public class WeekGoalDialog extends Dialog implements View.OnClickListener {
     RadioButton timeRadio, physicalRadio;
     int checkedId;
     int default_radioButton_id_week;
+    int bettinggold;
 
     public WeekGoalDialog(Context context) {
         super(context);
@@ -48,7 +49,9 @@ public class WeekGoalDialog extends Dialog implements View.OnClickListener {
         physicalRadio.setChecked(true);
         default_radioButton_id_week = physicalRadio.getId();
         checkedId = radioGroup.getCheckedRadioButtonId();
-
+        bettingGoldWeeket = (EditText) findViewById(R.id.bettingGoldWeek);
+        bettinggold = goalDataSet.getTotalGold();
+        bettingGoldWeeket.setText(""+bettinggold);
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -87,40 +90,46 @@ public class WeekGoalDialog extends Dialog implements View.OnClickListener {
             case R.id.weekDialogConfirmButton:
                 Log.e("test", "" + checkedId);
                 try {
-                    int textAmount = Integer.parseInt(editTextAmonut.getText().toString());
-
-                    textContents = editTextContents.getText().toString();
-
-                    if (physicalRadio.isChecked()) {
-                        goalDataSet.setTypeWeek("물리적양");
-                        Log.e("tt", "" + physicalRadio.getId());
+                    if (Integer.parseInt(bettingGoldWeeket.getText().toString()) > bettinggold) {
+                        Toast.makeText(getContext(), "배팅액은 총 보유 골드량을 넘을 수 없습니다.", Toast.LENGTH_SHORT).show();
                     } else {
-                        goalDataSet.setTypeWeek("시간적양");
-                        Log.e("tt", "" + timeRadio.getId());
-                    }
+
+                        int textAmount = Integer.parseInt(editTextAmonut.getText().toString());
+
+                        textContents = editTextContents.getText().toString();
+
+                        if (physicalRadio.isChecked()) {
+                            goalDataSet.setTypeWeek("물리적양");
+                            Log.e("tt", "" + physicalRadio.getId());
+                        } else {
+                            goalDataSet.setTypeWeek("시간적양");
+                            Log.e("tt", "" + timeRadio.getId());
+                        }
                 /*if(textContents.equals("")){
                     goalDataSet.isweekGoal=false;
                 }*/
 
-                    goalDataSet.setAmountWeek(textAmount);
-                    goalDataSet.setWeekGoal(textContents);
-                    Log.e("test", goalDataSet.getWeekGoal());
-                    Log.e("test", "" + goalDataSet.isWeekGoal);
+                        goalDataSet.setAmountWeek(textAmount);
+                        goalDataSet.setWeekGoal(textContents);
+                        Log.e("test", goalDataSet.getWeekGoal());
+                        Log.e("test", "" + goalDataSet.isWeekGoal);
 
 
-                    if (goalDataSet.isWeekGoal == true) {
-                        title.setText("이번주의 목표를 수정하세요.");
-                        editTextContents.setHint("목표를 수정하세요.");
-                    } else {
-                        title.setText("이번주의 목표를 추가하세요.");
-                        editTextContents.setHint("목표를 추가하세요.");
+                        if (goalDataSet.isWeekGoal == true) {
+                            title.setText("이번주의 목표를 수정하세요.");
+                            editTextContents.setHint("목표를 수정하세요.");
+                        } else {
+                            title.setText("이번주의 목표를 추가하세요.");
+                            editTextContents.setHint("목표를 추가하세요.");
+                        }
+                        Log.e("data", goalDataSet.getTypeWeek());
+                        Log.e("data", "" + goalDataSet.getAmountWeek());
+                        Log.e("data", "" + goalDataSet.getUnitWeek());
+                        Log.e("data", goalDataSet.getWeekGoal());
+                        Log.e("data", "" + goalDataSet.isWeekGoal);
+                        goalDataSet.setBettingGoldToday(Integer.parseInt(bettingGoldWeeket.getText().toString()));
+                        dismiss();
                     }
-                    Log.e("data", goalDataSet.getTypeWeek());
-                    Log.e("data", "" + goalDataSet.getAmountWeek());
-                    Log.e("data", "" + goalDataSet.getUnitWeek());
-                    Log.e("data", goalDataSet.getWeekGoal());
-                    Log.e("data", "" + goalDataSet.isWeekGoal);
-                    dismiss();
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "값을 모두 입력하세요.", Toast.LENGTH_SHORT).show();
                 }

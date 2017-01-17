@@ -28,6 +28,13 @@
                 android:text="오늘의 목표 : "
                 android:textSize="27dp"
                 />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/successGetGoldtv"
+                android:layout_gravity="center"
+                android:text="성공시 획득 골드 : "
+                />
 
 
 

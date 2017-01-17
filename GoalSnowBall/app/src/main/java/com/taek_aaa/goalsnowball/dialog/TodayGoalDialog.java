@@ -50,9 +50,8 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener {
         default_radioButton_id_today = physicalRadio.getId();
         checkedId = radioGroup.getCheckedRadioButtonId();
         bettingGoldTodayet = (EditText) findViewById(R.id.bettingGoldToday);
-        bettinggold = goalDataSet.getTotalGold()/2;
-        //bettinggold = (Integer.parseInt(bettingGoldTodayet.getText().toString())) / 2;
-        bettingGoldTodayet.setText(""+bettinggold);
+        bettinggold = goalDataSet.getTotalGold() / 2;
+        bettingGoldTodayet.setText("" + bettinggold);
 
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -96,40 +95,40 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener {
                         Toast.makeText(getContext(), "배팅액은 총 보유 골드의 절반을 넘을 수 없습니다.", Toast.LENGTH_SHORT).show();
                     } else {
 
-                    int textAmount = Integer.parseInt(editTextAmonut.getText().toString());
-                    textContents = editTextContents.getText().toString();
+                        int textAmount = Integer.parseInt(editTextAmonut.getText().toString());
+                        textContents = editTextContents.getText().toString();
 
-                    if (physicalRadio.isChecked()) {
-                        goalDataSet.setTypeToday("물리적양");
-                        Log.e("tt", "" + physicalRadio.getId());
-                    } else {
-                        goalDataSet.setTypeToday("시간적양");
-                        Log.e("tt", "" + timeRadio.getId());
-                    }
+                        if (physicalRadio.isChecked()) {
+                            goalDataSet.setTypeToday("물리적양");
+                            Log.e("tt", "" + physicalRadio.getId());
+                        } else {
+                            goalDataSet.setTypeToday("시간적양");
+                            Log.e("tt", "" + timeRadio.getId());
+                        }
                 /*if(textContents.equals("")){
                     goalDataSet.isTodayGoal=false;
                 }*/
 
-                    goalDataSet.setAmountToday(textAmount);
-                    goalDataSet.setTodayGoal(textContents);
+                        goalDataSet.setAmountToday(textAmount);
+                        goalDataSet.setTodayGoal(textContents);
 
 
-                    Log.e("test", goalDataSet.getTodayGoal());
-                    Log.e("test", "" + goalDataSet.isTodayGoal);
+                        Log.e("test", goalDataSet.getTodayGoal());
+                        Log.e("test", "" + goalDataSet.isTodayGoal);
 
 
-                    if (goalDataSet.isTodayGoal == true) {
-                        title.setText("오늘의 목표를 수정하세요.");
-                        editTextContents.setHint("목표를 수정하세요.");
-                    } else {
-                        title.setText("오늘의 목표를 추가하세요.");
-                        editTextContents.setHint("목표를 추가하세요.");
-                    }
-                    Log.e("data", goalDataSet.getTypeToday());
-                    Log.e("data", "" + goalDataSet.getAmountToday());
-                    Log.e("data", "" + goalDataSet.getUnitToday());
-                    Log.e("data", goalDataSet.getTodayGoal());
-                    Log.e("data", "" + goalDataSet.isTodayGoal);
+                        if (goalDataSet.isTodayGoal == true) {
+                            title.setText("오늘의 목표를 수정하세요.");
+                            editTextContents.setHint("목표를 수정하세요.");
+                        } else {
+                            title.setText("오늘의 목표를 추가하세요.");
+                            editTextContents.setHint("목표를 추가하세요.");
+                        }
+                        Log.e("data", goalDataSet.getTypeToday());
+                        Log.e("data", "" + goalDataSet.getAmountToday());
+                        Log.e("data", "" + goalDataSet.getUnitToday());
+                        Log.e("data", goalDataSet.getTodayGoal());
+                        Log.e("data", "" + goalDataSet.isTodayGoal);
 
                         goalDataSet.setBettingGoldToday(Integer.parseInt(bettingGoldTodayet.getText().toString()));
                         dismiss();

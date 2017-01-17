@@ -117,7 +117,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="90dp"
                     android:text="10G"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:id="@+id/mainGoldtv"
+                    />
 
 
             </LinearLayout>

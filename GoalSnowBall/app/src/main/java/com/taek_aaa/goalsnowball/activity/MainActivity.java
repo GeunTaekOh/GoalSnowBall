@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ImageView imageView;
     int viewHeight = 3336;        //원하는 뷰의 높이
     Boolean isPicture = false;
-    TextView todaytv, weektv, monthtv, dDayWeektv, dDayMonthtv;
+    TextView todaytv, weektv, monthtv, dDayWeektv, dDayMonthtv, mainGoldtv;
     public static GoalDataSet goalDataSet;
     public static LinkedList<DBData> llDBData = new LinkedList<DBData>();
     TodayGoalDialog todayGoalDialog;
@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         goalDataSet.setCurrentAmountToday(0);   //나중에 디비로구현하면 삭제하기
         goalDataSet.setCurrentMinuteToday(0);   //나중에 디비로구현하면 삭제하기
         goalDataSet.setTotalGold(10);
+        mainGoldtv = (TextView)findViewById(R.id.mainGoldtv);
+        mainGoldtv.setText(""+goalDataSet.getTotalGold()+"Gold");
 
         drawDDay();
         drawMainImage();

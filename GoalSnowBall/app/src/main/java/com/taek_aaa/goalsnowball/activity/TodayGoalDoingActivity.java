@@ -36,7 +36,7 @@ public class TodayGoalDoingActivity extends Activity {
     int mins = 0;
     int hours = 0;
     Handler handler = new Handler();
-    TextView blackboardtv, timeOfCurrenttv;
+    TextView blackboardtv, timeOfCurrenttv, successGetGoldtv;
     static int tmpAmount;
 
 
@@ -69,7 +69,8 @@ public class TodayGoalDoingActivity extends Activity {
                 isAmount = false;
             }
 
-
+            successGetGoldtv = (TextView)findViewById(R.id.successGetGoldtv);
+            successGetGoldtv.setText("성공시 획득 골드 : "+""+goalDataSet.getBettingGoldToday()+"Gold");
             blackboardtv = (TextView) findViewById(R.id.doing_goalAmount_today);
             doingGoalTodaytv = (TextView) findViewById(R.id.doing_goal_today);
             doingGoalTodaytv.setText("오늘의 목표 : " + goalDataSet.getTodayGoal());

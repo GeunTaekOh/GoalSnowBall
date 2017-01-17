@@ -22,7 +22,7 @@ import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
  */
 
 public class MonthGoalDialog extends Dialog implements View.OnClickListener {
-    EditText editTextContents, editTextAmonut;
+    EditText editTextContents, editTextAmonut, bettingGoldMonthet;
     String textContents;
     TextView title;
     RadioGroup radioGroup;
@@ -30,6 +30,8 @@ public class MonthGoalDialog extends Dialog implements View.OnClickListener {
     RadioButton timeRadio, physicalRadio;
     int checkedId;
     int dafault_radioButton_id_month;
+    int bettinggold;
+
 
     public MonthGoalDialog(Context context) {
         super(context);
@@ -48,6 +50,9 @@ public class MonthGoalDialog extends Dialog implements View.OnClickListener {
         physicalRadio.setChecked(true);
         dafault_radioButton_id_month = physicalRadio.getId();
         checkedId = radioGroup.getCheckedRadioButtonId();
+        bettingGoldMonthet = (EditText) findViewById(R.id.bettingGoldMonth);
+        bettinggold = goalDataSet.getTotalGold() * 2;
+        bettingGoldMonthet.setText("" + bettinggold);
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -86,40 +91,45 @@ public class MonthGoalDialog extends Dialog implements View.OnClickListener {
             case R.id.monthDialogConfirmButton:
                 Log.e("test", "" + checkedId);
                 try {
-                    int textAmount = Integer.parseInt(editTextAmonut.getText().toString());
-                    textContents = editTextContents.getText().toString();
-
-                    if (physicalRadio.isChecked()) {
-                        goalDataSet.setTypeMonth("물리적양");
-                        Log.e("tt", "" + physicalRadio.getId());
+                    if (Integer.parseInt(bettingGoldMonthet.getText().toString()) > bettinggold) {
+                        Toast.makeText(getContext(), "배팅액은 총 보유 골드의 2배를 넘을 수 없습니다.", Toast.LENGTH_SHORT).show();
                     } else {
-                        goalDataSet.setTypeMonth("시간적양");
-                        Log.e("tt", "" + timeRadio.getId());
-                    }
+                        int textAmount = Integer.parseInt(editTextAmonut.getText().toString());
+                        textContents = editTextContents.getText().toString();
+
+                        if (physicalRadio.isChecked()) {
+                            goalDataSet.setTypeMonth("물리적양");
+                            Log.e("tt", "" + physicalRadio.getId());
+                        } else {
+                            goalDataSet.setTypeMonth("시간적양");
+                            Log.e("tt", "" + timeRadio.getId());
+                        }
                 /*if(textContents.equals("")){
                     goalDataSet.isMonthGoal=false;
                 }*/
 
-                    goalDataSet.setAmountMonth(textAmount);
-                    goalDataSet.setMonthGoal(textContents);
+                        goalDataSet.setAmountMonth(textAmount);
+                        goalDataSet.setMonthGoal(textContents);
 
-                    Log.e("test", goalDataSet.getMonthGoal());
-                    Log.e("test", "" + goalDataSet.isMonthGoal);
+                        Log.e("test", goalDataSet.getMonthGoal());
+                        Log.e("test", "" + goalDataSet.isMonthGoal);
 
 
-                    if (goalDataSet.isMonthGoal == true) {
-                        title.setText("이번달의 목표를 수정하세요.");
-                        editTextContents.setHint("목표를 수정하세요.");
-                    } else {
-                        title.setText("이번달의 목표를 추가하세요.");
-                        editTextContents.setHint("목표를 추가하세요.");
+                        if (goalDataSet.isMonthGoal == true) {
+                            title.setText("이번달의 목표를 수정하세요.");
+                            editTextContents.setHint("목표를 수정하세요.");
+                        } else {
+                            title.setText("이번달의 목표를 추가하세요.");
+                            editTextContents.setHint("목표를 추가하세요.");
+                        }
+                        Log.e("data", goalDataSet.getTypeMonth());
+                        Log.e("data", "" + goalDataSet.getAmountMonth());
+                        Log.e("data", "" + goalDataSet.getUnitMonth());
+                        Log.e("data", goalDataSet.getMonthGoal());
+                        Log.e("data", "" + goalDataSet.isMonthGoal);
+                        goalDataSet.setBettingGoldToday(Integer.parseInt(bettingGoldMonthet.getText().toString()));
+                        dismiss();
                     }
-                    Log.e("data", goalDataSet.getTypeMonth());
-                    Log.e("data", "" + goalDataSet.getAmountMonth());
-                    Log.e("data", "" + goalDataSet.getUnitMonth());
-                    Log.e("data", goalDataSet.getMonthGoal());
-                    Log.e("data", "" + goalDataSet.isMonthGoal);
-                    dismiss();
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "값을 모두 입력하세요.", Toast.LENGTH_SHORT).show();
                 }
