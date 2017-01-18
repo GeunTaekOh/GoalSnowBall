@@ -17,6 +17,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -81,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         pictureController = new PictureController();
 
         init();     //나중에 디비로 구현하면 여기서 몇개 제외하기
+
+
         drawDDay();
         drawMainImage();
         drawGoal();
@@ -88,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawTodayPercent();
         drawWeekPercent();
         drawMonthPercent();
+        registerForContextMenu(imageView);
     }
 
     /**
@@ -162,23 +166,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    /**
-     * 이미지 뷰 클릭 했을 때
-     **/
-    public void onClickMainImage(View v) {
-        if (isPicture == false) {
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-            intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(intent, PICK_FROM_ALBUM);
-        } else {
-            Bitmap rotatedPicture;
-            rotatedPicture = pictureController.rotate(photo, 90);
-            photo = rotatedPicture;
-            imageView = (ImageView) findViewById(R.id.mainImageView);
-            imageView.setImageBitmap(rotatedPicture);
-        }
-    }
 
     /**
      * intent 결과 처리
@@ -197,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      **/
     protected void pictureSetToImageView(Intent data) {
         try {
-          //  PictureController pictureController = new PictureController();
+            //  PictureController pictureController = new PictureController();
             Uri uri = data.getData();
             String uriPath = uri.getPath();
             Log.e("test", uriPath);
@@ -208,14 +195,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ExifInterface exif = new ExifInterface(uriPath);
             int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
             int exifDegree = pictureController.exifOrientationToDegrees(exifOrientation);
-            Log.e("test", "" + exifOrientation);
-            Log.e("test", "" + exifDegree);
+
             rotatedPhoto = pictureController.rotate(photo, exifDegree);
-            Log.e("length",""+rotatedPhoto.getHeight());
-            Log.e("length",""+rotatedPhoto.getWidth());
+
             Bitmap sizedPhoto = pictureController.setSizedImage(rotatedPhoto);
-            Log.e("length",""+sizedPhoto.getHeight());
-            Log.e("length",""+sizedPhoto.getWidth());
+
             imageView = (ImageView) findViewById(R.id.mainImageView);
             imageView.setImageBitmap(sizedPhoto);
             Toast.makeText(getBaseContext(), "사진을 입력하였습니다.", Toast.LENGTH_SHORT).show();
@@ -323,8 +307,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         imageView = (ImageView) findViewById(R.id.mainImageView);
         BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.profile);
         Bitmap bitmapDefault = drawable.getBitmap();
-        Log.e("length",""+bitmapDefault.getHeight());
-        Log.e("length",""+bitmapDefault.getWidth());
+        Log.e("length", "" + bitmapDefault.getHeight());
+        Log.e("length", "" + bitmapDefault.getWidth());
         Bitmap sizedBitmapDefault = pictureController.setSizedImage(bitmapDefault);
 
         defaultHeight = sizedBitmapDefault.getHeight();
@@ -473,14 +457,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         result = (double) current / (double) goal * 100;
         result = Double.parseDouble(String.format("%.1f", result));
-        if(result==100.0){
+        if (result == 100.0) {
             percentToday.setText("" + result + "%");
             percentToday.setTextColor(Color.GREEN);
             /*soundPoolMain = new SoundPool(1, STREAM_MUSIC, 0);
             tuneMain = soundPoolMain.load(this, R.raw.coin, 1);
             soundPoolMain.play(tuneMain, 1, 1, 0, 0, 1);*/
 
-        }else{
+        } else {
             percentToday.setText("" + result + "%");
         }
 
@@ -500,13 +484,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         result = (double) current / (double) goal * 100;
         result = Double.parseDouble(String.format("%.1f", result));
-        if(result==100.0){
+        if (result == 100.0) {
             percentWeek.setText("" + result + "%");
             percentWeek.setTextColor(Color.GREEN);
             /*soundPoolMain = new SoundPool(1, STREAM_MUSIC, 0);
             tuneMain = soundPoolMain.load(this, R.raw.coin, 1);
             soundPoolMain.play(tuneMain, 1, 1, 0, 0, 1);*/
-        }else{
+        } else {
             percentWeek.setText("" + result + "%");
         }
     }
@@ -525,14 +509,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         result = (double) current / (double) goal * 100;
         result = Double.parseDouble(String.format("%.1f", result));
-        if(result==100.0){
+        if (result == 100.0) {
             percentMonth.setText("" + result + "%");
             percentMonth.setTextColor(Color.GREEN);
             /*soundPoolMain = new SoundPool(1, STREAM_MUSIC, 0);
             tuneMain = soundPoolMain.load(this, R.raw.coin, 1);
             soundPoolMain.play(tuneMain, 1, 1, 0, 0, 1);*/
 
-        }else{
+        } else {
             percentMonth.setText("" + result + "%");
         }
     }
@@ -550,6 +534,50 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         percentToday = (TextView) findViewById(R.id.percentToday);
         percentWeek = (TextView) findViewById(R.id.percentWeek);
         percentMonth = (TextView) findViewById(R.id.percentMonth);
+
+    }
+
+
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        // 컨텍스트 메뉴가 최초로 한번만 호출되는 콜백 메서드
+
+        menu.setHeaderTitle("어떤 작업을 수행하시겠습니까?");
+
+        String[] currencyUnit = {"사진 추가/수정", "사진 회전"};
+
+        for (int i = 1; i <= 2; i++) {
+            menu.add(0, i, 100, currencyUnit[i - 1]);
+        }
+    }
+
+    public boolean onContextItemSelected(MenuItem item) {
+        // 롱클릭했을 때 나오는 context Menu 의 항목을 선택(클릭) 했을 때 호출
+
+        switch (item.getItemId()) {
+            case 1:// 사진추가
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, PICK_FROM_ALBUM);
+
+                return true;
+
+            case 2:// 사진 회전
+                if(isPicture==true) {
+                    Bitmap rotatedPicture;
+                    rotatedPicture = pictureController.rotate(photo, 90);
+                    photo = rotatedPicture;
+                    imageView = (ImageView) findViewById(R.id.mainImageView);
+                    imageView.setImageBitmap(rotatedPicture);
+                    return true;
+                }else{
+                    Toast.makeText(this, "기본 이미지는 회전을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+        }
+
+        return super.onContextItemSelected(item);
     }
 
 }
