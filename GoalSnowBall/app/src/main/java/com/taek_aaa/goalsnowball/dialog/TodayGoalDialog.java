@@ -36,23 +36,7 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener {
         super(context);
         setContentView(R.layout.dialog_todaygoal);
 
-        editTextContents = (EditText) findViewById(R.id.todayDialogEditText);
-        findViewById(R.id.todayDialogConfirmButton).setOnClickListener(this);
-        findViewById(R.id.todayDialogExitButton).setOnClickListener(this);
-        findViewById(R.id.todayDialogX).setOnClickListener(this);
-        title = (TextView) findViewById(R.id.title_today_dialog);
-        radioGroup = (RadioGroup) findViewById(R.id.radioGroup_today);
-        spinner = (Spinner) findViewById(R.id.today_spinner);
-        editTextAmonut = (EditText) findViewById(R.id.setting_amount_today);
-        physicalRadio = (RadioButton) findViewById(R.id.amountOfPhysical_today);
-        timeRadio = (RadioButton) findViewById(R.id.amountOfTime_today);
-        physicalRadio.setChecked(true);
-        default_radioButton_id_today = physicalRadio.getId();
-        checkedId = radioGroup.getCheckedRadioButtonId();
-        bettingGoldTodayet = (EditText) findViewById(R.id.bettingGoldToday);
-        bettinggold = goalDataSet.getTotalGold() / 2;
-        bettingGoldTodayet.setText("" + bettinggold);
-
+        init();
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -100,6 +84,9 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener {
 
                         int textAmount = Integer.parseInt(editTextAmonut.getText().toString());
                         textContents = editTextContents.getText().toString();
+                        if(textContents.equals("")){
+                            throw new Exception();
+                        }
 
                         if (physicalRadio.isChecked()) {
                             goalDataSet.setTypeToday("물리적양");
@@ -108,9 +95,6 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener {
                             goalDataSet.setTypeToday("시간적양");
                             Log.e("tt", "" + timeRadio.getId());
                         }
-                /*if(textContents.equals("")){
-                    goalDataSet.isTodayGoal=false;
-                }*/
 
                         goalDataSet.setAmountToday(textAmount);
                         goalDataSet.setTodayGoal(textContents);
@@ -136,8 +120,6 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener {
                         goalDataSet.setBettingGoldToday(Integer.parseInt(bettingGoldTodayet.getText().toString()));
                         dismiss();
                     }
-
-
                     //dismiss();
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "값을 모두 입력하세요.", Toast.LENGTH_SHORT).show();
@@ -151,5 +133,24 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener {
                 dismiss();
                 break;
         }
+    }
+
+    public void init() {
+        editTextContents = (EditText) findViewById(R.id.todayDialogEditText);
+        findViewById(R.id.todayDialogConfirmButton).setOnClickListener(this);
+        findViewById(R.id.todayDialogExitButton).setOnClickListener(this);
+        findViewById(R.id.todayDialogX).setOnClickListener(this);
+        title = (TextView) findViewById(R.id.title_today_dialog);
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup_today);
+        spinner = (Spinner) findViewById(R.id.today_spinner);
+        editTextAmonut = (EditText) findViewById(R.id.setting_amount_today);
+        physicalRadio = (RadioButton) findViewById(R.id.amountOfPhysical_today);
+        timeRadio = (RadioButton) findViewById(R.id.amountOfTime_today);
+        physicalRadio.setChecked(true);
+        default_radioButton_id_today = physicalRadio.getId();
+        checkedId = radioGroup.getCheckedRadioButtonId();
+        bettingGoldTodayet = (EditText) findViewById(R.id.bettingGoldToday);
+        bettinggold = goalDataSet.getTotalGold() / 2;
+        bettingGoldTodayet.setText("" + bettinggold);
     }
 }

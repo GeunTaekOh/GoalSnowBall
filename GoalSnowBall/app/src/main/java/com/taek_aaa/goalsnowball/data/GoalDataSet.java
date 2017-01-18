@@ -17,7 +17,6 @@ public class GoalDataSet {
     private int currentMinuteToday;
     private int bettingGoldToday;
 
-
     private String weekGoal;
     public boolean isWeekGoal = false;
     private String typeWeek;

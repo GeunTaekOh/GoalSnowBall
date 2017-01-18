@@ -47,7 +47,6 @@ public class TodayGoalDoingActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         try {
             /** 물리적 양 일때 **/
             if (goalDataSet.getTypeToday().equals("물리적양")) {
@@ -61,7 +60,7 @@ public class TodayGoalDoingActivity extends Activity {
                         amountOfEdit.setText("" + goalDataSet.getCurrentAmountToday());
                     }
                 });
-            } else {
+            } else if (goalDataSet.getTypeToday().equals("시간적양")) {
                 /** 시간적 양 일때 **/
                 setContentView(R.layout.activity_today_goal_time_doing);
                 Log.e("aa", "시간적양");
@@ -72,8 +71,6 @@ public class TodayGoalDoingActivity extends Activity {
                 timeOfCurrenttv.setText("수행 시간 : " + goalDataSet.getCurrentMinuteToday() + "분");
                 isAmount = false;
             }
-
-
             successGetGoldtv = (TextView) findViewById(R.id.successGetGoldtv);
             successGetGoldtv.setText("성공시 획득 골드 : " + "" + goalDataSet.getBettingGoldToday() + "Gold");
             blackboardtv = (TextView) findViewById(R.id.doing_goalAmount_today);
@@ -87,8 +84,6 @@ public class TodayGoalDoingActivity extends Activity {
                 blackboardtv.setText("목표량 : " + goalDataSet.getAmountToday() + "분 " + categoryTimeArrays[goalDataSet.getUnitToday()]);
             }
             tmpAmount = goalDataSet.getCurrentAmountToday();
-
-
         } catch (Exception e) {
             /** 목표 설정 안되어 있을 때 **/
             Toast.makeText(this, "오늘의 목표를 먼저 설정하세요.", Toast.LENGTH_SHORT).show();
@@ -102,9 +97,10 @@ public class TodayGoalDoingActivity extends Activity {
      * 수행량 저장하는 함수
      **/
     public void saveCurrentAmountToEditText() {
-
         goalDataSet.setCurrentAmountToday(Integer.parseInt(amountOfEdit.getText().toString()));
-        Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
+        if (goalDataSet.getCurrentAmountToday() < goalDataSet.getAmountToday()) {
+            Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -138,7 +134,6 @@ public class TodayGoalDoingActivity extends Activity {
         Log.e("qq", "" + goalDataSet.getUnitToday());
         Log.e("qq", "" + goalDataSet.getCurrentMinuteToday());
         Log.e("qq", "" + goalDataSet.getAmountToday());
-
         //물리적양일 경우임 저장버튼이 있는경우는 물리적 양일때만이기때문
         //물리적양 일때 성공하면
         if (goalDataSet.getAmountToday() <= goalDataSet.getCurrentAmountToday()) {
@@ -148,11 +143,9 @@ public class TodayGoalDoingActivity extends Activity {
 
             successDialog = new SuccessDialog(this);
             successDialog.show();
-
         }
 
     }
-
 
     /**
      * 타이머 start 버튼 클릭 시
@@ -202,7 +195,6 @@ public class TodayGoalDoingActivity extends Activity {
         goalDataSet.setCurrentMinuteToday(temp);
         timeOfCurrenttv.setText("수행 시간 : " + goalDataSet.getCurrentMinuteToday() + "분");
 
-        Log.i("test", String.valueOf(howlongtime));
         Button startbtn = (Button) findViewById(R.id.timerStartbtn);
         starttime = 0L;
         timeInMilliseconds = 0L;
@@ -216,9 +208,9 @@ public class TodayGoalDoingActivity extends Activity {
         startbtn.setVisibility(View.VISIBLE);
         startbtn.setText("Start");
         isStartButtonClicked = true;
-        Log.i("test", "찍힘");
-
-        Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
+        if (goalDataSet.getCurrentMinuteToday() < goalDataSet.getAmountToday()) {
+            Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
+        }
 
         if ((goalDataSet.getUnitToday() == 0) && (goalDataSet.getCurrentMinuteToday() >= goalDataSet.getAmountToday())) {  //이상이고 성공하면
             whereSuccess = SUCCESS_FROM_TODAY;

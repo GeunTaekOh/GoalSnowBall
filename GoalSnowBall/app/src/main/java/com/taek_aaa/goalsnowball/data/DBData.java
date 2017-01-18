@@ -15,5 +15,4 @@ public class DBData {
     String todayGoal;
     String weekGoal;
     String monthGoal;
-
 }

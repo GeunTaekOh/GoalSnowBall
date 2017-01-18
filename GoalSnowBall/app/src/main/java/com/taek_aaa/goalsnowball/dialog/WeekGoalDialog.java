@@ -36,22 +36,7 @@ public class WeekGoalDialog extends Dialog implements View.OnClickListener {
         super(context);
         setContentView(R.layout.dialog_weekgoal);
 
-        editTextContents = (EditText) findViewById(R.id.weekDialogEditText);
-        findViewById(R.id.weekDialogConfirmButton).setOnClickListener(this);
-        findViewById(R.id.weekDialogExitButton).setOnClickListener(this);
-        findViewById(R.id.weekDialogX).setOnClickListener(this);
-        title = (TextView) findViewById(R.id.title_week_dialog);
-        radioGroup = (RadioGroup) findViewById(R.id.radioGroup_week);
-        spinner = (Spinner) findViewById(R.id.week_spinner);
-        editTextAmonut = (EditText) findViewById(R.id.setting_amount_week);
-        physicalRadio = (RadioButton) findViewById(R.id.amountOfPhysical_week);
-        timeRadio = (RadioButton) findViewById(R.id.amountOfTime_week);
-        physicalRadio.setChecked(true);
-        default_radioButton_id_week = physicalRadio.getId();
-        checkedId = radioGroup.getCheckedRadioButtonId();
-        bettingGoldWeeket = (EditText) findViewById(R.id.bettingGoldWeek);
-        bettinggold = goalDataSet.getTotalGold();
-        bettingGoldWeeket.setText(""+bettinggold);
+        init();
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -100,7 +85,9 @@ public class WeekGoalDialog extends Dialog implements View.OnClickListener {
                         int textAmount = Integer.parseInt(editTextAmonut.getText().toString());
 
                         textContents = editTextContents.getText().toString();
-
+                        if(textContents.equals("")){
+                            throw new Exception();
+                        }
                         if (physicalRadio.isChecked()) {
                             goalDataSet.setTypeWeek("물리적양");
                             Log.e("tt", "" + physicalRadio.getId());
@@ -108,9 +95,6 @@ public class WeekGoalDialog extends Dialog implements View.OnClickListener {
                             goalDataSet.setTypeWeek("시간적양");
                             Log.e("tt", "" + timeRadio.getId());
                         }
-                /*if(textContents.equals("")){
-                    goalDataSet.isweekGoal=false;
-                }*/
 
                         goalDataSet.setAmountWeek(textAmount);
                         goalDataSet.setWeekGoal(textContents);
@@ -145,5 +129,24 @@ public class WeekGoalDialog extends Dialog implements View.OnClickListener {
                 dismiss();
                 break;
         }
+    }
+
+    public void init() {
+        editTextContents = (EditText) findViewById(R.id.weekDialogEditText);
+        findViewById(R.id.weekDialogConfirmButton).setOnClickListener(this);
+        findViewById(R.id.weekDialogExitButton).setOnClickListener(this);
+        findViewById(R.id.weekDialogX).setOnClickListener(this);
+        title = (TextView) findViewById(R.id.title_week_dialog);
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup_week);
+        spinner = (Spinner) findViewById(R.id.week_spinner);
+        editTextAmonut = (EditText) findViewById(R.id.setting_amount_week);
+        physicalRadio = (RadioButton) findViewById(R.id.amountOfPhysical_week);
+        timeRadio = (RadioButton) findViewById(R.id.amountOfTime_week);
+        physicalRadio.setChecked(true);
+        default_radioButton_id_week = physicalRadio.getId();
+        checkedId = radioGroup.getCheckedRadioButtonId();
+        bettingGoldWeeket = (EditText) findViewById(R.id.bettingGoldWeek);
+        bettinggold = goalDataSet.getTotalGold();
+        bettingGoldWeeket.setText("" + bettinggold);
     }
 }

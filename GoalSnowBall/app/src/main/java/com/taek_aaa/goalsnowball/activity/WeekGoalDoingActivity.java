@@ -47,7 +47,7 @@ public class WeekGoalDoingActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        try {
             /** 물리적 양 일때 **/
             if (goalDataSet.getTypeWeek().equals("물리적양")) {
                 setContentView(R.layout.activity_week_goal_amount_doing);
@@ -60,7 +60,7 @@ public class WeekGoalDoingActivity extends Activity {
                         amountOfEdit.setText("" + goalDataSet.getCurrentAmountWeek());
                     }
                 });
-            } else {
+            } else if(goalDataSet.getTypeWeek().equals("시간적양")){
                 /** 시간적 양 일때 **/
                 setContentView(R.layout.activity_week_goal_time_doing);
                 Log.e("aa", "시간적양");
@@ -85,13 +85,13 @@ public class WeekGoalDoingActivity extends Activity {
                 blackboardtv.setText("목표량 : " + goalDataSet.getAmountWeek() + "분 " + categoryTimeArrays[goalDataSet.getUnitWeek()]);
             }
             tmpAmount = goalDataSet.getCurrentAmountWeek();
-        //} catch (Exception e) {
+        } catch (Exception e) {
             /** 목표 설정 안되어 있을 때 **/
-           // Toast.makeText(this, "이번주의 목표를 먼저 설정하세요.", Toast.LENGTH_SHORT).show();
-           // Log.e("error", "" + e.getStackTrace());
-           // e.getStackTrace();
-           // finish();
-       // }
+            Toast.makeText(this, "이번주의 목표를 먼저 설정하세요.", Toast.LENGTH_SHORT).show();
+            Log.e("error", "" + e.getStackTrace());
+            e.getStackTrace();
+            finish();
+        }
     }
 
     /**
@@ -99,7 +99,9 @@ public class WeekGoalDoingActivity extends Activity {
      **/
     public void saveCurrentAmountToEditText() {
         goalDataSet.setCurrentAmountWeek(Integer.parseInt(amountOfEdit.getText().toString()));
-        Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
+        if(goalDataSet.getCurrentAmountWeek() < goalDataSet.getAmountWeek()) {
+            Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -135,10 +137,8 @@ public class WeekGoalDoingActivity extends Activity {
             whereSuccess=SUCCESS_FROM_WEEK;
             int a = (goalDataSet.getBettingGoldWeek()) + (goalDataSet.getTotalGold());
             goalDataSet.setTotalGold(a);
-
             successDialog = new SuccessDialog(this);
             successDialog.show();
-
         }
     }
 
@@ -150,7 +150,6 @@ public class WeekGoalDoingActivity extends Activity {
         Button startbtn = (Button) findViewById(R.id.timerStartbtn);
         final TextView timerTv = (TextView) findViewById(R.id.timerTextView);
         try {
-
             if (isStartButtonClicked) {
                 startbtn.setText("Pause");
                 starttime = SystemClock.uptimeMillis();
@@ -191,7 +190,6 @@ public class WeekGoalDoingActivity extends Activity {
         goalDataSet.setCurrentMinuteWeek(temp);
         timeOfCurrenttv.setText("수행 시간 : " + goalDataSet.getCurrentMinuteWeek() + "분");
 
-        Log.i("test", String.valueOf(howlongtime));
         Button startbtn = (Button) findViewById(R.id.timerStartbtn);
         starttime = 0L;
         timeInMilliseconds = 0L;
@@ -205,10 +203,9 @@ public class WeekGoalDoingActivity extends Activity {
         startbtn.setVisibility(View.VISIBLE);
         startbtn.setText("Start");
         isStartButtonClicked = true;
-        Log.i("test", "찍힘");
-
-        Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
-
+        if(goalDataSet.getCurrentMinuteWeek() < goalDataSet.getAmountWeek()) {
+            Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
+        }
         if((goalDataSet.getUnitWeek()==0) && (goalDataSet.getCurrentMinuteWeek()>=goalDataSet.getAmountWeek())){  //이상이고 성공하면
             whereSuccess=SUCCESS_FROM_WEEK;
 
@@ -222,7 +219,6 @@ public class WeekGoalDoingActivity extends Activity {
 
         }
     }
-
 
     /**
      * 타이머를 관리하는 쓰레드

@@ -3,8 +3,10 @@ package com.taek_aaa.goalsnowball.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
+import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -57,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     int cYear, hMonth, cMonth, cdate, dayOfWeekIndex;
     public static String[] dayOfWeekArray = {"", "일", "월", "화", "수", "목", "금", "토"};
     public static int[] endOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    SoundPool soundPoolMain;
+    int tuneMain;
 
 
     @Override
@@ -74,42 +78,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        goalDataSet.setCurrentAmountToday(0);   //나중에 디비로구현하면 삭제하기
-        goalDataSet.setCurrentMinuteToday(0);   //나중에 디비로구현하면 삭제하기
-        goalDataSet.setTotalGold(10);
-        goalDataSet.setTypeToday("");
-        goalDataSet.setTypeWeek("");
-        goalDataSet.setTypeMonth("");
-
-        mainGoldtv = (TextView) findViewById(R.id.mainGoldtv);
-        mainGoldtv.setText("" + goalDataSet.getTotalGold() + "Gold");
-
-        percentToday = (TextView) findViewById(R.id.percentToday);
-        percentWeek = (TextView) findViewById(R.id.percentWeek);
-        percentMonth = (TextView) findViewById(R.id.percentMonth);
-
-
+        init();     //나중에 디비로 구현하면 여기서 몇개 제외하기
         drawDDay();
         drawMainImage();
         drawGoal();
-        try {
-            drawTodayPercent();
-            drawWeekPercent();
-            drawMonthPercent();
-        }catch (Exception e){
-            e.getStackTrace();
-        }
 
+        drawTodayPercent();
+        drawWeekPercent();
+        drawMonthPercent();
     }
 
+    /**
+     * 가려젔다가 다시 시작되었을때 값들 업데이트
+     **/
     @Override
     protected void onRestart() {
         super.onRestart();
+
         mainGoldtv.setText("" + goalDataSet.getTotalGold() + "Gold");
         drawTodayPercent();
         drawWeekPercent();
         drawMonthPercent();
-
     }
 
     /**
@@ -481,22 +470,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void drawTodayPercent() {
         double result;
-
         int goal = goalDataSet.getAmountToday();
         int current;
-        if (goalDataSet.getTypeToday().toString()=="물리적양") {
+        if (goalDataSet.getTypeToday().toString() == "물리적양") {
             current = goalDataSet.getCurrentAmountToday();
-        } else if(goalDataSet.getTypeToday().toString()=="시간적양"){
+        } else if (goalDataSet.getTypeToday().toString() == "시간적양") {
             current = goalDataSet.getCurrentMinuteToday();
-        }else{
-            current=0;
+        } else {
+            current = 0;
             goal = 10;
         }
 
-        result = (double)current / (double)goal * 100;
+        result = (double) current / (double) goal * 100;
         result = Double.parseDouble(String.format("%.1f", result));
+        if(result==100.0){
+            percentToday.setText("" + result + "%");
+            percentToday.setTextColor(Color.GREEN);
+            /*soundPoolMain = new SoundPool(1, STREAM_MUSIC, 0);
+            tuneMain = soundPoolMain.load(this, R.raw.coin, 1);
+            soundPoolMain.play(tuneMain, 1, 1, 0, 0, 1);*/
 
-        percentToday.setText("" + result + "%");
+        }else{
+            percentToday.setText("" + result + "%");
+        }
 
     }
 
@@ -504,35 +500,66 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         double result;
         int goal = goalDataSet.getAmountWeek();
         int current;
-        if (goalDataSet.getTypeWeek().toString()=="물리적양") {
+        if (goalDataSet.getTypeWeek().toString() == "물리적양") {
             current = goalDataSet.getCurrentAmountWeek();
-        }  else if(goalDataSet.getTypeWeek().toString()=="시간적양"){
+        } else if (goalDataSet.getTypeWeek().toString() == "시간적양") {
             current = goalDataSet.getCurrentMinuteWeek();
-        }else{
-            current=0;
+        } else {
+            current = 0;
             goal = 10;
         }
-        result = (double)current / (double)goal * 100;
+        result = (double) current / (double) goal * 100;
         result = Double.parseDouble(String.format("%.1f", result));
-        percentWeek.setText("" + result + "%");
+        if(result==100.0){
+            percentWeek.setText("" + result + "%");
+            percentWeek.setTextColor(Color.GREEN);
+            /*soundPoolMain = new SoundPool(1, STREAM_MUSIC, 0);
+            tuneMain = soundPoolMain.load(this, R.raw.coin, 1);
+            soundPoolMain.play(tuneMain, 1, 1, 0, 0, 1);*/
+        }else{
+            percentWeek.setText("" + result + "%");
+        }
     }
 
     public void drawMonthPercent() {
         double result;
-
         int goal = goalDataSet.getAmountMonth();
         int current;
-        if (goalDataSet.getTypeMonth().toString()=="물리적양") {
+        if (goalDataSet.getTypeMonth().toString() == "물리적양") {
             current = goalDataSet.getCurrentAmountMonth();
-        } else if(goalDataSet.getTypeMonth().toString()=="시간적양"){
+        } else if (goalDataSet.getTypeMonth().toString() == "시간적양") {
             current = goalDataSet.getCurrentMinuteMonth();
-        }else{
-            current=0;
+        } else {
+            current = 0;
             goal = 10;
         }
-        result = (double)current / (double)goal * 100;
+        result = (double) current / (double) goal * 100;
         result = Double.parseDouble(String.format("%.1f", result));
-        percentMonth.setText("" + result + "%");
+        if(result==100.0){
+            percentMonth.setText("" + result + "%");
+            percentMonth.setTextColor(Color.GREEN);
+            /*soundPoolMain = new SoundPool(1, STREAM_MUSIC, 0);
+            tuneMain = soundPoolMain.load(this, R.raw.coin, 1);
+            soundPoolMain.play(tuneMain, 1, 1, 0, 0, 1);*/
+
+        }else{
+            percentMonth.setText("" + result + "%");
+        }
+    }
+
+    public void init() {
+        goalDataSet.setCurrentAmountToday(0);   //나중에 디비로구현하면 삭제하기
+        goalDataSet.setCurrentMinuteToday(0);   //나중에 디비로구현하면 삭제하기
+        goalDataSet.setTotalGold(10);
+        goalDataSet.setTypeToday("");
+        goalDataSet.setTypeWeek("");
+        goalDataSet.setTypeMonth("");
+
+        mainGoldtv = (TextView) findViewById(R.id.mainGoldtv);
+        mainGoldtv.setText("" + goalDataSet.getTotalGold() + "Gold");
+        percentToday = (TextView) findViewById(R.id.percentToday);
+        percentWeek = (TextView) findViewById(R.id.percentWeek);
+        percentMonth = (TextView) findViewById(R.id.percentMonth);
     }
 
 }

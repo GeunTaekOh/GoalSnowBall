@@ -32,27 +32,11 @@ public class MonthGoalDialog extends Dialog implements View.OnClickListener {
     int dafault_radioButton_id_month;
     int bettinggold;
 
-
     public MonthGoalDialog(Context context) {
         super(context);
         setContentView(R.layout.dialog_monthgoal);
 
-        editTextContents = (EditText) findViewById(R.id.monthDialogEditText);
-        findViewById(R.id.monthDialogConfirmButton).setOnClickListener(this);
-        findViewById(R.id.monthDialogExitButton).setOnClickListener(this);
-        findViewById(R.id.monthDialogX).setOnClickListener(this);
-        title = (TextView) findViewById(R.id.title_month_dialog);
-        radioGroup = (RadioGroup) findViewById(R.id.radioGroup_month);
-        spinner = (Spinner) findViewById(R.id.month_spinner);
-        editTextAmonut = (EditText) findViewById(R.id.setting_amount_month);
-        physicalRadio = (RadioButton) findViewById(R.id.amountOfPhysical_month);
-        timeRadio = (RadioButton) findViewById(R.id.amountOfTime_month);
-        physicalRadio.setChecked(true);
-        dafault_radioButton_id_month = physicalRadio.getId();
-        checkedId = radioGroup.getCheckedRadioButtonId();
-        bettingGoldMonthet = (EditText) findViewById(R.id.bettingGoldMonth);
-        bettinggold = goalDataSet.getTotalGold() * 2;
-        bettingGoldMonthet.setText("" + bettinggold);
+        init();
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -98,6 +82,9 @@ public class MonthGoalDialog extends Dialog implements View.OnClickListener {
                     } else {
                         int textAmount = Integer.parseInt(editTextAmonut.getText().toString());
                         textContents = editTextContents.getText().toString();
+                        if(textContents.equals("")){
+                            throw new Exception();
+                        }
 
                         if (physicalRadio.isChecked()) {
                             goalDataSet.setTypeMonth("물리적양");
@@ -106,10 +93,6 @@ public class MonthGoalDialog extends Dialog implements View.OnClickListener {
                             goalDataSet.setTypeMonth("시간적양");
                             Log.e("tt", "" + timeRadio.getId());
                         }
-                /*if(textContents.equals("")){
-                    goalDataSet.isMonthGoal=false;
-                }*/
-
                         goalDataSet.setAmountMonth(textAmount);
                         goalDataSet.setMonthGoal(textContents);
 
@@ -145,4 +128,24 @@ public class MonthGoalDialog extends Dialog implements View.OnClickListener {
                 break;
         }
     }
+
+    public void init() {
+        editTextContents = (EditText) findViewById(R.id.monthDialogEditText);
+        findViewById(R.id.monthDialogConfirmButton).setOnClickListener(this);
+        findViewById(R.id.monthDialogExitButton).setOnClickListener(this);
+        findViewById(R.id.monthDialogX).setOnClickListener(this);
+        title = (TextView) findViewById(R.id.title_month_dialog);
+        radioGroup = (RadioGroup) findViewById(R.id.radioGroup_month);
+        spinner = (Spinner) findViewById(R.id.month_spinner);
+        editTextAmonut = (EditText) findViewById(R.id.setting_amount_month);
+        physicalRadio = (RadioButton) findViewById(R.id.amountOfPhysical_month);
+        timeRadio = (RadioButton) findViewById(R.id.amountOfTime_month);
+        physicalRadio.setChecked(true);
+        dafault_radioButton_id_month = physicalRadio.getId();
+        checkedId = radioGroup.getCheckedRadioButtonId();
+        bettingGoldMonthet = (EditText) findViewById(R.id.bettingGoldMonth);
+        bettinggold = goalDataSet.getTotalGold() * 2;
+        bettingGoldMonthet.setText("" + bettinggold);
+    }
+
 }
