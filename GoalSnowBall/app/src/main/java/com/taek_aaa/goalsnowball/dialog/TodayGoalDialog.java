@@ -77,11 +77,9 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener {
                 try {
 
                     bettinggold = goalDataSet.getTotalGold() / 2;
-
                     if (Integer.parseInt(bettingGoldTodayet.getText().toString()) > bettinggold) {
                         Toast.makeText(getContext(), "배팅액은 총 보유 골드의 절반을 넘을 수 없습니다.", Toast.LENGTH_SHORT).show();
                     } else {
-
                         int textAmount = Integer.parseInt(editTextAmonut.getText().toString());
                         textContents = editTextContents.getText().toString();
                         if(textContents.equals("")){
@@ -99,11 +97,6 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener {
                         goalDataSet.setAmountToday(textAmount);
                         goalDataSet.setTodayGoal(textContents);
 
-
-                        Log.e("test", goalDataSet.getTodayGoal());
-                        Log.e("test", "" + goalDataSet.isTodayGoal);
-
-
                         if (goalDataSet.isTodayGoal == true) {
                             title.setText("오늘의 목표를 수정하세요.");
                             editTextContents.setHint("목표를 수정하세요.");
@@ -111,16 +104,9 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener {
                             title.setText("오늘의 목표를 추가하세요.");
                             editTextContents.setHint("목표를 추가하세요.");
                         }
-                        Log.e("data", goalDataSet.getTypeToday());
-                        Log.e("data", "" + goalDataSet.getAmountToday());
-                        Log.e("data", "" + goalDataSet.getUnitToday());
-                        Log.e("data", goalDataSet.getTodayGoal());
-                        Log.e("data", "" + goalDataSet.isTodayGoal);
-
                         goalDataSet.setBettingGoldToday(Integer.parseInt(bettingGoldTodayet.getText().toString()));
                         dismiss();
                     }
-                    //dismiss();
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "값을 모두 입력하세요.", Toast.LENGTH_SHORT).show();
                 }

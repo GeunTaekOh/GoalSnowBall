@@ -96,10 +96,6 @@ public class MonthGoalDialog extends Dialog implements View.OnClickListener {
                         goalDataSet.setAmountMonth(textAmount);
                         goalDataSet.setMonthGoal(textContents);
 
-                        Log.e("test", goalDataSet.getMonthGoal());
-                        Log.e("test", "" + goalDataSet.isMonthGoal);
-
-
                         if (goalDataSet.isMonthGoal == true) {
                             title.setText("이번달의 목표를 수정하세요.");
                             editTextContents.setHint("목표를 수정하세요.");
@@ -107,11 +103,6 @@ public class MonthGoalDialog extends Dialog implements View.OnClickListener {
                             title.setText("이번달의 목표를 추가하세요.");
                             editTextContents.setHint("목표를 추가하세요.");
                         }
-                        Log.e("data", goalDataSet.getTypeMonth());
-                        Log.e("data", "" + goalDataSet.getAmountMonth());
-                        Log.e("data", "" + goalDataSet.getUnitMonth());
-                        Log.e("data", goalDataSet.getMonthGoal());
-                        Log.e("data", "" + goalDataSet.isMonthGoal);
                         goalDataSet.setBettingGoldMonth(Integer.parseInt(bettingGoldMonthet.getText().toString()));
                         dismiss();
                     }

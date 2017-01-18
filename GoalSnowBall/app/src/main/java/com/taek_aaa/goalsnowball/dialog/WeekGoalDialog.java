@@ -98,9 +98,6 @@ public class WeekGoalDialog extends Dialog implements View.OnClickListener {
 
                         goalDataSet.setAmountWeek(textAmount);
                         goalDataSet.setWeekGoal(textContents);
-                        Log.e("test", goalDataSet.getWeekGoal());
-                        Log.e("test", "" + goalDataSet.isWeekGoal);
-
 
                         if (goalDataSet.isWeekGoal == true) {
                             title.setText("이번주의 목표를 수정하세요.");
@@ -109,11 +106,6 @@ public class WeekGoalDialog extends Dialog implements View.OnClickListener {
                             title.setText("이번주의 목표를 추가하세요.");
                             editTextContents.setHint("목표를 추가하세요.");
                         }
-                        Log.e("data", goalDataSet.getTypeWeek());
-                        Log.e("data", "" + goalDataSet.getAmountWeek());
-                        Log.e("data", "" + goalDataSet.getUnitWeek());
-                        Log.e("data", goalDataSet.getWeekGoal());
-                        Log.e("data", "" + goalDataSet.isWeekGoal);
                         goalDataSet.setBettingGoldWeek(Integer.parseInt(bettingGoldWeeket.getText().toString()));
                         dismiss();
                     }
