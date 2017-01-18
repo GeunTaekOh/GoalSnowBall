@@ -5,6 +5,8 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.util.Log;
 
+import static com.taek_aaa.goalsnowball.activity.MainActivity.viewHeight;
+
 /**
  * Created by taek_aaa on 2017. 1. 7..
  */
@@ -42,4 +44,21 @@ public class PictureController {      //최신폰은 버그로 exif 제대로 �
         }
         return bitmap;
     }
+
+
+    /**이미지뷰 사이즈 변환**/
+    public Bitmap setSizedImage(Bitmap bitmap) {
+        float width = bitmap.getWidth();
+        float height = bitmap.getHeight();
+        if (height > viewHeight) {
+            float percente = height / 100;
+            float scale = viewHeight / percente;
+            width *= scale / 100;
+            height *= scale / 100;
+        }
+        Bitmap sizedBitmap = Bitmap.createScaledBitmap(bitmap, (int) width, (int) height, true);
+        return sizedBitmap;
+    }
+
+
 }

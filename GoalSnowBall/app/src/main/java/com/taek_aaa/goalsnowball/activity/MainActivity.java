@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Bitmap photo;
     public static LayoutInflater inflater;
     ImageView imageView;
-    int viewHeight = 3336;        //원하는 뷰의 높이
+    public static int viewHeight = 700;        //원하는 뷰의 높이
     Boolean isPicture = false;
     TextView todaytv, weektv, monthtv, dDayWeektv, dDayMonthtv, mainGoldtv, percentToday, percentWeek, percentMonth;
     public static GoalDataSet goalDataSet;
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static int[] endOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     SoundPool soundPoolMain;
     int tuneMain;
-
+    PictureController pictureController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        pictureController = new PictureController();
 
         init();     //나중에 디비로 구현하면 여기서 몇개 제외하기
         drawDDay();
@@ -170,9 +172,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(intent, PICK_FROM_ALBUM);
         } else {
-            PictureController pictureController = new PictureController();
             Bitmap rotatedPicture;
             rotatedPicture = pictureController.rotate(photo, 90);
+            photo = rotatedPicture;
             imageView = (ImageView) findViewById(R.id.mainImageView);
             imageView.setImageBitmap(rotatedPicture);
         }
@@ -195,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      **/
     protected void pictureSetToImageView(Intent data) {
         try {
-            PictureController pictureController = new PictureController();
+          //  PictureController pictureController = new PictureController();
             Uri uri = data.getData();
             String uriPath = uri.getPath();
             Log.e("test", uriPath);
@@ -209,9 +211,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Log.e("test", "" + exifOrientation);
             Log.e("test", "" + exifDegree);
             rotatedPhoto = pictureController.rotate(photo, exifDegree);
-
-            Bitmap sizedPhoto = setSizedImage(rotatedPhoto);
-
+            Log.e("length",""+rotatedPhoto.getHeight());
+            Log.e("length",""+rotatedPhoto.getWidth());
+            Bitmap sizedPhoto = pictureController.setSizedImage(rotatedPhoto);
+            Log.e("length",""+sizedPhoto.getHeight());
+            Log.e("length",""+sizedPhoto.getWidth());
             imageView = (ImageView) findViewById(R.id.mainImageView);
             imageView.setImageBitmap(sizedPhoto);
             Toast.makeText(getBaseContext(), "사진을 입력하였습니다.", Toast.LENGTH_SHORT).show();
@@ -319,8 +323,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         imageView = (ImageView) findViewById(R.id.mainImageView);
         BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.profile);
         Bitmap bitmapDefault = drawable.getBitmap();
-
-        Bitmap sizedBitmapDefault = setSizedImage(bitmapDefault);
+        Log.e("length",""+bitmapDefault.getHeight());
+        Log.e("length",""+bitmapDefault.getWidth());
+        Bitmap sizedBitmapDefault = pictureController.setSizedImage(bitmapDefault);
 
         defaultHeight = sizedBitmapDefault.getHeight();
         defaultWidth = sizedBitmapDefault.getWidth();
@@ -330,21 +335,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    /**
-     * 이미지뷰 사이즈 변환
-     **/         //근데 안먹히는듯
-    public Bitmap setSizedImage(Bitmap bitmap) {
-        float width = bitmap.getWidth();
-        float height = bitmap.getHeight();
-        if (height > viewHeight) {
-            float percente = height / 100;
-            float scale = viewHeight / percente;
-            width *= scale / 100;
-            height *= scale / 100;
-        }
-        Bitmap sizedBitmapDefault = Bitmap.createScaledBitmap(bitmap, (int) width, (int) height, true);
-        return sizedBitmapDefault;
-    }
 
     /**
      * 오늘쪽 상단의 디데이를 출력
