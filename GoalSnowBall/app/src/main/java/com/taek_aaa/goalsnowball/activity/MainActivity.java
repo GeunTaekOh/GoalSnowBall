@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ImageView imageView;
     int viewHeight = 3336;        //원하는 뷰의 높이
     Boolean isPicture = false;
-    TextView todaytv, weektv, monthtv, dDayWeektv, dDayMonthtv, mainGoldtv;
+    TextView todaytv, weektv, monthtv, dDayWeektv, dDayMonthtv, mainGoldtv, percentToday, percentWeek, percentMonth;
     public static GoalDataSet goalDataSet;
     public static LinkedList<DBData> llDBData = new LinkedList<DBData>();
     TodayGoalDialog todayGoalDialog;
@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static float defaultHeight, defaultWidth;
     Calendar today;
     int cYear, hMonth, cMonth, cdate, dayOfWeekIndex;
-    public static String[] dayOfWeekArray = {"","일","월","화","수","목","금","토"};
-    public static int[] endOfMonth={31,28,31,30,31,30,31,31,30,31,30,31};
+    public static String[] dayOfWeekArray = {"", "일", "월", "화", "수", "목", "금", "토"};
+    public static int[] endOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 
     @Override
@@ -77,22 +77,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         goalDataSet.setCurrentAmountToday(0);   //나중에 디비로구현하면 삭제하기
         goalDataSet.setCurrentMinuteToday(0);   //나중에 디비로구현하면 삭제하기
         goalDataSet.setTotalGold(10);
-        mainGoldtv = (TextView)findViewById(R.id.mainGoldtv);
-        mainGoldtv.setText(""+goalDataSet.getTotalGold()+"Gold");
+        goalDataSet.setTypeToday("");
+        goalDataSet.setTypeWeek("");
+        goalDataSet.setTypeMonth("");
+
+        mainGoldtv = (TextView) findViewById(R.id.mainGoldtv);
+        mainGoldtv.setText("" + goalDataSet.getTotalGold() + "Gold");
+
+        percentToday = (TextView) findViewById(R.id.percentToday);
+        percentWeek = (TextView) findViewById(R.id.percentWeek);
+        percentMonth = (TextView) findViewById(R.id.percentMonth);
 
 
         drawDDay();
         drawMainImage();
         drawGoal();
-
+        try {
+            drawTodayPercent();
+            drawWeekPercent();
+            drawMonthPercent();
+        }catch (Exception e){
+            e.getStackTrace();
+        }
 
     }
+
     @Override
-    protected void onRestart(){
+    protected void onRestart() {
         super.onRestart();
-        mainGoldtv.setText(""+goalDataSet.getTotalGold()+"Gold");
+        mainGoldtv.setText("" + goalDataSet.getTotalGold() + "Gold");
+        drawTodayPercent();
+        drawWeekPercent();
+        drawMonthPercent();
+
     }
-    /** 뒤로가기 눌렀을 때 **/
+
+    /**
+     * 뒤로가기 눌렀을 때
+     **/
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -148,7 +170,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    /** 이미지 뷰 클릭 했을 때 **/
+
+    /**
+     * 이미지 뷰 클릭 했을 때
+     **/
     public void onClickMainImage(View v) {
         if (isPicture == false) {
             Intent intent = new Intent(Intent.ACTION_PICK);
@@ -164,7 +189,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    /** intent 결과 처리 **/
+    /**
+     * intent 결과 처리
+     **/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -173,7 +200,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
     }
-    /** 골라온 이미지를 이미지뷰에 입힘 **/
+
+    /**
+     * 골라온 이미지를 이미지뷰에 입힘
+     **/
     protected void pictureSetToImageView(Intent data) {
         try {
             PictureController pictureController = new PictureController();
@@ -203,7 +233,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
     }
-    /** 목표 부분들을 누르면 다이알러그 보여줌 **/
+
+    /**
+     * 목표 부분들을 누르면 다이알러그 보여줌
+     **/
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.mainTodayGoalTv:
@@ -217,7 +250,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
     }
-    /** 오늘의 목표를 텍스트뷰에 출력 **/
+
+    /**
+     * 오늘의 목표를 텍스트뷰에 출력
+     **/
     public void drawTodayGoal() {
         if (goalDataSet.isTodayGoal == true) {
             todaytv.setText(goalDataSet.getTodayGoal());
@@ -227,7 +263,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             todaytv.setText("");
         }
     }
-    /** 이번주 목표를 텍스트뷰에 출력 **/
+
+    /**
+     * 이번주 목표를 텍스트뷰에 출력
+     **/
     public void drawWeekGoal() {
         if (goalDataSet.isWeekGoal == true) {
             weektv.setText(goalDataSet.getWeekGoal());
@@ -238,7 +277,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
     }
-    /** 이번달 목표를 텍스트뷰에 출력 **/
+
+    /**
+     * 이번달 목표를 텍스트뷰에 출력
+     **/
     public void drawMonthGoal() {
         if (goalDataSet.isMonthGoal == true) {
             monthtv.setText(goalDataSet.getMonthGoal());
@@ -249,8 +291,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
     }
-    /** 목표를 다이얼로그에서 설정하고 다이얼로그가 dismiss 되면 목표 출력 **/
-    public void drawGoal(){
+
+    /**
+     * 목표를 다이얼로그에서 설정하고 다이얼로그가 dismiss 되면 목표 출력
+     **/
+    public void drawGoal() {
         todaytv = (TextView) findViewById(R.id.mainTodayGoalTv);
         weektv = (TextView) findViewById(R.id.mainWeekGoalTv);
         monthtv = (TextView) findViewById(R.id.mainMonthGoalTv);
@@ -277,8 +322,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
-    /** 이미지 선택 안했을 시에 이미지를 이미지뷰에 출력**/
-    public void drawMainImage(){
+
+    /**
+     * 이미지 선택 안했을 시에 이미지를 이미지뷰에 출력
+     **/
+    public void drawMainImage() {
         imageView = (ImageView) findViewById(R.id.mainImageView);
         BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.profile);
         Bitmap bitmapDefault = drawable.getBitmap();
@@ -287,13 +335,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         defaultHeight = sizedBitmapDefault.getHeight();
         defaultWidth = sizedBitmapDefault.getWidth();
-        Log.e("length",""+defaultHeight);
-        Log.e("length",""+defaultWidth);
+        Log.e("length", "" + defaultHeight);
+        Log.e("length", "" + defaultWidth);
         imageView.setImageBitmap(sizedBitmapDefault);
 
     }
-    /** 이미지뷰 사이즈 변환 **/         //근데 안먹히는듯
-    public Bitmap setSizedImage(Bitmap bitmap){
+
+    /**
+     * 이미지뷰 사이즈 변환
+     **/         //근데 안먹히는듯
+    public Bitmap setSizedImage(Bitmap bitmap) {
         float width = bitmap.getWidth();
         float height = bitmap.getHeight();
         if (height > viewHeight) {
@@ -305,24 +356,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Bitmap sizedBitmapDefault = Bitmap.createScaledBitmap(bitmap, (int) width, (int) height, true);
         return sizedBitmapDefault;
     }
-    /** 오늘쪽 상단의 디데이를 출력 **/
-    public void drawDDay(){
-        dDayWeektv = (TextView)findViewById(R.id.d_week);
-        dDayMonthtv = (TextView)findViewById(R.id.d_month);
+
+    /**
+     * 오늘쪽 상단의 디데이를 출력
+     **/
+    public void drawDDay() {
+        dDayWeektv = (TextView) findViewById(R.id.d_week);
+        dDayMonthtv = (TextView) findViewById(R.id.d_month);
         today = Calendar.getInstance();
         cYear = today.get(Calendar.YEAR);
-        hMonth = today.get(Calendar.MONTH)+1;
+        hMonth = today.get(Calendar.MONTH) + 1;
         cMonth = today.get(Calendar.MONTH);
         cdate = today.get(Calendar.DAY_OF_MONTH);
         dayOfWeekIndex = today.get(Calendar.DAY_OF_WEEK);
-        Log.e("qq",""+today);
-        Log.e("qq",""+cYear);
-        Log.e("qq",""+hMonth);
-        Log.e("qq",""+cMonth);
-        Log.e("qq",""+cdate);
-        Log.e("qq",""+dayOfWeekArray[dayOfWeekIndex]);
+        Log.e("qq", "" + today);
+        Log.e("qq", "" + cYear);
+        Log.e("qq", "" + hMonth);
+        Log.e("qq", "" + cMonth);
+        Log.e("qq", "" + cdate);
+        Log.e("qq", "" + dayOfWeekArray[dayOfWeekIndex]);
 
-        switch (dayOfWeekIndex){
+        switch (dayOfWeekIndex) {
             case 1:
                 dDayWeektv.setText("이번주   D - 1");
                 break;
@@ -346,79 +400,139 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
         }
-        switch (cMonth){
+        switch (cMonth) {
             case 0:
                 int tmp0;
                 tmp0 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - "+""+tmp0);
+                dDayMonthtv.setText("이번달  D - " + "" + tmp0);
                 break;
             case 1:
                 boolean tempBoolean;
                 int tmp1;
                 tmp1 = endOfMonth[cMonth] - cdate;
                 tempBoolean = isYoonYear(cYear);
-                if(tempBoolean==true){
-                    dDayMonthtv.setText("이번달  D - "+""+(tmp1+1));
-                    Log.e("ttt",""+tempBoolean);
-                }else{
-                    dDayMonthtv.setText("이번달  D - "+""+tmp1);
+                if (tempBoolean == true) {
+                    dDayMonthtv.setText("이번달  D - " + "" + (tmp1 + 1));
+                    Log.e("ttt", "" + tempBoolean);
+                } else {
+                    dDayMonthtv.setText("이번달  D - " + "" + tmp1);
                 }
                 break;
             case 2:
                 int tmp2;
                 tmp2 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - "+""+tmp2);
+                dDayMonthtv.setText("이번달  D - " + "" + tmp2);
                 break;
             case 3:
                 int tmp3;
                 tmp3 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - "+""+tmp3);
+                dDayMonthtv.setText("이번달  D - " + "" + tmp3);
                 break;
             case 4:
                 int tmp4;
                 tmp4 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - "+""+tmp4);
+                dDayMonthtv.setText("이번달  D - " + "" + tmp4);
                 break;
             case 5:
                 int tmp5;
                 tmp5 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - "+""+tmp5);
+                dDayMonthtv.setText("이번달  D - " + "" + tmp5);
                 break;
             case 6:
                 int tmp6;
                 tmp6 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - "+""+tmp6);
+                dDayMonthtv.setText("이번달  D - " + "" + tmp6);
                 break;
             case 7:
                 int tmp7;
                 tmp7 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - "+""+tmp7);
+                dDayMonthtv.setText("이번달  D - " + "" + tmp7);
                 break;
             case 8:
                 int tmp8;
                 tmp8 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - "+""+tmp8);
+                dDayMonthtv.setText("이번달  D - " + "" + tmp8);
                 break;
             case 9:
                 int tmp9;
                 tmp9 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - "+""+tmp9);
+                dDayMonthtv.setText("이번달  D - " + "" + tmp9);
                 break;
             case 10:
                 int tmp10;
                 tmp10 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - "+""+tmp10);
+                dDayMonthtv.setText("이번달  D - " + "" + tmp10);
                 break;
             case 11:
                 int tmp11;
                 tmp11 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - "+""+tmp11);
+                dDayMonthtv.setText("이번달  D - " + "" + tmp11);
                 break;
         }
     }
-    /** 2월 윤년 계산 **/
-    public Boolean isYoonYear(int year){
+
+    /**
+     * 2월 윤년 계산
+     **/
+    public Boolean isYoonYear(int year) {
         GregorianCalendar gr = new GregorianCalendar();
         return gr.isLeapYear(year);
     }
+
+    public void drawTodayPercent() {
+        double result;
+
+        int goal = goalDataSet.getAmountToday();
+        int current;
+        if (goalDataSet.getTypeToday().toString()=="물리적양") {
+            current = goalDataSet.getCurrentAmountToday();
+        } else if(goalDataSet.getTypeToday().toString()=="시간적양"){
+            current = goalDataSet.getCurrentMinuteToday();
+        }else{
+            current=0;
+            goal = 10;
+        }
+
+        result = (double)current / (double)goal * 100;
+        result = Double.parseDouble(String.format("%.1f", result));
+
+        percentToday.setText("" + result + "%");
+
+    }
+
+    public void drawWeekPercent() {
+        double result;
+        int goal = goalDataSet.getAmountWeek();
+        int current;
+        if (goalDataSet.getTypeWeek().toString()=="물리적양") {
+            current = goalDataSet.getCurrentAmountWeek();
+        }  else if(goalDataSet.getTypeWeek().toString()=="시간적양"){
+            current = goalDataSet.getCurrentMinuteWeek();
+        }else{
+            current=0;
+            goal = 10;
+        }
+        result = (double)current / (double)goal * 100;
+        result = Double.parseDouble(String.format("%.1f", result));
+        percentWeek.setText("" + result + "%");
+    }
+
+    public void drawMonthPercent() {
+        double result;
+
+        int goal = goalDataSet.getAmountMonth();
+        int current;
+        if (goalDataSet.getTypeMonth().toString()=="물리적양") {
+            current = goalDataSet.getCurrentAmountMonth();
+        } else if(goalDataSet.getTypeMonth().toString()=="시간적양"){
+            current = goalDataSet.getCurrentMinuteMonth();
+        }else{
+            current=0;
+            goal = 10;
+        }
+        result = (double)current / (double)goal * 100;
+        result = Double.parseDouble(String.format("%.1f", result));
+        percentMonth.setText("" + result + "%");
+    }
+
 }

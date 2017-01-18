@@ -32,12 +32,12 @@ public class SuccessDialog extends Dialog {
         super(context);
         setContentView(R.layout.dialog_success);
 
-        fire = (ImageView)findViewById(R.id.fireWork);
-        coin = (ImageView)findViewById(R.id.coin);
-        msg = (TextView)findViewById(R.id.SuccessCoinMsg);
+        fire = (ImageView) findViewById(R.id.fireWork);
+        coin = (ImageView) findViewById(R.id.coin);
+        msg = (TextView) findViewById(R.id.SuccessCoinMsg);
 
-        soundPool = new SoundPool(1,STREAM_MUSIC,0);
-        tune=soundPool.load(getContext(),R.raw.clap,1);
+        soundPool = new SoundPool(1, STREAM_MUSIC, 0);
+        tune = soundPool.load(getContext(), R.raw.clap, 1);
 
         GlideDrawableImageViewTarget imageViewTarget1 = new GlideDrawableImageViewTarget(fire);
         Glide.with(getContext()).load(R.raw.firework2).into(imageViewTarget1);
@@ -46,28 +46,24 @@ public class SuccessDialog extends Dialog {
         Glide.with(getContext()).load(R.raw.coinmotion).into(imageViewTarget2);
         //오늘목표달성했을때
 
-
-        if(whereSuccess==SUCCESS_FROM_TODAY) {
+        if (whereSuccess == SUCCESS_FROM_TODAY) {
             msg.setText("" + goalDataSet.getBettingGoldToday() + "Gold를 획득하였습니다.");
-            soundPool.play(tune,1,1,0,0,1);
+            soundPool.play(tune, 1, 1, 0, 0, 1);
             goalDataSet.setBettingGoldToday(0);
-            whereSuccess=0;
-        }else if(whereSuccess==SUCCESS_FROM_WEEK){
-            soundPool.play(tune,1,1,0,0,1);
+            whereSuccess = 0;
+        } else if (whereSuccess == SUCCESS_FROM_WEEK) {
+            soundPool.play(tune, 1, 1, 0, 0, 1);
             msg.setText("" + goalDataSet.getBettingGoldWeek() + "Gold를 획득하였습니다.");
             goalDataSet.setBettingGoldWeek(0);
-            whereSuccess=0;
-        }else if(whereSuccess==SUCCESS_FROM_MONTH){
-            soundPool.play(tune,1,1,0,0,1);
+            whereSuccess = 0;
+        } else if (whereSuccess == SUCCESS_FROM_MONTH) {
+            soundPool.play(tune, 1, 1, 0, 0, 1);
             msg.setText("" + goalDataSet.getBettingGoldMonth() + "Gold를 획득하였습니다.");
             goalDataSet.setBettingGoldMonth(0);
-            whereSuccess=0;
-        }else{
-            Log.e("erro","successDialog에서 에러");
+            whereSuccess = 0;
+        } else {
+            Log.e("error", "successDialog에서 에러");
         }
-
-
-
     }
 
 }

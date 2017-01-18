@@ -91,6 +91,9 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener {
             case R.id.todayDialogConfirmButton:
                 Log.e("test", "" + checkedId);
                 try {
+
+                    bettinggold = goalDataSet.getTotalGold() / 2;
+
                     if (Integer.parseInt(bettingGoldTodayet.getText().toString()) > bettinggold) {
                         Toast.makeText(getContext(), "배팅액은 총 보유 골드의 절반을 넘을 수 없습니다.", Toast.LENGTH_SHORT).show();
                     } else {

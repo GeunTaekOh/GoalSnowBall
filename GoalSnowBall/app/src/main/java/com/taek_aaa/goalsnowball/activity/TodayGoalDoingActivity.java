@@ -102,8 +102,10 @@ public class TodayGoalDoingActivity extends Activity {
      * 수행량 저장하는 함수
      **/
     public void saveCurrentAmountToEditText() {
+
         goalDataSet.setCurrentAmountToday(Integer.parseInt(amountOfEdit.getText().toString()));
         Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
+
     }
 
     /**
@@ -139,15 +141,14 @@ public class TodayGoalDoingActivity extends Activity {
 
         //물리적양일 경우임 저장버튼이 있는경우는 물리적 양일때만이기때문
         //물리적양 일때 성공하면
-        if (goalDataSet.getAmountToday() == goalDataSet.getCurrentAmountToday()) {
-            whereSuccess=SUCCESS_FROM_TODAY;
+        if (goalDataSet.getAmountToday() <= goalDataSet.getCurrentAmountToday()) {
+            whereSuccess = SUCCESS_FROM_TODAY;
             int a = (goalDataSet.getBettingGoldToday()) + (goalDataSet.getTotalGold());
             goalDataSet.setTotalGold(a);
 
             successDialog = new SuccessDialog(this);
             successDialog.show();
 
-          //  goalDataSet.setBettingGoldToday(0);
         }
 
     }
@@ -219,8 +220,8 @@ public class TodayGoalDoingActivity extends Activity {
 
         Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
 
-        if((goalDataSet.getUnitToday()==0) && (goalDataSet.getCurrentMinuteToday()>=goalDataSet.getAmountToday())){  //이상이고 성공하면
-            whereSuccess=SUCCESS_FROM_TODAY;
+        if ((goalDataSet.getUnitToday() == 0) && (goalDataSet.getCurrentMinuteToday() >= goalDataSet.getAmountToday())) {  //이상이고 성공하면
+            whereSuccess = SUCCESS_FROM_TODAY;
 
             int a = (goalDataSet.getBettingGoldToday()) + (goalDataSet.getTotalGold());
             goalDataSet.setTotalGold(a);
@@ -228,7 +229,7 @@ public class TodayGoalDoingActivity extends Activity {
             successDialog = new SuccessDialog(this);
             successDialog.show();
 
-        }else{  //이하        나중에 이상이고 실패할때도 else if로 처리하기
+        } else {  //이하        나중에 이상이고 실패할때도 else if로 처리하기
 
         }
     }

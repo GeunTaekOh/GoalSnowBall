@@ -91,6 +91,8 @@ public class MonthGoalDialog extends Dialog implements View.OnClickListener {
             case R.id.monthDialogConfirmButton:
                 Log.e("test", "" + checkedId);
                 try {
+                    bettinggold = goalDataSet.getTotalGold() * 2;
+
                     if (Integer.parseInt(bettingGoldMonthet.getText().toString()) > bettinggold) {
                         Toast.makeText(getContext(), "배팅액은 총 보유 골드의 2배를 넘을 수 없습니다.", Toast.LENGTH_SHORT).show();
                     } else {

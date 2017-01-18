@@ -13,10 +13,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryPhysicalArrays;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryTimeArrays;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
+import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.SUCCESS_FROM_MONTH;
+import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.whereSuccess;
 
 /**
  * Created by taek_aaa on 2017. 1. 15..
@@ -38,7 +41,7 @@ public class MonthGoalDoingActivity extends Activity {
     Handler handler = new Handler();
     TextView blackboardtv, timeOfCurrenttv, successGetGoldtv;
     static int tmpAmount;
-
+    SuccessDialog successDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +129,17 @@ public class MonthGoalDoingActivity extends Activity {
      **/
     public void onClickSaveBtnGoal(View v) {
         saveCurrentAmountToEditText();
-        finish();
+//물리적양일 경우임 저장버튼이 있는경우는 물리적 양일때만이기때문
+        //물리적양 일때 성공하면
+        if (goalDataSet.getAmountMonth() <= goalDataSet.getCurrentAmountMonth()) {
+            whereSuccess=SUCCESS_FROM_MONTH;
+            int a = (goalDataSet.getBettingGoldMonth()) + (goalDataSet.getTotalGold());
+            goalDataSet.setTotalGold(a);
+
+            successDialog = new SuccessDialog(this);
+            successDialog.show();
+
+        }
 
     }
 
@@ -196,6 +209,20 @@ public class MonthGoalDoingActivity extends Activity {
         Log.i("test", "찍힘");
 
         Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
+
+        if((goalDataSet.getUnitMonth()==0) && (goalDataSet.getCurrentMinuteMonth()>=goalDataSet.getAmountMonth())){  //이상이고 성공하면
+            whereSuccess=SUCCESS_FROM_MONTH;
+
+            int a = (goalDataSet.getBettingGoldMonth()) + (goalDataSet.getTotalGold());
+            goalDataSet.setTotalGold(a);
+
+            successDialog = new SuccessDialog(this);
+            successDialog.show();
+
+        }else{  //이하        나중에 이상이고 실패할때도 else if로 처리하기
+
+        }
+
     }
 
 

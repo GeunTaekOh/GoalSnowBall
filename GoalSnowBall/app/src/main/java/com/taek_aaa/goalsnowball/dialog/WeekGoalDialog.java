@@ -90,6 +90,9 @@ public class WeekGoalDialog extends Dialog implements View.OnClickListener {
             case R.id.weekDialogConfirmButton:
                 Log.e("test", "" + checkedId);
                 try {
+
+                    bettinggold = goalDataSet.getTotalGold();
+
                     if (Integer.parseInt(bettingGoldWeeket.getText().toString()) > bettinggold) {
                         Toast.makeText(getContext(), "배팅액은 총 보유 골드량을 넘을 수 없습니다.", Toast.LENGTH_SHORT).show();
                     } else {
