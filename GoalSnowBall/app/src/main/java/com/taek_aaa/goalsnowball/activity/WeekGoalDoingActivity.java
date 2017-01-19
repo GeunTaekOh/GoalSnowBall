@@ -18,6 +18,7 @@ import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryPhysicalArrays;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryTimeArrays;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
+import static com.taek_aaa.goalsnowball.activity.MainActivity.isSuccessWeek;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.SUCCESS_FROM_WEEK;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.whereSuccess;
 
@@ -68,7 +69,7 @@ public class WeekGoalDoingActivity extends Activity implements GoalDoingInterfac
                 TextView stopWatchtv = (TextView) findViewById(R.id.timerTextView);
                 stopWatchtv.setText("00:00:00");
                 timeOfCurrenttv = (TextView) findViewById(R.id.doing_current_time_week);
-                timeOfCurrenttv.setText("수행 시간 : " + goalDataSet.getCurrentMinuteWeek() + "분");
+                timeOfCurrenttv.setText("수행 시간 : " + goalDataSet.getCurrentAmountWeek() + "분");
                 isAmount = false;
             }
 
@@ -139,6 +140,7 @@ public class WeekGoalDoingActivity extends Activity implements GoalDoingInterfac
             goalDataSet.setTotalGold(a);
             successDialog = new SuccessDialog(this);
             successDialog.show();
+            isSuccessWeek = true;
         }
     }
 
@@ -185,10 +187,10 @@ public class WeekGoalDoingActivity extends Activity implements GoalDoingInterfac
         ihowlongtime = Integer.valueOf(shour) * 60 * 60 + Integer.valueOf(sminute) * 60 + Integer.valueOf(sseconds);
         ihowlongtime = ihowlongtime / 60;
 
-        int temp = goalDataSet.getCurrentMinuteWeek();
+        int temp = goalDataSet.getCurrentAmountWeek();
         temp += ihowlongtime;
-        goalDataSet.setCurrentMinuteWeek(temp);
-        timeOfCurrenttv.setText("수행 시간 : " + goalDataSet.getCurrentMinuteWeek() + "분");
+        goalDataSet.setCurrentAmountWeek(temp);
+        timeOfCurrenttv.setText("수행 시간 : " + goalDataSet.getCurrentAmountWeek() + "분");
 
         Button startbtn = (Button) findViewById(R.id.timerStartbtn);
         starttime = 0L;
@@ -203,10 +205,10 @@ public class WeekGoalDoingActivity extends Activity implements GoalDoingInterfac
         startbtn.setVisibility(View.VISIBLE);
         startbtn.setText("Start");
         isStartButtonClicked = true;
-        if(goalDataSet.getCurrentMinuteWeek() < goalDataSet.getAmountWeek()) {
+        if(goalDataSet.getCurrentAmountWeek() < goalDataSet.getAmountWeek()) {
             Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
         }
-        if((goalDataSet.getUnitWeek()==0) && (goalDataSet.getCurrentMinuteWeek()>=goalDataSet.getAmountWeek())){  //이상이고 성공하면
+        if((goalDataSet.getUnitWeek()==0) && (goalDataSet.getCurrentAmountWeek()>=goalDataSet.getAmountWeek())){  //이상이고 성공하면
             whereSuccess=SUCCESS_FROM_WEEK;
 
             int a = (goalDataSet.getBettingGoldWeek()) + (goalDataSet.getTotalGold());
@@ -214,7 +216,7 @@ public class WeekGoalDoingActivity extends Activity implements GoalDoingInterfac
 
             successDialog = new SuccessDialog(this);
             successDialog.show();
-
+            isSuccessWeek = true;
         }else{  //이하        나중에 이상이고 실패할때도 else if로 처리하기
 
         }

@@ -23,6 +23,9 @@ public class SuccessDialog extends Dialog {
     final public static int SUCCESS_FROM_TODAY = 60001;
     final public static int SUCCESS_FROM_WEEK = 60002;
     final public static int SUCCESS_FROM_MONTH = 60003;
+    public static int getGoldToday;
+    public static int getGoldWeek;
+    public static int getGoldMonth;
 
     ImageView fire, coin;
     TextView msg;
@@ -56,14 +59,17 @@ public class SuccessDialog extends Dialog {
 
         if (whereSuccess == SUCCESS_FROM_TODAY) {
             msg.setText("" + goalDataSet.getBettingGoldToday() + "Gold를 획득하였습니다.");
+            getGoldToday = goalDataSet.getBettingGoldToday();
             goalDataSet.setBettingGoldToday(0);
             whereSuccess = 0;
         } else if (whereSuccess == SUCCESS_FROM_WEEK) {
             msg.setText("" + goalDataSet.getBettingGoldWeek() + "Gold를 획득하였습니다.");
+            getGoldWeek = goalDataSet.getBettingGoldWeek();
             goalDataSet.setBettingGoldWeek(0);
             whereSuccess = 0;
         } else if (whereSuccess == SUCCESS_FROM_MONTH) {
             msg.setText("" + goalDataSet.getBettingGoldMonth() + "Gold를 획득하였습니다.");
+            getGoldMonth = goalDataSet.getBettingGoldMonth();
             goalDataSet.setBettingGoldMonth(0);
             whereSuccess = 0;
         } else {

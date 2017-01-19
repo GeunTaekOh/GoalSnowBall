@@ -14,7 +14,6 @@ public class GoalDataSet {
     private int amountToday;
     private int unitToday;
     private int currentAmountToday;
-    private int currentMinuteToday;
     private int bettingGoldToday;
 
     private String weekGoal;
@@ -23,7 +22,6 @@ public class GoalDataSet {
     private int amountWeek;
     private int unitWeek;
     private int currentAmountWeek;
-    private int currentMinuteWeek;
     private int bettingGoldWeek;
 
     private String monthGoal;
@@ -32,7 +30,6 @@ public class GoalDataSet {
     private int amountMonth;
     private int unitMonth;
     private int currentAmountMonth;
-    private int currentMinuteMonth;
     private int bettingGoldMonth;
 
 
@@ -98,15 +95,6 @@ public class GoalDataSet {
     public void setCurrentAmountMonth(int ca) {
         this.currentAmountMonth = ca;
     }
-    public void setCurrentMinuteToday(int cm){
-        this.currentMinuteToday = cm;
-    }
-    public void setCurrentMinuteWeek(int cm){
-        this.currentMinuteWeek = cm;
-    }
-    public void setCurrentMinuteMonth(int cm){
-        this.currentMinuteMonth = cm;
-    }
 
     public void setTotalGold(int gold){this.totalGold = gold;}
     public void setBettingGoldToday(int gold){this.bettingGoldToday = gold;}
@@ -167,12 +155,6 @@ public class GoalDataSet {
     public int getCurrentAmountWeek(){return this.currentAmountWeek;}
 
     public int getCurrentAmountMonth(){return this.currentAmountMonth;}
-
-    public int getCurrentMinuteToday(){return this.currentMinuteToday;}
-
-    public int getCurrentMinuteWeek(){return this.currentMinuteWeek;}
-
-    public int getCurrentMinuteMonth(){return this.currentMinuteMonth;}
 
     public int getBettingGoldToday(){return this.bettingGoldToday;}
 

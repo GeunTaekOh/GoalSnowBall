@@ -56,11 +56,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static String[] categoryPhysicalArrays = {"개", "쪽", "권", ""};
     public static String[] categoryTimeArrays = {"이상", "이하"};
     public static float defaultHeight, defaultWidth;
-    /*Calendar today;
-    int cYear, hMonth, cMonth, cdate, dayOfWeekIndex;
-    public static String[] dayOfWeekArray = {"", "일", "월", "화", "수", "목", "금", "토"};
-    public static int[] endOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};*/
     PictureController pictureController;
+    public static boolean isSuccessToday=false, isSuccessWeek=false, isSuccessMonth=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -461,10 +458,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         double result;
         int goal = goalDataSet.getAmountToday();
         int current;
-        if (goalDataSet.getTypeToday().toString() == "물리적양") {
+        if ((goalDataSet.getTypeToday().toString() == "물리적양") ||(goalDataSet.getTypeToday().toString() == "시간적양") ) {
             current = goalDataSet.getCurrentAmountToday();
-        } else if (goalDataSet.getTypeToday().toString() == "시간적양") {
-            current = goalDataSet.getCurrentMinuteToday();
         } else {
             current = 0;
             goal = 10;
@@ -492,10 +487,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         double result;
         int goal = goalDataSet.getAmountWeek();
         int current;
-        if (goalDataSet.getTypeWeek().toString() == "물리적양") {
+        if ((goalDataSet.getTypeWeek().toString() == "물리적양") || (goalDataSet.getTypeWeek().toString() == "시간적양")) {
             current = goalDataSet.getCurrentAmountWeek();
-        } else if (goalDataSet.getTypeWeek().toString() == "시간적양") {
-            current = goalDataSet.getCurrentMinuteWeek();
         } else {
             current = 0;
             goal = 10;
@@ -520,10 +513,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         double result;
         int goal = goalDataSet.getAmountMonth();
         int current;
-        if (goalDataSet.getTypeMonth().toString() == "물리적양") {
+        if ((goalDataSet.getTypeMonth().toString() == "물리적양") || (goalDataSet.getTypeMonth().toString() == "시간적양")) {
             current = goalDataSet.getCurrentAmountMonth();
-        } else if (goalDataSet.getTypeMonth().toString() == "시간적양") {
-            current = goalDataSet.getCurrentMinuteMonth();
         } else {
             current = 0;
             goal = 10;
@@ -547,7 +538,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      **/
     public void init() {
         goalDataSet.setCurrentAmountToday(0);   //나중에 디비로구현하면 삭제하기
-        goalDataSet.setCurrentMinuteToday(0);   //나중에 디비로구현하면 삭제하기
         goalDataSet.setTotalGold(10);
         goalDataSet.setTypeToday("");
         goalDataSet.setTypeWeek("");

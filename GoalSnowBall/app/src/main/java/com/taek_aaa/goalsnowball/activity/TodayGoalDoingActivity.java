@@ -18,6 +18,7 @@ import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryPhysicalArrays;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryTimeArrays;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
+import static com.taek_aaa.goalsnowball.activity.MainActivity.isSuccessToday;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.SUCCESS_FROM_TODAY;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.whereSuccess;
 
@@ -44,6 +45,7 @@ public class TodayGoalDoingActivity extends Activity implements GoalDoingInterfa
     SuccessDialog successDialog;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +70,7 @@ public class TodayGoalDoingActivity extends Activity implements GoalDoingInterfa
                 TextView stopWatchtv = (TextView) findViewById(R.id.timerTextView);
                 stopWatchtv.setText("00:00:00");
                 timeOfCurrenttv = (TextView) findViewById(R.id.doing_current_time_today);
-                timeOfCurrenttv.setText("수행 시간 : " + goalDataSet.getCurrentMinuteToday() + "분");
+                timeOfCurrenttv.setText("수행 시간 : " + goalDataSet.getCurrentAmountToday() + "분");
                 isAmount = false;
             }
             successGetGoldtv = (TextView) findViewById(R.id.successGetGoldtv);
@@ -132,7 +134,7 @@ public class TodayGoalDoingActivity extends Activity implements GoalDoingInterfa
     public void onClickSaveBtnGoal(View v) {
         saveCurrentAmountToEditText();
         Log.e("qq", "" + goalDataSet.getUnitToday());
-        Log.e("qq", "" + goalDataSet.getCurrentMinuteToday());
+        Log.e("qq", "" + goalDataSet.getCurrentAmountToday());
         Log.e("qq", "" + goalDataSet.getAmountToday());
         //물리적양일 경우임 저장버튼이 있는경우는 물리적 양일때만이기때문
         //물리적양 일때 성공하면
@@ -143,6 +145,7 @@ public class TodayGoalDoingActivity extends Activity implements GoalDoingInterfa
 
             successDialog = new SuccessDialog(this);
             successDialog.show();
+            isSuccessToday = true;
         }
 
     }
@@ -190,10 +193,10 @@ public class TodayGoalDoingActivity extends Activity implements GoalDoingInterfa
         ihowlongtime = Integer.valueOf(shour) * 60 * 60 + Integer.valueOf(sminute) * 60 + Integer.valueOf(sseconds);
         ihowlongtime = ihowlongtime / 60;
 
-        int temp = goalDataSet.getCurrentMinuteToday();
+        int temp = goalDataSet.getCurrentAmountToday();
         temp += ihowlongtime;
-        goalDataSet.setCurrentMinuteToday(temp);
-        timeOfCurrenttv.setText("수행 시간 : " + goalDataSet.getCurrentMinuteToday() + "분");
+        goalDataSet.setCurrentAmountToday(temp);
+        timeOfCurrenttv.setText("수행 시간 : " + goalDataSet.getCurrentAmountToday() + "분");
 
         Button startbtn = (Button) findViewById(R.id.timerStartbtn);
         starttime = 0L;
@@ -208,11 +211,11 @@ public class TodayGoalDoingActivity extends Activity implements GoalDoingInterfa
         startbtn.setVisibility(View.VISIBLE);
         startbtn.setText("Start");
         isStartButtonClicked = true;
-        if (goalDataSet.getCurrentMinuteToday() < goalDataSet.getAmountToday()) {
+        if (goalDataSet.getCurrentAmountToday() < goalDataSet.getAmountToday()) {
             Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
         }
 
-        if ((goalDataSet.getUnitToday() == 0) && (goalDataSet.getCurrentMinuteToday() >= goalDataSet.getAmountToday())) {  //이상이고 성공하면
+        if ((goalDataSet.getUnitToday() == 0) && (goalDataSet.getCurrentAmountToday() >= goalDataSet.getAmountToday())) {  //이상이고 성공하면
             whereSuccess = SUCCESS_FROM_TODAY;
 
             int a = (goalDataSet.getBettingGoldToday()) + (goalDataSet.getTotalGold());
@@ -220,6 +223,7 @@ public class TodayGoalDoingActivity extends Activity implements GoalDoingInterfa
 
             successDialog = new SuccessDialog(this);
             successDialog.show();
+            isSuccessToday = true;
 
         } else {  //이하        나중에 이상이고 실패할때도 else if로 처리하기
 

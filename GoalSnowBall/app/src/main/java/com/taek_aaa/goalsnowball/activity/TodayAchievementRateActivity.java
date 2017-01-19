@@ -12,6 +12,8 @@ import com.taek_aaa.goalsnowball.R;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryPhysicalArrays;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryTimeArrays;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
+import static com.taek_aaa.goalsnowball.activity.MainActivity.isSuccessToday;
+import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.getGoldToday;
 
 /**
  * Created by taek_aaa on 2017. 1. 19..
@@ -44,7 +46,7 @@ public class TodayAchievementRateActivity extends Activity implements Achievemen
             drawPercent(typeOfContents);
             drawRemainAmount(typeOfContents);
             drawBettingGold();
-            drawBettingResult(typeOfContents);
+            drawBettingResult();
             drawDue();
         } catch (Exception e) {
             Toast.makeText(getBaseContext(), "오늘의 목표를 먼저 입력하세요.", Toast.LENGTH_SHORT).show();
@@ -83,7 +85,7 @@ public class TodayAchievementRateActivity extends Activity implements Achievemen
         if (type.equals("물리적양")) {
             currentAmounttv.setText("" + goalDataSet.getCurrentAmountToday() + "" + categoryPhysicalArrays[goalDataSet.getUnitToday()]);
         } else if (type.equals("시간적양")) {
-            currentAmounttv.setText("" + goalDataSet.getCurrentMinuteToday() + "분");
+            currentAmounttv.setText("" + goalDataSet.getCurrentAmountToday() + "분");
         } else {
             throw new Exception();
         }
@@ -94,16 +96,11 @@ public class TodayAchievementRateActivity extends Activity implements Achievemen
         int goal = goalDataSet.getAmountToday();
         int current;
 
-        if (type.equals("물리적양")) {
+        if (type.equals("물리적양") || (type.equals("시간적양"))) {
             progressBar.setMax(goalDataSet.getAmountToday());
             progressBar.setProgress(goalDataSet.getCurrentAmountToday());
             progressBar.setVisibility(ProgressBar.VISIBLE);
             current = goalDataSet.getCurrentAmountToday();
-        } else if (type.equals("시간적양")) {
-            progressBar.setMax(goalDataSet.getAmountToday());
-            progressBar.setProgress(goalDataSet.getCurrentMinuteToday());
-            progressBar.setVisibility(ProgressBar.VISIBLE);
-            current = goalDataSet.getCurrentMinuteToday();
         } else {
             throw new Exception();
         }
@@ -122,24 +119,31 @@ public class TodayAchievementRateActivity extends Activity implements Achievemen
         if (type.equals("물리적양")) {
             remainAmounttv.setText("" + (goalDataSet.getAmountToday() - goalDataSet.getCurrentAmountToday()) + "" + categoryPhysicalArrays[goalDataSet.getUnitToday()]);
         } else if (type.equals("시간적양")) {
-            remainAmounttv.setText("" + (goalDataSet.getAmountToday() - goalDataSet.getCurrentMinuteToday()) + "분");
+            remainAmounttv.setText("" + (goalDataSet.getAmountToday() - goalDataSet.getCurrentAmountToday()) + "분");
         } else {
             throw new Exception();
         }
     }
 
     public void drawBettingGold()  {
-        betAmounttv.setText(""+goalDataSet.getBettingGoldToday()+" Gold");
+        if(isSuccessToday==false) {
+            betAmounttv.setText("" + goalDataSet.getBettingGoldToday() + " Gold");
+        }else{
+            betAmounttv.setText("" + getGoldToday + " Gold");
+        }
     }
 
-    public void drawBettingResult(String type) throws Exception {
-        if (type.equals("물리적양")) {
-
-        } else if (type.equals("시간적양")) {
-
-        } else {
-            throw new Exception();
+    public void drawBettingResult() {
+        if(goalDataSet.getBettingGoldToday()==0){
+            //획득
+            resultBettv.setText("획득하였습니다.");
+        }else{
+            //도전중
+            resultBettv.setText("도전중입니다.");
         }
+        ////// 여기 실패해서 미획득 일때 구현하기
+
+
 
     }
 

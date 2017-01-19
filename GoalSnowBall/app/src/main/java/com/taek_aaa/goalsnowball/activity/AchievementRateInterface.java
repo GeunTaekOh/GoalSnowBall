@@ -17,7 +17,7 @@ public interface AchievementRateInterface {
 
     void drawBettingGold();
 
-    void drawBettingResult(String str) throws Exception;
+    void drawBettingResult();
 
     void drawDue() throws Exception;
 }
