@@ -122,8 +122,11 @@ public class TodayAchievementRateActivity extends Activity implements Achievemen
     }
 
     public void drawDue() throws Exception{
-
-
+        /*CalendarDatas calendarDatas = new CalendarDatas();
+        //남은시간 타이머.
+        //00:00:00 이 밤 12시
+        CountDown countDown = new CountDown(600000,100);
+        countDown.start();*/
     }
 
 }

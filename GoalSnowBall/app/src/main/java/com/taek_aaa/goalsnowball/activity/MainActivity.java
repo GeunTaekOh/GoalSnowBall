@@ -28,13 +28,16 @@ import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.controller.PictureController;
+import com.taek_aaa.goalsnowball.data.CalendarDatas;
 import com.taek_aaa.goalsnowball.data.GoalDataSet;
 import com.taek_aaa.goalsnowball.dialog.MonthGoalDialog;
 import com.taek_aaa.goalsnowball.dialog.TodayGoalDialog;
 import com.taek_aaa.goalsnowball.dialog.WeekGoalDialog;
 
-import java.util.Calendar;
 import java.util.GregorianCalendar;
+
+import static com.taek_aaa.goalsnowball.data.CalendarDatas.dayOfWeekArray;
+import static com.taek_aaa.goalsnowball.data.CalendarDatas.endOfMonth;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -53,10 +56,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static String[] categoryPhysicalArrays = {"개", "쪽", "권", ""};
     public static String[] categoryTimeArrays = {"이상", "이하"};
     public static float defaultHeight, defaultWidth;
-    Calendar today;
+    /*Calendar today;
     int cYear, hMonth, cMonth, cdate, dayOfWeekIndex;
     public static String[] dayOfWeekArray = {"", "일", "월", "화", "수", "목", "금", "토"};
-    public static int[] endOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    public static int[] endOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};*/
     PictureController pictureController;
 
     @Override
@@ -66,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         goalDataSet = new GoalDataSet();
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -330,22 +334,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 오늘쪽 상단의 디데이를 출력
      **/
     public void drawDDay() {
+        CalendarDatas calendarData = new CalendarDatas();
+        int cYear = calendarData.cYear;
+        int hMonth = calendarData.hMonth;
+        int cMonth = calendarData.cMonth;
+        int cdate = calendarData.cdate;
+        int dayOfWeekIndex = calendarData.dayOfWeekIndex;
+
         dDayWeektv = (TextView) findViewById(R.id.d_week);
         dDayMonthtv = (TextView) findViewById(R.id.d_month);
-        today = Calendar.getInstance();
-        cYear = today.get(Calendar.YEAR);
-        hMonth = today.get(Calendar.MONTH) + 1;
-        cMonth = today.get(Calendar.MONTH);
-        cdate = today.get(Calendar.DAY_OF_MONTH);
-        dayOfWeekIndex = today.get(Calendar.DAY_OF_WEEK);
-        Log.e("qq", "" + today);
-        Log.e("qq", "" + cYear);
-        Log.e("qq", "" + hMonth);
-        Log.e("qq", "" + cMonth);
-        Log.e("qq", "" + cdate);
-        Log.e("qq", "" + dayOfWeekArray[dayOfWeekIndex]);
 
-        switch (dayOfWeekIndex) {
+        Log.e("qq", "" + calendarData.today);
+        Log.e("qq", "" + calendarData.cYear);
+        Log.e("qq", "" + calendarData.hMonth);
+        Log.e("qq", "" + calendarData.cMonth);
+        Log.e("qq", "" + calendarData.cdate);
+        Log.e("qq", "" + dayOfWeekArray[calendarData.dayOfWeekIndex]);
+
+        switch (calendarData.dayOfWeekIndex) {
             case 1:
                 dDayWeektv.setText("이번주   D - 1");
                 break;
@@ -379,7 +385,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 boolean tempBoolean;
                 int tmp1;
                 tmp1 = endOfMonth[cMonth] - cdate;
-                tempBoolean = isYoonYear(cYear);
+                tempBoolean = calendarData.isYoonYear(cYear);
                 if (tempBoolean == true) {
                     dDayMonthtv.setText("이번달  D - " + "" + (tmp1 + 1));
                     Log.e("ttt", "" + tempBoolean);
