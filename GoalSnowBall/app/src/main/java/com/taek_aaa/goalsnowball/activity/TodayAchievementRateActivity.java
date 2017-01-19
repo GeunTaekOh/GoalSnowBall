@@ -1,7 +1,9 @@
 package com.taek_aaa.goalsnowball.activity;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +21,7 @@ public class TodayAchievementRateActivity extends Activity implements Achievemen
 
     TextView achievementStringtv, achievementAmounttv, currentAmounttv, percentAmounttv, remainAmounttv, betAmounttv, resultBettv, dueTv;
     String typeOfContents;
+    ProgressBar progressBar;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,7 @@ public class TodayAchievementRateActivity extends Activity implements Achievemen
         betAmounttv = (TextView) findViewById(R.id.betTodayAchievementAmount);
         resultBettv = (TextView) findViewById(R.id.resultBetTodayAchievementAmount);
         dueTv = (TextView) findViewById(R.id.dueTodayAchievementAmount);
+        progressBar = (ProgressBar)findViewById(R.id.progressbar);
     }
 
     public void drawGoal() {
@@ -84,15 +88,35 @@ public class TodayAchievementRateActivity extends Activity implements Achievemen
             throw new Exception();
         }
     }
-
-    //오픈소스 그래프 써보기
+    
     public void drawPercent(String type) throws Exception {
+        double result;
+        int goal = goalDataSet.getAmountToday();
+        int current;
+
         if (type.equals("물리적양")) {
-
+            progressBar.setMax(goalDataSet.getAmountToday());
+            progressBar.setProgress(goalDataSet.getCurrentAmountToday());
+            progressBar.setVisibility(ProgressBar.VISIBLE);
+            current = goalDataSet.getCurrentAmountToday();
         } else if (type.equals("시간적양")) {
-
+            progressBar.setMax(goalDataSet.getAmountToday());
+            progressBar.setProgress(goalDataSet.getCurrentMinuteToday());
+            progressBar.setVisibility(ProgressBar.VISIBLE);
+            current = goalDataSet.getCurrentMinuteToday();
         } else {
+            current=0;
+            goal=10;
             throw new Exception();
+        }
+
+        result = (double) current / (double) goal * 100;
+        result = Double.parseDouble(String.format("%.1f", result));
+        if (result == 100.0) {
+            percentAmounttv.setText("" + result + "%");
+            percentAmounttv.setTextColor(Color.GREEN);
+        }else{
+            percentAmounttv.setText("" + result + "%");
         }
     }
 

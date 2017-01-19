@@ -79,9 +79,17 @@
                 android:layout_height="wrap_content"
                 android:text="달성률 : " />
 
+            <ProgressBar
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/progressbar"
+                android:layout_margin="10dp"
+                style="?android:attr/progressBarStyleHorizontal"
+                />
+
             <TextView
                 android:id="@+id/PercenttodayAchievementAmount"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center" />
 
