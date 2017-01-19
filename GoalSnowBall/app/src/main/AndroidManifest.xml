@@ -26,6 +26,7 @@
         <activity android:name=".activity.TodayGoalDoingActivity" />
         <activity android:name=".activity.WeekGoalDoingActivity"/>
         <activity android:name=".activity.MonthGoalDoingActivity"/>
+        <activity android:name=".activity.TodayAchievementRateActivity"/>
     </application>
 
 </manifest>

@@ -1,0 +1,129 @@
+package com.taek_aaa.goalsnowball.activity;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.taek_aaa.goalsnowball.R;
+
+import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryPhysicalArrays;
+import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryTimeArrays;
+import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
+
+/**
+ * Created by taek_aaa on 2017. 1. 19..
+ */
+
+public class TodayAchievementRateActivity extends Activity implements AchievementRateInterface {
+
+    TextView achievementStringtv, achievementAmounttv, currentAmounttv, percentAmounttv, remainAmounttv, betAmounttv, resultBettv, dueTv;
+    String typeOfContents;
+
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_today_achievement);
+
+        init();
+
+        if (goalDataSet.getTypeToday().equals("물리적양")) {
+            typeOfContents = "물리적양";
+        } else if (goalDataSet.getTypeToday().equals("시간적양")) {
+            typeOfContents = "시간적양";
+        } else {
+            typeOfContents = "error";
+        }
+        try {
+            drawGoal();
+            drawGoalAmount(typeOfContents);
+            drawCurrentAmount(typeOfContents);
+            drawPercent(typeOfContents);
+            drawRemainAmount(typeOfContents);
+            drawBettingGold();
+            drawBettingResult(typeOfContents);
+            drawDue();
+        } catch (Exception e) {
+            Toast.makeText(getBaseContext(), "오늘의 목표를 먼저 입력하세요.", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
+    }
+
+    public void init() {
+        achievementStringtv = (TextView) findViewById(R.id.goalTodayAchievement);
+        achievementAmounttv = (TextView) findViewById(R.id.goalTodayAchievementAmount);
+        currentAmounttv = (TextView) findViewById(R.id.currentTodayAchievementAmount);
+        percentAmounttv = (TextView) findViewById(R.id.PercenttodayAchievementAmount);
+        remainAmounttv = (TextView) findViewById(R.id.remainTodayAchievementAmount);
+        betAmounttv = (TextView) findViewById(R.id.betTodayAchievementAmount);
+        resultBettv = (TextView) findViewById(R.id.resultBetTodayAchievementAmount);
+        dueTv = (TextView) findViewById(R.id.dueTodayAchievementAmount);
+    }
+
+    public void drawGoal() {
+        achievementStringtv.setText("" + goalDataSet.getTodayGoal());
+    }
+
+    public void drawGoalAmount(String type) throws Exception{
+        if (type.equals("물리적양")) {
+            achievementAmounttv.setText("" + goalDataSet.getAmountToday() + "" + categoryPhysicalArrays[goalDataSet.getUnitToday()]);
+        } else if (type.equals("시간적양")) {
+            achievementAmounttv.setText("" + goalDataSet.getAmountToday() + "분 " + categoryTimeArrays[goalDataSet.getUnitToday()]);
+        } else {
+            throw new Exception();
+        }
+    }
+
+    public void drawCurrentAmount(String type) throws Exception{
+        if (type.equals("물리적양")) {
+            currentAmounttv.setText("" + goalDataSet.getCurrentAmountToday() + "" + categoryPhysicalArrays[goalDataSet.getUnitToday()]);
+        } else if (type.equals("시간적양")) {
+            currentAmounttv.setText("" + goalDataSet.getCurrentMinuteToday() + "분");
+        } else {
+            throw new Exception();
+        }
+    }
+
+    //오픈소스 그래프 써보기
+    public void drawPercent(String type) throws Exception {
+        if (type.equals("물리적양")) {
+
+        } else if (type.equals("시간적양")) {
+
+        } else {
+            throw new Exception();
+        }
+    }
+
+    public void drawRemainAmount(String type) throws Exception {
+        if (type.equals("물리적양")) {
+            remainAmounttv.setText("" + (goalDataSet.getAmountToday() - goalDataSet.getCurrentAmountToday()) + "" + categoryPhysicalArrays[goalDataSet.getUnitToday()]);
+        } else if (type.equals("시간적양")) {
+            remainAmounttv.setText("" + (goalDataSet.getAmountToday() - goalDataSet.getCurrentMinuteToday()) + "분");
+        } else {
+            throw new Exception();
+        }
+    }
+
+    public void drawBettingGold()  {
+        betAmounttv.setText(""+goalDataSet.getBettingGoldToday()+" Gold");
+    }
+
+    public void drawBettingResult(String type) throws Exception {
+        if (type.equals("물리적양")) {
+
+        } else if (type.equals("시간적양")) {
+
+        } else {
+            throw new Exception();
+        }
+
+    }
+
+    public void drawDue() throws Exception{
+
+
+    }
+
+}

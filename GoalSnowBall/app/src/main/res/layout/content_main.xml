@@ -252,7 +252,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="0" />
+                    android:text="0"
+                    android:onClick="onClickRate"
+                    />
 
                 <TextView
                     android:id="@+id/percentWeek"
@@ -260,7 +262,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="0" />
+                    android:text="0"
+                    android:onClick="onClickRate"
+                    />
 
                 <TextView
                     android:id="@+id/percentMonth"
@@ -268,7 +272,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="0" />
+                    android:text="0"
+                    android:onClick="onClickRate"
+                    />
             </LinearLayout>
 
         </RelativeLayout>

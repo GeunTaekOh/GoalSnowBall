@@ -21,7 +21,7 @@ import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
  * Created by taek_aaa on 2017. 1. 14..
  */
 
-public class MonthGoalDialog extends Dialog implements View.OnClickListener {
+public class MonthGoalDialog extends Dialog implements View.OnClickListener, GoalDialogInterface {
     EditText editTextContents, editTextAmonut, bettingGoldMonthet;
     String textContents;
     TextView title;

@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
-import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -29,7 +28,6 @@ import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.controller.PictureController;
-import com.taek_aaa.goalsnowball.data.DBData;
 import com.taek_aaa.goalsnowball.data.GoalDataSet;
 import com.taek_aaa.goalsnowball.dialog.MonthGoalDialog;
 import com.taek_aaa.goalsnowball.dialog.TodayGoalDialog;
@@ -37,7 +35,6 @@ import com.taek_aaa.goalsnowball.dialog.WeekGoalDialog;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -45,11 +42,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Bitmap photo;
     public static LayoutInflater inflater;
     ImageView imageView;
-    public static int viewHeight = 700;        //원하는 뷰의 높이
+    public static int viewHeight = 700;        //원하는 뷰의 높이(해상도)
     Boolean isPicture = false;
     TextView todaytv, weektv, monthtv, dDayWeektv, dDayMonthtv, mainGoldtv, percentToday, percentWeek, percentMonth;
     public static GoalDataSet goalDataSet;
-    public static LinkedList<DBData> llDBData = new LinkedList<DBData>();
+    //public static LinkedList<DBData> llDBData = new LinkedList<DBData>();
     TodayGoalDialog todayGoalDialog;
     WeekGoalDialog weekGoalDialog;
     MonthGoalDialog monthGoalDialog;
@@ -60,8 +57,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     int cYear, hMonth, cMonth, cdate, dayOfWeekIndex;
     public static String[] dayOfWeekArray = {"", "일", "월", "화", "수", "목", "금", "토"};
     public static int[] endOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    SoundPool soundPoolMain;
-    int tuneMain;
     PictureController pictureController;
 
     @Override
@@ -100,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onRestart() {
         super.onRestart();
-
         mainGoldtv.setText("" + goalDataSet.getTotalGold() + "Gold");
         drawTodayPercent();
         drawWeekPercent();
@@ -184,7 +178,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      **/
     protected void pictureSetToImageView(Intent data) {
         try {
-            //  PictureController pictureController = new PictureController();
             Uri uri = data.getData();
             String uriPath = uri.getPath();
             Log.e("test", uriPath);
@@ -226,6 +219,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 monthGoalDialog.show();
                 break;
         }
+    }
+    /** 달성률 클릭 시 **/
+    public void onClickRate(View v) {
+        switch (v.getId()){
+            case R.id.percentToday :
+                startActivity(new Intent(this, TodayAchievementRateActivity.class));
+                break;
+            case R.id.percentWeek :
+                break;
+            case R.id.percentMonth :
+                break;
+        }
+
     }
 
     /**
@@ -442,6 +448,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return gr.isLeapYear(year);
     }
 
+    /**
+     * 오늘 목표 달성률 출력
+     **/
     public void drawTodayPercent() {
         double result;
         int goal = goalDataSet.getAmountToday();
@@ -470,6 +479,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    /**
+     * 이번주 목표 달성률 출력
+     **/
     public void drawWeekPercent() {
         double result;
         int goal = goalDataSet.getAmountWeek();
@@ -495,6 +507,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /**
+     * 이번달 목표 달성률 출력
+     **/
     public void drawMonthPercent() {
         double result;
         int goal = goalDataSet.getAmountMonth();
@@ -521,6 +536,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /**
+     * init
+     **/
     public void init() {
         goalDataSet.setCurrentAmountToday(0);   //나중에 디비로구현하면 삭제하기
         goalDataSet.setCurrentMinuteToday(0);   //나중에 디비로구현하면 삭제하기
@@ -535,9 +553,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         percentWeek = (TextView) findViewById(R.id.percentWeek);
         percentMonth = (TextView) findViewById(R.id.percentMonth);
 
+
     }
 
-
+    /**
+     * 컨텍스트 메뉴
+     **/
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         // 컨텍스트 메뉴가 최초로 한번만 호출되는 콜백 메서드
@@ -551,6 +572,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /**
+     * 컨텍스트 메뉴에서 아이템 선택
+     **/
     public boolean onContextItemSelected(MenuItem item) {
         // 롱클릭했을 때 나오는 context Menu 의 항목을 선택(클릭) 했을 때 호출
 
@@ -564,19 +588,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
 
             case 2:// 사진 회전
-                if(isPicture==true) {
+                if (isPicture == true) {
                     Bitmap rotatedPicture;
                     rotatedPicture = pictureController.rotate(photo, 90);
                     photo = rotatedPicture;
                     imageView = (ImageView) findViewById(R.id.mainImageView);
                     imageView.setImageBitmap(rotatedPicture);
                     return true;
-                }else{
+                } else {
                     Toast.makeText(this, "기본 이미지는 회전을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
                     return true;
                 }
         }
-
         return super.onContextItemSelected(item);
     }
 

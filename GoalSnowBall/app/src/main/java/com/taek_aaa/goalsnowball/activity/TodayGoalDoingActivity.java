@@ -25,7 +25,7 @@ import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.whereSuccess;
  * Created by taek_aaa on 2017. 1. 15..
  */
 
-public class TodayGoalDoingActivity extends Activity {
+public class TodayGoalDoingActivity extends Activity implements GoalDoingInterface{
 
     TextView doingGoalTodaytv;
     EditText amountOfEdit;
