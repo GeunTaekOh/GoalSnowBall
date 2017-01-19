@@ -7,6 +7,6 @@ import android.view.View;
  */
 
 public interface GoalDialogInterface {
-    public void onClick(View view);
-    public void init();
+    void onClick(View view);
+    void init();
 }

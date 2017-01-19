@@ -88,7 +88,7 @@ public class TodayAchievementRateActivity extends Activity implements Achievemen
             throw new Exception();
         }
     }
-    
+
     public void drawPercent(String type) throws Exception {
         double result;
         int goal = goalDataSet.getAmountToday();
@@ -105,8 +105,6 @@ public class TodayAchievementRateActivity extends Activity implements Achievemen
             progressBar.setVisibility(ProgressBar.VISIBLE);
             current = goalDataSet.getCurrentMinuteToday();
         } else {
-            current=0;
-            goal=10;
             throw new Exception();
         }
 

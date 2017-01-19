@@ -7,10 +7,6 @@ import android.view.View;
  */
 
 public interface GoalDoingInterface {
-    public void saveCurrentAmountToEditText();
-    public void onClick(View v);
-    public void onClickSaveBtnGoal(View v);
-    public void onClickTimerStartbtn(View v);
-    public void onClickTimerEndbtn(View v);
-
+    void saveCurrentAmountToEditText();
+    void onClick(View v);
 }
