@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     final static int WEEK = 100002;
     final static int MONTH = 1000003;
     DBManager dbmanager;
-    UserDBManager userDBManager;
+    UserDBManager userDBManager ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +99,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onRestart() {
         super.onRestart();
-        mainGoldtv.setText("" + goalDataSet.getTotalGold() + "Gold");
+        //mainGoldtv.setText("" + goalDataSet.getTotalGold() + "Gold");
+        mainGoldtv.setText("" +userDBManager.getGold() + "Gold");
         drawTodayPercent();
         drawWeekPercent();
         drawMonthPercent();
@@ -475,15 +476,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         goalDataSet.setTypeWeek("");
         goalDataSet.setTypeMonth("");
 
-        userDBManager = new UserDBManager(getBaseContext(), "userInfo.db", null, 1);
+        userDBManager = new UserDBManager(getBaseContext(), "user.db",null,1);
         dbmanager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
+        userDBManager.insert("브론즈", "userName",10, "null");
 
         mainGoldtv = (TextView) findViewById(R.id.mainGoldtv);
-        mainGoldtv.setText("" + goalDataSet.getTotalGold() + "Gold");
+        //mainGoldtv.setText("" + goalDataSet.getTotalGold() + "Gold");
+        mainGoldtv.setText("" +userDBManager.getGold() + "Gold");
         percentToday = (TextView) findViewById(R.id.percentToday);
         percentWeek = (TextView) findViewById(R.id.percentWeek);
         percentMonth = (TextView) findViewById(R.id.percentMonth);
-        userDBManager.initUserDB("브론즈", "userName", 10, "");
+
     }
 
     /**

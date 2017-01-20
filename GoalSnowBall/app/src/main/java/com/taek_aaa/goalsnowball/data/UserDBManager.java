@@ -27,7 +27,7 @@ public class UserDBManager extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void initUserDB(String grade, String name, int gold, String picturePath) {
+    public void insert(String grade, String name, int gold, String picturePath) {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("INSERT INTO userInfo VALUES(NULL, '" + grade + "', '" + name + "', " + gold + ", '" + picturePath + "');");
         db.close();
@@ -81,8 +81,9 @@ public class UserDBManager extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM userInfo", null);
         int gold=0;
         while (cursor.moveToNext()) {
-            gold = cursor.getInt(cursor.getColumnIndex("grade"));
-            Log.e("qwe", String.valueOf(gold));
+            gold = cursor.getInt(cursor.getColumnIndex("gold"));
+            Log.e("qwe", "gold : "+String.valueOf(gold));
+
         }
         return gold;
     }
