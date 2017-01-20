@@ -19,6 +19,7 @@ public class UserDBManager extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE userInfo (_id INTEGER PRIMARY KEY AUTOINCREMENT, grade TEXT , name TEXT, gold INTEGER, picturePath TEXT);");
+        db.execSQL("INSERT INTO userInfo VALUES(NULL, '" + "브론즈" + "', '" + "userName" + "', " + 10 + ", '" + "null" + "');");
     }
 
     @Override
@@ -35,24 +36,28 @@ public class UserDBManager extends SQLiteOpenHelper {
 
     public void setGrade(String str) {
         SQLiteDatabase db = getReadableDatabase();
-        db.execSQL("UPDATE userInfo SET grade='"+str+"'+ WHERE grade);");
+        String sql =  "UPDATE userInfo SET grade="+str;
+        db.execSQL(sql);
         db.close();
 
     }
     public void setName(String str){
         SQLiteDatabase db = getReadableDatabase();
-        db.execSQL("UPDATE userInfo SET name='"+str+"'+ WHERE name);");
+        String sql =  "UPDATE userInfo SET name="+str;
+        db.execSQL(sql);
         db.close();
 
     }
-    public void setGold(int gold){
+    public void setGold(int gd){
         SQLiteDatabase db = getReadableDatabase();
-        db.execSQL("UPDATE userInfo SET gold="+gold+"+ WHERE gold);");
+        String sql =  "UPDATE userInfo SET gold="+gd;
+        db.execSQL(sql);
         db.close();
     }
     public void setPicturePath(String str){
         SQLiteDatabase db = getReadableDatabase();
-        db.execSQL("UPDATE userInfo SET picturePath='"+str+"'+ WHERE picturePath);");
+        String sql =  "UPDATE userInfo SET picturePath="+str;
+        db.execSQL(sql);
         db.close();
     }
 

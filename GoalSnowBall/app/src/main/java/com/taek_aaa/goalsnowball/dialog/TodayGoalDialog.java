@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.data.UserDBManager;
 
 import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
 
@@ -31,6 +32,7 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener, Goa
     int checkedId;
     int default_radioButton_id_today;
     int bettinggold;
+    UserDBManager userDBManager;
 
     public TodayGoalDialog(Context context) {
         super(context);
@@ -76,7 +78,7 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener, Goa
                 Log.e("test", "" + checkedId);
                 try {
 
-                    bettinggold = goalDataSet.getTotalGold() / 2;
+                    bettinggold = userDBManager.getGold() / 2;
                     if (Integer.parseInt(bettingGoldTodayet.getText().toString()) > bettinggold) {
                         Toast.makeText(getContext(), "배팅액은 총 보유 골드의 절반을 넘을 수 없습니다.", Toast.LENGTH_SHORT).show();
                     } else {
@@ -97,7 +99,7 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener, Goa
                         goalDataSet.setAmountToday(textAmount);
                         goalDataSet.setTodayGoal(textContents);
 
-                        if (goalDataSet.isTodayGoal == true) {
+                        if (goalDataSet.isTodayGoal) {
                             title.setText("오늘의 목표를 수정하세요.");
                             editTextContents.setHint("목표를 수정하세요.");
                         } else {
@@ -122,6 +124,7 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener, Goa
     }
 
     public void init() {
+        userDBManager = new UserDBManager(getContext(), "user.db",null,1);
         editTextContents = (EditText) findViewById(R.id.todayDialogEditText);
         findViewById(R.id.todayDialogConfirmButton).setOnClickListener(this);
         findViewById(R.id.todayDialogExitButton).setOnClickListener(this);
@@ -136,7 +139,7 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener, Goa
         default_radioButton_id_today = physicalRadio.getId();
         checkedId = radioGroup.getCheckedRadioButtonId();
         bettingGoldTodayet = (EditText) findViewById(R.id.bettingGoldToday);
-        bettinggold = goalDataSet.getTotalGold() / 2;
+        bettinggold = userDBManager.getGold()/ 2;
         bettingGoldTodayet.setText("" + bettinggold);
     }
 }

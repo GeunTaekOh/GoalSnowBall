@@ -99,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onRestart() {
         super.onRestart();
-        //mainGoldtv.setText("" + goalDataSet.getTotalGold() + "Gold");
         mainGoldtv.setText("" +userDBManager.getGold() + "Gold");
         drawTodayPercent();
         drawWeekPercent();
@@ -478,10 +477,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         userDBManager = new UserDBManager(getBaseContext(), "user.db",null,1);
         dbmanager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
-        userDBManager.insert("브론즈", "userName",10, "null");
+        //userDBManager.insert("브론즈", "userName",10, "null");
 
         mainGoldtv = (TextView) findViewById(R.id.mainGoldtv);
-        //mainGoldtv.setText("" + goalDataSet.getTotalGold() + "Gold");
         mainGoldtv.setText("" +userDBManager.getGold() + "Gold");
         percentToday = (TextView) findViewById(R.id.percentToday);
         percentWeek = (TextView) findViewById(R.id.percentWeek);

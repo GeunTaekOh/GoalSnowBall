@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.data.UserDBManager;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryPhysicalArrays;
@@ -43,7 +44,7 @@ public class TodayGoalDoingActivity extends Activity implements GoalDoingInterfa
     TextView blackboardtv, timeOfCurrenttv, successGetGoldtv;
     static int tmpAmount;
     SuccessDialog successDialog;
-
+    UserDBManager userDBManager ;
 
 
     @Override
@@ -73,6 +74,7 @@ public class TodayGoalDoingActivity extends Activity implements GoalDoingInterfa
                 timeOfCurrenttv.setText("수행 시간 : " + goalDataSet.getCurrentAmountToday() + "분");
                 isAmount = false;
             }
+            userDBManager = new UserDBManager(getBaseContext(), "user.db",null,1);
             successGetGoldtv = (TextView) findViewById(R.id.successGetGoldtv);
             successGetGoldtv.setText("성공시 획득 골드 : " + "" + goalDataSet.getBettingGoldToday() + "Gold");
             blackboardtv = (TextView) findViewById(R.id.doing_goalAmount_today);
@@ -140,8 +142,11 @@ public class TodayGoalDoingActivity extends Activity implements GoalDoingInterfa
         //물리적양 일때 성공하면
         if (goalDataSet.getAmountToday() <= goalDataSet.getCurrentAmountToday()) {
             whereSuccess = SUCCESS_FROM_TODAY;
-            int a = (goalDataSet.getBettingGoldToday()) + (goalDataSet.getTotalGold());
-            goalDataSet.setTotalGold(a);
+            //int a = (goalDataSet.getBettingGoldToday()) + (goalDataSet.getTotalGold());
+            int a = (goalDataSet.getBettingGoldToday()) + (userDBManager.getGold());
+            //goalDataSet.setTotalGold(a);
+            userDBManager.setGold(a);
+
 
             successDialog = new SuccessDialog(this);
             successDialog.show();
@@ -219,8 +224,10 @@ public class TodayGoalDoingActivity extends Activity implements GoalDoingInterfa
         else if ((goalDataSet.getUnitToday() == 0) && (goalDataSet.getCurrentAmountToday() >= goalDataSet.getAmountToday())) {  //이상이고 성공하면
             whereSuccess = SUCCESS_FROM_TODAY;
 
-            int a = (goalDataSet.getBettingGoldToday()) + (goalDataSet.getTotalGold());
-            goalDataSet.setTotalGold(a);
+ //           int a = (goalDataSet.getBettingGoldToday()) + (goalDataSet.getTotalGold());
+            int a = (goalDataSet.getBettingGoldToday()) + (userDBManager.getGold());
+            //goalDataSet.setTotalGold(a);
+            userDBManager.setGold(a);
 
             successDialog = new SuccessDialog(this);
             successDialog.show();

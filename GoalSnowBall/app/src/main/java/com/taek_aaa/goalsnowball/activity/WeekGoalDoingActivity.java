@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.data.UserDBManager;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryPhysicalArrays;
@@ -43,6 +44,7 @@ public class WeekGoalDoingActivity extends Activity implements GoalDoingInterfac
     TextView blackboardtv, timeOfCurrenttv, successGetGoldtv;
     static int tmpAmount;
     SuccessDialog successDialog;
+    UserDBManager userDBManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +74,7 @@ public class WeekGoalDoingActivity extends Activity implements GoalDoingInterfac
                 timeOfCurrenttv.setText("수행 시간 : " + goalDataSet.getCurrentAmountWeek() + "분");
                 isAmount = false;
             }
-
+            userDBManager = new UserDBManager(getBaseContext(), "user.db",null,1);
             successGetGoldtv = (TextView)findViewById(R.id.successGetGoldtv);
             successGetGoldtv.setText("성공시 획득 골드 : "+""+goalDataSet.getBettingGoldWeek()+"Gold");
             blackboardtv = (TextView) findViewById(R.id.doing_goalAmount_week);
@@ -136,8 +138,10 @@ public class WeekGoalDoingActivity extends Activity implements GoalDoingInterfac
         //물리적양 일때 성공하면
         if (goalDataSet.getAmountWeek() <= goalDataSet.getCurrentAmountWeek()) {
             whereSuccess=SUCCESS_FROM_WEEK;
-            int a = (goalDataSet.getBettingGoldWeek()) + (goalDataSet.getTotalGold());
-            goalDataSet.setTotalGold(a);
+            //int a = (goalDataSet.getBettingGoldWeek()) + (goalDataSet.getTotalGold());
+            int a = (goalDataSet.getBettingGoldWeek()) + (userDBManager.getGold());
+            //goalDataSet.setTotalGold(a);
+            userDBManager.setGold(a);
             successDialog = new SuccessDialog(this);
             successDialog.show();
             isSuccessWeek = true;
@@ -211,8 +215,8 @@ public class WeekGoalDoingActivity extends Activity implements GoalDoingInterfac
         if((goalDataSet.getUnitWeek()==0) && (goalDataSet.getCurrentAmountWeek()>=goalDataSet.getAmountWeek())){  //이상이고 성공하면
             whereSuccess=SUCCESS_FROM_WEEK;
 
-            int a = (goalDataSet.getBettingGoldWeek()) + (goalDataSet.getTotalGold());
-            goalDataSet.setTotalGold(a);
+            int a = (goalDataSet.getBettingGoldWeek()) + (userDBManager.getGold());
+            userDBManager.setGold(a);
 
             successDialog = new SuccessDialog(this);
             successDialog.show();

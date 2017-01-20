@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.data.UserDBManager;
 
 import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
 
@@ -31,13 +32,13 @@ public class MonthGoalDialog extends Dialog implements View.OnClickListener, Goa
     int checkedId;
     int dafault_radioButton_id_month;
     int bettinggold;
+    UserDBManager userDBManager;
 
     public MonthGoalDialog(Context context) {
         super(context);
         setContentView(R.layout.dialog_monthgoal);
 
         init();
-
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -75,7 +76,7 @@ public class MonthGoalDialog extends Dialog implements View.OnClickListener, Goa
             case R.id.monthDialogConfirmButton:
                 Log.e("test", "" + checkedId);
                 try {
-                    bettinggold = goalDataSet.getTotalGold() * 2;
+                    bettinggold = userDBManager.getGold() * 2;
 
                     if (Integer.parseInt(bettingGoldMonthet.getText().toString()) > bettinggold) {
                         Toast.makeText(getContext(), "배팅액은 총 보유 골드의 2배를 넘을 수 없습니다.", Toast.LENGTH_SHORT).show();
@@ -96,7 +97,7 @@ public class MonthGoalDialog extends Dialog implements View.OnClickListener, Goa
                         goalDataSet.setAmountMonth(textAmount);
                         goalDataSet.setMonthGoal(textContents);
 
-                        if (goalDataSet.isMonthGoal == true) {
+                        if (goalDataSet.isMonthGoal) {
                             title.setText("이번달의 목표를 수정하세요.");
                             editTextContents.setHint("목표를 수정하세요.");
                         } else {
@@ -121,6 +122,7 @@ public class MonthGoalDialog extends Dialog implements View.OnClickListener, Goa
     }
 
     public void init() {
+        userDBManager = new UserDBManager(getContext(), "user.db",null,1);
         editTextContents = (EditText) findViewById(R.id.monthDialogEditText);
         findViewById(R.id.monthDialogConfirmButton).setOnClickListener(this);
         findViewById(R.id.monthDialogExitButton).setOnClickListener(this);
@@ -135,8 +137,9 @@ public class MonthGoalDialog extends Dialog implements View.OnClickListener, Goa
         dafault_radioButton_id_month = physicalRadio.getId();
         checkedId = radioGroup.getCheckedRadioButtonId();
         bettingGoldMonthet = (EditText) findViewById(R.id.bettingGoldMonth);
-        bettinggold = goalDataSet.getTotalGold() * 2;
+        bettinggold = userDBManager.getGold() * 2;
         bettingGoldMonthet.setText("" + bettinggold);
+
     }
 
 }

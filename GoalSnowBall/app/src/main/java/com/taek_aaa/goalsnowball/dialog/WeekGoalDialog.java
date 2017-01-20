@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.data.UserDBManager;
 
 import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
 
@@ -31,6 +32,7 @@ public class WeekGoalDialog extends Dialog implements View.OnClickListener, Goal
     int checkedId;
     int default_radioButton_id_week;
     int bettinggold;
+    UserDBManager userDBManager;
 
     public WeekGoalDialog(Context context) {
         super(context);
@@ -76,7 +78,7 @@ public class WeekGoalDialog extends Dialog implements View.OnClickListener, Goal
                 Log.e("test", "" + checkedId);
                 try {
 
-                    bettinggold = goalDataSet.getTotalGold();
+                    bettinggold = userDBManager.getGold();
 
                     if (Integer.parseInt(bettingGoldWeeket.getText().toString()) > bettinggold) {
                         Toast.makeText(getContext(), "배팅액은 총 보유 골드량을 넘을 수 없습니다.", Toast.LENGTH_SHORT).show();
@@ -99,7 +101,7 @@ public class WeekGoalDialog extends Dialog implements View.OnClickListener, Goal
                         goalDataSet.setAmountWeek(textAmount);
                         goalDataSet.setWeekGoal(textContents);
 
-                        if (goalDataSet.isWeekGoal == true) {
+                        if (goalDataSet.isWeekGoal) {
                             title.setText("이번주의 목표를 수정하세요.");
                             editTextContents.setHint("목표를 수정하세요.");
                         } else {
@@ -124,6 +126,7 @@ public class WeekGoalDialog extends Dialog implements View.OnClickListener, Goal
     }
 
     public void init() {
+        userDBManager = new UserDBManager(getContext(), "user.db",null,1);
         editTextContents = (EditText) findViewById(R.id.weekDialogEditText);
         findViewById(R.id.weekDialogConfirmButton).setOnClickListener(this);
         findViewById(R.id.weekDialogExitButton).setOnClickListener(this);
@@ -138,7 +141,7 @@ public class WeekGoalDialog extends Dialog implements View.OnClickListener, Goal
         default_radioButton_id_week = physicalRadio.getId();
         checkedId = radioGroup.getCheckedRadioButtonId();
         bettingGoldWeeket = (EditText) findViewById(R.id.bettingGoldWeek);
-        bettinggold = goalDataSet.getTotalGold();
+        bettinggold = userDBManager.getGold();
         bettingGoldWeeket.setText("" + bettinggold);
     }
 }

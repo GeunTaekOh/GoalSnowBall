@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.data.UserDBManager;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryPhysicalArrays;
@@ -42,6 +43,7 @@ public class MonthGoalDoingActivity extends Activity implements GoalDoingInterfa
     TextView blackboardtv, timeOfCurrenttv, successGetGoldtv;
     static int tmpAmount;
     SuccessDialog successDialog;
+    UserDBManager userDBManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +69,7 @@ public class MonthGoalDoingActivity extends Activity implements GoalDoingInterfa
                 timeOfCurrenttv.setText("수행 시간 : " + goalDataSet.getCurrentAmountMonth() + "분");
                 isAmount = false;
             }
-
+            userDBManager = new UserDBManager(getBaseContext(), "user.db",null,1);
             successGetGoldtv = (TextView) findViewById(R.id.successGetGoldtv);
             successGetGoldtv.setText("성공시 획득 골드 : " + "" + goalDataSet.getBettingGoldMonth() + "Gold");
             blackboardtv = (TextView) findViewById(R.id.doing_goalAmount_month);
@@ -132,8 +134,8 @@ public class MonthGoalDoingActivity extends Activity implements GoalDoingInterfa
         //물리적양 일때 성공하면
         if (goalDataSet.getAmountMonth() <= goalDataSet.getCurrentAmountMonth()) {
             whereSuccess = SUCCESS_FROM_MONTH;
-            int a = (goalDataSet.getBettingGoldMonth()) + (goalDataSet.getTotalGold());
-            goalDataSet.setTotalGold(a);
+            int a = (goalDataSet.getBettingGoldMonth()) + (userDBManager.getGold());
+            userDBManager.setGold(a);
 
             successDialog = new SuccessDialog(this);
             successDialog.show();
@@ -208,8 +210,8 @@ public class MonthGoalDoingActivity extends Activity implements GoalDoingInterfa
         }
         if ((goalDataSet.getUnitMonth() == 0) && (goalDataSet.getCurrentAmountMonth() >= goalDataSet.getAmountMonth())) {  //이상이고 성공하면
             whereSuccess = SUCCESS_FROM_MONTH;
-            int a = (goalDataSet.getBettingGoldMonth()) + (goalDataSet.getTotalGold());
-            goalDataSet.setTotalGold(a);
+            int a = (goalDataSet.getBettingGoldMonth()) + (userDBManager.getGold());
+            userDBManager.setGold(a);
             successDialog = new SuccessDialog(this);
             successDialog.show();
             isSuccessMonth = true;
