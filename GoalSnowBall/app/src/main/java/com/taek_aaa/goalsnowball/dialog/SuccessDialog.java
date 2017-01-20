@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.data.DBManager;
 
 import static android.media.AudioManager.STREAM_MUSIC;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
@@ -32,9 +33,12 @@ public class SuccessDialog extends Dialog {
     SoundPool soundPool;
     int tune;
 
+    DBManager dbManager;
+
     public SuccessDialog(Context context) {
         super(context);
         setContentView(R.layout.dialog_success);
+        dbManager = new DBManager(getContext(), "goaldb.db", null, 1);
 
         fire = (ImageView) findViewById(R.id.fireWork);
         coin = (ImageView) findViewById(R.id.coin);

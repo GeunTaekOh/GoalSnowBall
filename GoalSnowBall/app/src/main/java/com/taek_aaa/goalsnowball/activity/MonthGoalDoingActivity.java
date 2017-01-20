@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
@@ -44,11 +45,15 @@ public class MonthGoalDoingActivity extends Activity implements GoalDoingInterfa
     static int tmpAmount;
     SuccessDialog successDialog;
     UserDBManager userDBManager;
+    DBManager dbmanager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dbmanager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
+
         try {
+
             /** 물리적 양 일때 **/
             if (goalDataSet.getTypeMonth().equals("물리적양")) {
                 setContentView(R.layout.activity_month_goal_amount_doing);

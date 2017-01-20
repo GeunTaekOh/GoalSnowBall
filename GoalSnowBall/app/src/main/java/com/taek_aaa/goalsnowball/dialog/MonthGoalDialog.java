@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
 
 import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
@@ -33,6 +34,7 @@ public class MonthGoalDialog extends Dialog implements View.OnClickListener, Goa
     int dafault_radioButton_id_month;
     int bettinggold;
     UserDBManager userDBManager;
+    DBManager dbManager;
 
     public MonthGoalDialog(Context context) {
         super(context);
@@ -123,6 +125,7 @@ public class MonthGoalDialog extends Dialog implements View.OnClickListener, Goa
 
     public void init() {
         userDBManager = new UserDBManager(getContext(), "user.db",null,1);
+        dbManager = new DBManager(getContext(), "goaldb.db", null, 1);
         editTextContents = (EditText) findViewById(R.id.monthDialogEditText);
         findViewById(R.id.monthDialogConfirmButton).setOnClickListener(this);
         findViewById(R.id.monthDialogExitButton).setOnClickListener(this);

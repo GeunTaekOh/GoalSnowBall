@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.data.DBManager;
 
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryPhysicalArrays;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryTimeArrays;
@@ -24,11 +25,14 @@ public class TodayAchievementRateActivity extends Activity implements Achievemen
     TextView achievementStringtv, achievementAmounttv, currentAmounttv, percentAmounttv, remainAmounttv, betAmounttv, resultBettv, dueTv;
     String typeOfContents;
     ProgressBar progressBar;
+    DBManager dbManager;
 
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_today_achievement);
+
+        dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
 
         init();
 

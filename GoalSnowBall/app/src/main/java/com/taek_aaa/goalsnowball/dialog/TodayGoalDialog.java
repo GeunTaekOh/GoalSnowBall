@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
 
 import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
@@ -33,11 +34,12 @@ public class TodayGoalDialog extends Dialog implements View.OnClickListener, Goa
     int default_radioButton_id_today;
     int bettinggold;
     UserDBManager userDBManager;
+    DBManager dbManager;
 
     public TodayGoalDialog(Context context) {
         super(context);
         setContentView(R.layout.dialog_todaygoal);
-
+        dbManager = new DBManager(getContext(), "goaldb.db", null, 1);
         init();
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

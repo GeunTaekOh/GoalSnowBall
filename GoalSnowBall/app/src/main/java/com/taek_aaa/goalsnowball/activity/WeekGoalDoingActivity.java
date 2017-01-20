@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
@@ -45,10 +46,12 @@ public class WeekGoalDoingActivity extends Activity implements GoalDoingInterfac
     static int tmpAmount;
     SuccessDialog successDialog;
     UserDBManager userDBManager;
+    DBManager dbManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
 
         try {
             /** 물리적 양 일때 **/
