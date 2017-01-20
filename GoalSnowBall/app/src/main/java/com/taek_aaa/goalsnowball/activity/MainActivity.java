@@ -56,13 +56,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static String[] categoryTimeArrays = {"이상", "이하"};
     public static float defaultHeight, defaultWidth;
     PictureController pictureController;
-    public static boolean isSuccessToday=false, isSuccessWeek=false, isSuccessMonth=false;
+    public static boolean isSuccessToday = false, isSuccessWeek = false, isSuccessMonth = false;
     final static int TODAY = 100001;
     final static int WEEK = 100002;
     final static int MONTH = 1000003;
-    final DBManager dbmanager = new DBManager(getBaseContext(), "goaldb.db",null,1);
-    final UserDBManager userDBManager = new UserDBManager(getBaseContext(), "userdb.db",null,1);
-
+    DBManager dbmanager;
+    UserDBManager userDBManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -225,15 +224,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
     }
-    /** 달성률 클릭 시 **/
+
+    /**
+     * 달성률 클릭 시
+     **/
     public void onClickRate(View v) {
-        switch (v.getId()){
-            case R.id.percentToday :
+        switch (v.getId()) {
+            case R.id.percentToday:
                 startActivity(new Intent(this, TodayAchievementRateActivity.class));
                 break;
-            case R.id.percentWeek :
+            case R.id.percentWeek:
                 break;
-            case R.id.percentMonth :
+            case R.id.percentMonth:
                 break;
         }
 
@@ -344,33 +346,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Log.e("qq", "" + calendarData.cMonth);
         Log.e("qq", "" + calendarData.cdate);
         Log.e("qq", "" + dayOfWeekArray[calendarData.dayOfWeekIndex]);
-        int countWeek=0;
+        int countWeek = 0;
         switch (calendarData.dayOfWeekIndex) {
             case 1:
-                countWeek=1;
+                countWeek = 1;
                 break;
             case 2:
-                countWeek=7;
+                countWeek = 7;
                 break;
             case 3:
-                countWeek=6;
+                countWeek = 6;
                 break;
             case 4:
-                countWeek=5;
+                countWeek = 5;
                 break;
             case 5:
-                countWeek=4;
+                countWeek = 4;
                 break;
             case 6:
-                countWeek=3;
+                countWeek = 3;
                 break;
             case 7:
-                countWeek=2;
+                countWeek = 2;
                 break;
         }
-        dDayWeektv.setText("이번주   D - "+""+countWeek);
-        endDate = calendarData.getEndOfMonth(cYear,cMonth);
-        dDayMonthtv.setText("이번달  D - " + "" + (endDate-cdate+1));
+        dDayWeektv.setText("이번주   D - " + "" + countWeek);
+        endDate = calendarData.getEndOfMonth(cYear, cMonth);
+        dDayMonthtv.setText("이번달  D - " + "" + (endDate - cdate + 1));
     }
 
     /**
@@ -380,7 +382,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         double result;
         int goal = goalDataSet.getAmountToday();
         int current;
-        if ((goalDataSet.getTypeToday().toString() == "물리적양") ||(goalDataSet.getTypeToday().toString() == "시간적양") ) {
+        if ((goalDataSet.getTypeToday().toString() == "물리적양") || (goalDataSet.getTypeToday().toString() == "시간적양")) {
             current = goalDataSet.getCurrentAmountToday();
         } else {
             current = 0;
@@ -432,6 +434,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
     }
+
     /**
      * 이번달 목표 달성률 출력
      **/
@@ -472,12 +475,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         goalDataSet.setTypeWeek("");
         goalDataSet.setTypeMonth("");
 
+        userDBManager = new UserDBManager(getBaseContext(), "userInfo.db", null, 1);
+        dbmanager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
+
         mainGoldtv = (TextView) findViewById(R.id.mainGoldtv);
         mainGoldtv.setText("" + goalDataSet.getTotalGold() + "Gold");
         percentToday = (TextView) findViewById(R.id.percentToday);
         percentWeek = (TextView) findViewById(R.id.percentWeek);
         percentMonth = (TextView) findViewById(R.id.percentMonth);
-
+        userDBManager.initUserDB("브론즈", "userName", 10, "");
     }
 
     /**
@@ -486,11 +492,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         // 컨텍스트 메뉴가 최초로 한번만 호출되는 콜백 메서드
-
         menu.setHeaderTitle("어떤 작업을 수행하시겠습니까?");
-
         String[] currencyUnit = {"사진 추가/수정", "사진 회전"};
-
         for (int i = 1; i <= 2; i++) {
             menu.add(0, i, 100, currencyUnit[i - 1]);
         }
@@ -501,7 +504,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      **/
     public boolean onContextItemSelected(MenuItem item) {
         // 롱클릭했을 때 나오는 context Menu 의 항목을 선택(클릭) 했을 때 호출
-
         switch (item.getItemId()) {
             case 1:// 사진추가
                 Intent intent = new Intent(Intent.ACTION_PICK);
@@ -516,15 +518,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     photo = rotatedPicture;
                     imageView = (ImageView) findViewById(R.id.mainImageView);
                     imageView.setImageBitmap(rotatedPicture);
-
                 } else {
                     Toast.makeText(this, "기본 이미지는 회전을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
-
                 }
                 break;
         }
-
         return super.onContextItemSelected(item);
     }
-
 }
