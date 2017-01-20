@@ -12,9 +12,9 @@ public class CalendarDatas {
     public int cYear, hMonth, cMonth, cdate, dayOfWeekIndex;
     public int hour, minute, seconds;
     public static String[] dayOfWeekArray = {"", "일", "월", "화", "수", "목", "금", "토"};
-    public static int[] endOfMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-    public CalendarDatas(){
+
+    public CalendarDatas() {
         today = Calendar.getInstance();
         cYear = today.get(Calendar.YEAR);
         hMonth = today.get(Calendar.MONTH) + 1;
@@ -31,7 +31,34 @@ public class CalendarDatas {
         return gr.isLeapYear(year);
     }
 
-
+    public int getEndOfMonth(int year, int month) {
+        int result=0;
+        switch (month) {
+            case 0:
+            case 2:
+            case 4:
+            case 6:
+            case 7:
+            case 9:
+            case 11:
+                result=31;
+                break;
+            case 3:
+            case 5:
+            case 8:
+            case 10:
+                result= 30;
+                break;
+            case 1:
+                if (isYoonYear(year)) {
+                    result=29;
+                } else {
+                    result=28;
+                }
+                break;
+        }
+        return result;
+    }
 
 
 }

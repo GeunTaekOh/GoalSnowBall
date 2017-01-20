@@ -107,7 +107,8 @@ public class TodayAchievementRateActivity extends Activity implements Achievemen
 
         result = (double) current / (double) goal * 100;
         result = Double.parseDouble(String.format("%.1f", result));
-        if (result == 100.0) {
+        if (result >= 100.0) {
+            result = 100;
             percentAmounttv.setText("" + result + "%");
             percentAmounttv.setTextColor(Color.GREEN);
         }else{

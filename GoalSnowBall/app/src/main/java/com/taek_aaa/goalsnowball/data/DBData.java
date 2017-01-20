@@ -5,6 +5,7 @@ package com.taek_aaa.goalsnowball.data;
  */
 
 public class DBData {
+    String date;
     int whatDateType;
     String goal;
     String type;
@@ -13,4 +14,5 @@ public class DBData {
     int currentAmount;
     int bettingGold;
     boolean isSuccess;
+
 }

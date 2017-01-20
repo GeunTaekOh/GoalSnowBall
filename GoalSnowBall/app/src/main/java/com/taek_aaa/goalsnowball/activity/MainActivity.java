@@ -29,15 +29,14 @@ import android.widget.Toast;
 import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.controller.PictureController;
 import com.taek_aaa.goalsnowball.data.CalendarDatas;
+import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.GoalDataSet;
+import com.taek_aaa.goalsnowball.data.UserDBManager;
 import com.taek_aaa.goalsnowball.dialog.MonthGoalDialog;
 import com.taek_aaa.goalsnowball.dialog.TodayGoalDialog;
 import com.taek_aaa.goalsnowball.dialog.WeekGoalDialog;
 
-import java.util.GregorianCalendar;
-
 import static com.taek_aaa.goalsnowball.data.CalendarDatas.dayOfWeekArray;
-import static com.taek_aaa.goalsnowball.data.CalendarDatas.endOfMonth;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -61,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     final static int TODAY = 100001;
     final static int WEEK = 100002;
     final static int MONTH = 1000003;
+    final DBManager dbmanager = new DBManager(getBaseContext(), "goaldb.db",null,1);
+    final UserDBManager userDBManager = new UserDBManager(getBaseContext(), "userdb.db",null,1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -242,10 +243,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 오늘의 목표를 텍스트뷰에 출력
      **/
     public void drawTodayGoal() {
-        if (goalDataSet.isTodayGoal == true) {
+        if (goalDataSet.isTodayGoal) {
             todaytv.setText(goalDataSet.getTodayGoal());
             todaytv.setGravity(Gravity.CENTER);
-            Log.e("test", goalDataSet.getTodayGoal());
         } else {
             todaytv.setText("");
         }
@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 이번주 목표를 텍스트뷰에 출력
      **/
     public void drawWeekGoal() {
-        if (goalDataSet.isWeekGoal == true) {
+        if (goalDataSet.isWeekGoal) {
             weektv.setText(goalDataSet.getWeekGoal());
             weektv.setGravity(Gravity.CENTER);
             Log.e("test", goalDataSet.getWeekGoal());
@@ -269,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 이번달 목표를 텍스트뷰에 출력
      **/
     public void drawMonthGoal() {
-        if (goalDataSet.isMonthGoal == true) {
+        if (goalDataSet.isMonthGoal) {
             monthtv.setText(goalDataSet.getMonthGoal());
             monthtv.setGravity(Gravity.CENTER);
             Log.e("test", goalDataSet.getMonthGoal());
@@ -317,16 +317,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         imageView = (ImageView) findViewById(R.id.mainImageView);
         BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.profile);
         Bitmap bitmapDefault = drawable.getBitmap();
-        Log.e("length", "" + bitmapDefault.getHeight());
-        Log.e("length", "" + bitmapDefault.getWidth());
         Bitmap sizedBitmapDefault = pictureController.setSizedImage(bitmapDefault);
 
         defaultHeight = sizedBitmapDefault.getHeight();
         defaultWidth = sizedBitmapDefault.getWidth();
-        Log.e("length", "" + defaultHeight);
-        Log.e("length", "" + defaultWidth);
         imageView.setImageBitmap(sizedBitmapDefault);
-
     }
 
 
@@ -336,10 +331,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void drawDDay() {
         CalendarDatas calendarData = new CalendarDatas();
         int cYear = calendarData.cYear;
-        int hMonth = calendarData.hMonth;
         int cMonth = calendarData.cMonth;
         int cdate = calendarData.cdate;
-        int dayOfWeekIndex = calendarData.dayOfWeekIndex;
+        int endDate;
 
         dDayWeektv = (TextView) findViewById(R.id.d_week);
         dDayMonthtv = (TextView) findViewById(R.id.d_month);
@@ -350,107 +344,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Log.e("qq", "" + calendarData.cMonth);
         Log.e("qq", "" + calendarData.cdate);
         Log.e("qq", "" + dayOfWeekArray[calendarData.dayOfWeekIndex]);
-
+        int countWeek=0;
         switch (calendarData.dayOfWeekIndex) {
             case 1:
-                dDayWeektv.setText("이번주   D - 1");
+                countWeek=1;
                 break;
             case 2:
-                dDayWeektv.setText("이번주   D - 7");
+                countWeek=7;
                 break;
             case 3:
-                dDayWeektv.setText("이번주   D - 6");
+                countWeek=6;
                 break;
             case 4:
-                dDayWeektv.setText("이번주   D - 5");
+                countWeek=5;
                 break;
             case 5:
-                dDayWeektv.setText("이번주   D - 4");
+                countWeek=4;
                 break;
             case 6:
-                dDayWeektv.setText("이번주   D - 3");
+                countWeek=3;
                 break;
             case 7:
-                dDayWeektv.setText("이번주   D - 2");
+                countWeek=2;
                 break;
         }
-        switch (cMonth) {
-            case 0:
-                int tmp0;
-                tmp0 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - " + "" + tmp0);
-                break;
-            case 1:
-                boolean tempBoolean;
-                int tmp1;
-                tmp1 = endOfMonth[cMonth] - cdate;
-                tempBoolean = calendarData.isYoonYear(cYear);
-                if (tempBoolean == true) {
-                    dDayMonthtv.setText("이번달  D - " + "" + (tmp1 + 1));
-                    Log.e("ttt", "" + tempBoolean);
-                } else {
-                    dDayMonthtv.setText("이번달  D - " + "" + tmp1);
-                }
-                break;
-            case 2:
-                int tmp2;
-                tmp2 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - " + "" + tmp2);
-                break;
-            case 3:
-                int tmp3;
-                tmp3 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - " + "" + tmp3);
-                break;
-            case 4:
-                int tmp4;
-                tmp4 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - " + "" + tmp4);
-                break;
-            case 5:
-                int tmp5;
-                tmp5 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - " + "" + tmp5);
-                break;
-            case 6:
-                int tmp6;
-                tmp6 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - " + "" + tmp6);
-                break;
-            case 7:
-                int tmp7;
-                tmp7 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - " + "" + tmp7);
-                break;
-            case 8:
-                int tmp8;
-                tmp8 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - " + "" + tmp8);
-                break;
-            case 9:
-                int tmp9;
-                tmp9 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - " + "" + tmp9);
-                break;
-            case 10:
-                int tmp10;
-                tmp10 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - " + "" + tmp10);
-                break;
-            case 11:
-                int tmp11;
-                tmp11 = endOfMonth[cMonth] - cdate;
-                dDayMonthtv.setText("이번달  D - " + "" + tmp11);
-                break;
-        }
-    }
-
-    /**
-     * 2월 윤년 계산
-     **/
-    public Boolean isYoonYear(int year) {
-        GregorianCalendar gr = new GregorianCalendar();
-        return gr.isLeapYear(year);
+        dDayWeektv.setText("이번주   D - "+""+countWeek);
+        endDate = calendarData.getEndOfMonth(cYear,cMonth);
+        dDayMonthtv.setText("이번달  D - " + "" + (endDate-cdate+1));
     }
 
     /**
@@ -469,7 +389,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         result = (double) current / (double) goal * 100;
         result = Double.parseDouble(String.format("%.1f", result));
-        if (result == 100.0) {
+        if (result >= 100.0) {
+            result = 100;
             percentToday.setText("" + result + "%");
             percentToday.setTextColor(Color.GREEN);
             /*soundPoolMain = new SoundPool(1, STREAM_MUSIC, 0);
@@ -478,6 +399,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         } else {
             percentToday.setText("" + result + "%");
+            percentToday.setTextColor(Color.BLACK);
         }
 
     }
@@ -497,7 +419,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         result = (double) current / (double) goal * 100;
         result = Double.parseDouble(String.format("%.1f", result));
-        if (result == 100.0) {
+        if (result >= 100.0) {
+            result = 100;
             percentWeek.setText("" + result + "%");
             percentWeek.setTextColor(Color.GREEN);
             /*soundPoolMain = new SoundPool(1, STREAM_MUSIC, 0);
@@ -505,9 +428,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             soundPoolMain.play(tuneMain, 1, 1, 0, 0, 1);*/
         } else {
             percentWeek.setText("" + result + "%");
+            percentWeek.setTextColor(Color.BLACK);
+
         }
     }
-
     /**
      * 이번달 목표 달성률 출력
      **/
@@ -523,7 +447,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         result = (double) current / (double) goal * 100;
         result = Double.parseDouble(String.format("%.1f", result));
-        if (result == 100.0) {
+        if (result >= 100.0) {
+            result = 100;
             percentMonth.setText("" + result + "%");
             percentMonth.setTextColor(Color.GREEN);
             /*soundPoolMain = new SoundPool(1, STREAM_MUSIC, 0);
@@ -532,6 +457,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         } else {
             percentMonth.setText("" + result + "%");
+            percentMonth.setTextColor(Color.BLACK);
+
         }
     }
 
@@ -550,7 +477,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         percentToday = (TextView) findViewById(R.id.percentToday);
         percentWeek = (TextView) findViewById(R.id.percentWeek);
         percentMonth = (TextView) findViewById(R.id.percentMonth);
-
 
     }
 
@@ -582,8 +508,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
                 intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, PICK_FROM_ALBUM);
-                return true;
-
+                break;
             case 2:// 사진 회전
                 if (isPicture) {
                     Bitmap rotatedPicture;
@@ -596,7 +521,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Toast.makeText(this, "기본 이미지는 회전을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
 
                 }
-                return true;
+                break;
         }
 
         return super.onContextItemSelected(item);

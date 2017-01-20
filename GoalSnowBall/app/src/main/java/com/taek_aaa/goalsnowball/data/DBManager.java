@@ -21,7 +21,7 @@ public class DBManager extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // 새로운 Table 생성
-        db.execSQL("CREATE TABLE database (_id INTEGER PRIMARY KEY AUTOINCREMENT, picturePath TEXT , userName TEXT, grade TEXT, cash INTEGER, todayGoalPercent INTEGER, weekGoalPercent INTEGER, monthGoalPercent INTEGER, todayGoal TEXT, weekGoal TEXT, monthGoal TEXT);");
+        db.execSQL("CREATE TABLE database (_id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, whatDateType INTEGER , goal TEXT, type TEXT, amount INTEGER, unit INTEGER, currentAmount INTEGER, bettingGold INTEGER, isSuccess INTEGER);");
     }
 
     /**
@@ -36,11 +36,13 @@ public class DBManager extends SQLiteOpenHelper {
     /**
      * DB에 데이터를 저장
      **/
-    public void insert(double latitude, double longitude, String todoOrEvent, int category, int howLong, int num, String text, String time) {
+    public void insert(String date, int whatDateType, String goal, String type, int amount, int unit, int currentAmount, int bettingGold, boolean isSuccess) {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("INSERT INTO database VALUES(NULL, " + latitude + ", " + longitude + ", '" + todoOrEvent + "', " + category + ", " + howLong + ", " + num + ", '" + text + "', '" + time + "');");  //string넣을때는 '' 하고그안에""해야
+        db.execSQL("INSERT INTO database VALUES(NULL, '" + date + "', " + whatDateType + ", '" + goal + "','" + type + "', " + amount + ", " + unit + ", " + currentAmount + ", " + bettingGold + "," + isSuccess +");");  //string넣을때는 '' 하고그안에""해야
         db.close();
     }
+
+
 
     /**
      * DB에 값을 LinkedList로 꺼냄
