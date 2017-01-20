@@ -34,6 +34,7 @@ import com.taek_aaa.goalsnowball.data.GoalDataSet;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
 import com.taek_aaa.goalsnowball.dialog.MonthGoalDialog;
 import com.taek_aaa.goalsnowball.dialog.TodayGoalDialog;
+import com.taek_aaa.goalsnowball.dialog.UserNameDialog;
 import com.taek_aaa.goalsnowball.dialog.WeekGoalDialog;
 
 import static com.taek_aaa.goalsnowball.data.CalendarDatas.dayOfWeekArray;
@@ -46,12 +47,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ImageView imageView;
     public static int viewHeight = 700;        //원하는 뷰의 높이(해상도)
     Boolean isPicture = false;
-    TextView todaytv, weektv, monthtv, dDayWeektv, dDayMonthtv, mainGoldtv, percentToday, percentWeek, percentMonth;
+    TextView todaytv, weektv, monthtv, dDayWeektv, dDayMonthtv, mainGoldtv, percentToday, percentWeek, percentMonth, userNametv, userIdtv;
     public static GoalDataSet goalDataSet;
     //public static LinkedList<DBData> llDBData = new LinkedList<DBData>();
     TodayGoalDialog todayGoalDialog;
     WeekGoalDialog weekGoalDialog;
     MonthGoalDialog monthGoalDialog;
+    UserNameDialog userNameDialog;
     public static String[] categoryPhysicalArrays = {"개", "쪽", "권", ""};
     public static String[] categoryTimeArrays = {"이상", "이하"};
     public static float defaultHeight, defaultWidth;
@@ -477,13 +479,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         userDBManager = new UserDBManager(getBaseContext(), "user.db",null,1);
         dbmanager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
-        //userDBManager.insert("브론즈", "userName",10, "null");
 
         mainGoldtv = (TextView) findViewById(R.id.mainGoldtv);
         mainGoldtv.setText("" +userDBManager.getGold() + "Gold");
         percentToday = (TextView) findViewById(R.id.percentToday);
         percentWeek = (TextView) findViewById(R.id.percentWeek);
         percentMonth = (TextView) findViewById(R.id.percentMonth);
+        userNametv = (TextView)findViewById(R.id.userIdtv);
+        userIdtv = (TextView)findViewById(R.id.userIdtv);
+        userIdtv.setText(""+userDBManager.getName());
+        userNameDialog = new UserNameDialog(this);
 
     }
 
@@ -525,5 +530,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
         return super.onContextItemSelected(item);
+    }
+
+    public void onClickName(View v){
+        userNameDialog.show();
+        userNameDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                userIdtv.setText(userDBManager.getName());
+            }
+        });
+
     }
 }

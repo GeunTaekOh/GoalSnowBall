@@ -43,7 +43,7 @@ public class UserDBManager extends SQLiteOpenHelper {
     }
     public void setName(String str){
         SQLiteDatabase db = getReadableDatabase();
-        String sql =  "UPDATE userInfo SET name="+str;
+        String sql =  "UPDATE userInfo SET name='"+str+"';";
         db.execSQL(sql);
         db.close();
 
