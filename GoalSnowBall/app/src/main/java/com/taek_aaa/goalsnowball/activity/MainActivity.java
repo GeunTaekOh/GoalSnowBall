@@ -58,6 +58,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static float defaultHeight, defaultWidth;
     PictureController pictureController;
     public static boolean isSuccessToday=false, isSuccessWeek=false, isSuccessMonth=false;
+    final static int TODAY = 100001;
+    final static int WEEK = 100002;
+    final static int MONTH = 1000003;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -370,7 +373,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case 7:
                 dDayWeektv.setText("이번주   D - 2");
                 break;
-
         }
         switch (cMonth) {
             case 0:
@@ -580,22 +582,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
                 intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, PICK_FROM_ALBUM);
-
                 return true;
 
             case 2:// 사진 회전
-                if (isPicture == true) {
+                if (isPicture) {
                     Bitmap rotatedPicture;
                     rotatedPicture = pictureController.rotate(photo, 90);
                     photo = rotatedPicture;
                     imageView = (ImageView) findViewById(R.id.mainImageView);
                     imageView.setImageBitmap(rotatedPicture);
-                    return true;
+
                 } else {
                     Toast.makeText(this, "기본 이미지는 회전을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                    return true;
+
                 }
+                return true;
         }
+
         return super.onContextItemSelected(item);
     }
 

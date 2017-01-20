@@ -170,6 +170,7 @@ public class TodayGoalDoingActivity extends Activity implements GoalDoingInterfa
                 handler.removeCallbacks(updateTimer);
                 isStartButtonClicked = true;
             }
+          //  isStartButtonClicked = !isStartButtonClicked
         } catch (Exception e) {
             Toast.makeText(this, "확인 버튼을 입력해주세요.", Toast.LENGTH_SHORT).show();
         }
@@ -215,7 +216,7 @@ public class TodayGoalDoingActivity extends Activity implements GoalDoingInterfa
             Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
         }
 
-        if ((goalDataSet.getUnitToday() == 0) && (goalDataSet.getCurrentAmountToday() >= goalDataSet.getAmountToday())) {  //이상이고 성공하면
+        else if ((goalDataSet.getUnitToday() == 0) && (goalDataSet.getCurrentAmountToday() >= goalDataSet.getAmountToday())) {  //이상이고 성공하면
             whereSuccess = SUCCESS_FROM_TODAY;
 
             int a = (goalDataSet.getBettingGoldToday()) + (goalDataSet.getTotalGold());

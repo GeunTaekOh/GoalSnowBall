@@ -5,14 +5,12 @@ package com.taek_aaa.goalsnowball.data;
  */
 
 public class DBData {
-    String picturePath;
-    String userName;
-    String grade;
-    int cash;
-    int todayGoalPercent;
-    int weekGoalPercent;
-    int monthGoalPercent;
-    String todayGoal;
-    String weekGoal;
-    String monthGoal;
+    int whatDateType;
+    String goal;
+    String type;
+    int goalAmount;
+    int unit;
+    int currentAmount;
+    int bettingGold;
+    boolean isSuccess;
 }
