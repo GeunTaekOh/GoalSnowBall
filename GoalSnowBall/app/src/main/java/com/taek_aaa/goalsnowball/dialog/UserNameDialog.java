@@ -30,10 +30,10 @@ public class UserNameDialog extends Dialog implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.confirm_username_btn:
-                userDBManager.setName(usernameTv.getText().toString());
                 if(usernameTv.getText().toString().equals("")){
                     Toast.makeText(getContext(), "이름을 입력하세요. ", Toast.LENGTH_SHORT).show();
                 }else {
+                    userDBManager.setName(usernameTv.getText().toString());
                     Toast.makeText(getContext(), "이름을 저장하였습니다. ", Toast.LENGTH_SHORT).show();
                     dismiss();
                 }
