@@ -13,7 +13,6 @@ import com.taek_aaa.goalsnowball.data.DBData;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryPhysicalArrays;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryTimeArrays;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
 
 /**
  * Created by taek_aaa on 2017. 1. 10..
@@ -36,10 +35,7 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                goalDataSet.setUnitToday(i);
                 tempUnit = i;
-
-                // dbManager.setUnit(i)
             }
 
             @Override
@@ -56,7 +52,7 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
         switch (view.getId()) {
             case R.id.DialogConfirmButton:
                 Log.e("test", "" + checkedId);
-              //  try {
+                try {
                     CalendarDatas today = new CalendarDatas();
                     bettinggold = userDBManager.getGold() / 2;
                     if (Integer.parseInt(bettingGoldet.getText().toString()) > bettinggold) {
@@ -65,35 +61,27 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
                         int textAmount = Integer.parseInt(editTextAmonut.getText().toString());
                         textContents = editTextContents.getText().toString();
                         if (textContents.equals("")) {
-                            // throw new Exception();
+                             throw new Exception();
                         }
 
                         if (physicalRadio.isChecked()) {
-                            goalDataSet.setTypeToday("물리적양");
                             dbData.type = "물리적양";
-                            Log.e("tt", "" + physicalRadio.getId());
                         } else {
-                            goalDataSet.setTypeToday("시간적양");
-                            Log.e("tt", "" + timeRadio.getId());
                             dbData.type = "시간적양";
                         }
 
-                        goalDataSet.setAmountToday(textAmount);
+
                         dbData.goalAmount = textAmount;
-                        goalDataSet.setTodayGoal(textContents);
-//                        dbManager.setGoal(today.cYear,today.cMonth,today.cdate,FROM_TODAY,textContents);
-                        //Log.e("db","디비문구지나감");
                         dbData.goal = textContents;
 
 
-                        if (goalDataSet.isTodayGoal) {
+                        if (dbManager.hasGoal(today.cYear,today.cMonth,today.cdate,FROM_TODAY)) {
                             title.setText("오늘의 목표를 수정하세요.");
                             editTextContents.setHint("목표를 수정하세요.");
                         } else {
                             title.setText("오늘의 목표를 추가하세요.");
                             editTextContents.setHint("목표를 추가하세요.");
                         }
-                        goalDataSet.setBettingGoldToday(Integer.parseInt(bettingGoldet.getText().toString()));
                         dbData.bettingGold = Integer.parseInt(bettingGoldet.getText().toString());
                     }
                     dismiss();
@@ -117,9 +105,9 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
                     dbManager.insert(today.cYear, today.cMonth, today.cdate, FROM_TODAY, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 0);
 
 
-              /*  } catch (Exception e) {
+                } catch (Exception e) {
                     Toast.makeText(getContext(), "값을 모두 입력하세요.", Toast.LENGTH_SHORT).show();
-                }*/
+                }
 
 
                 break;

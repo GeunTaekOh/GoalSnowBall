@@ -4,9 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
-import java.util.LinkedList;
 
 /**
  * Created by taek_aaa on 2017. 1. 11..
@@ -55,7 +52,6 @@ public class DBManager extends SQLiteOpenHelper {
             if ((dbYear == findYear) && (dbMonth == findMonth) && (dbDate == findDate) && (dbWhatDateType == findWhatDateType)) {
                 String str = "UPDATE database SET goal='" + setGoalstr + "';";
                 db.execSQL(str);
-                break;
             }
         }
         cursor.close();
@@ -74,7 +70,25 @@ public class DBManager extends SQLiteOpenHelper {
             if ((dbYear == findYear) && (dbMonth == findMonth) && (dbDate == findDate) && (dbWhatDateType == findWhatDateType)) {
                 String str = "UPDATE database SET currentAmount=" + setAmount + ";";
                 db.execSQL(str);
-                break;
+
+            }
+        }
+        cursor.close();
+        db.close();
+    }
+
+    public void setIsSuccess(int findYear, int findMonth, int findDate, int findWhatDateType, int status) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM database", null);
+
+        while (cursor.moveToNext()) {
+            int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+            int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+            int dbDate = cursor.getInt(cursor.getColumnIndex("date"));
+            int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+            if ((dbYear == findYear) && (dbMonth == findMonth) && (dbDate == findDate) && (dbWhatDateType == findWhatDateType)) {
+                String str = "UPDATE database SET isSuccess=" + status + ";";
+                db.execSQL(str);
             }
         }
         cursor.close();
@@ -92,73 +106,134 @@ public class DBManager extends SQLiteOpenHelper {
             int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
             if ((dbYear == findYear) && (dbMonth == findMonth) && (dbDate == findDate) && (dbWhatDateType == findWhatDateType)) {
                 result = cursor.getInt(cursor.getColumnIndex("currentAmount"));
-                break;
+
             }
 
         }
         return result;
     }
 
-    public String getGrade() {
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM userInfo", null);
-        String grade = "";
-        while (cursor.moveToNext()) {
-            grade = cursor.getString(cursor.getColumnIndex("grade"));
-            Log.e("qwe", String.valueOf(grade));
-        }
-        return grade;
-    }
-
-    public void setName(String str) {
-        SQLiteDatabase db = getReadableDatabase();
-        String sql = "UPDATE userInfo SET name='" + str + "';";
-        db.execSQL(sql);
-        db.close();
-
-    }
-
-
-    public void getResult(LinkedList<DBData> sllDBData) {
+    public int getIsSuccess(int findYear, int findMonth, int findDate, int findWhatDateType) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM database", null);
-
+        int result = 0;
         while (cursor.moveToNext()) {
-            double latitudecur = cursor.getDouble(cursor.getColumnIndex("latitude"));
-            double longitudecur = cursor.getDouble(cursor.getColumnIndex("longitude"));
-            String toDoOrEventcur = cursor.getString(cursor.getColumnIndex("TodoOrEvent"));
-            int categorycur = cursor.getInt(cursor.getColumnIndex("category"));
-            int howLongcur = cursor.getInt(cursor.getColumnIndex("HowLong"));
-            String numcur = cursor.getString(cursor.getColumnIndex("num"));
-            String textcur = cursor.getString(cursor.getColumnIndex("text"));
-            String timecur = cursor.getString(cursor.getColumnIndex("time"));
-
-            Log.i("tt", String.valueOf(latitudecur));
-            Log.i("tt", String.valueOf(longitudecur));
-            Log.i("tt", toDoOrEventcur);
-            Log.i("tt", String.valueOf(categorycur));
-            Log.i("tt", String.valueOf(howLongcur));
-            Log.i("tt", numcur);
-            Log.i("tt", textcur);
-            Log.i("tt", timecur);
-
-            DBData dbdata = new DBData();
-
-            //dbdata.curlatitude = latitudecur;
-
-
-            sllDBData.add(dbdata);
+            int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+            int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+            int dbDate = cursor.getInt(cursor.getColumnIndex("date"));
+            int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+            if ((dbYear == findYear) && (dbMonth == findMonth) && (dbDate == findDate) && (dbWhatDateType == findWhatDateType)) {
+                result = cursor.getInt(cursor.getColumnIndex("isSuccess"));
+            }
         }
-        cursor.close();
-        db.close();
+        return result;
     }
 
-   /*
-    public void delete(Double latitude, Double longitude) {
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM database WHERE latitude = " + latitude + " AND longitude = " + longitude);
+    public String getGoal(int findYear, int findMonth, int findDate, int findWhatDateType) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM database", null);
+        String result = "";
+        while (cursor.moveToNext()) {
+            int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+            int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+            int dbDate = cursor.getInt(cursor.getColumnIndex("date"));
+            int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+            if ((dbYear == findYear) && (dbMonth == findMonth) && (dbDate == findDate) && (dbWhatDateType == findWhatDateType)) {
+                result = cursor.getString(cursor.getColumnIndex("goal"));
 
-        db.close();
-    }*/
+            }
+
+        }
+        return result;
+    }
+
+    public int getGoalAmount(int findYear, int findMonth, int findDate, int findWhatDateType) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM database", null);
+        int result = 0;
+        while (cursor.moveToNext()) {
+            int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+            int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+            int dbDate = cursor.getInt(cursor.getColumnIndex("date"));
+            int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+            if ((dbYear == findYear) && (dbMonth == findMonth) && (dbDate == findDate) && (dbWhatDateType == findWhatDateType)) {
+                result = cursor.getInt(cursor.getColumnIndex("amount"));
+
+            }
+
+        }
+        return result;
+    }
+
+    public int getBettingGold(int findYear, int findMonth, int findDate, int findWhatDateType) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM database", null);
+        int result = 0;
+        while (cursor.moveToNext()) {
+            int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+            int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+            int dbDate = cursor.getInt(cursor.getColumnIndex("date"));
+            int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+            if ((dbYear == findYear) && (dbMonth == findMonth) && (dbDate == findDate) && (dbWhatDateType == findWhatDateType)) {
+                result = cursor.getInt(cursor.getColumnIndex("bettingGold"));
+
+            }
+
+        }
+        return result;
+    }
+  public boolean hasGoal(int findYear,int findMonth, int findDate, int findWhatDateType ){
+      SQLiteDatabase db = getReadableDatabase();
+      Cursor cursor = db.rawQuery("SELECT * FROM database", null);
+      boolean result = false;
+      while (cursor.moveToNext()){
+          int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+          int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+          int dbDate = cursor.getInt(cursor.getColumnIndex("date"));
+          int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+          if ((dbYear == findYear) && (dbMonth == findMonth) && (dbDate == findDate) && (dbWhatDateType == findWhatDateType)) {
+              result = true;
+          }else{
+              result = false;
+          }
+      }
+      return result;
+  }
+
+
+    public String getType(int findYear, int findMonth, int findDate, int findWhatDateType) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM database", null);
+        String result = "";
+        while (cursor.moveToNext()) {
+            int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+            int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+            int dbDate = cursor.getInt(cursor.getColumnIndex("date"));
+            int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+            if ((dbYear == findYear) && (dbMonth == findMonth) && (dbDate == findDate) && (dbWhatDateType == findWhatDateType)) {
+                result = cursor.getString(cursor.getColumnIndex("type"));
+
+            }
+
+        }
+        return result;
+    }
+    public String getUnit(int findYear, int findMonth, int findDate, int findWhatDateType) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM database", null);
+        String result = "";
+        while (cursor.moveToNext()) {
+            int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+            int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+            int dbDate = cursor.getInt(cursor.getColumnIndex("date"));
+            int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+            if ((dbYear == findYear) && (dbMonth == findMonth) && (dbDate == findDate) && (dbWhatDateType == findWhatDateType)) {
+                result = cursor.getString(cursor.getColumnIndex("unit"));
+
+            }
+
+        }
+        return result;
+    }
 
 }

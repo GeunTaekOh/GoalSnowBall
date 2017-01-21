@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public final static int FROM_MONTH = 1000003;
     DBManager dbmanager;
     UserDBManager userDBManager ;
+    CalendarDatas today;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +89,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawDDay();
         drawMainImage();
-        drawGoal();
+        drawTodayGoal();
+
 
         drawTodayPercent();
         drawWeekPercent();
@@ -102,11 +105,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onRestart() {
         super.onRestart();
         mainGoldtv.setText("" +userDBManager.getGold() + "Gold");
+        drawTodayGoal();
+
         drawTodayPercent();
         drawWeekPercent();
         drawMonthPercent();
     }
 
+    @Override
+    protected void onStart(){
+        super.onStart();
+        drawTodayGoal();
+    }
     /**
      * 뒤로가기 눌렀을 때
      **/
@@ -248,11 +258,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 오늘의 목표를 텍스트뷰에 출력
      **/
     public void drawTodayGoal() {
-        if (goalDataSet.isTodayGoal) {
-            todaytv.setText(goalDataSet.getTodayGoal());
+        if (dbmanager.hasGoal(today.cYear,today.cMonth,today.cdate,FROM_TODAY)) {
+            Log.e("rmsxor","골 있다고함.");
+            todaytv.setText(dbmanager.getGoal(today.cYear,today.cMonth,today.cdate,FROM_TODAY));
             todaytv.setGravity(Gravity.CENTER);
         } else {
             todaytv.setText("");
+            Log.e("rmsxor","골 없다고함.");
         }
     }
 
@@ -288,25 +300,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 목표를 다이얼로그에서 설정하고 다이얼로그가 dismiss 되면 목표 출력
      **/
     public void drawGoal() {
-        todaytv = (TextView) findViewById(R.id.mainTodayGoalTv);
-        weektv = (TextView) findViewById(R.id.mainWeekGoalTv);
-        monthtv = (TextView) findViewById(R.id.mainMonthGoalTv);
 
-        todayGoalDialog = new TodayGoalDialog(this);
+
+
         todayGoalDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
                 drawTodayGoal();
             }
         });
-        weekGoalDialog = new WeekGoalDialog(this);
+
         weekGoalDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
                 drawWeekGoal();
             }
         });
-        monthGoalDialog = new MonthGoalDialog(this);
+
         monthGoalDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
@@ -383,13 +393,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      **/
     public void drawTodayPercent() {
         double result;
-        int goal = goalDataSet.getAmountToday();
+        int goal = dbmanager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY);
         int current;
-        if ((goalDataSet.getTypeToday().toString() == "물리적양") || (goalDataSet.getTypeToday().toString() == "시간적양")) {
-            current = goalDataSet.getCurrentAmountToday();
+        if ((dbmanager.getType(today.cYear,today.cMonth,today.cdate,FROM_TODAY).toString().equals("물리적양")) || (dbmanager.getType(today.cYear,today.cMonth,today.cdate,FROM_TODAY).toString().equals("시간적양"))) {
+            current = dbmanager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY);
+
         } else {
             current = 0;
             goal = 10;
+
         }
 
         result = (double) current / (double) goal * 100;
@@ -472,14 +484,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * init
      **/
     public void init() {
-        goalDataSet.setCurrentAmountToday(0);   //나중에 디비로구현하면 삭제하기
-        goalDataSet.setTypeToday("");
-        goalDataSet.setTypeWeek("");
+
+        goalDataSet.setTypeWeek(""); //나중에 디비로구현하면 삭제하기
         goalDataSet.setTypeMonth("");
 
         userDBManager = new UserDBManager(getBaseContext(), "user.db",null,1);
         dbmanager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
 
+        today = new CalendarDatas();
         mainGoldtv = (TextView) findViewById(R.id.mainGoldtv);
         mainGoldtv.setText("" +userDBManager.getGold() + "Gold");
         percentToday = (TextView) findViewById(R.id.percentToday);
@@ -489,7 +501,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         userIdtv = (TextView)findViewById(R.id.userIdtv);
         userIdtv.setText(""+userDBManager.getName());
         userNameDialog = new UserNameDialog(this);
-
+        todaytv = (TextView) findViewById(R.id.mainTodayGoalTv);
+        weektv = (TextView) findViewById(R.id.mainWeekGoalTv);
+        monthtv = (TextView) findViewById(R.id.mainMonthGoalTv);
+        todayGoalDialog = new TodayGoalDialog(this);
+        weekGoalDialog = new WeekGoalDialog(this);
+        monthGoalDialog = new MonthGoalDialog(this);
     }
 
     /**

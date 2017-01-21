@@ -10,9 +10,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.data.CalendarDatas;
 import com.taek_aaa.goalsnowball.data.DBManager;
 
 import static android.media.AudioManager.STREAM_MUSIC;
+import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
 
 /**
@@ -32,14 +34,14 @@ public class SuccessDialog extends Dialog {
     TextView msg;
     SoundPool soundPool;
     int tune;
-
+    CalendarDatas today;
     DBManager dbManager;
 
     public SuccessDialog(Context context) {
         super(context);
         setContentView(R.layout.dialog_success);
         dbManager = new DBManager(getContext(), "goaldb.db", null, 1);
-
+        today = new CalendarDatas();
         fire = (ImageView) findViewById(R.id.fireWork);
         coin = (ImageView) findViewById(R.id.coin);
         msg = (TextView) findViewById(R.id.SuccessCoinMsg);
@@ -62,9 +64,9 @@ public class SuccessDialog extends Dialog {
         //오늘목표달성했을때
 
         if (whereSuccess == SUCCESS_FROM_TODAY) {
-            msg.setText("" + goalDataSet.getBettingGoldToday() + "Gold를 획득하였습니다.");
-            getGoldToday = goalDataSet.getBettingGoldToday();
-            goalDataSet.setBettingGoldToday(0);
+            msg.setText("" + dbManager.getBettingGold(today.cYear,today.cMonth,today.cdate,FROM_TODAY) + "Gold를 획득하였습니다.");
+            getGoldToday = dbManager.getBettingGold(today.cYear,today.cMonth,today.cdate,FROM_TODAY);
+            dbManager.setIsSuccess(today.cYear,today.cMonth,today.cdate,FROM_TODAY,1);
             whereSuccess = 0;
         } else if (whereSuccess == SUCCESS_FROM_WEEK) {
             msg.setText("" + goalDataSet.getBettingGoldWeek() + "Gold를 획득하였습니다.");
