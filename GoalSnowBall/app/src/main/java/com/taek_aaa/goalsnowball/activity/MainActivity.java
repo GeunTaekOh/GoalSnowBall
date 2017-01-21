@@ -59,9 +59,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static float defaultHeight, defaultWidth;
     PictureController pictureController;
     public static boolean isSuccessToday = false, isSuccessWeek = false, isSuccessMonth = false;
-    final static int TODAY = 100001;
-    final static int WEEK = 100002;
-    final static int MONTH = 1000003;
+    public final static int FROM_TODAY = 100001;
+    public final static int FROM_WEEK = 100002;
+    public final static int FROM_MONTH = 1000003;
     DBManager dbmanager;
     UserDBManager userDBManager ;
     @Override

@@ -30,6 +30,7 @@ public class GoalDialog extends Dialog {
     UserDBManager userDBManager;
     DBManager dbManager;
 
+
     public GoalDialog(Context context) {
         super(context);
         setContentView(R.layout.dialog_goal);

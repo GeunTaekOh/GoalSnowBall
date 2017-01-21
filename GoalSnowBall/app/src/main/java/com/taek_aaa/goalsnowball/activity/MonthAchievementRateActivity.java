@@ -16,9 +16,6 @@ import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.getGoldMonth;
  */
 
 public class MonthAchievementRateActivity extends AchievementRateActivity{
-
-
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -42,8 +39,6 @@ public class MonthAchievementRateActivity extends AchievementRateActivity{
             Toast.makeText(getBaseContext(), "이번달의 목표를 먼저 입력하세요.", Toast.LENGTH_SHORT).show();
             finish();
         }
-
-
     }
 
     public void drawGoal() {

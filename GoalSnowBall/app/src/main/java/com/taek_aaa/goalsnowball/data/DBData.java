@@ -5,16 +5,16 @@ package com.taek_aaa.goalsnowball.data;
  */
 
 public class DBData {
-    int year;
-    int month;
-    int date;
-    int whatDateType;
-    String goal;
-    String type;
-    int goalAmount;
-    int unit;
-    int currentAmount;
-    int bettingGold;
-    boolean isSuccess;
+    public int year;
+    public int month;
+    public int date;
+    public int whatDateType;
+    public String goal;
+    public String type;
+    public int goalAmount;
+    public String unit;
+    public int currentAmount;
+    public int bettingGold;
+    public boolean isSuccess;
 
 }
