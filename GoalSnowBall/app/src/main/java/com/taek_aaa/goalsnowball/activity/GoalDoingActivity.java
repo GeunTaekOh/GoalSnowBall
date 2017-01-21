@@ -19,7 +19,7 @@ import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
  * Created by taek_aaa on 2017. 1. 21..
  */
 
-public class GoalDoingActivity extends Activity {
+public class GoalDoingActivity extends Activity implements GoalDoingInterface{
 
     TextView doingGoaltv, unittv;
     EditText amountOfEdit;

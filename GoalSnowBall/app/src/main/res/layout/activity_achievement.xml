@@ -18,7 +18,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/goalTodayAchievement"
+                android:id="@+id/goalAchievement"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -51,7 +51,7 @@
 
 
             <TextView
-                android:id="@+id/goalTodayAchievementAmount"
+                android:id="@+id/goalAchievementAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -85,7 +85,7 @@
                 android:background="#E5E4E2" />
 
             <TextView
-                android:id="@+id/currentTodayAchievementAmount"
+                android:id="@+id/currentAchievementAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -127,7 +127,7 @@
                 android:layout_margin="10dp" />
 
             <TextView
-                android:id="@+id/PercenttodayAchievementAmount"
+                android:id="@+id/PercentAchievementAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center" />
@@ -162,7 +162,7 @@
 
 
             <TextView
-                android:id="@+id/remainTodayAchievementAmount"
+                android:id="@+id/remainAchievementAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -196,7 +196,7 @@
 
 
             <TextView
-                android:id="@+id/betTodayAchievementAmount"
+                android:id="@+id/betAchievementAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -230,7 +230,7 @@
 
 
             <TextView
-                android:id="@+id/resultBetTodayAchievementAmount"
+                android:id="@+id/resultBetAchievementAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -263,7 +263,7 @@
 
 
             <TextView
-                android:id="@+id/dueTodayAchievementAmount"
+                android:id="@+id/dueAchievementAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

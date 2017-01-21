@@ -235,8 +235,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(this, TodayAchievementRateActivity.class));
                 break;
             case R.id.percentWeek:
+                startActivity(new Intent(this, WeekAchievementRateActivity.class));
                 break;
             case R.id.percentMonth:
+                startActivity(new Intent(this, MonthAchievementRateActivity.class));
                 break;
         }
 

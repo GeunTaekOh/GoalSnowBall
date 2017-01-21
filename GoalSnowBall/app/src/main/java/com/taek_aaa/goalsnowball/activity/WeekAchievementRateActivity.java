@@ -2,33 +2,32 @@ package com.taek_aaa.goalsnowball.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryPhysicalArrays;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryTimeArrays;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.isSuccessToday;
-import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.getGoldToday;
+import static com.taek_aaa.goalsnowball.activity.MainActivity.isSuccessWeek;
+import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.getGoldWeek;
 
 /**
- * Created by taek_aaa on 2017. 1. 19..
+ * Created by taek_aaa on 2017. 1. 21..
  */
 
-public class TodayAchievementRateActivity extends AchievementRateActivity{
+public class WeekAchievementRateActivity extends AchievementRateActivity{
+
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (goalDataSet.getTypeToday().equals("물리적양")) {
+        if (goalDataSet.getTypeWeek().equals("물리적양")) {
             typeOfContents = "물리적양";
-        } else if (goalDataSet.getTypeToday().equals("시간적양")) {
+        } else if (goalDataSet.getTypeWeek().equals("시간적양")) {
             typeOfContents = "시간적양";
         } else {
-            Log.e("lk","오류");
             typeOfContents = "error";
-
         }
         try {
             drawGoal();
@@ -40,7 +39,7 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
             drawBettingResult();
             drawDue();
         } catch (Exception e) {
-            Toast.makeText(getBaseContext(), "오늘의 목표를 먼저 입력하세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), "이번주의 목표를 먼저 입력하세요.", Toast.LENGTH_SHORT).show();
             finish();
         }
 
@@ -48,14 +47,14 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
     }
 
     public void drawGoal() {
-        achievementStringtv.setText("" + goalDataSet.getTodayGoal());
+        achievementStringtv.setText("" + goalDataSet.getWeekGoal());
     }
 
     public void drawGoalAmount(String type) throws Exception{
         if (type.equals("물리적양")) {
-            achievementAmounttv.setText("" + goalDataSet.getAmountToday() + "" + categoryPhysicalArrays[goalDataSet.getUnitToday()]);
+            achievementAmounttv.setText("" + goalDataSet.getAmountWeek() + "" + categoryPhysicalArrays[goalDataSet.getUnitWeek()]);
         } else if (type.equals("시간적양")) {
-            achievementAmounttv.setText("" + goalDataSet.getAmountToday() + "분 " + categoryTimeArrays[goalDataSet.getUnitToday()]);
+            achievementAmounttv.setText("" + goalDataSet.getAmountWeek() + "분 " + categoryTimeArrays[goalDataSet.getUnitWeek()]);
         } else {
             throw new Exception();
         }
@@ -63,9 +62,9 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
 
     public void drawCurrentAmount(String type) throws Exception{
         if (type.equals("물리적양")) {
-            currentAmounttv.setText("" + goalDataSet.getCurrentAmountToday() + "" + categoryPhysicalArrays[goalDataSet.getUnitToday()]);
+            currentAmounttv.setText("" + goalDataSet.getCurrentAmountWeek() + "" + categoryPhysicalArrays[goalDataSet.getUnitWeek()]);
         } else if (type.equals("시간적양")) {
-            currentAmounttv.setText("" + goalDataSet.getCurrentAmountToday() + "분");
+            currentAmounttv.setText("" + goalDataSet.getCurrentAmountWeek() + "분");
         } else {
             throw new Exception();
         }
@@ -73,14 +72,14 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
 
     public void drawPercent(String type) throws Exception {
         double result;
-        int goal = goalDataSet.getAmountToday();
+        int goal = goalDataSet.getAmountWeek();
         int current;
 
         if (type.equals("물리적양") || (type.equals("시간적양"))) {
-            progressBar.setMax(goalDataSet.getAmountToday());
-            progressBar.setProgress(goalDataSet.getCurrentAmountToday());
+            progressBar.setMax(goalDataSet.getAmountWeek());
+            progressBar.setProgress(goalDataSet.getCurrentAmountWeek());
             progressBar.setVisibility(ProgressBar.VISIBLE);
-            current = goalDataSet.getCurrentAmountToday();
+            current = goalDataSet.getCurrentAmountWeek();
         } else {
             throw new Exception();
         }
@@ -98,24 +97,24 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
 
     public void drawRemainAmount(String type) throws Exception {
         if (type.equals("물리적양")) {
-            remainAmounttv.setText("" + (goalDataSet.getAmountToday() - goalDataSet.getCurrentAmountToday()) + "" + categoryPhysicalArrays[goalDataSet.getUnitToday()]);
+            remainAmounttv.setText("" + (goalDataSet.getAmountWeek() - goalDataSet.getCurrentAmountWeek()) + "" + categoryPhysicalArrays[goalDataSet.getUnitWeek()]);
         } else if (type.equals("시간적양")) {
-            remainAmounttv.setText("" + (goalDataSet.getAmountToday() - goalDataSet.getCurrentAmountToday()) + "분");
+            remainAmounttv.setText("" + (goalDataSet.getAmountWeek() - goalDataSet.getCurrentAmountWeek()) + "분");
         } else {
             throw new Exception();
         }
     }
 
     public void drawBettingGold()  {
-        if(isSuccessToday==false) {
-            betAmounttv.setText("" + goalDataSet.getBettingGoldToday() + " Gold");
+        if(isSuccessWeek==false) {
+            betAmounttv.setText("" + goalDataSet.getBettingGoldWeek() + " Gold");
         }else{
-            betAmounttv.setText("" + getGoldToday + " Gold");
+            betAmounttv.setText("" + getGoldWeek + " Gold");
         }
     }
 
     public void drawBettingResult() {
-        if(goalDataSet.getBettingGoldToday()==0){
+        if(goalDataSet.getBettingGoldWeek()==0){
             //획득
             resultBettv.setText("획득하였습니다.");
         }else{
@@ -127,6 +126,5 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
 
 
     }
-
 
 }
