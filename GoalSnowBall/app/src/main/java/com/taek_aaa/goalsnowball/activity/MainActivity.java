@@ -153,7 +153,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(new Intent(this, TodayGoalDoingActivity.class));
         } else if (id == R.id.nav_weekGoalSetting) {
             startActivity(new Intent(this, WeekGoalDoingActivity.class));
-
         } else if (id == R.id.nav_monthGoaslSetting) {
             startActivity(new Intent(this, MonthGoalDoingActivity.class));
         } else if (id == R.id.nav_totalGoalSetting) {
