@@ -39,7 +39,6 @@ public class UserDBManager extends SQLiteOpenHelper {
         String sql =  "UPDATE userInfo SET grade='"+str+"';";
         db.execSQL(sql);
         db.close();
-
     }
     public void setName(String str){
         SQLiteDatabase db = getReadableDatabase();
@@ -102,8 +101,5 @@ public class UserDBManager extends SQLiteOpenHelper {
         }
         return Path;
     }
-
-
-
 
 }

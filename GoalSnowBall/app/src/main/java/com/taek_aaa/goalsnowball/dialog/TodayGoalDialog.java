@@ -56,8 +56,8 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
         switch (view.getId()) {
             case R.id.DialogConfirmButton:
                 Log.e("test", "" + checkedId);
-                try {
-
+              //  try {
+                    CalendarDatas today = new CalendarDatas();
                     bettinggold = userDBManager.getGold() / 2;
                     if (Integer.parseInt(bettingGoldet.getText().toString()) > bettinggold) {
                         Toast.makeText(getContext(), "배팅액은 총 보유 골드의 25%를 넘을 수 없습니다.", Toast.LENGTH_SHORT).show();
@@ -81,7 +81,10 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
                         goalDataSet.setAmountToday(textAmount);
                         dbData.goalAmount = textAmount;
                         goalDataSet.setTodayGoal(textContents);
+//                        dbManager.setGoal(today.cYear,today.cMonth,today.cdate,FROM_TODAY,textContents);
+                        //Log.e("db","디비문구지나감");
                         dbData.goal = textContents;
+
 
                         if (goalDataSet.isTodayGoal) {
                             title.setText("오늘의 목표를 수정하세요.");
@@ -100,7 +103,7 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
                     } else {
                         dbData.unit = categoryTimeArrays[tempUnit];
                     }
-                    CalendarDatas today = new CalendarDatas();
+
 
                     Log.e("dbdata", "" + today.cYear);
                     Log.e("dbdata", "" + today.cMonth);
@@ -114,9 +117,9 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
                     dbManager.insert(today.cYear, today.cMonth, today.cdate, FROM_TODAY, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 0);
 
 
-                } catch (Exception e) {
+              /*  } catch (Exception e) {
                     Toast.makeText(getContext(), "값을 모두 입력하세요.", Toast.LENGTH_SHORT).show();
-                }
+                }*/
 
 
                 break;

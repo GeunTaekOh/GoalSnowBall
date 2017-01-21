@@ -9,8 +9,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.data.CalendarDatas;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
+import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryPhysicalArrays;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryTimeArrays;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
@@ -28,6 +30,8 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         try {
             /** 물리적 양 일때 **/
             if (goalDataSet.getTypeToday().equals("물리적양")) {
@@ -55,13 +59,15 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
                 amountOfEdit.post(new Runnable() {
                     @Override
                     public void run() {
-                        amountOfEdit.setText("" + goalDataSet.getCurrentAmountToday());
+                        CalendarDatas today =new CalendarDatas();
+                        amountOfEdit.setText("" + dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY));
                     }
                 });
                 blackboardtv.setText("목표량 : " + goalDataSet.getAmountToday() + "" + categoryPhysicalArrays[goalDataSet.getUnitToday()]);
                 unittv.setText("" + categoryPhysicalArrays[goalDataSet.getUnitToday()]);
             } else {
-                timeOfCurrenttv.setText("수행 시간 : " + goalDataSet.getCurrentAmountToday() + "분");
+                CalendarDatas today =new CalendarDatas();
+                timeOfCurrenttv.setText("수행 시간 : " + dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY) + "분");
                 blackboardtv.setText("목표량 : " + goalDataSet.getAmountToday() + "분 " + categoryTimeArrays[goalDataSet.getUnitToday()]);
             }
             successGetGoldtv.setText("성공시 획득 골드 : " + "" + goalDataSet.getBettingGoldToday() + "Gold");
@@ -73,15 +79,20 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
             e.getStackTrace();
             finish();
         }
-        tmpAmount = goalDataSet.getCurrentAmountToday();
+        CalendarDatas today =new CalendarDatas();
+        tmpAmount = dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY);
     }
 
     /**
      * 수행량 저장하는 함수
      **/
     public void saveCurrentAmountToEditText() {
-        goalDataSet.setCurrentAmountToday(Integer.parseInt(amountOfEdit.getText().toString()));
-        if (goalDataSet.getCurrentAmountToday() < goalDataSet.getAmountToday()) {
+        CalendarDatas today = new CalendarDatas();
+        //goalDataSet.setCurrentAmountToday(Integer.parseInt(amountOfEdit.getText().toString()));
+        dbManager.setCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY,Integer.parseInt(amountOfEdit.getText().toString()));
+        Log.e("db","저장 디비 명령어 지나감");
+        //if (goalDataSet.getCurrentAmountToday() < goalDataSet.getAmountToday()) {
+        if(dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY) < goalDataSet.getAmountToday()){
             Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
         }
     }
@@ -89,13 +100,16 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
      * 목표 수행량 저장하는 함수
      **/
     public void onClickSaveBtnGoal(View v) {
+        CalendarDatas today = new CalendarDatas();
         saveCurrentAmountToEditText();
         Log.e("qq", "" + goalDataSet.getUnitToday());
-        Log.e("qq", "" + goalDataSet.getCurrentAmountToday());
+        //Log.e("qq", "" + goalDataSet.getCurrentAmountToday());
+        Log.e("db",""+dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY));
         Log.e("qq", "" + goalDataSet.getAmountToday());
         //물리적양일 경우임 저장버튼이 있는경우는 물리적 양일때만이기때문
         //물리적양 일때 성공하면
-        if (goalDataSet.getAmountToday() <= goalDataSet.getCurrentAmountToday()) {
+        //if (goalDataSet.getAmountToday() <= goalDataSet.getCurrentAmountToday()) {
+        if(goalDataSet.getAmountToday() <= dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY)){
             whereSuccess = SUCCESS_FROM_TODAY;
             int a = (goalDataSet.getBettingGoldToday()) + (userDBManager.getGold());
             userDBManager.setGold(a);
@@ -124,20 +138,23 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
         sseconds = howlongtime.substring(6);
         ihowlongtime = Integer.valueOf(shour) * 60 * 60 + Integer.valueOf(sminute) * 60 + Integer.valueOf(sseconds);
         ihowlongtime = ihowlongtime / 60;
-
-        int temp = goalDataSet.getCurrentAmountToday();
+        CalendarDatas today = new CalendarDatas();
+        //int temp = goalDataSet.getCurrentAmountToday();
+        int temp = dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY);
         temp += ihowlongtime;
-        goalDataSet.setCurrentAmountToday(temp);
-        timeOfCurrenttv.setText("수행 시간 : " + goalDataSet.getCurrentAmountToday() + "분");
-
+        //goalDataSet.setCurrentAmountToday(temp);
+        dbManager.setCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY,temp);
+        //timeOfCurrenttv.setText("수행 시간 : " + goalDataSet.getCurrentAmountToday() + "분");
+        timeOfCurrenttv.setText("수행 시간 : " + dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY) + "분");
         Button startbtn = (Button) findViewById(R.id.timerStartbtn);
         timerInit();
         stopWatchtv.setText("00:00:00");
         startbtn.setVisibility(View.VISIBLE);
         startbtn.setText("Start");
-        if (goalDataSet.getCurrentAmountToday() < goalDataSet.getAmountToday()) {
+        //if (goalDataSet.getCurrentAmountToday() < goalDataSet.getAmountToday()) {
+        if(dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY) < goalDataSet.getAmountToday()){
             Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
-        } else if ((goalDataSet.getUnitToday() == 0) && (goalDataSet.getCurrentAmountToday() >= goalDataSet.getAmountToday())) {  //이상이고 성공하면
+        } else if ((goalDataSet.getUnitToday() == 0) && (dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY) >= goalDataSet.getAmountToday())) {  //이상이고 성공하면
             whereSuccess = SUCCESS_FROM_TODAY;
 
             int a = (goalDataSet.getBettingGoldToday()) + (userDBManager.getGold());

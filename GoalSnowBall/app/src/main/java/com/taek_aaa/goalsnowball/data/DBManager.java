@@ -36,18 +36,89 @@ public class DBManager extends SQLiteOpenHelper {
     /**
      * DB에 데이터를 저장
      **/
-    public void insert(int  year, int month, int date, int whatDateType, String goal, String type, int amount, String unit, int currentAmount, int bettingGold, int isSuccess) {
+    public void insert(int year, int month, int date, int whatDateType, String goal, String type, int amount, String unit, int currentAmount, int bettingGold, int isSuccess) {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("INSERT INTO database VALUES(NULL, " + year + ", " + month + ", " + date + ", " + whatDateType + ", '" + goal + "','" + type + "', " + amount + ", '" + unit + "', " + currentAmount + ", " + bettingGold + "," + isSuccess + ");");  //string넣을때는 '' 하고그안에""해야
 
         db.close();
     }
 
+    public void setGoal(int findYear, int findMonth, int findDate, int findWhatDateType, String setGoalstr) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM database", null);
+
+        while (cursor.moveToNext()) {
+            int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+            int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+            int dbDate = cursor.getInt(cursor.getColumnIndex("date"));
+            int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+            if ((dbYear == findYear) && (dbMonth == findMonth) && (dbDate == findDate) && (dbWhatDateType == findWhatDateType)) {
+                String str = "UPDATE database SET goal='" + setGoalstr + "';";
+                db.execSQL(str);
+                break;
+            }
+        }
+        cursor.close();
+        db.close();
+    }
+
+    public void setCurrentAmount(int findYear, int findMonth, int findDate, int findWhatDateType, int setAmount) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM database", null);
+
+        while (cursor.moveToNext()) {
+            int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+            int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+            int dbDate = cursor.getInt(cursor.getColumnIndex("date"));
+            int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+            if ((dbYear == findYear) && (dbMonth == findMonth) && (dbDate == findDate) && (dbWhatDateType == findWhatDateType)) {
+                String str = "UPDATE database SET currentAmount=" + setAmount + ";";
+                db.execSQL(str);
+                break;
+            }
+        }
+        cursor.close();
+        db.close();
+    }
+
+    public int getCurrentAmount(int findYear, int findMonth, int findDate, int findWhatDateType) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM database", null);
+        int result = 0;
+        while (cursor.moveToNext()) {
+            int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+            int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+            int dbDate = cursor.getInt(cursor.getColumnIndex("date"));
+            int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+            if ((dbYear == findYear) && (dbMonth == findMonth) && (dbDate == findDate) && (dbWhatDateType == findWhatDateType)) {
+                result = cursor.getInt(cursor.getColumnIndex("currentAmount"));
+                break;
+            }
+
+        }
+        return result;
+    }
+
+    public String getGrade() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM userInfo", null);
+        String grade = "";
+        while (cursor.moveToNext()) {
+            grade = cursor.getString(cursor.getColumnIndex("grade"));
+            Log.e("qwe", String.valueOf(grade));
+        }
+        return grade;
+    }
+
+    public void setName(String str) {
+        SQLiteDatabase db = getReadableDatabase();
+        String sql = "UPDATE userInfo SET name='" + str + "';";
+        db.execSQL(sql);
+        db.close();
+
+    }
 
 
-    /**
-     * DB에 값을 LinkedList로 꺼냄
-     **/
     public void getResult(LinkedList<DBData> sllDBData) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM database", null);
@@ -82,15 +153,12 @@ public class DBManager extends SQLiteOpenHelper {
         db.close();
     }
 
-
-    /**
-     * DB 선택한 부분 삭제
-     **/
+   /*
     public void delete(Double latitude, Double longitude) {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DELETE FROM database WHERE latitude = " + latitude + " AND longitude = " + longitude);
 
         db.close();
-    }
+    }*/
 
 }
