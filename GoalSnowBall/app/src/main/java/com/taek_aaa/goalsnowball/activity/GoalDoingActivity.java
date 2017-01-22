@@ -35,7 +35,7 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface{
     int hours = 0;
     Handler handler = new Handler();
     TextView blackboardtv, timeOfCurrenttv, successGetGoldtv;
-    static int tmpAmount;
+
     SuccessDialog successDialog;
     UserDBManager userDBManager;
     DBManager dbManager;

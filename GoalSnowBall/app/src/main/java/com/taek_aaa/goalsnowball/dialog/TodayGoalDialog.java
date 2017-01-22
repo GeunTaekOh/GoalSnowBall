@@ -7,7 +7,6 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
-import com.taek_aaa.goalsnowball.data.DBData;
 
 import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryPhysicalArrays;
@@ -19,8 +18,7 @@ import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryTimeArrays
 
 public class TodayGoalDialog extends GoalDialog implements View.OnClickListener {
 
-    DBData dbData = new DBData();
-    int tempUnit = 0;
+
 
     public TodayGoalDialog(Context context) {
         super(context);

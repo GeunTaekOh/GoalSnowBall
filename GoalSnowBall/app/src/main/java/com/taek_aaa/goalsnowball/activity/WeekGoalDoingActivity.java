@@ -24,7 +24,7 @@ import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.whereSuccess;
 
 public class WeekGoalDoingActivity extends GoalDoingActivity {
 
-
+    int tmpAmount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

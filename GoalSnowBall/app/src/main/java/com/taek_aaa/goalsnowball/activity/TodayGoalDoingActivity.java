@@ -21,6 +21,7 @@ import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.whereSuccess;
  */
 
 public class TodayGoalDoingActivity extends GoalDoingActivity {
+    int tmpAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +85,7 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
     public void saveCurrentAmountToEditText() {
         dbManager.setCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY,Integer.parseInt(amountOfEdit.getText().toString()));
         Log.e("db","저장 디비 명령어 지나감");
+        Log.e("rmsxor94","오늘 골 두잉 액티비티에 저장");
         if(dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY) < dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY)){
             Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
         }
@@ -93,7 +95,6 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
      **/
     public void onClickSaveBtnGoal(View v) {
         saveCurrentAmountToEditText();
-
         //물리적양일 경우임 저장버튼이 있는경우는 물리적 양일때만이기때문
         //물리적양 일때 성공하면
         if(dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY) <= dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY)){

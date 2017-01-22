@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryPhysicalArrays;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryTimeArrays;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
+import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.isSuccessMonth;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.getGoldMonth;
 
@@ -19,9 +17,9 @@ public class MonthAchievementRateActivity extends AchievementRateActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (goalDataSet.getTypeMonth().equals("물리적양")) {
+        if (dbManager.getType(today.cYear,today.cMonth,today.cdate,FROM_MONTH).equals("물리적양")) {
             typeOfContents = "물리적양";
-        } else if (goalDataSet.getTypeMonth().equals("시간적양")) {
+        } else if (dbManager.getType(today.cYear,today.cMonth,today.cdate,FROM_MONTH).equals("시간적양")) {
             typeOfContents = "시간적양";
         } else {
             typeOfContents = "error";
@@ -42,14 +40,14 @@ public class MonthAchievementRateActivity extends AchievementRateActivity{
     }
 
     public void drawGoal() {
-        achievementStringtv.setText("" + goalDataSet.getMonthGoal());
+        achievementStringtv.setText("" + dbManager.getGoal(today.cYear,today.cMonth,today.cdate,FROM_MONTH));
     }
 
     public void drawGoalAmount(String type) throws Exception{
         if (type.equals("물리적양")) {
-            achievementAmounttv.setText("" + goalDataSet.getAmountMonth() + "" + categoryPhysicalArrays[goalDataSet.getUnitMonth()]);
+            achievementAmounttv.setText("" + dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_MONTH) + "" + dbManager.getUnit(today.cYear,today.cMonth,today.cdate,FROM_MONTH));
         } else if (type.equals("시간적양")) {
-            achievementAmounttv.setText("" + goalDataSet.getAmountMonth() + "분 " + categoryTimeArrays[goalDataSet.getUnitMonth()]);
+            achievementAmounttv.setText("" + dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_MONTH) + "분 " + dbManager.getUnit(today.cYear,today.cMonth,today.cdate,FROM_MONTH));
         } else {
             throw new Exception();
         }
@@ -57,9 +55,9 @@ public class MonthAchievementRateActivity extends AchievementRateActivity{
 
     public void drawCurrentAmount(String type) throws Exception{
         if (type.equals("물리적양")) {
-            currentAmounttv.setText("" + goalDataSet.getCurrentAmountMonth() + "" + categoryPhysicalArrays[goalDataSet.getUnitMonth()]);
+            currentAmounttv.setText("" + dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_MONTH) + "" + dbManager.getUnit(today.cYear,today.cMonth,today.cdate,FROM_MONTH));
         } else if (type.equals("시간적양")) {
-            currentAmounttv.setText("" + goalDataSet.getCurrentAmountMonth() + "분");
+            currentAmounttv.setText("" + dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_MONTH) + "분");
         } else {
             throw new Exception();
         }
@@ -67,14 +65,14 @@ public class MonthAchievementRateActivity extends AchievementRateActivity{
 
     public void drawPercent(String type) throws Exception {
         double result;
-        int goal = goalDataSet.getAmountMonth();
+        int goal = dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_MONTH);
         int current;
 
         if (type.equals("물리적양") || (type.equals("시간적양"))) {
-            progressBar.setMax(goalDataSet.getAmountMonth());
-            progressBar.setProgress(goalDataSet.getCurrentAmountMonth());
+            progressBar.setMax(dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_MONTH));
+            progressBar.setProgress(dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_MONTH));
             progressBar.setVisibility(ProgressBar.VISIBLE);
-            current = goalDataSet.getCurrentAmountMonth();
+            current = dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_MONTH);
         } else {
             throw new Exception();
         }
@@ -92,9 +90,9 @@ public class MonthAchievementRateActivity extends AchievementRateActivity{
 
     public void drawRemainAmount(String type) throws Exception {
         if (type.equals("물리적양")) {
-            remainAmounttv.setText("" + (goalDataSet.getAmountMonth() - goalDataSet.getCurrentAmountMonth()) + "" + categoryPhysicalArrays[goalDataSet.getUnitMonth()]);
+            remainAmounttv.setText("" + (dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_MONTH) - dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_MONTH)) + "" + dbManager.getUnit(today.cYear,today.cMonth,today.cdate,FROM_MONTH));
         } else if (type.equals("시간적양")) {
-            remainAmounttv.setText("" + (goalDataSet.getAmountMonth() - goalDataSet.getCurrentAmountMonth()) + "분");
+            remainAmounttv.setText("" + (dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_MONTH) - dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_MONTH)) + "분");
         } else {
             throw new Exception();
         }
@@ -102,14 +100,14 @@ public class MonthAchievementRateActivity extends AchievementRateActivity{
 
     public void drawBettingGold()  {
         if(isSuccessMonth==false) {
-            betAmounttv.setText("" + goalDataSet.getBettingGoldMonth() + " Gold");
+            betAmounttv.setText("" + dbManager.getBettingGold(today.cYear,today.cMonth,today.cdate,FROM_MONTH) + " Gold");
         }else{
             betAmounttv.setText("" + getGoldMonth + " Gold");
         }
     }
 
     public void drawBettingResult() {
-        if(goalDataSet.getBettingGoldMonth()==0){
+        if(dbManager.getBettingGold(today.cYear,today.cMonth,today.cdate,FROM_MONTH)==0){
             //획득
             resultBettv.setText("획득하였습니다.");
         }else{

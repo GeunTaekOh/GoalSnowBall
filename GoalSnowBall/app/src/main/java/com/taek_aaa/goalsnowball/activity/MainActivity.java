@@ -58,9 +58,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static float defaultHeight, defaultWidth;
     PictureController pictureController;
     public static boolean isSuccessToday = false, isSuccessWeek = false, isSuccessMonth = false;
-    public final static int FROM_TODAY = 100001;
-    public final static int FROM_WEEK = 100002;
-    public final static int FROM_MONTH = 1000003;
+    public final static int FROM_TODAY = 991;
+    public final static int FROM_WEEK = 992;
+    public final static int FROM_MONTH = 993;
     DBManager dbmanager;
     UserDBManager userDBManager;
     CalendarDatas today;
@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         init();     //나중에 디비로 구현하면 여기서 몇개 제외하기
 
         drawMainImage();
+        Log.e("rmsxor94","onCreate");
         draw();
         registerForContextMenu(imageView);
     }
@@ -97,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStart() {
         super.onStart();
+        Log.e("rmsxor94","onStart");
         draw();
     }
 
@@ -267,10 +269,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 이번달 목표를 텍스트뷰에 출력
      **/
     public void drawMonthGoal() {
-        if (goalDataSet.isMonthGoal) {
-            monthtv.setText(goalDataSet.getMonthGoal());
+        if (dbmanager.hasGoal(today.cYear, today.cMonth, today.cdate, FROM_MONTH)) {
+            monthtv.setText(dbmanager.getGoal(today.cYear, today.cMonth, today.cdate, FROM_MONTH));
             monthtv.setGravity(Gravity.CENTER);
-            Log.e("test", goalDataSet.getMonthGoal());
         } else {
             monthtv.setText("");
         }
@@ -376,14 +377,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int goal = dbmanager.getGoalAmount(today.cYear, today.cMonth, today.cdate, FROM_TODAY);
         int current;
         if ((dbmanager.getType(today.cYear, today.cMonth, today.cdate, FROM_TODAY).toString().equals("물리적양")) || (dbmanager.getType(today.cYear, today.cMonth, today.cdate, FROM_TODAY).toString().equals("시간적양"))) {
+            Log.e("rmsxor94","drawToayPercent");
             current = dbmanager.getCurrentAmount(today.cYear, today.cMonth, today.cdate, FROM_TODAY);
-
         } else {
             current = 0;
             goal = 10;
 
         }
-
         result = (double) current / (double) goal * 100;
         result = Double.parseDouble(String.format("%.1f", result));
         if (result >= 100.0) {
@@ -435,10 +435,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      **/
     public void drawMonthPercent() {
         double result;
-        int goal = goalDataSet.getAmountMonth();
+        int goal = dbmanager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_MONTH);
         int current;
-        if ((goalDataSet.getTypeMonth().toString() == "물리적양") || (goalDataSet.getTypeMonth().toString() == "시간적양")) {
-            current = goalDataSet.getCurrentAmountMonth();
+        if ((dbmanager.getType(today.cYear,today.cMonth,today.cdate,FROM_MONTH).toString() == "물리적양") || (dbmanager.getType(today.cYear,today.cMonth,today.cdate,FROM_MONTH).toString() == "시간적양")) {
+            Log.e("rmsxor94","drawMonthPercent");
+            current = dbmanager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_MONTH);
         } else {
             current = 0;
             goal = 10;
@@ -466,7 +467,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void init() {
 
         goalDataSet.setTypeWeek(""); //나중에 디비로구현하면 삭제하기
-        goalDataSet.setTypeMonth("");
 
         userDBManager = new UserDBManager(getBaseContext(), "user.db", null, 1);
         dbmanager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
