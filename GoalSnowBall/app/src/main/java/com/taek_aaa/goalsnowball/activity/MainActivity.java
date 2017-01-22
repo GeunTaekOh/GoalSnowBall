@@ -30,7 +30,6 @@ import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.controller.PictureController;
 import com.taek_aaa.goalsnowball.data.CalendarDatas;
 import com.taek_aaa.goalsnowball.data.DBManager;
-import com.taek_aaa.goalsnowball.data.GoalDataSet;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
 import com.taek_aaa.goalsnowball.dialog.MonthGoalDialog;
 import com.taek_aaa.goalsnowball.dialog.TodayGoalDialog;
@@ -48,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static int viewHeight = 700;        //원하는 뷰의 높이(해상도)
     Boolean isPicture = false;
     TextView todaytv, weektv, monthtv, dDayWeektv, dDayMonthtv, mainGoldtv, percentToday, percentWeek, percentMonth, userNametv, userIdtv;
-    public static GoalDataSet goalDataSet;
     TodayGoalDialog todayGoalDialog;
     WeekGoalDialog weekGoalDialog;
     MonthGoalDialog monthGoalDialog;
@@ -71,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        goalDataSet = new GoalDataSet();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -257,14 +254,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 이번주 목표를 텍스트뷰에 출력
      **/
     public void drawWeekGoal() {
-        if (goalDataSet.isWeekGoal) {
-            weektv.setText(goalDataSet.getWeekGoal());
-            weektv.setGravity(Gravity.CENTER);
-            Log.e("test", goalDataSet.getWeekGoal());
-        } else {
-            weektv.setText("");
-        }
-
+        weektv.setText(dbmanager.getGoal(today.cYear, today.cMonth, today.cdate, FROM_WEEK));
+        weektv.setGravity(Gravity.CENTER);
     }
 
     /**
@@ -410,10 +401,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      **/
     public void drawWeekPercent() {
         double result;
-        int goal = goalDataSet.getAmountWeek();
+        int goal = dbmanager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_WEEK);
         int current;
-        if ((goalDataSet.getTypeWeek().toString() == "물리적양") || (goalDataSet.getTypeWeek().toString() == "시간적양")) {
-            current = goalDataSet.getCurrentAmountWeek();
+        if ((dbmanager.getType(today.cYear,today.cMonth,today.cdate,FROM_WEEK).toString().equals("물리적양")) || (dbmanager.getType(today.cYear,today.cMonth,today.cdate,FROM_WEEK).toString().equals("시간적양"))) {
+            current = dbmanager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_WEEK);
         } else {
             current = 0;
             goal = 10;
@@ -468,7 +459,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      **/
     public void init() {
 
-        goalDataSet.setTypeWeek(""); //나중에 디비로구현하면 삭제하기
 
         userDBManager = new UserDBManager(getBaseContext(), "user.db", null, 1);
         dbmanager = new DBManager(getBaseContext(), "goaldb.db", null, 1);

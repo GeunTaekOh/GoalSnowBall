@@ -67,6 +67,16 @@ public class DBManager extends SQLiteOpenHelper {
                     db.execSQL(str);
                 }
             }
+        }else{
+            while (cursor.moveToNext()){
+                int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+                int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+                int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+                if((dbYear == findYear) && (dbMonth == findMonth) && (dbWhatDateType == findWhatDateType)){
+                    String str = "UPDATE database SET currentAmount=" + setAmount + " WHERE whatDateType=" + dbWhatDateType + ";";
+                    db.execSQL(str);
+                }
+            }
         }
         cursor.close();
         db.close();
@@ -87,6 +97,16 @@ public class DBManager extends SQLiteOpenHelper {
                 }
             }
         } else if (findWhatDateType == FROM_MONTH) {
+            while (cursor.moveToNext()) {
+                int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+                int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+                int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+                if ((dbYear == findYear) && (dbMonth == findMonth) && (dbWhatDateType == findWhatDateType)) {
+                    String str = "UPDATE database SET isSuccess=" + status + " WHERE whatDateType=" + dbWhatDateType + ";";
+                    db.execSQL(str);
+                }
+            }
+        }else{
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -124,6 +144,15 @@ public class DBManager extends SQLiteOpenHelper {
                     result = cursor.getInt(cursor.getColumnIndex("currentAmount"));
                 }
             }
+        }else{
+            while (cursor.moveToNext()) {
+                int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+                int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+                int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+                if ((dbYear == findYear) && (dbMonth == findMonth) && (dbWhatDateType == findWhatDateType)) {
+                    result = cursor.getInt(cursor.getColumnIndex("currentAmount"));
+                }
+            }
         }
         return result;
     }
@@ -145,6 +174,15 @@ public class DBManager extends SQLiteOpenHelper {
                 }
             }
         }else if(findWhatDateType==FROM_MONTH){
+            while (cursor.moveToNext()) {
+                int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+                int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+                int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+                if ((dbYear == findYear) && (dbMonth == findMonth) && (dbWhatDateType == findWhatDateType)) {
+                    result = cursor.getInt(cursor.getColumnIndex("isSuccess"));
+                }
+            }
+        }else{
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -182,6 +220,16 @@ public class DBManager extends SQLiteOpenHelper {
 
                 }
             }
+        }else{
+            while (cursor.moveToNext()) {
+                int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+                int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+                int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+                if ((dbYear == findYear) && (dbMonth == findMonth) && (dbWhatDateType == findWhatDateType)) {
+                    result = cursor.getString(cursor.getColumnIndex("goal"));
+
+                }
+            }
         }
         return result;
     }
@@ -202,6 +250,15 @@ public class DBManager extends SQLiteOpenHelper {
 
             }
         }else if(findWhatDateType==FROM_MONTH){
+            while (cursor.moveToNext()) {
+                int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+                int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+                int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+                if ((dbYear == findYear) && (dbMonth == findMonth)  && (dbWhatDateType == findWhatDateType)) {
+                    result = cursor.getInt(cursor.getColumnIndex("amount"));
+                }
+            }
+        }else{
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -239,6 +296,15 @@ public class DBManager extends SQLiteOpenHelper {
                     result = cursor.getInt(cursor.getColumnIndex("bettingGold"));
                 }
             }
+        }else{
+            while (cursor.moveToNext()) {
+                int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+                int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+                int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+                if ((dbYear == findYear) && (dbMonth == findMonth)  && (dbWhatDateType == findWhatDateType)) {
+                    result = cursor.getInt(cursor.getColumnIndex("bettingGold"));
+                }
+            }
         }
         return result;
     }
@@ -260,6 +326,17 @@ public class DBManager extends SQLiteOpenHelper {
                 }
             }
         }else if(findWhatDateType==FROM_MONTH){
+            while (cursor.moveToNext()) {
+                int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+                int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+                int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+                if ((dbYear == findYear) && (dbMonth == findMonth) && (dbWhatDateType == findWhatDateType)) {
+                    result = true;
+                } else {
+                    result = false;
+                }
+            }
+        }else{
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -300,6 +377,15 @@ public class DBManager extends SQLiteOpenHelper {
                     result = cursor.getString(cursor.getColumnIndex("type"));
                 }
             }
+        }else{
+            while (cursor.moveToNext()) {
+                int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+                int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+                int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+                if ((dbYear == findYear) && (dbMonth == findMonth) && (dbWhatDateType == findWhatDateType)) {
+                    result = cursor.getString(cursor.getColumnIndex("type"));
+                }
+            }
         }
         return result;
     }
@@ -321,6 +407,17 @@ public class DBManager extends SQLiteOpenHelper {
 
             }
         }else if(findWhatDateType==FROM_MONTH){
+            while (cursor.moveToNext()) {
+                int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+                int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+                int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+                if ((dbYear == findYear) && (dbMonth == findMonth) && (dbWhatDateType == findWhatDateType)) {
+                    result = cursor.getString(cursor.getColumnIndex("unit"));
+
+                }
+
+            }
+        }else{
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));

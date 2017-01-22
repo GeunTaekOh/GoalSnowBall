@@ -14,8 +14,9 @@ import com.taek_aaa.goalsnowball.data.CalendarDatas;
 import com.taek_aaa.goalsnowball.data.DBManager;
 
 import static android.media.AudioManager.STREAM_MUSIC;
+import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_TODAY;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
+import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_WEEK;
 
 /**
  * Created by taek_aaa on 2017. 1. 17..
@@ -69,14 +70,14 @@ public class SuccessDialog extends Dialog {
             dbManager.setIsSuccess(today.cYear,today.cMonth,today.cdate,FROM_TODAY,1);
             whereSuccess = 0;
         } else if (whereSuccess == SUCCESS_FROM_WEEK) {
-            msg.setText("" + goalDataSet.getBettingGoldWeek() + "Gold를 획득하였습니다.");
-            getGoldWeek = goalDataSet.getBettingGoldWeek();
-            goalDataSet.setBettingGoldWeek(0);
+            msg.setText("" + dbManager.getBettingGold(today.cYear,today.cMonth,today.cdate,FROM_WEEK) + "Gold를 획득하였습니다.");
+            getGoldWeek = dbManager.getBettingGold(today.cYear,today.cMonth,today.cdate,FROM_WEEK);
+            dbManager.setIsSuccess(today.cYear,today.cMonth,today.cdate,FROM_WEEK,1);
             whereSuccess = 0;
         } else if (whereSuccess == SUCCESS_FROM_MONTH) {
-            msg.setText("" + goalDataSet.getBettingGoldMonth() + "Gold를 획득하였습니다.");
-            getGoldMonth = goalDataSet.getBettingGoldMonth();
-            goalDataSet.setBettingGoldMonth(0);
+            msg.setText("" + dbManager.getBettingGold(today.cYear,today.cMonth,today.cdate,FROM_MONTH) + "Gold를 획득하였습니다.");
+            getGoldMonth = dbManager.getBettingGold(today.cYear,today.cMonth,today.cdate,FROM_MONTH);
+            dbManager.setIsSuccess(today.cYear,today.cMonth,today.cdate,FROM_MONTH,1);
             whereSuccess = 0;
         } else {
             Log.e("error", "successDialog에서 에러");

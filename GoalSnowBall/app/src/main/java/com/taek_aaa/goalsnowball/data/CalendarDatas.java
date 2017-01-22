@@ -1,6 +1,10 @@
 package com.taek_aaa.goalsnowball.data;
 
+import android.util.Log;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
@@ -11,6 +15,7 @@ public class CalendarDatas {
     public Calendar today;
     public int cYear, hMonth, cMonth, cdate, dayOfWeekIndex;
     public int hour, minute, seconds;
+    public int weekOfYear;
     public static String[] dayOfWeekArray = {"", "일", "월", "화", "수", "목", "금", "토"};
 
 
@@ -24,6 +29,7 @@ public class CalendarDatas {
         hour = today.get(Calendar.HOUR_OF_DAY);
         minute = today.get(Calendar.MINUTE);
         seconds = today.get(Calendar.SECOND);
+        weekOfYear = today.get(Calendar.WEEK_OF_YEAR);
     }
 
     public Boolean isYoonYear(int year) {
@@ -57,6 +63,44 @@ public class CalendarDatas {
                 }
                 break;
         }
+        return result;
+    }
+
+    public int getWeekOfYear(int year, int month, int date){
+        int result=0;
+        String sResult="";
+        String sYear, sMonth, sDate;
+        sYear = String.valueOf(year);
+        if(month<10){
+            sMonth="0"+month;
+            Log.e("rmsxor",sMonth);
+        }else{
+            sMonth = String.valueOf(month);
+        }
+        if(date<10){
+            sDate="0"+date;
+            Log.e("rmsxor",sDate);
+        }else{
+            sDate = String.valueOf(date);
+        }
+        sResult=sYear+sMonth+sDate;
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyymmdd");
+
+        try {
+            Date tempDate = df.parse(sResult);
+
+
+            Calendar today = Calendar.getInstance();
+            today.setTime(tempDate);
+
+            result = today.get(Calendar.WEEK_OF_YEAR);
+        }catch (Exception e){
+            Log.e("rmsxor","캘린더데이타 오류");
+        }
+
+
+
         return result;
     }
 

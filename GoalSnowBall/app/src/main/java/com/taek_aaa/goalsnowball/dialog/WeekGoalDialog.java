@@ -8,7 +8,9 @@ import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
 
-import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
+import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_WEEK;
+import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryPhysicalArrays;
+import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryTimeArrays;
 
 /**
  * Created by taek_aaa on 2017. 1. 10..
@@ -28,9 +30,8 @@ public class WeekGoalDialog extends GoalDialog implements View.OnClickListener {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                goalDataSet.setUnitWeek(i);
+                tempUnit=i;
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -57,22 +58,28 @@ public class WeekGoalDialog extends GoalDialog implements View.OnClickListener {
                         }
 
                         if (physicalRadio.isChecked()) {
-                            goalDataSet.setTypeWeek("물리적양");
-                            Log.e("tt", "" + physicalRadio.getId());
+                            dbData.type = "물리적양";
                         } else {
-                            goalDataSet.setTypeWeek("시간적양");
-                            Log.e("tt", "" + timeRadio.getId());
+                            dbData.type = "시간적양";
                         }
 
-                        goalDataSet.setAmountWeek(textAmount);
-                        goalDataSet.setWeekGoal(textContents);
+                        dbData.goalAmount = textAmount;
+                        dbData.goal = textContents;
 
                         title.setText("이번주의 목표를 입력하세요.");
                         editTextContents.setHint("목표를 입력하세요.");
 
-                        goalDataSet.setBettingGoldWeek(Integer.parseInt(bettingGoldet.getText().toString()));
+                        dbData.bettingGold = Integer.parseInt(bettingGoldet.getText().toString());
                     }
                     dismiss();
+
+                    if (dbData.type == "물리적양") {
+                        dbData.unit = categoryPhysicalArrays[tempUnit];
+                    } else {
+                        dbData.unit = categoryTimeArrays[tempUnit];
+                    }
+
+                    dbManager.insert(today.cYear, today.cMonth, today.cdate, FROM_WEEK, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 0);
 
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "값을 모두 입력하세요.", Toast.LENGTH_SHORT).show();
