@@ -17,8 +17,6 @@ import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.getGoldWeek;
 
 public class WeekAchievementRateActivity extends AchievementRateActivity{
 
-
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

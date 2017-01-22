@@ -9,7 +9,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
-import com.taek_aaa.goalsnowball.data.CalendarDatas;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
 import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_TODAY;
@@ -23,8 +22,6 @@ import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.whereSuccess;
 
 public class TodayGoalDoingActivity extends GoalDoingActivity {
 
-    CalendarDatas today;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +30,7 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
 
         try {
             /** 물리적 양 일때 **/
-            today = new CalendarDatas();
+
             if (dbManager.getType(today.cYear,today.cMonth,today.cdate,FROM_TODAY).equals("물리적양")) {
                 setContentView(R.layout.activity_goal_amount_doing);
                 Log.e("aa", "물리적양");
@@ -59,14 +56,13 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
                 amountOfEdit.post(new Runnable() {
                     @Override
                     public void run() {
-                        CalendarDatas today =new CalendarDatas();
                         amountOfEdit.setText("" + dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY));
                     }
                 });
                 blackboardtv.setText("목표량 : " +dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY) + "" + dbManager.getUnit(today.cYear,today.cMonth,today.cdate,FROM_TODAY));
                 unittv.setText("" + dbManager.getUnit(today.cYear,today.cMonth,today.cdate,FROM_TODAY));
             } else {
-                CalendarDatas today =new CalendarDatas();
+
                 timeOfCurrenttv.setText("수행 시간 : " + dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY) + "분");
                 blackboardtv.setText("목표량 : " + dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY) + "분 " + dbManager.getUnit(today.cYear,today.cMonth,today.cdate,FROM_TODAY));
             }
@@ -79,7 +75,6 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
             e.getStackTrace();
             finish();
         }
-        CalendarDatas today =new CalendarDatas();
         tmpAmount = dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY);
     }
 
@@ -87,7 +82,6 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
      * 수행량 저장하는 함수
      **/
     public void saveCurrentAmountToEditText() {
-        CalendarDatas today = new CalendarDatas();
         dbManager.setCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY,Integer.parseInt(amountOfEdit.getText().toString()));
         Log.e("db","저장 디비 명령어 지나감");
         if(dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY) < dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY)){
@@ -98,7 +92,6 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
      * 목표 수행량 저장하는 함수
      **/
     public void onClickSaveBtnGoal(View v) {
-        CalendarDatas today = new CalendarDatas();
         saveCurrentAmountToEditText();
 
         //물리적양일 경우임 저장버튼이 있는경우는 물리적 양일때만이기때문
@@ -132,7 +125,7 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
         sseconds = howlongtime.substring(6);
         ihowlongtime = Integer.valueOf(shour) * 60 * 60 + Integer.valueOf(sminute) * 60 + Integer.valueOf(sseconds);
         ihowlongtime = ihowlongtime / 60;
-        CalendarDatas today = new CalendarDatas();
+
 
         int temp = dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY);
         temp += ihowlongtime;

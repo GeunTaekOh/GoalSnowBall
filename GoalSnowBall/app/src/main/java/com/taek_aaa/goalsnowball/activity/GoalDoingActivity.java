@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.data.CalendarDatas;
 import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
@@ -38,6 +39,7 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface{
     SuccessDialog successDialog;
     UserDBManager userDBManager;
     DBManager dbManager;
+    CalendarDatas today;
 
 
     @Override
@@ -45,6 +47,7 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface{
         super.onCreate(savedInstanceState);
         dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
         userDBManager = new UserDBManager(getBaseContext(), "user.db", null, 1);
+        today = new CalendarDatas();
 
     }
 

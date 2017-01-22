@@ -7,7 +7,6 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
-import com.taek_aaa.goalsnowball.data.CalendarDatas;
 import com.taek_aaa.goalsnowball.data.DBData;
 
 import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_TODAY;
@@ -25,11 +24,11 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
 
     public TodayGoalDialog(Context context) {
         super(context);
-
         title.setText("오늘의 목표를 입력하세요.");
         findViewById(R.id.DialogConfirmButton).setOnClickListener(this);
         findViewById(R.id.DialogExitButton).setOnClickListener(this);
         findViewById(R.id.DialogX).setOnClickListener(this);
+
         bettinggold = userDBManager.getGold() / 4;
         bettingGoldet.setText("" + bettinggold);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -40,7 +39,6 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
 
@@ -53,8 +51,8 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
             case R.id.DialogConfirmButton:
                 Log.e("test", "" + checkedId);
                 try {
-                    CalendarDatas today = new CalendarDatas();
-                    bettinggold = userDBManager.getGold() / 2;
+
+                    bettinggold = userDBManager.getGold() / 4;
                     if (Integer.parseInt(bettingGoldet.getText().toString()) > bettinggold) {
                         Toast.makeText(getContext(), "배팅액은 총 보유 골드의 25%를 넘을 수 없습니다.", Toast.LENGTH_SHORT).show();
                     } else {
