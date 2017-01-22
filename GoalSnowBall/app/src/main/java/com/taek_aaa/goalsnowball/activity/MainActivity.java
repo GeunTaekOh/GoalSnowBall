@@ -243,12 +243,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 오늘의 목표를 텍스트뷰에 출력
      **/
     public void drawTodayGoal() {
-        if (dbmanager.hasGoal(today.cYear, today.cMonth, today.cdate, FROM_TODAY)) {
+        /*if (dbmanager.hasGoal(today.cYear, today.cMonth, today.cdate, FROM_TODAY)) {
             todaytv.setText(dbmanager.getGoal(today.cYear, today.cMonth, today.cdate, FROM_TODAY));
             todaytv.setGravity(Gravity.CENTER);
         } else {
             todaytv.setText("");
-        }
+        }*/
+        todaytv.setText(dbmanager.getGoal(today.cYear, today.cMonth, today.cdate, FROM_TODAY));
+        todaytv.setGravity(Gravity.CENTER);
     }
 
     /**
@@ -269,12 +271,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 이번달 목표를 텍스트뷰에 출력
      **/
     public void drawMonthGoal() {
-        if (dbmanager.hasGoal(today.cYear, today.cMonth, today.cdate, FROM_MONTH)) {
+        /*if (dbmanager.hasGoal(today.cYear, today.cMonth, today.cdate, FROM_MONTH)) {
             monthtv.setText(dbmanager.getGoal(today.cYear, today.cMonth, today.cdate, FROM_MONTH));
             monthtv.setGravity(Gravity.CENTER);
         } else {
             monthtv.setText("");
-        }
+        }*/
+        monthtv.setText(dbmanager.getGoal(today.cYear, today.cMonth, today.cdate, FROM_MONTH));
+        monthtv.setGravity(Gravity.CENTER);
 
     }
 
@@ -429,7 +433,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
     }
-
     /**
      * 이번달 목표 달성률 출력
      **/
@@ -437,8 +440,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         double result;
         int goal = dbmanager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_MONTH);
         int current;
-        if ((dbmanager.getType(today.cYear,today.cMonth,today.cdate,FROM_MONTH).toString() == "물리적양") || (dbmanager.getType(today.cYear,today.cMonth,today.cdate,FROM_MONTH).toString() == "시간적양")) {
-            Log.e("rmsxor94","drawMonthPercent");
+        if ((dbmanager.getType(today.cYear,today.cMonth,today.cdate,FROM_MONTH).toString().equals("물리적양")) || (dbmanager.getType(today.cYear,today.cMonth,today.cdate,FROM_MONTH).toString().equals("시간적양"))) {
             current = dbmanager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_MONTH);
         } else {
             current = 0;
@@ -450,16 +452,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             result = 100;
             percentMonth.setText("" + result + "%");
             percentMonth.setTextColor(Color.GREEN);
-            /*soundPoolMain = new SoundPool(1, STREAM_MUSIC, 0);
-            tuneMain = soundPoolMain.load(this, R.raw.coin, 1);
-            soundPoolMain.play(tuneMain, 1, 1, 0, 0, 1);*/
-
         } else {
             percentMonth.setText("" + result + "%");
             percentMonth.setTextColor(Color.BLACK);
-
         }
     }
+
+
+
+
+
 
     /**
      * init

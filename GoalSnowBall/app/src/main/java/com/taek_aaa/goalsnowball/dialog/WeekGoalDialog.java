@@ -14,7 +14,7 @@ import static com.taek_aaa.goalsnowball.activity.MainActivity.goalDataSet;
  * Created by taek_aaa on 2017. 1. 10..
  */
 
-public class WeekGoalDialog extends GoalDialog implements View.OnClickListener{
+public class WeekGoalDialog extends GoalDialog implements View.OnClickListener {
 
 
     public WeekGoalDialog(Context context) {
@@ -67,13 +67,9 @@ public class WeekGoalDialog extends GoalDialog implements View.OnClickListener{
                         goalDataSet.setAmountWeek(textAmount);
                         goalDataSet.setWeekGoal(textContents);
 
-                        if (goalDataSet.isWeekGoal) {
-                            title.setText("이번주의 목표를 수정하세요.");
-                            editTextContents.setHint("목표를 수정하세요.");
-                        } else {
-                            title.setText("이번주의 목표를 추가하세요.");
-                            editTextContents.setHint("목표를 추가하세요.");
-                        }
+                        title.setText("이번주의 목표를 입력하세요.");
+                        editTextContents.setHint("목표를 입력하세요.");
+
                         goalDataSet.setBettingGoldWeek(Integer.parseInt(bettingGoldet.getText().toString()));
                     }
                     dismiss();

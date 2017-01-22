@@ -15,7 +15,7 @@ import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryTimeArrays
 /**
  * Created by taek_aaa on 2017. 1. 14..
  */
-public class MonthGoalDialog extends GoalDialog implements View.OnClickListener{
+public class MonthGoalDialog extends GoalDialog implements View.OnClickListener {
 
 
     public MonthGoalDialog(Context context) {
@@ -65,13 +65,10 @@ public class MonthGoalDialog extends GoalDialog implements View.OnClickListener{
                         dbData.goalAmount = textAmount;
                         dbData.goal = textContents;
 
-                        if (dbManager.hasGoal(today.cYear,today.cMonth,today.cdate,FROM_MONTH)) {
-                            title.setText("이번달의 목표를 수정하세요.");
-                            editTextContents.setHint("목표를 수정하세요.");
-                        } else {
-                            title.setText("이번달의 목표를 추가하세요.");
-                            editTextContents.setHint("목표를 추가하세요.");
-                        }
+
+                        title.setText("이번달의 목표를 입력하세요.");
+                        editTextContents.setHint("목표를 입력하세요.");
+
                         dbData.bettingGold = Integer.parseInt(bettingGoldet.getText().toString());
                     }
                     dismiss();

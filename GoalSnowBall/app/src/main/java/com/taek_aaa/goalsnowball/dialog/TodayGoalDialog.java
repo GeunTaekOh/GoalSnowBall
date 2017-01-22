@@ -19,7 +19,6 @@ import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryTimeArrays
 public class TodayGoalDialog extends GoalDialog implements View.OnClickListener {
 
 
-
     public TodayGoalDialog(Context context) {
         super(context);
         title.setText("오늘의 목표를 입력하세요.");
@@ -57,7 +56,7 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
                         int textAmount = Integer.parseInt(editTextAmonut.getText().toString());
                         textContents = editTextContents.getText().toString();
                         if (textContents.equals("")) {
-                             throw new Exception();
+                            throw new Exception();
                         }
 
                         if (physicalRadio.isChecked()) {
@@ -71,13 +70,9 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
                         dbData.goal = textContents;
 
 
-                        if (dbManager.hasGoal(today.cYear,today.cMonth,today.cdate,FROM_TODAY)) {
-                            title.setText("오늘의 목표를 수정하세요.");
-                            editTextContents.setHint("목표를 수정하세요.");
-                        } else {
-                            title.setText("오늘의 목표를 추가하세요.");
-                            editTextContents.setHint("목표를 추가하세요.");
-                        }
+                        title.setText("오늘의 목표를 입력하세요.");
+                        editTextContents.setHint("목표를 추가하세요.");
+
                         dbData.bettingGold = Integer.parseInt(bettingGoldet.getText().toString());
                     }
                     dismiss();

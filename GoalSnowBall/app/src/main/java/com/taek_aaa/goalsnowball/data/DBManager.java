@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_TODAY;
@@ -56,7 +55,6 @@ public class DBManager extends SQLiteOpenHelper {
                 if ((dbYear == findYear) && (dbMonth == findMonth) && (dbDate == findDate) && (dbWhatDateType == findWhatDateType)) {
                     String str = "UPDATE database SET currentAmount=" + setAmount + " WHERE whatDateType=" + dbWhatDateType + ";";
                     db.execSQL(str);
-                    Log.e("rmsxor94","커런트어마운트투데이에서 설정"+""+setAmount);
                 }
             }
         } else if (findWhatDateType == FROM_MONTH) {
@@ -67,7 +65,6 @@ public class DBManager extends SQLiteOpenHelper {
                 if ((dbYear == findYear) && (dbMonth == findMonth) && (dbWhatDateType == findWhatDateType)) {
                     String str = "UPDATE database SET currentAmount=" + setAmount + " WHERE whatDateType=" + dbWhatDateType + ";";
                     db.execSQL(str);
-                    Log.e("rmsxor94","커런트어마운트몬스에서 설정"+""+setAmount);
                 }
             }
         }
@@ -85,7 +82,7 @@ public class DBManager extends SQLiteOpenHelper {
                 int dbDate = cursor.getInt(cursor.getColumnIndex("date"));
                 int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
                 if ((dbYear == findYear) && (dbMonth == findMonth) && (dbDate == findDate) && (dbWhatDateType == findWhatDateType)) {
-                    String str = "UPDATE database SET isSuccess=" + status + ";";
+                    String str = "UPDATE database SET isSuccess=" + status + " WHERE whatDateType=" + dbWhatDateType + ";";
                     db.execSQL(str);
                 }
             }
@@ -95,7 +92,7 @@ public class DBManager extends SQLiteOpenHelper {
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
                 int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
                 if ((dbYear == findYear) && (dbMonth == findMonth) && (dbWhatDateType == findWhatDateType)) {
-                    String str = "UPDATE database SET isSuccess=" + status + ";";
+                    String str = "UPDATE database SET isSuccess=" + status + " WHERE whatDateType=" + dbWhatDateType + ";";
                     db.execSQL(str);
                 }
             }
@@ -116,8 +113,6 @@ public class DBManager extends SQLiteOpenHelper {
                 int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
                 if ((dbYear == findYear) && (dbMonth == findMonth) && (dbDate == findDate) && (dbWhatDateType == findWhatDateType)) {
                     result = cursor.getInt(cursor.getColumnIndex("currentAmount"));
-                    Log.e("rmsxor94","db : "+dbWhatDateType + "find : "+findWhatDateType);
-                    Log.e("rmsxor94","커런트어마운트투데이에서 가져옴" + ""+result);
                 }
             }
         }else if(findWhatDateType==FROM_MONTH){
@@ -127,8 +122,6 @@ public class DBManager extends SQLiteOpenHelper {
                 int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
                 if ((dbYear == findYear) && (dbMonth == findMonth) && (dbWhatDateType == findWhatDateType)) {
                     result = cursor.getInt(cursor.getColumnIndex("currentAmount"));
-                    Log.e("rmsxor94","db : "+dbWhatDateType + "find : "+findWhatDateType);
-                    Log.e("rmsxor94","커런트어마운트몬스에서 가져옴"+""+result);
                 }
             }
         }
