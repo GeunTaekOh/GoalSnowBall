@@ -66,6 +66,36 @@ public class CalendarDatas {
         return result;
     }
 
+    public int getDdayWeek(int dayOfWeekIndex){
+        int countWeek = 0;
+
+        switch (dayOfWeekIndex) {
+            case 1:
+                countWeek = 1;
+                break;
+            case 2:
+                countWeek = 7;
+                break;
+            case 3:
+                countWeek = 6;
+                break;
+            case 4:
+                countWeek = 5;
+                break;
+            case 5:
+                countWeek = 4;
+                break;
+            case 6:
+                countWeek = 3;
+                break;
+            case 7:
+                countWeek = 2;
+                break;
+        }
+
+        return countWeek;
+    }
+
     public int getWeekOfYear(int year, int month, int date){
         int result=0;
         String sResult="";

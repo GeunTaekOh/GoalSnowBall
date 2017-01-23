@@ -2,10 +2,11 @@ package com.taek_aaa.goalsnowball.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.controller.PictureController;
+import com.taek_aaa.goalsnowball.controller.PicturePermission;
 import com.taek_aaa.goalsnowball.data.CalendarDatas;
 import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
@@ -35,6 +37,8 @@ import com.taek_aaa.goalsnowball.dialog.MonthGoalDialog;
 import com.taek_aaa.goalsnowball.dialog.TodayGoalDialog;
 import com.taek_aaa.goalsnowball.dialog.UserNameDialog;
 import com.taek_aaa.goalsnowball.dialog.WeekGoalDialog;
+
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -77,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         pictureController = new PictureController();
-
+        PicturePermission.verifyStoragePermissions(this);
         init();     //나중에 디비로 구현하면 여기서 몇개 제외하기
 
         drawMainImage();
@@ -173,18 +177,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void pictureSetToImageView(Intent data) {
         try {
             Uri uri = data.getData();
-            String uriPath = uri.getPath();
-            Log.e("test", uriPath);
+            File imageFile = new File(getRealPathFromURI(uri));
+            userDBManager.setPicturePath(imageFile.toString());
             photo = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
             inflater = getLayoutInflater();
-
-            Bitmap rotatedPhoto;
-            ExifInterface exif = new ExifInterface(uriPath);
-            int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-            int exifDegree = pictureController.exifOrientationToDegrees(exifOrientation);
-            rotatedPhoto = pictureController.rotate(photo, exifDegree);
-            Bitmap sizedPhoto = pictureController.setSizedImage(rotatedPhoto);
-            imageView = (ImageView) findViewById(R.id.mainImageView);
+            Bitmap sizedPhoto = pictureController.setSizedImage(photo);
             imageView.setImageBitmap(sizedPhoto);
             Toast.makeText(getBaseContext(), "사진을 입력하였습니다.", Toast.LENGTH_SHORT).show();
             isPicture = true;
@@ -192,8 +189,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             e.getStackTrace();
             isPicture = false;
         }
-
     }
+
+    /** 이미지가 저장되어 있는 경우에 이미지를 그려줌 **/
+    protected void drawImage() {
+        if (userDBManager.getPicturePath().equals("null")) {
+            isPicture = false;
+            drawMainImage();
+        } else {
+            String picturePath = userDBManager.getPicturePath();
+            File imgFile = new File("" + picturePath);
+            if (imgFile.exists()) {
+                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                Bitmap sizedPhoto = pictureController.setSizedImage(myBitmap);
+                photo = sizedPhoto;
+                imageView.setImageBitmap(sizedPhoto);
+                isPicture = true;
+            }else{
+                Toast.makeText(this, "경로에 사진이 없습니다.",Toast.LENGTH_SHORT).show();
+                isPicture=false;
+            }
+        }
+    }
+
 
     /**
      * 목표 부분들을 누르면 다이알러그 보여줌
@@ -291,7 +309,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 이미지 선택 안했을 시에 이미지를 이미지뷰에 출력
      **/
     public void drawMainImage() {
-        imageView = (ImageView) findViewById(R.id.mainImageView);
         BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.profile);
         Bitmap bitmapDefault = drawable.getBitmap();
         Bitmap sizedBitmapDefault = pictureController.setSizedImage(bitmapDefault);
@@ -312,30 +329,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int endDate;
         dDayWeektv = (TextView) findViewById(R.id.d_week);
         dDayMonthtv = (TextView) findViewById(R.id.d_month);
-        int countWeek = 0;
-        switch (calendarData.dayOfWeekIndex) {
-            case 1:
-                countWeek = 1;
-                break;
-            case 2:
-                countWeek = 7;
-                break;
-            case 3:
-                countWeek = 6;
-                break;
-            case 4:
-                countWeek = 5;
-                break;
-            case 5:
-                countWeek = 4;
-                break;
-            case 6:
-                countWeek = 3;
-                break;
-            case 7:
-                countWeek = 2;
-                break;
-        }
+        int countWeek = calendarData.getDdayWeek(calendarData.dayOfWeekIndex);
         dDayWeektv.setText("이번주   D - " + "" + countWeek);
         endDate = calendarData.getEndOfMonth(cYear, cMonth);
         dDayMonthtv.setText("이번달  D - " + "" + (endDate - cdate + 1));
@@ -410,15 +404,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         percentMonth.setText("" + result + "%");
     }
+
     /**
      * init
      **/
     public void init() {
-
-
         userDBManager = new UserDBManager(getBaseContext(), "user.db", null, 1);
         dbmanager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
-
+        imageView = (ImageView) findViewById(R.id.mainImageView);
         today = new CalendarDatas();
         mainGoldtv = (TextView) findViewById(R.id.mainGoldtv);
         mainGoldtv.setText("" + userDBManager.getGold() + "Gold");
@@ -444,8 +437,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreateContextMenu(menu, v, menuInfo);
         // 컨텍스트 메뉴가 최초로 한번만 호출되는 콜백 메서드
         menu.setHeaderTitle("어떤 작업을 수행하시겠습니까?");
-        String[] currencyUnit = {"사진 추가/수정", "사진 회전"};
-        for (int i = 1; i <= 2; i++) {
+        String[] currencyUnit = {"사진 추가/수정", "사진 회전", "사진 삭제"};
+        for (int i = 1; i <= 3; i++) {
             menu.add(0, i, 100, currencyUnit[i - 1]);
         }
     }
@@ -467,12 +460,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Bitmap rotatedPicture;
                     rotatedPicture = pictureController.rotate(photo, 90);
                     photo = rotatedPicture;
-                    imageView = (ImageView) findViewById(R.id.mainImageView);
                     imageView.setImageBitmap(rotatedPicture);
+                    Log.e("rmsxor",""+photo);
                 } else {
                     Toast.makeText(this, "기본 이미지는 회전을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case 3://사진삭제
+                if(userDBManager.getPicturePath().equals("null")){
+                    Toast.makeText(this, "아직 이미지를 설정하지 않았습니다. ",Toast.LENGTH_SHORT).show();
+                }else {
+                    drawMainImage();
+                    isPicture = false;
+                    userDBManager.setPicturePath("null");
+                    Toast.makeText(this, "이미지가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
         }
         return super.onContextItemSelected(item);
     }
@@ -495,6 +499,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawMonthPercent();
         mainGoldtv.setText("" + userDBManager.getGold() + "Gold");
         drawDDay();
+        drawImage();
     }
 
     public double makePercent(int current, int goal) {
@@ -506,4 +511,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         return result;
     }
+
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
+    }
+
+
 }

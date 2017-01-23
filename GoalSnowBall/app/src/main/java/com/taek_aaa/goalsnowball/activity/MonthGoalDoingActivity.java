@@ -116,8 +116,6 @@ public class MonthGoalDoingActivity extends GoalDoingActivity {
             }
 
         }
-
-
     }
 
 
