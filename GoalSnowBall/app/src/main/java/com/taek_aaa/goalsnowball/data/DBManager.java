@@ -47,32 +47,20 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM database", null);
         if (findWhatDateType == FROM_TODAY) {
-            while (cursor.moveToNext()) {
-                int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
-                int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
-                int dbDate = cursor.getInt(cursor.getColumnIndex("date"));
-                int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
-                if ((dbYear == findYear) && (dbMonth == findMonth) && (dbDate == findDate) && (dbWhatDateType == findWhatDateType)) {
-                    String str = "UPDATE database SET currentAmount=" + setAmount + " WHERE whatDateType=" + dbWhatDateType + ";";
-                    db.execSQL(str);
-                }
-            }
+            String str = "UPDATE database SET currentAmount=" + setAmount + " WHERE year = " + findYear + " AND month = " + findMonth + " AND date = " + findDate + " AND whatDateType=" + findWhatDateType + ";";
+            db.execSQL(str);
         } else if (findWhatDateType == FROM_MONTH) {
+            String str = "UPDATE database SET currentAmount=" + setAmount + " WHERE year = " + findYear + " AND month = " + findMonth + " AND whatDateType=" + findWhatDateType + ";";
+            db.execSQL(str);
+        } else {
+
+
+
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
                 int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
                 if ((dbYear == findYear) && (dbMonth == findMonth) && (dbWhatDateType == findWhatDateType)) {
-                    String str = "UPDATE database SET currentAmount=" + setAmount + " WHERE whatDateType=" + dbWhatDateType + ";";
-                    db.execSQL(str);
-                }
-            }
-        }else{
-            while (cursor.moveToNext()){
-                int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
-                int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
-                int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
-                if((dbYear == findYear) && (dbMonth == findMonth) && (dbWhatDateType == findWhatDateType)){
                     String str = "UPDATE database SET currentAmount=" + setAmount + " WHERE whatDateType=" + dbWhatDateType + ";";
                     db.execSQL(str);
                 }
@@ -106,7 +94,7 @@ public class DBManager extends SQLiteOpenHelper {
                     db.execSQL(str);
                 }
             }
-        }else{
+        } else {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -125,7 +113,7 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM database", null);
         int result = 0;
-        if(findWhatDateType==FROM_TODAY) {
+        if (findWhatDateType == FROM_TODAY) {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -135,7 +123,7 @@ public class DBManager extends SQLiteOpenHelper {
                     result = cursor.getInt(cursor.getColumnIndex("currentAmount"));
                 }
             }
-        }else if(findWhatDateType==FROM_MONTH){
+        } else if (findWhatDateType == FROM_MONTH) {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -144,7 +132,7 @@ public class DBManager extends SQLiteOpenHelper {
                     result = cursor.getInt(cursor.getColumnIndex("currentAmount"));
                 }
             }
-        }else{
+        } else {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -158,12 +146,11 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
 
-
     public int getIsSuccess(int findYear, int findMonth, int findDate, int findWhatDateType) {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM database", null);
         int result = 0;
-        if(findWhatDateType==FROM_TODAY) {
+        if (findWhatDateType == FROM_TODAY) {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -173,7 +160,7 @@ public class DBManager extends SQLiteOpenHelper {
                     result = cursor.getInt(cursor.getColumnIndex("isSuccess"));
                 }
             }
-        }else if(findWhatDateType==FROM_MONTH){
+        } else if (findWhatDateType == FROM_MONTH) {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -182,7 +169,7 @@ public class DBManager extends SQLiteOpenHelper {
                     result = cursor.getInt(cursor.getColumnIndex("isSuccess"));
                 }
             }
-        }else{
+        } else {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -199,7 +186,7 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM database", null);
         String result = "";
-        if(findWhatDateType==FROM_TODAY) {
+        if (findWhatDateType == FROM_TODAY) {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -210,7 +197,7 @@ public class DBManager extends SQLiteOpenHelper {
 
                 }
             }
-        }else if(findWhatDateType==FROM_MONTH){
+        } else if (findWhatDateType == FROM_MONTH) {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -220,7 +207,7 @@ public class DBManager extends SQLiteOpenHelper {
 
                 }
             }
-        }else{
+        } else {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -238,7 +225,7 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM database", null);
         int result = 0;
-        if(findWhatDateType==FROM_TODAY) {
+        if (findWhatDateType == FROM_TODAY) {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -249,21 +236,21 @@ public class DBManager extends SQLiteOpenHelper {
                 }
 
             }
-        }else if(findWhatDateType==FROM_MONTH){
+        } else if (findWhatDateType == FROM_MONTH) {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
                 int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
-                if ((dbYear == findYear) && (dbMonth == findMonth)  && (dbWhatDateType == findWhatDateType)) {
+                if ((dbYear == findYear) && (dbMonth == findMonth) && (dbWhatDateType == findWhatDateType)) {
                     result = cursor.getInt(cursor.getColumnIndex("amount"));
                 }
             }
-        }else{
+        } else {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
                 int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
-                if ((dbYear == findYear) && (dbMonth == findMonth)  && (dbWhatDateType == findWhatDateType)) {
+                if ((dbYear == findYear) && (dbMonth == findMonth) && (dbWhatDateType == findWhatDateType)) {
                     result = cursor.getInt(cursor.getColumnIndex("amount"));
                 }
             }
@@ -275,7 +262,7 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM database", null);
         int result = 0;
-        if(findWhatDateType==FROM_TODAY) {
+        if (findWhatDateType == FROM_TODAY) {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -287,21 +274,21 @@ public class DBManager extends SQLiteOpenHelper {
                 }
 
             }
-        }else if(findWhatDateType==FROM_MONTH){
+        } else if (findWhatDateType == FROM_MONTH) {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
                 int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
-                if ((dbYear == findYear) && (dbMonth == findMonth)  && (dbWhatDateType == findWhatDateType)) {
+                if ((dbYear == findYear) && (dbMonth == findMonth) && (dbWhatDateType == findWhatDateType)) {
                     result = cursor.getInt(cursor.getColumnIndex("bettingGold"));
                 }
             }
-        }else{
+        } else {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
                 int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
-                if ((dbYear == findYear) && (dbMonth == findMonth)  && (dbWhatDateType == findWhatDateType)) {
+                if ((dbYear == findYear) && (dbMonth == findMonth) && (dbWhatDateType == findWhatDateType)) {
                     result = cursor.getInt(cursor.getColumnIndex("bettingGold"));
                 }
             }
@@ -313,7 +300,7 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM database", null);
         boolean result = false;
-        if(findWhatDateType==FROM_TODAY) {
+        if (findWhatDateType == FROM_TODAY) {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -325,7 +312,7 @@ public class DBManager extends SQLiteOpenHelper {
                     result = false;
                 }
             }
-        }else if(findWhatDateType==FROM_MONTH){
+        } else if (findWhatDateType == FROM_MONTH) {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -336,7 +323,7 @@ public class DBManager extends SQLiteOpenHelper {
                     result = false;
                 }
             }
-        }else{
+        } else {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -356,7 +343,7 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM database", null);
         String result = "";
-        if(findWhatDateType==FROM_TODAY) {
+        if (findWhatDateType == FROM_TODAY) {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -368,7 +355,7 @@ public class DBManager extends SQLiteOpenHelper {
                 }
 
             }
-        }else if(findWhatDateType==FROM_MONTH){
+        } else if (findWhatDateType == FROM_MONTH) {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -377,7 +364,7 @@ public class DBManager extends SQLiteOpenHelper {
                     result = cursor.getString(cursor.getColumnIndex("type"));
                 }
             }
-        }else{
+        } else {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -394,7 +381,7 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM database", null);
         String result = "";
-        if(findWhatDateType==FROM_TODAY) {
+        if (findWhatDateType == FROM_TODAY) {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
@@ -406,25 +393,23 @@ public class DBManager extends SQLiteOpenHelper {
                 }
 
             }
-        }else if(findWhatDateType==FROM_MONTH){
+        } else if (findWhatDateType == FROM_MONTH) {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
                 int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
                 if ((dbYear == findYear) && (dbMonth == findMonth) && (dbWhatDateType == findWhatDateType)) {
                     result = cursor.getString(cursor.getColumnIndex("unit"));
-
                 }
 
             }
-        }else{
+        } else {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
                 int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
                 int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
                 if ((dbYear == findYear) && (dbMonth == findMonth) && (dbWhatDateType == findWhatDateType)) {
                     result = cursor.getString(cursor.getColumnIndex("unit"));
-
                 }
 
             }
