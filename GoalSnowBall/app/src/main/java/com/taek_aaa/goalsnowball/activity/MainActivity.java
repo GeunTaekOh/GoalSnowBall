@@ -240,13 +240,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 오늘의 목표를 텍스트뷰에 출력
      **/
     public void drawTodayGoal() {
-        /*if (dbmanager.hasGoal(today.cYear, today.cMonth, today.cdate, FROM_TODAY)) {
-            todaytv.setText(dbmanager.getGoal(today.cYear, today.cMonth, today.cdate, FROM_TODAY));
+        /*if (dbmanager.hasGoal(FROM_TODAY)) {
+            todaytv.setText(dbmanager.getGoal(FROM_TODAY));
             todaytv.setGravity(Gravity.CENTER);
         } else {
             todaytv.setText("");
         }*/
-        todaytv.setText(dbmanager.getGoal(today.cYear, today.cMonth, today.cdate, FROM_TODAY));
+        todaytv.setText(dbmanager.getGoal(FROM_TODAY));
         todaytv.setGravity(Gravity.CENTER);
     }
 
@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 이번주 목표를 텍스트뷰에 출력
      **/
     public void drawWeekGoal() {
-        weektv.setText(dbmanager.getGoal(today.cYear, today.cMonth, today.cdate, FROM_WEEK));
+        weektv.setText(dbmanager.getGoal(FROM_WEEK));
         weektv.setGravity(Gravity.CENTER);
     }
 
@@ -262,13 +262,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 이번달 목표를 텍스트뷰에 출력
      **/
     public void drawMonthGoal() {
-        /*if (dbmanager.hasGoal(today.cYear, today.cMonth, today.cdate, FROM_MONTH)) {
-            monthtv.setText(dbmanager.getGoal(today.cYear, today.cMonth, today.cdate, FROM_MONTH));
+        /*if (dbmanager.hasGoal(FROM_MONTH)) {
+            monthtv.setText(dbmanager.getGoal(FROM_MONTH));
             monthtv.setGravity(Gravity.CENTER);
         } else {
             monthtv.setText("");
         }*/
-        monthtv.setText(dbmanager.getGoal(today.cYear, today.cMonth, today.cdate, FROM_MONTH));
+        monthtv.setText(dbmanager.getGoal(FROM_MONTH));
         monthtv.setGravity(Gravity.CENTER);
 
     }
@@ -369,11 +369,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      **/
     public void drawTodayPercent() {
         double result;
-        int goal = dbmanager.getGoalAmount(today.cYear, today.cMonth, today.cdate, FROM_TODAY);
+        int goal = dbmanager.getGoalAmount(FROM_TODAY);
         int current;
-        if ((dbmanager.getType(today.cYear, today.cMonth, today.cdate, FROM_TODAY).toString().equals("물리적양")) || (dbmanager.getType(today.cYear, today.cMonth, today.cdate, FROM_TODAY).toString().equals("시간적양"))) {
+        if ((dbmanager.getType(FROM_TODAY).toString().equals("물리적양")) || (dbmanager.getType(FROM_TODAY).toString().equals("시간적양"))) {
             Log.e("rmsxor94","drawToayPercent");
-            current = dbmanager.getCurrentAmount(today.cYear, today.cMonth, today.cdate, FROM_TODAY);
+            current = dbmanager.getCurrentAmount(FROM_TODAY);
         } else {
             current = 0;
             goal = 10;
@@ -401,10 +401,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      **/
     public void drawWeekPercent() {
         double result;
-        int goal = dbmanager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_WEEK);
+        int goal = dbmanager.getGoalAmount(FROM_WEEK);
         int current;
-        if ((dbmanager.getType(today.cYear,today.cMonth,today.cdate,FROM_WEEK).toString().equals("물리적양")) || (dbmanager.getType(today.cYear,today.cMonth,today.cdate,FROM_WEEK).toString().equals("시간적양"))) {
-            current = dbmanager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_WEEK);
+        if ((dbmanager.getType(FROM_WEEK).toString().equals("물리적양")) || (dbmanager.getType(FROM_WEEK).toString().equals("시간적양"))) {
+            current = dbmanager.getCurrentAmount(FROM_WEEK);
         } else {
             current = 0;
             goal = 10;
@@ -429,10 +429,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      **/
     public void drawMonthPercent() {
         double result;
-        int goal = dbmanager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_MONTH);
+        int goal = dbmanager.getGoalAmount(FROM_MONTH);
         int current;
-        if ((dbmanager.getType(today.cYear,today.cMonth,today.cdate,FROM_MONTH).toString().equals("물리적양")) || (dbmanager.getType(today.cYear,today.cMonth,today.cdate,FROM_MONTH).toString().equals("시간적양"))) {
-            current = dbmanager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_MONTH);
+        if ((dbmanager.getType(FROM_MONTH).toString().equals("물리적양")) || (dbmanager.getType(FROM_MONTH).toString().equals("시간적양"))) {
+            current = dbmanager.getCurrentAmount(FROM_MONTH);
         } else {
             current = 0;
             goal = 10;

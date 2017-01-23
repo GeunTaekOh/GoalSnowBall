@@ -10,7 +10,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.taek_aaa.goalsnowball.R;
-import com.taek_aaa.goalsnowball.data.CalendarDatas;
 import com.taek_aaa.goalsnowball.data.DBData;
 import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
@@ -31,7 +30,6 @@ public class GoalDialog extends Dialog {
     int bettinggold;
     UserDBManager userDBManager;
     DBManager dbManager;
-    CalendarDatas today;
     int tempUnit = 0;
     DBData dbData = new DBData();
 
@@ -75,8 +73,6 @@ public class GoalDialog extends Dialog {
         default_radioButton_id = physicalRadio.getId();
         checkedId = radioGroup.getCheckedRadioButtonId();
         bettingGoldet = (EditText) findViewById(R.id.bettingGold);
-        today = new CalendarDatas();
-
 
     }
 

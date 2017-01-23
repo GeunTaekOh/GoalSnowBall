@@ -6,7 +6,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.taek_aaa.goalsnowball.R;
-import com.taek_aaa.goalsnowball.data.CalendarDatas;
 import com.taek_aaa.goalsnowball.data.DBManager;
 
 /**
@@ -18,13 +17,11 @@ public class AchievementRateActivity extends Activity implements  AchievementRat
     String typeOfContents;
     ProgressBar progressBar;
     DBManager dbManager;
-    CalendarDatas today;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_achievement);
         dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
-        today = new CalendarDatas();
         init();
     }
 

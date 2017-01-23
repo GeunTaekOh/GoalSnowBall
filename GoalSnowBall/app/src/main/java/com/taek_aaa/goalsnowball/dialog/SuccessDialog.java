@@ -65,19 +65,19 @@ public class SuccessDialog extends Dialog {
         //오늘목표달성했을때
 
         if (whereSuccess == SUCCESS_FROM_TODAY) {
-            msg.setText("" + dbManager.getBettingGold(today.cYear,today.cMonth,today.cdate,FROM_TODAY) + "Gold를 획득하였습니다.");
-            getGoldToday = dbManager.getBettingGold(today.cYear,today.cMonth,today.cdate,FROM_TODAY);
-            dbManager.setIsSuccess(today.cYear,today.cMonth,today.cdate,FROM_TODAY,1);
+            msg.setText("" + dbManager.getBettingGold(FROM_TODAY) + "Gold를 획득하였습니다.");
+            getGoldToday = dbManager.getBettingGold(FROM_TODAY);
+            dbManager.setIsSuccess(FROM_TODAY,1);
             whereSuccess = 0;
         } else if (whereSuccess == SUCCESS_FROM_WEEK) {
-            msg.setText("" + dbManager.getBettingGold(today.cYear,today.cMonth,today.cdate,FROM_WEEK) + "Gold를 획득하였습니다.");
-            getGoldWeek = dbManager.getBettingGold(today.cYear,today.cMonth,today.cdate,FROM_WEEK);
-            dbManager.setIsSuccess(today.cYear,today.cMonth,today.cdate,FROM_WEEK,1);
+            msg.setText("" + dbManager.getBettingGold(FROM_WEEK) + "Gold를 획득하였습니다.");
+            getGoldWeek = dbManager.getBettingGold(FROM_WEEK);
+            dbManager.setIsSuccess(FROM_WEEK,1);
             whereSuccess = 0;
         } else if (whereSuccess == SUCCESS_FROM_MONTH) {
-            msg.setText("" + dbManager.getBettingGold(today.cYear,today.cMonth,today.cdate,FROM_MONTH) + "Gold를 획득하였습니다.");
-            getGoldMonth = dbManager.getBettingGold(today.cYear,today.cMonth,today.cdate,FROM_MONTH);
-            dbManager.setIsSuccess(today.cYear,today.cMonth,today.cdate,FROM_MONTH,1);
+            msg.setText("" + dbManager.getBettingGold(FROM_MONTH) + "Gold를 획득하였습니다.");
+            getGoldMonth = dbManager.getBettingGold(FROM_MONTH);
+            dbManager.setIsSuccess(FROM_MONTH,1);
             whereSuccess = 0;
         } else {
             Log.e("error", "successDialog에서 에러");

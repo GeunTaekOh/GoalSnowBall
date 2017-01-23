@@ -79,7 +79,7 @@ public class WeekGoalDialog extends GoalDialog implements View.OnClickListener {
                         dbData.unit = categoryTimeArrays[tempUnit];
                     }
 
-                    dbManager.insert(today.cYear, today.cMonth, today.cdate, FROM_WEEK, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 0);
+                    dbManager.insert(FROM_WEEK, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 0);
 
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "값을 모두 입력하세요.", Toast.LENGTH_SHORT).show();

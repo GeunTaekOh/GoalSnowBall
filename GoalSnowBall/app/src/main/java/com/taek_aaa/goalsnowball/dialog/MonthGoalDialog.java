@@ -80,7 +80,7 @@ public class MonthGoalDialog extends GoalDialog implements View.OnClickListener 
                     }
 
 
-                    dbManager.insert(today.cYear, today.cMonth, today.cdate, FROM_MONTH, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 0);
+                    dbManager.insert(FROM_MONTH, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 0);
 
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "값을 모두 입력하세요.", Toast.LENGTH_SHORT).show();

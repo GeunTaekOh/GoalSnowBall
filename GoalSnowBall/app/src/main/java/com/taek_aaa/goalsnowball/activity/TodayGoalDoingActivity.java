@@ -32,13 +32,13 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
         try {
             /** 물리적 양 일때 **/
 
-            if (dbManager.getType(today.cYear,today.cMonth,today.cdate,FROM_TODAY).equals("물리적양")) {
+            if (dbManager.getType(FROM_TODAY).equals("물리적양")) {
                 setContentView(R.layout.activity_goal_amount_doing);
                 Log.e("aa", "물리적양");
                 isAmount = true;
                 amountOfEdit = (EditText) findViewById(R.id.doing_current_amount);
                 unittv = (TextView) findViewById(R.id.doing_unit);
-            } else if (dbManager.getType(today.cYear,today.cMonth,today.cdate,FROM_TODAY).equals("시간적양")) {
+            } else if (dbManager.getType(FROM_TODAY).equals("시간적양")) {
                 /** 시간적 양 일때 **/
                 setContentView(R.layout.activity_goal_time_doing);
                 Log.e("aa", "시간적양");
@@ -57,18 +57,18 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
                 amountOfEdit.post(new Runnable() {
                     @Override
                     public void run() {
-                        amountOfEdit.setText("" + dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY));
+                        amountOfEdit.setText("" + dbManager.getCurrentAmount(FROM_TODAY));
                     }
                 });
-                blackboardtv.setText("목표량 : " +dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY) + "" + dbManager.getUnit(today.cYear,today.cMonth,today.cdate,FROM_TODAY));
-                unittv.setText("" + dbManager.getUnit(today.cYear,today.cMonth,today.cdate,FROM_TODAY));
+                blackboardtv.setText("목표량 : " +dbManager.getGoalAmount(FROM_TODAY) + "" + dbManager.getUnit(FROM_TODAY));
+                unittv.setText("" + dbManager.getUnit(FROM_TODAY));
             } else {
 
-                timeOfCurrenttv.setText("수행 시간 : " + dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY) + "분");
-                blackboardtv.setText("목표량 : " + dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY) + "분 " + dbManager.getUnit(today.cYear,today.cMonth,today.cdate,FROM_TODAY));
+                timeOfCurrenttv.setText("수행 시간 : " + dbManager.getCurrentAmount(FROM_TODAY) + "분");
+                blackboardtv.setText("목표량 : " + dbManager.getGoalAmount(FROM_TODAY) + "분 " + dbManager.getUnit(FROM_TODAY));
             }
-            successGetGoldtv.setText("성공시 획득 골드 : " + "" + dbManager.getBettingGold(today.cYear,today.cMonth,today.cdate,FROM_TODAY) + "Gold");
-            doingGoaltv.setText("오늘의 목표 : " + dbManager.getGoal(today.cYear,today.cMonth,today.cdate,FROM_TODAY));
+            successGetGoldtv.setText("성공시 획득 골드 : " + "" + dbManager.getBettingGold(FROM_TODAY) + "Gold");
+            doingGoaltv.setText("오늘의 목표 : " + dbManager.getGoal(FROM_TODAY));
         } catch (Exception e) {
             /** 목표 설정 안되어 있을 때 **/
             Toast.makeText(this, "오늘의 목표를 먼저 설정하세요.", Toast.LENGTH_SHORT).show();
@@ -76,17 +76,17 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
             e.getStackTrace();
             finish();
         }
-        tmpAmount = dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY);
+        tmpAmount = dbManager.getCurrentAmount(FROM_TODAY);
     }
 
     /**
      * 수행량 저장하는 함수
      **/
     public void saveCurrentAmountToEditText() {
-        dbManager.setCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY,Integer.parseInt(amountOfEdit.getText().toString()));
+        dbManager.setCurrentAmount(FROM_TODAY,Integer.parseInt(amountOfEdit.getText().toString()));
         Log.e("db","저장 디비 명령어 지나감");
         Log.e("rmsxor94","오늘 골 두잉 액티비티에 저장");
-        if(dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY) < dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY)){
+        if(dbManager.getCurrentAmount(FROM_TODAY) < dbManager.getGoalAmount(FROM_TODAY)){
             Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
         }
     }
@@ -97,9 +97,9 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
         saveCurrentAmountToEditText();
         //물리적양일 경우임 저장버튼이 있는경우는 물리적 양일때만이기때문
         //물리적양 일때 성공하면
-        if(dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY) <= dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY)){
+        if(dbManager.getGoalAmount(FROM_TODAY) <= dbManager.getCurrentAmount(FROM_TODAY)){
             whereSuccess = SUCCESS_FROM_TODAY;
-            int a = (dbManager.getBettingGold(today.cYear,today.cMonth,today.cdate,FROM_TODAY)) + (userDBManager.getGold());
+            int a = (dbManager.getBettingGold(FROM_TODAY)) + (userDBManager.getGold());
             userDBManager.setGold(a);
 
             successDialog = new SuccessDialog(this);
@@ -128,22 +128,22 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
         ihowlongtime = ihowlongtime / 60;
 
 
-        int temp = dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY);
+        int temp = dbManager.getCurrentAmount(FROM_TODAY);
         temp += ihowlongtime;
-        dbManager.setCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY,temp);
-        timeOfCurrenttv.setText("수행 시간 : " + dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY) + "분");
+        dbManager.setCurrentAmount(FROM_TODAY,temp);
+        timeOfCurrenttv.setText("수행 시간 : " + dbManager.getCurrentAmount(FROM_TODAY) + "분");
         Button startbtn = (Button) findViewById(R.id.timerStartbtn);
         timerInit();
         stopWatchtv.setText("00:00:00");
         startbtn.setVisibility(View.VISIBLE);
         startbtn.setText("Start");
 
-        if(dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY) < dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY)){
+        if(dbManager.getCurrentAmount(FROM_TODAY) < dbManager.getGoalAmount(FROM_TODAY)){
             Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
-        } else if ((dbManager.getUnit(today.cYear,today.cMonth,today.cdate,FROM_TODAY) == "이상") && (dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY) >= dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY))) {  //이상이고 성공하면
+        } else if ((dbManager.getUnit(FROM_TODAY) == "이상") && (dbManager.getCurrentAmount(FROM_TODAY) >= dbManager.getGoalAmount(FROM_TODAY))) {  //이상이고 성공하면
             whereSuccess = SUCCESS_FROM_TODAY;
 
-            int a = (dbManager.getBettingGold(today.cYear,today.cMonth,today.cdate,FROM_TODAY)) + (userDBManager.getGold());
+            int a = (dbManager.getBettingGold(FROM_TODAY)) + (userDBManager.getGold());
             userDBManager.setGold(a);
 
             successDialog = new SuccessDialog(this);
@@ -163,8 +163,8 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
         switch (v.getId()) {
             case R.id.upButton:
                 tmpAmount += 1;
-                if (tmpAmount > dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY)) {
-                    tmpAmount = dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_TODAY);
+                if (tmpAmount > dbManager.getGoalAmount(FROM_TODAY)) {
+                    tmpAmount = dbManager.getGoalAmount(FROM_TODAY);
                 }
                 amountOfEdit.setText("" + tmpAmount);
                 break;

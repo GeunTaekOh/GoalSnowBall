@@ -93,7 +93,7 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
                     Log.e("dbdata", "" + dbData.goalAmount);
                     Log.e("dbdata", "" + dbData.unit);
                     Log.e("dbdata", "" + dbData.bettingGold);
-                    dbManager.insert(today.cYear, today.cMonth, today.cdate, FROM_TODAY, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 0);
+                    dbManager.insert(FROM_TODAY, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 0);
 
 
                 } catch (Exception e) {

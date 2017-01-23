@@ -18,9 +18,9 @@ public class WeekAchievementRateActivity extends AchievementRateActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (dbManager.getType(today.cYear,today.cMonth,today.cdate,FROM_WEEK).equals("물리적양")) {
+        if (dbManager.getType(FROM_WEEK).equals("물리적양")) {
             typeOfContents = "물리적양";
-        } else if (dbManager.getType(today.cYear,today.cMonth,today.cdate,FROM_WEEK).equals("시간적양")) {
+        } else if (dbManager.getType(FROM_WEEK).equals("시간적양")) {
             typeOfContents = "시간적양";
         } else {
             typeOfContents = "error";
@@ -43,14 +43,14 @@ public class WeekAchievementRateActivity extends AchievementRateActivity{
     }
 
     public void drawGoal() {
-        achievementStringtv.setText("" + dbManager.getGoal(today.cYear,today.cMonth,today.cdate,FROM_WEEK));
+        achievementStringtv.setText("" + dbManager.getGoal(FROM_WEEK));
     }
 
     public void drawGoalAmount(String type) throws Exception{
         if (type.equals("물리적양")) {
-            achievementAmounttv.setText("" + dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_WEEK) + "" + dbManager.getUnit(today.cYear,today.cMonth,today.cdate,FROM_WEEK));
+            achievementAmounttv.setText("" + dbManager.getGoalAmount(FROM_WEEK) + "" + dbManager.getUnit(FROM_WEEK));
         } else if (type.equals("시간적양")) {
-            achievementAmounttv.setText("" + dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_WEEK) + "분 " + dbManager.getUnit(today.cYear,today.cMonth,today.cdate,FROM_WEEK));
+            achievementAmounttv.setText("" + dbManager.getGoalAmount(FROM_WEEK) + "분 " + dbManager.getUnit(FROM_WEEK));
         } else {
             throw new Exception();
         }
@@ -58,9 +58,9 @@ public class WeekAchievementRateActivity extends AchievementRateActivity{
 
     public void drawCurrentAmount(String type) throws Exception{
         if (type.equals("물리적양")) {
-            currentAmounttv.setText("" + dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_WEEK) + "" + dbManager.getUnit(today.cYear,today.cMonth,today.cdate,FROM_WEEK));
+            currentAmounttv.setText("" + dbManager.getCurrentAmount(FROM_WEEK) + "" + dbManager.getUnit(FROM_WEEK));
         } else if (type.equals("시간적양")) {
-            currentAmounttv.setText("" + dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_WEEK) + "분");
+            currentAmounttv.setText("" + dbManager.getCurrentAmount(FROM_WEEK) + "분");
         } else {
             throw new Exception();
         }
@@ -68,14 +68,14 @@ public class WeekAchievementRateActivity extends AchievementRateActivity{
 
     public void drawPercent(String type) throws Exception {
         double result;
-        int goal = dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_WEEK);
+        int goal = dbManager.getGoalAmount(FROM_WEEK);
         int current;
 
         if (type.equals("물리적양") || (type.equals("시간적양"))) {
-            progressBar.setMax(dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_WEEK));
-            progressBar.setProgress(dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_WEEK));
+            progressBar.setMax(dbManager.getGoalAmount(FROM_WEEK));
+            progressBar.setProgress(dbManager.getCurrentAmount(FROM_WEEK));
             progressBar.setVisibility(ProgressBar.VISIBLE);
-            current = dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_WEEK);
+            current = dbManager.getCurrentAmount(FROM_WEEK);
         } else {
             throw new Exception();
         }
@@ -93,9 +93,9 @@ public class WeekAchievementRateActivity extends AchievementRateActivity{
 
     public void drawRemainAmount(String type) throws Exception {
         if (type.equals("물리적양")) {
-            remainAmounttv.setText("" + (dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_WEEK) - dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_WEEK)) + "" + dbManager.getUnit(today.cYear,today.cMonth,today.cdate,FROM_WEEK));
+            remainAmounttv.setText("" + (dbManager.getGoalAmount(FROM_WEEK) - dbManager.getCurrentAmount(FROM_WEEK)) + "" + dbManager.getUnit(FROM_WEEK));
         } else if (type.equals("시간적양")) {
-            remainAmounttv.setText("" + (dbManager.getGoalAmount(today.cYear,today.cMonth,today.cdate,FROM_WEEK) - dbManager.getCurrentAmount(today.cYear,today.cMonth,today.cdate,FROM_WEEK)) + "분");
+            remainAmounttv.setText("" + (dbManager.getGoalAmount(FROM_WEEK) - dbManager.getCurrentAmount(FROM_WEEK)) + "분");
         } else {
             throw new Exception();
         }
@@ -103,14 +103,14 @@ public class WeekAchievementRateActivity extends AchievementRateActivity{
 
     public void drawBettingGold()  {
         if(isSuccessWeek==false) {
-            betAmounttv.setText("" + dbManager.getBettingGold(today.cYear,today.cMonth,today.cdate,FROM_WEEK) + " Gold");
+            betAmounttv.setText("" + dbManager.getBettingGold(FROM_WEEK) + " Gold");
         }else{
             betAmounttv.setText("" + getGoldWeek + " Gold");
         }
     }
 
     public void drawBettingResult() {
-        if(dbManager.getBettingGold(today.cYear,today.cMonth,today.cdate,FROM_WEEK)==0){
+        if(dbManager.getBettingGold(FROM_WEEK)==0){
             //획득
             resultBettv.setText("획득하였습니다.");
         }else{
