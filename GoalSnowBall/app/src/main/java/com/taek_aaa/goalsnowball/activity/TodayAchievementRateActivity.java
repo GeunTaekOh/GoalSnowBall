@@ -78,7 +78,6 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
             percentAmounttv.setTextColor(Color.BLACK);
         }
         percentAmounttv.setText("" + result + "%");
-
     }
 
     public void drawRemainAmount(String type) throws Exception {

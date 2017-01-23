@@ -72,7 +72,12 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
                         editTextContents.setHint("목표를 추가하세요.");
                         dbData.bettingGold = Integer.parseInt(bettingGoldet.getText().toString());
                     }
-                    dbManager.insert(FROM_TODAY, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 0);
+
+                    if (dbManager.hasGoal(FROM_TODAY)) {
+                        Toast.makeText(getContext(), "이미 오늘의 목표를 설정하였습니다.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        dbManager.insert(FROM_TODAY, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 0);
+                    }
                     dismiss();
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "값을 모두 입력하세요.", Toast.LENGTH_SHORT).show();

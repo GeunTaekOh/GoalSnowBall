@@ -70,7 +70,11 @@ public class WeekGoalDialog extends GoalDialog implements View.OnClickListener {
                         editTextContents.setHint("목표를 입력하세요.");
                         dbData.bettingGold = Integer.parseInt(bettingGoldet.getText().toString());
                     }
-                    dbManager.insert(FROM_WEEK, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 0);
+                    if(dbManager.hasGoal(FROM_WEEK)){
+                        Toast.makeText(getContext(), "이미 이번주의 목표를 입력하였습니다.", Toast.LENGTH_SHORT).show();
+                    }else {
+                        dbManager.insert(FROM_WEEK, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 0);
+                    }
                     dismiss();
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "값을 모두 입력하세요.", Toast.LENGTH_SHORT).show();

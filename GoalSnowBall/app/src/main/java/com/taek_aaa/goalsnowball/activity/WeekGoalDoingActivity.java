@@ -82,7 +82,7 @@ public class WeekGoalDoingActivity extends GoalDoingActivity {
      * 수행량 저장하는 함수
      **/
     public void saveCurrentAmountToEditText() {
-        dbManager.setCurrentAmount(FROM_WEEK,Integer.parseInt(amountOfEdit.getText().toString()));
+        dbManager.setCurrentAmount(FROM_WEEK, Integer.parseInt(amountOfEdit.getText().toString()));
         if (dbManager.getCurrentAmount(FROM_WEEK) < dbManager.getGoalAmount(FROM_WEEK)) {
             Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
         }
@@ -97,20 +97,26 @@ public class WeekGoalDoingActivity extends GoalDoingActivity {
         //물리적양일 경우임 저장버튼이 있는경우는 물리적 양일때만이기때문
         //물리적양 일때 성공하면
         if (dbManager.getGoalAmount(FROM_WEEK) <= dbManager.getCurrentAmount(FROM_WEEK)) {
-            whereSuccess = SUCCESS_FROM_WEEK;
-            int a = (dbManager.getBettingGold(FROM_WEEK)) + (userDBManager.getGold());
-            userDBManager.setGold(a);
+            if (dbManager.getIsSuccess(FROM_WEEK) == 1) {
+                Toast.makeText(this, "이미 성공하여서 Gold를 수령했습니다.", Toast.LENGTH_SHORT).show();
+            } else {
 
-            successDialog = new SuccessDialog(this);
-            successDialog.show();
-            isSuccessWeek = true;
+                whereSuccess = SUCCESS_FROM_WEEK;
+                int a = (dbManager.getBettingGold(FROM_WEEK)) + (userDBManager.getGold());
+                userDBManager.setGold(a);
 
-            successDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialogInterface) {
-                    coinSoundPlay();
-                }
-            });
+
+                successDialog = new SuccessDialog(this);
+                successDialog.show();
+                isSuccessWeek = true;
+
+                successDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        coinSoundPlay();
+                    }
+                });
+            }
         }
 
     }
@@ -136,7 +142,7 @@ public class WeekGoalDoingActivity extends GoalDoingActivity {
 
         int temp = dbManager.getCurrentAmount(FROM_WEEK);
         temp += ihowlongtime;
-        dbManager.setCurrentAmount(FROM_WEEK,temp);
+        dbManager.setCurrentAmount(FROM_WEEK, temp);
         timeOfCurrenttv.setText("수행 시간 : " + dbManager.getCurrentAmount(FROM_WEEK) + "분");
 
         Button startbtn = (Button) findViewById(R.id.timerStartbtn);
@@ -148,22 +154,26 @@ public class WeekGoalDoingActivity extends GoalDoingActivity {
         if (dbManager.getCurrentAmount(FROM_WEEK) < dbManager.getGoalAmount(FROM_WEEK)) {
             Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
         } else if ((dbManager.getUnit(FROM_WEEK) == "이상") && (dbManager.getCurrentAmount(FROM_WEEK) >= dbManager.getGoalAmount(FROM_WEEK))) {  //이상이고 성공하면
-            whereSuccess = SUCCESS_FROM_WEEK;
+            if (dbManager.getIsSuccess(FROM_WEEK) == 1) {
+                Toast.makeText(this, "이미 성공하여서 Gold를 수령했습니다.", Toast.LENGTH_SHORT).show();
+            } else {
 
-            int a = (dbManager.getBettingGold(FROM_WEEK)) + (userDBManager.getGold());
-            userDBManager.setGold(a);
+                whereSuccess = SUCCESS_FROM_WEEK;
 
-            successDialog = new SuccessDialog(this);
-            successDialog.show();
-            isSuccessWeek = true;
+                int a = (dbManager.getBettingGold(FROM_WEEK)) + (userDBManager.getGold());
+                userDBManager.setGold(a);
 
-            successDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialogInterface) {
-                    coinSoundPlay();
-                }
-            });
+                successDialog = new SuccessDialog(this);
+                successDialog.show();
+                isSuccessWeek = true;
 
+                successDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        coinSoundPlay();
+                    }
+                });
+            }
         } else {  //이하        나중에 이상이고 실패할때도 else if로 처리하기
 
         }
