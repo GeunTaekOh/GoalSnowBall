@@ -36,8 +36,6 @@ import com.taek_aaa.goalsnowball.dialog.TodayGoalDialog;
 import com.taek_aaa.goalsnowball.dialog.UserNameDialog;
 import com.taek_aaa.goalsnowball.dialog.WeekGoalDialog;
 
-import static com.taek_aaa.goalsnowball.data.CalendarDatas.dayOfWeekArray;
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     final int PICK_FROM_ALBUM = 101;
@@ -83,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         init();     //나중에 디비로 구현하면 여기서 몇개 제외하기
 
         drawMainImage();
-        Log.e("rmsxor94","onCreate");
         draw();
         registerForContextMenu(imageView);
     }
@@ -95,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStart() {
         super.onStart();
-        Log.e("rmsxor94","onStart");
+        Log.e("rmsxor94", "onStart");
         draw();
     }
 
@@ -185,11 +182,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ExifInterface exif = new ExifInterface(uriPath);
             int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
             int exifDegree = pictureController.exifOrientationToDegrees(exifOrientation);
-
             rotatedPhoto = pictureController.rotate(photo, exifDegree);
-
             Bitmap sizedPhoto = pictureController.setSizedImage(rotatedPhoto);
-
             imageView = (ImageView) findViewById(R.id.mainImageView);
             imageView.setImageBitmap(sizedPhoto);
             Toast.makeText(getBaseContext(), "사진을 입력하였습니다.", Toast.LENGTH_SHORT).show();
@@ -240,12 +234,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 오늘의 목표를 텍스트뷰에 출력
      **/
     public void drawTodayGoal() {
-        /*if (dbmanager.hasGoal(FROM_TODAY)) {
-            todaytv.setText(dbmanager.getGoal(FROM_TODAY));
-            todaytv.setGravity(Gravity.CENTER);
-        } else {
-            todaytv.setText("");
-        }*/
         todaytv.setText(dbmanager.getGoal(FROM_TODAY));
         todaytv.setGravity(Gravity.CENTER);
     }
@@ -262,23 +250,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 이번달 목표를 텍스트뷰에 출력
      **/
     public void drawMonthGoal() {
-        /*if (dbmanager.hasGoal(FROM_MONTH)) {
-            monthtv.setText(dbmanager.getGoal(FROM_MONTH));
-            monthtv.setGravity(Gravity.CENTER);
-        } else {
-            monthtv.setText("");
-        }*/
         monthtv.setText(dbmanager.getGoal(FROM_MONTH));
         monthtv.setGravity(Gravity.CENTER);
 
     }
 
+    public void drawGoal() {
+        drawTodayGoal();
+        drawWeekGoal();
+        drawMonthGoal();
+    }
+
     /**
      * 목표를 다이얼로그에서 설정하고 다이얼로그가 dismiss 되면 목표 출력
      **/
-    public void drawGoal() {
-
-
+    public void drawGoalWhenDismiss() {
         todayGoalDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
@@ -309,7 +295,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.profile);
         Bitmap bitmapDefault = drawable.getBitmap();
         Bitmap sizedBitmapDefault = pictureController.setSizedImage(bitmapDefault);
-
         defaultHeight = sizedBitmapDefault.getHeight();
         defaultWidth = sizedBitmapDefault.getWidth();
         imageView.setImageBitmap(sizedBitmapDefault);
@@ -325,16 +310,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int cMonth = calendarData.cMonth;
         int cdate = calendarData.cdate;
         int endDate;
-
         dDayWeektv = (TextView) findViewById(R.id.d_week);
         dDayMonthtv = (TextView) findViewById(R.id.d_month);
-
-        Log.e("qq", "" + calendarData.today);
-        Log.e("qq", "" + calendarData.cYear);
-        Log.e("qq", "" + calendarData.hMonth);
-        Log.e("qq", "" + calendarData.cMonth);
-        Log.e("qq", "" + calendarData.cdate);
-        Log.e("qq", "" + dayOfWeekArray[calendarData.dayOfWeekIndex]);
         int countWeek = 0;
         switch (calendarData.dayOfWeekIndex) {
             case 1:
@@ -372,27 +349,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int goal = dbmanager.getGoalAmount(FROM_TODAY);
         int current;
         if ((dbmanager.getType(FROM_TODAY).toString().equals("물리적양")) || (dbmanager.getType(FROM_TODAY).toString().equals("시간적양"))) {
-            Log.e("rmsxor94","drawToayPercent");
             current = dbmanager.getCurrentAmount(FROM_TODAY);
         } else {
             current = 0;
             goal = 10;
-
         }
-        result = (double) current / (double) goal * 100;
-        result = Double.parseDouble(String.format("%.1f", result));
-        if (result >= 100.0) {
-            result = 100;
-            percentToday.setText("" + result + "%");
-            percentToday.setTextColor(Color.GREEN);
-            /*soundPoolMain = new SoundPool(1, STREAM_MUSIC, 0);
-            tuneMain = soundPoolMain.load(this, R.raw.coin, 1);
-            soundPoolMain.play(tuneMain, 1, 1, 0, 0, 1);*/
 
+        result = makePercent(current, goal);
+        if (result == 100) {
+            percentToday.setTextColor(Color.GREEN);
         } else {
-            percentToday.setText("" + result + "%");
             percentToday.setTextColor(Color.BLACK);
         }
+        percentToday.setText("" + result + "%");
 
     }
 
@@ -409,21 +378,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             current = 0;
             goal = 10;
         }
-        result = (double) current / (double) goal * 100;
-        result = Double.parseDouble(String.format("%.1f", result));
-        if (result >= 100.0) {
-            result = 100;
-            percentWeek.setText("" + result + "%");
+        result = makePercent(current, goal);
+        if (result == 100) {
             percentWeek.setTextColor(Color.GREEN);
-            /*soundPoolMain = new SoundPool(1, STREAM_MUSIC, 0);
-            tuneMain = soundPoolMain.load(this, R.raw.coin, 1);
-            soundPoolMain.play(tuneMain, 1, 1, 0, 0, 1);*/
         } else {
-            percentWeek.setText("" + result + "%");
             percentWeek.setTextColor(Color.BLACK);
 
         }
+        percentWeek.setText("" + result + "%");
     }
+
     /**
      * 이번달 목표 달성률 출력
      **/
@@ -437,23 +401,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             current = 0;
             goal = 10;
         }
-        result = (double) current / (double) goal * 100;
-        result = Double.parseDouble(String.format("%.1f", result));
-        if (result >= 100.0) {
+        result = makePercent(current, goal);
+        if (result == 100) {
             result = 100;
-            percentMonth.setText("" + result + "%");
             percentMonth.setTextColor(Color.GREEN);
         } else {
-            percentMonth.setText("" + result + "%");
             percentMonth.setTextColor(Color.BLACK);
         }
+        percentMonth.setText("" + result + "%");
     }
-
-
-
-
-
-
     /**
      * init
      **/
@@ -529,17 +485,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 userIdtv.setText(userDBManager.getName());
             }
         });
-
     }
-    public void draw(){
-        drawTodayGoal();
-        drawWeekGoal();
-        drawMonthGoal();
+
+    public void draw() {
         drawGoal();
+        drawGoalWhenDismiss();
         drawTodayPercent();
         drawWeekPercent();
         drawMonthPercent();
         mainGoldtv.setText("" + userDBManager.getGold() + "Gold");
         drawDDay();
+    }
+
+    public double makePercent(int current, int goal) {
+        double result = 0;
+        result = (double) current / (double) goal * 100;
+        result = Double.parseDouble(String.format("%.1f", result));
+        if (result >= 100.0) {
+            result = 100;
+        }
+        return result;
     }
 }

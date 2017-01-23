@@ -54,7 +54,7 @@ public class WeekAchievementRateActivity extends AchievementRateActivity {
         }
     }
 
-    public void drawPercent(String type) throws Exception {
+    public void drawPercentProgressBar(String type) throws Exception {
         double result;
         int goal = dbManager.getGoalAmount(FROM_WEEK);
         int current;
@@ -89,10 +89,10 @@ public class WeekAchievementRateActivity extends AchievementRateActivity {
     }
 
     public void drawBettingGold() {
-        if (isSuccessWeek == false) {
-            betAmounttv.setText("" + dbManager.getBettingGold(FROM_WEEK) + " Gold");
-        } else {
+        if(isSuccessWeek){
             betAmounttv.setText("" + getGoldWeek + " Gold");
+        }else{
+            betAmounttv.setText("" + dbManager.getBettingGold(FROM_WEEK) + " Gold");
         }
     }
 
@@ -114,7 +114,7 @@ public class WeekAchievementRateActivity extends AchievementRateActivity {
             drawGoal();
             drawGoalAmount(typeOfContents);
             drawCurrentAmount(typeOfContents);
-            drawPercent(typeOfContents);
+            drawPercentProgressBar(typeOfContents);
             drawRemainAmount(typeOfContents);
             drawBettingGold();
             drawBettingResult();

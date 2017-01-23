@@ -71,8 +71,6 @@ public class MonthGoalDoingActivity extends GoalDoingActivity {
         } catch (Exception e) {
             /** 목표 설정 안되어 있을 때 **/
             Toast.makeText(this, "이번달의 목표를 먼저 설정하세요.", Toast.LENGTH_SHORT).show();
-            Log.e("error", "" + e.getStackTrace());
-            e.getStackTrace();
             finish();
         }
         tmpAmount = dbManager.getCurrentAmount(FROM_MONTH);

@@ -51,11 +51,10 @@ public class MonthAchievementRateActivity extends AchievementRateActivity {
         }
     }
 
-    public void drawPercent(String type) throws Exception {
+    public void drawPercentProgressBar(String type) throws Exception {
         double result;
         int goal = dbManager.getGoalAmount(FROM_MONTH);
         int current;
-
         if (type.equals("물리적양") || (type.equals("시간적양"))) {
             progressBar.setMax(dbManager.getGoalAmount(FROM_MONTH));
             progressBar.setProgress(dbManager.getCurrentAmount(FROM_MONTH));
@@ -65,7 +64,6 @@ public class MonthAchievementRateActivity extends AchievementRateActivity {
             throw new Exception();
         }
         result = makePercent(current,goal);
-
         if (result ==100) {
             percentAmounttv.setTextColor(Color.GREEN);
         }else{
@@ -85,19 +83,17 @@ public class MonthAchievementRateActivity extends AchievementRateActivity {
     }
 
     public void drawBettingGold() {
-        if (isSuccessMonth == false) {
-            betAmounttv.setText("" + dbManager.getBettingGold(FROM_MONTH) + " Gold");
-        } else {
+        if(isSuccessMonth){
             betAmounttv.setText("" + getGoldMonth + " Gold");
+        }else{
+            betAmounttv.setText("" + dbManager.getBettingGold(FROM_MONTH) + " Gold");
         }
     }
 
     public void drawBettingResult() {
         if (dbManager.getBettingGold(FROM_MONTH) == 0) {
-            //획득
             resultBettv.setText("획득하였습니다.");
         } else {
-            //도전중
             resultBettv.setText("도전중입니다.");
         }
         ////// 여기 실패해서 미획득 일때 구현하기
@@ -110,7 +106,7 @@ public class MonthAchievementRateActivity extends AchievementRateActivity {
             drawGoal();
             drawGoalAmount(typeOfContents);
             drawCurrentAmount(typeOfContents);
-            drawPercent(typeOfContents);
+            drawPercentProgressBar(typeOfContents);
             drawRemainAmount(typeOfContents);
             drawBettingGold();
             drawBettingResult();

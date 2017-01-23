@@ -43,7 +43,6 @@ public class GoalDialog extends Dialog implements GoalDialogInterface{
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if ((radioGroup.getCheckedRadioButtonId()) == default_radioButton_id) {
-
                     ArrayAdapter adapter = ArrayAdapter.createFromResource(getContext(), R.array.unit, android.R.layout.simple_spinner_item);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinner.setAdapter(adapter);

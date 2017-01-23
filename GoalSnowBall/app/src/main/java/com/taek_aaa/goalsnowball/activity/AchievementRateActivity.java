@@ -56,7 +56,6 @@ public class AchievementRateActivity extends Activity implements AchievementRate
         if (result >= 100.0) {
             result = 100;
         }
-
         return result;
     }
 }

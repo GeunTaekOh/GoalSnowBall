@@ -40,7 +40,6 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface{
     SoundPool soundPool;
     int tune;
     int tmpAmount;
-
     SuccessDialog successDialog;
     UserDBManager userDBManager;
     DBManager dbManager;
@@ -105,14 +104,12 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface{
     }
 
     protected void coinSoundPlay(){
-
         soundPool = new SoundPool(1, STREAM_MUSIC, 0);
         tune = soundPool.load(this, R.raw.coin, 1);
         soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
             @Override
             public void onLoadComplete(SoundPool soundPool, int i, int i1) {
                 soundPool.play(tune, 1, 1, 0, 0, 1);
-
             }
         });
     }

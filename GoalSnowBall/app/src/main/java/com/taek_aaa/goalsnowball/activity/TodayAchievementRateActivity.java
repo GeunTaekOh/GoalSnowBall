@@ -56,7 +56,7 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
         }
     }
 
-    public void drawPercent(String type) throws Exception {
+    public void drawPercentProgressBar(String type) throws Exception {
         double result;
         int goal = dbManager.getGoalAmount(FROM_TODAY);
         int current;
@@ -92,10 +92,10 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
     }
 
     public void drawBettingGold()  {
-        if(isSuccessToday==false) {
-            betAmounttv.setText("" + dbManager.getBettingGold(FROM_TODAY) + " Gold");
-        }else{
+        if(isSuccessToday){
             betAmounttv.setText("" + getGoldToday + " Gold");
+        }else{
+            betAmounttv.setText("" + dbManager.getBettingGold(FROM_TODAY) + " Gold");
         }
     }
 
@@ -118,7 +118,7 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
             drawGoal();
             drawGoalAmount(typeOfContents);
             drawCurrentAmount(typeOfContents);
-            drawPercent(typeOfContents);
+            drawPercentProgressBar(typeOfContents);
             drawRemainAmount(typeOfContents);
             drawBettingGold();
             drawBettingResult();

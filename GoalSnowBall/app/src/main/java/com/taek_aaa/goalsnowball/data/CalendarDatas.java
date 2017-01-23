@@ -98,9 +98,6 @@ public class CalendarDatas {
         }catch (Exception e){
             Log.e("rmsxor","캘린더데이타 오류");
         }
-
-
-
         return result;
     }
 

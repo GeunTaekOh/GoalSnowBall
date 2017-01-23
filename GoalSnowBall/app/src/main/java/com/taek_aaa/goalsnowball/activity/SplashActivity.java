@@ -13,7 +13,7 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            Thread.sleep(1500); //2000에서 1500으로 줄임
+            Thread.sleep(1000);
         } catch (Exception e) {
             e.printStackTrace();
         }
