@@ -24,6 +24,7 @@ public class MonthGoalDialog extends GoalDialog implements View.OnClickListener 
         findViewById(R.id.DialogConfirmButton).setOnClickListener(this);
         findViewById(R.id.DialogExitButton).setOnClickListener(this);
         findViewById(R.id.DialogX).setOnClickListener(this);
+
         bettinggold = userDBManager.getGold();
         bettingGoldet.setText("" + bettinggold);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -55,37 +56,24 @@ public class MonthGoalDialog extends GoalDialog implements View.OnClickListener 
                         if (textContents.equals("")) {
                             throw new Exception();
                         }
-
                         if (physicalRadio.isChecked()) {
                             dbData.type = "물리적양";
+                            dbData.unit = categoryPhysicalArrays[tempUnit];
                         } else {
                             dbData.type = "시간적양";
+                            dbData.unit = categoryTimeArrays[tempUnit];
                         }
-
                         dbData.goalAmount = textAmount;
                         dbData.goal = textContents;
-
-
                         title.setText("이번달의 목표를 입력하세요.");
                         editTextContents.setHint("목표를 입력하세요.");
-
                         dbData.bettingGold = Integer.parseInt(bettingGoldet.getText().toString());
                     }
-                    dismiss();
-
-                    if (dbData.type == "물리적양") {
-                        dbData.unit = categoryPhysicalArrays[tempUnit];
-                    } else {
-                        dbData.unit = categoryTimeArrays[tempUnit];
-                    }
-
-
                     dbManager.insert(FROM_MONTH, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 0);
-
+                    dismiss();
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "값을 모두 입력하세요.", Toast.LENGTH_SHORT).show();
                 }
-
                 break;
             case R.id.DialogExitButton:
                 dismiss();

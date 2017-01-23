@@ -18,7 +18,7 @@ import com.taek_aaa.goalsnowball.data.UserDBManager;
  * Created by taek_aaa on 2017. 1. 21..
  */
 
-public class GoalDialog extends Dialog {
+public class GoalDialog extends Dialog implements GoalDialogInterface{
     EditText editTextContents, editTextAmonut, bettingGoldet;
     String textContents;
     TextView title;
@@ -75,6 +75,7 @@ public class GoalDialog extends Dialog {
         bettingGoldet = (EditText) findViewById(R.id.bettingGold);
 
     }
+
 
 
 }

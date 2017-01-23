@@ -1,5 +1,6 @@
 package com.taek_aaa.goalsnowball.activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,14 +22,10 @@ import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.whereSuccess;
  */
 
 public class TodayGoalDoingActivity extends GoalDoingActivity {
-    int tmpAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
         try {
             /** 물리적 양 일때 **/
 
@@ -105,6 +102,13 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
             successDialog = new SuccessDialog(this);
             successDialog.show();
             isSuccessToday = true;
+
+            successDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialogInterface) {
+                    coinSoundPlay();
+                }
+            });
         }
     }
 
@@ -149,6 +153,15 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
             successDialog = new SuccessDialog(this);
             successDialog.show();
             isSuccessToday = true;
+
+            successDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialogInterface) {
+                    coinSoundPlay();
+                }
+            });
+
+
 
         } else {  //이하        나중에 이상이고 실패할때도 else if로 처리하기
 

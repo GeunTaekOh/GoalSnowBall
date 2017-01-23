@@ -28,6 +28,7 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
 
         bettinggold = userDBManager.getGold() / 4;
         bettingGoldet.setText("" + bettinggold);
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -58,49 +59,24 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
                         if (textContents.equals("")) {
                             throw new Exception();
                         }
-
                         if (physicalRadio.isChecked()) {
                             dbData.type = "물리적양";
+                            dbData.unit = categoryPhysicalArrays[tempUnit];
                         } else {
                             dbData.type = "시간적양";
+                            dbData.unit = categoryTimeArrays[tempUnit];
                         }
-
-
                         dbData.goalAmount = textAmount;
                         dbData.goal = textContents;
-
-
                         title.setText("오늘의 목표를 입력하세요.");
                         editTextContents.setHint("목표를 추가하세요.");
-
                         dbData.bettingGold = Integer.parseInt(bettingGoldet.getText().toString());
                     }
-                    dismiss();
-
-                    if (dbData.type == "물리적양") {
-                        dbData.unit = categoryPhysicalArrays[tempUnit];
-                    } else {
-                        dbData.unit = categoryTimeArrays[tempUnit];
-                    }
-
-
-                    Log.e("dbdata", "" + today.cYear);
-                    Log.e("dbdata", "" + today.cMonth);
-                    Log.e("dbdata", "" + today.cdate);
-                    Log.e("dbdata", "" + FROM_TODAY);
-                    Log.e("dbdata", "" + dbData.goal);
-                    Log.e("dbdata", "" + dbData.type);
-                    Log.e("dbdata", "" + dbData.goalAmount);
-                    Log.e("dbdata", "" + dbData.unit);
-                    Log.e("dbdata", "" + dbData.bettingGold);
                     dbManager.insert(FROM_TODAY, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 0);
-
-
+                    dismiss();
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "값을 모두 입력하세요.", Toast.LENGTH_SHORT).show();
                 }
-
-
                 break;
             case R.id.DialogExitButton:
                 dismiss();
@@ -110,6 +86,4 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
                 break;
         }
     }
-
-
 }

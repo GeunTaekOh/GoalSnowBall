@@ -29,21 +29,7 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
             typeOfContents = "error";
 
         }
-        try {
-            drawGoal();
-            drawGoalAmount(typeOfContents);
-            drawCurrentAmount(typeOfContents);
-            drawPercent(typeOfContents);
-            drawRemainAmount(typeOfContents);
-            drawBettingGold();
-            drawBettingResult();
-            drawDue();
-        } catch (Exception e) {
-            Toast.makeText(getBaseContext(), "오늘의 목표를 먼저 입력하세요.", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-
-
+        draw();
     }
 
     public void drawGoal() {
@@ -84,15 +70,15 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
             throw new Exception();
         }
 
-        result = (double) current / (double) goal * 100;
-        result = Double.parseDouble(String.format("%.1f", result));
-        if (result >= 100.0) {
-            result = 100;
-            percentAmounttv.setText("" + result + "%");
+        result = makePercent(current,goal);
+
+        if (result ==100) {
             percentAmounttv.setTextColor(Color.GREEN);
         }else{
-            percentAmounttv.setText("" + result + "%");
+            percentAmounttv.setTextColor(Color.BLACK);
         }
+        percentAmounttv.setText("" + result + "%");
+
     }
 
     public void drawRemainAmount(String type) throws Exception {
@@ -125,6 +111,23 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
 
 
 
+    }
+
+    public void draw(){
+        try {
+            drawGoal();
+            drawGoalAmount(typeOfContents);
+            drawCurrentAmount(typeOfContents);
+            drawPercent(typeOfContents);
+            drawRemainAmount(typeOfContents);
+            drawBettingGold();
+            drawBettingResult();
+            drawDue();
+        }
+         catch (Exception e) {
+            Toast.makeText(getBaseContext(), "오늘의 목표를 먼저 입력하세요.", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
 

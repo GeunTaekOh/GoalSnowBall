@@ -2,6 +2,7 @@ package com.taek_aaa.goalsnowball.activity;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -14,6 +15,8 @@ import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
+
+import static android.media.AudioManager.STREAM_MUSIC;
 
 /**
  * Created by taek_aaa on 2017. 1. 21..
@@ -34,6 +37,9 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface{
     int hours = 0;
     Handler handler = new Handler();
     TextView blackboardtv, timeOfCurrenttv, successGetGoldtv;
+    SoundPool soundPool;
+    int tune;
+    int tmpAmount;
 
     SuccessDialog successDialog;
     UserDBManager userDBManager;
@@ -96,6 +102,19 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface{
         hours = 0;
         handler.removeCallbacks(updateTimer);
         isStartButtonClicked = true;
+    }
+
+    protected void coinSoundPlay(){
+
+        soundPool = new SoundPool(1, STREAM_MUSIC, 0);
+        tune = soundPool.load(this, R.raw.coin, 1);
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int i, int i1) {
+                soundPool.play(tune, 1, 1, 0, 0, 1);
+
+            }
+        });
     }
 
 }

@@ -49,13 +49,16 @@ public class SuccessDialog extends Dialog {
 
         soundPool = new SoundPool(1, STREAM_MUSIC, 0);
         tune = soundPool.load(getContext(), R.raw.clap, 1);
-        //soundPool.play(tune, 1, 1, 0, 0, 1);
         soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
             @Override
             public void onLoadComplete(SoundPool soundPool, int i, int i1) {
                 soundPool.play(tune, 1, 1, 0, 0, 1);
+
             }
         });
+
+
+
 
         GlideDrawableImageViewTarget imageViewTarget1 = new GlideDrawableImageViewTarget(fire);
         Glide.with(getContext()).load(R.raw.firework2).into(imageViewTarget1);
@@ -83,5 +86,7 @@ public class SuccessDialog extends Dialog {
             Log.e("error", "successDialog에서 에러");
         }
     }
+
+
 
 }

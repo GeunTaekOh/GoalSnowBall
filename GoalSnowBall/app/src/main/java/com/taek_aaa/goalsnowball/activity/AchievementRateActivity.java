@@ -12,7 +12,7 @@ import com.taek_aaa.goalsnowball.data.DBManager;
  * Created by taek_aaa on 2017. 1. 21..
  */
 
-public class AchievementRateActivity extends Activity implements  AchievementRateInterface{
+public class AchievementRateActivity extends Activity implements AchievementRateInterface {
     TextView achievementStringtv, achievementAmounttv, currentAmounttv, percentAmounttv, remainAmounttv, betAmounttv, resultBettv, dueTv;
     String typeOfContents;
     ProgressBar progressBar;
@@ -34,15 +34,29 @@ public class AchievementRateActivity extends Activity implements  AchievementRat
         betAmounttv = (TextView) findViewById(R.id.betAchievementAmount);
         resultBettv = (TextView) findViewById(R.id.resultBetAchievementAmount);
         dueTv = (TextView) findViewById(R.id.dueAchievementAmount);
-        progressBar = (ProgressBar)findViewById(R.id.progressbar);
+        progressBar = (ProgressBar) findViewById(R.id.progressbar);
+
+
     }
 
 
-    public void drawDue() throws Exception{
+    public void drawDue() throws Exception {
         /*CalendarDatas calendarDatas = new CalendarDatas();
         //남은시간 타이머.
         //00:00:00 이 밤 12시
         CountDown countDown = new CountDown(600000,100);
         countDown.start();*/
+    }
+
+
+    public double makePercent(int current, int goal) {
+        double result=0;
+        result = (double) current / (double) goal * 100;
+        result = Double.parseDouble(String.format("%.1f", result));
+        if (result >= 100.0) {
+            result = 100;
+        }
+
+        return result;
     }
 }

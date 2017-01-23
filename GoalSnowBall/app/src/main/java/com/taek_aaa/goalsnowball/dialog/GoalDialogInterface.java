@@ -1,0 +1,9 @@
+package com.taek_aaa.goalsnowball.dialog;
+
+/**
+ * Created by taek_aaa on 2017. 1. 23..
+ */
+
+public interface GoalDialogInterface {
+    void init();
+}

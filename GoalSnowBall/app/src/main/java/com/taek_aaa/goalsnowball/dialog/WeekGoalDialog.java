@@ -25,8 +25,10 @@ public class WeekGoalDialog extends GoalDialog implements View.OnClickListener {
         findViewById(R.id.DialogConfirmButton).setOnClickListener(this);
         findViewById(R.id.DialogExitButton).setOnClickListener(this);
         findViewById(R.id.DialogX).setOnClickListener(this);
+
         bettinggold = userDBManager.getGold() / 2;
         bettingGoldet.setText("" + bettinggold);
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -46,7 +48,6 @@ public class WeekGoalDialog extends GoalDialog implements View.OnClickListener {
             case R.id.DialogConfirmButton:
                 Log.e("test", "" + checkedId);
                 try {
-
                     bettinggold = userDBManager.getGold() / 2;
                     if (Integer.parseInt(bettingGoldet.getText().toString()) > bettinggold) {
                         Toast.makeText(getContext(), "배팅액은 총 보유 골드의 절반을 넘을 수 없습니다.", Toast.LENGTH_SHORT).show();
@@ -56,35 +57,24 @@ public class WeekGoalDialog extends GoalDialog implements View.OnClickListener {
                         if (textContents.equals("")) {
                             throw new Exception();
                         }
-
                         if (physicalRadio.isChecked()) {
                             dbData.type = "물리적양";
+                            dbData.unit = categoryPhysicalArrays[tempUnit];
                         } else {
                             dbData.type = "시간적양";
+                            dbData.unit = categoryTimeArrays[tempUnit];
                         }
-
                         dbData.goalAmount = textAmount;
                         dbData.goal = textContents;
-
                         title.setText("이번주의 목표를 입력하세요.");
                         editTextContents.setHint("목표를 입력하세요.");
-
                         dbData.bettingGold = Integer.parseInt(bettingGoldet.getText().toString());
                     }
-                    dismiss();
-
-                    if (dbData.type == "물리적양") {
-                        dbData.unit = categoryPhysicalArrays[tempUnit];
-                    } else {
-                        dbData.unit = categoryTimeArrays[tempUnit];
-                    }
-
                     dbManager.insert(FROM_WEEK, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 0);
-
+                    dismiss();
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "값을 모두 입력하세요.", Toast.LENGTH_SHORT).show();
                 }
-
                 break;
             case R.id.DialogExitButton:
                 dismiss();
@@ -94,5 +84,4 @@ public class WeekGoalDialog extends GoalDialog implements View.OnClickListener {
                 break;
         }
     }
-
 }
