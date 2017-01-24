@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.Service.NotificationService;
+import com.taek_aaa.goalsnowball.controller.DataController;
 import com.taek_aaa.goalsnowball.controller.PictureController;
 import com.taek_aaa.goalsnowball.controller.PicturePermission;
 import com.taek_aaa.goalsnowball.data.CalendarDatas;
@@ -43,6 +44,11 @@ import java.io.File;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+
+    public final static int FROM_TODAY = 991;
+    public final static int FROM_WEEK = 992;
+    public final static int FROM_MONTH = 993;
+    public final static int NOTIFICATION_TERM = 12 * 1000 * 60 * 60;     //12시간 마다 확인
     final int PICK_FROM_ALBUM = 101;
     Bitmap photo;
     public static LayoutInflater inflater;
@@ -59,13 +65,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static float defaultHeight, defaultWidth;
     PictureController pictureController;
     public static boolean isSuccessToday = false, isSuccessWeek = false, isSuccessMonth = false;
-    public final static int FROM_TODAY = 991;
-    public final static int FROM_WEEK = 992;
-    public final static int FROM_MONTH = 993;
     DBManager dbmanager;
     UserDBManager userDBManager;
     CalendarDatas today;
     public static String notificationStringMessage = "";
+    DataController dataController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,10 +85,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        init();
 
         pictureController = new PictureController();
         PicturePermission.verifyStoragePermissions(this);
-        init();
 
         drawMainImage();
         draw();
@@ -379,7 +383,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             goal = 10;
         }
 
-        result = makePercent(current, goal);
+        result = dataController.makePercent(current, goal);
         if (result == 100) {
             percentToday.setTextColor(Color.GREEN);
         } else {
@@ -402,7 +406,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             current = 0;
             goal = 10;
         }
-        result = makePercent(current, goal);
+        result = dataController.makePercent(current, goal);
         if (result == 100) {
             percentWeek.setTextColor(Color.GREEN);
         } else {
@@ -425,7 +429,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             current = 0;
             goal = 10;
         }
-        result = makePercent(current, goal);
+        result = dataController.makePercent(current, goal);
         if (result == 100) {
             result = 100;
             percentMonth.setTextColor(Color.GREEN);
@@ -462,6 +466,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         registerForContextMenu(todaytv);
         registerForContextMenu(weektv);
         registerForContextMenu(monthtv);
+        dataController = new DataController();
     }
 
     /**
@@ -560,16 +565,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mainGoldtv.setText("" + userDBManager.getGold() + "Gold");
         drawDDay();
         drawImage();
-    }
-
-    public double makePercent(int current, int goal) {
-        double result = 0;
-        result = (double) current / (double) goal * 100;
-        result = Double.parseDouble(String.format("%.1f", result));
-        if (result >= 100.0) {
-            result = 100;
-        }
-        return result;
     }
 
     private String getRealPathFromURI(Uri contentURI) {

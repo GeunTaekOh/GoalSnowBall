@@ -16,10 +16,10 @@ import com.taek_aaa.goalsnowball.data.DBManager;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_WEEK;
+import static com.taek_aaa.goalsnowball.activity.MainActivity.NOTIFICATION_TERM;
 
 
 public class NotificationService extends Service {
-
     NotificationManager notificationManager;
     public Boolean isRunning;
     DBManager dbManager;
@@ -53,7 +53,7 @@ public class NotificationService extends Service {
                 while (isRunning) {
                     try {
                         doNotification();
-                        Thread.sleep(3 * 1000 * 60 * 60);       //3시간 마다 확인
+                        Thread.sleep(NOTIFICATION_TERM);
                     } catch (Exception e) {
 
                     }
@@ -63,7 +63,6 @@ public class NotificationService extends Service {
         thread.start();
         return START_STICKY;
     }
-
 
     public void setNotificationBuild(String str, PendingIntent pendingIntent) {
         Notification.Builder mBuilder = new Notification.Builder(this);
@@ -101,7 +100,7 @@ public class NotificationService extends Service {
             setNotificationBuild("오늘의 목표를 새롭게 설정하세요.", pendingIntent);
         } else if (weekNothing) {
             setNotificationBuild("이번주의 목표를 새롭게 설정하세요.", pendingIntent);
-        } else {
+        } else if(monthNothing){
             setNotificationBuild("이번달의 목표를 새롭게 설정하세요.", pendingIntent);
         }
 

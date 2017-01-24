@@ -74,7 +74,4 @@ public class GoalDialog extends Dialog implements GoalDialogInterface{
         bettingGoldet = (EditText) findViewById(R.id.bettingGold);
 
     }
-
-
-
 }
