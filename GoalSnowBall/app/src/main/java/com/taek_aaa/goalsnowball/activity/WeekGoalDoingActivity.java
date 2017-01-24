@@ -113,7 +113,7 @@ public class WeekGoalDoingActivity extends GoalDoingActivity {
                 successDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
-                        coinSoundPlay();
+                        playCoinSound();
                     }
                 });
             }
@@ -170,7 +170,7 @@ public class WeekGoalDoingActivity extends GoalDoingActivity {
                 successDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
-                        coinSoundPlay();
+                        playCoinSound();
                     }
                 });
             }

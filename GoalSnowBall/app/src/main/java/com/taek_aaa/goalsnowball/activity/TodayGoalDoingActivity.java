@@ -112,7 +112,7 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
 
-                        coinSoundPlay();
+                        playCoinSound();
                     }
                 });
             }
@@ -168,7 +168,7 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
                 successDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
-                        coinSoundPlay();
+                        playCoinSound();
                     }
                 });
             }
