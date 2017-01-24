@@ -449,5 +449,26 @@ public class DBManager extends SQLiteOpenHelper {
         }
         return result;
     }
+    public void delete(int findWhatDateType) {
+        SQLiteDatabase db = getReadableDatabase();
+        CalendarDatas today = new CalendarDatas();
+        int findYear = today.cYear;
+        int findMonth = today.cMonth;
+        int findDate = today.cdate;
+        int findWeekOfYear = today.weekOfYear;
 
+        if (findWhatDateType == FROM_TODAY) {
+            String str = "DELETE FROM database WHERE year = " + findYear + " AND month = " + findMonth + " AND date = " + findDate + " AND whatDateType=" + findWhatDateType + ";";
+            db.execSQL(str);
+        } else if (findWhatDateType == FROM_MONTH) {
+            String str = "DELETE FROM database WHERE year = " + findYear + " AND month = " + findMonth + " AND whatDateType=" + findWhatDateType + ";";
+            db.execSQL(str);
+        } else {
+            String str = "DELETE FROM database WHERE year = " + findYear + " AND month = " + findMonth + " AND weekOfYear = " + findWeekOfYear + " AND whatDateType=" + findWhatDateType + ";";
+            db.execSQL(str);
+        }
+
+
+        db.close();
+    }
 }

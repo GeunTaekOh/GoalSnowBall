@@ -92,6 +92,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawMainImage();
         draw();
         registerForContextMenu(imageView);
+        registerForContextMenu(todaytv);
+        registerForContextMenu(weektv);
+        registerForContextMenu(monthtv);
 
 
     }
@@ -261,7 +264,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 오늘의 목표를 텍스트뷰에 출력
      **/
     public void drawTodayGoal() {
-        if (dbmanager.getGoal(FROM_TODAY).equals("null")) {
+        if (dbmanager.getGoal(FROM_TODAY).equals("")) {
+            todaytv.setText("");
+            todaytv.setGravity(Gravity.CENTER);
             String str = "오늘의 목표를 새로 설정하세요.";
             alarm(str);
         } else {
@@ -274,7 +279,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 이번주 목표를 텍스트뷰에 출력
      **/
     public void drawWeekGoal() {
-        if (dbmanager.getGoal(FROM_WEEK).equals("null")) {
+        if (dbmanager.getGoal(FROM_WEEK).equals("")) {
+            weektv.setText("");
+            weektv.setGravity(Gravity.CENTER);
             String str = "이번주의 목표를 새로 설정하세요.";
             alarm(str);
         } else {
@@ -287,7 +294,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 이번달 목표를 텍스트뷰에 출력
      **/
     public void drawMonthGoal() {
-        if (dbmanager.getGoal(FROM_MONTH).equals("null")) {
+        if (dbmanager.getGoal(FROM_MONTH).equals("")) {
+            monthtv.setText("");
+            monthtv.setGravity(Gravity.CENTER);
             String str = "이번달의 목표를 새로 설정하세요.";
             alarm(str);
         } else {
@@ -460,11 +469,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         // 컨텍스트 메뉴가 최초로 한번만 호출되는 콜백 메서드
+
         menu.setHeaderTitle("어떤 작업을 수행하시겠습니까?");
-        String[] currencyUnit = {"사진 추가/수정", "사진 회전", "사진 삭제"};
-        for (int i = 1; i <= 3; i++) {
-            menu.add(0, i, 100, currencyUnit[i - 1]);
+
+        if (v == imageView) {
+            String[] currencyUnit = {"사진 추가/수정", "사진 회전", "사진 삭제"};
+            for (int i = 1; i <= 3; i++) {
+                menu.add(0, i, 100, currencyUnit[i - 1]);
+            }
+        } else if (v == todaytv) {
+            String[] currencyUnit = {"오늘의 일정 삭제"};
+            menu.add(0, 4, 100, currencyUnit[0]);
+        } else if (v == weektv) {
+            String[] currencyUnit = {"이번주 일정 삭제"};
+            menu.add(0, 5, 100, currencyUnit[0]);
+        } else if (v == monthtv) {
+            String[] currencyUnit = {"이번달 일정 삭제"};
+            menu.add(0, 6, 100, currencyUnit[0]);
         }
+
     }
 
     /**
@@ -499,6 +522,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     userDBManager.setPicturePath("null");
                     Toast.makeText(this, "이미지가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                 }
+                break;
+            case 4:     //오늘 일정 삭제
+                dbmanager.delete(FROM_TODAY);
+                onStart();
+                break;
+            case 5:     //이번주 일정 삭제
+                dbmanager.delete(FROM_WEEK);
+                onStart();
+                break;
+            case 6:     //이번달 일정 삭제
+                dbmanager.delete(FROM_MONTH);
+                onStart();
                 break;
 
         }
@@ -556,6 +591,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
         Notification.Builder mBuilder = new Notification.Builder(this);
+
 
         mBuilder.setSmallIcon(R.drawable.goal);
         mBuilder.setTicker("Notification.Builder");
