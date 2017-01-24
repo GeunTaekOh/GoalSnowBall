@@ -1,7 +1,9 @@
 package com.taek_aaa.goalsnowball.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,7 +24,7 @@ import static android.media.AudioManager.STREAM_MUSIC;
  * Created by taek_aaa on 2017. 1. 21..
  */
 
-public class GoalDoingActivity extends Activity implements GoalDoingInterface{
+public class GoalDoingActivity extends Activity implements GoalDoingInterface {
 
     TextView doingGoaltv, unittv;
     EditText amountOfEdit;
@@ -43,13 +45,14 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface{
     SuccessDialog successDialog;
     UserDBManager userDBManager;
     DBManager dbManager;
-
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
         userDBManager = new UserDBManager(getBaseContext(), "user.db", null, 1);
+        context = getBaseContext();
 
     }
 
@@ -91,7 +94,7 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface{
         }
     };
 
-    public void timerInit(){
+    public void timerInit() {
         starttime = 0L;
         timeInMilliseconds = 0L;
         timeSwapBuff = 0L;
@@ -103,15 +106,18 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface{
         isStartButtonClicked = true;
     }
 
-    protected void coinSoundPlay(){
-        soundPool = new SoundPool(1, STREAM_MUSIC, 0);
-        tune = soundPool.load(this, R.raw.coin, 1);
-        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
-            @Override
-            public void onLoadComplete(SoundPool soundPool, int i, int i1) {
-                soundPool.play(tune, 1, 1, 0, 0, 1);
-            }
-        });
+    protected void coinSoundPlay() {
+        AudioManager mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        if (mAudioManager.getRingerMode() == 2) {
+            soundPool = new SoundPool(1, STREAM_MUSIC, 0);
+            tune = soundPool.load(this, R.raw.coin, 1);
+            soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+                @Override
+                public void onLoadComplete(SoundPool soundPool, int i, int i1) {
+                    soundPool.play(tune, 1, 1, 0, 0, 1);
+                }
+            });
+        }
     }
 
 }

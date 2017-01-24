@@ -555,9 +555,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
-
         Notification.Builder mBuilder = new Notification.Builder(this);
-        mBuilder.setSmallIcon(R.drawable.close);
+
+        mBuilder.setSmallIcon(R.drawable.goal);
         mBuilder.setTicker("Notification.Builder");
         mBuilder.setWhen(System.currentTimeMillis());
         mBuilder.setContentTitle("GoalSnowBall의 목표를 설정하세요.");
