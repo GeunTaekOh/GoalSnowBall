@@ -24,6 +24,8 @@ public class UserNameDialog extends Dialog implements View.OnClickListener {
         usernameTv = (EditText) findViewById(R.id.usernametv);
         userDBManager = new UserDBManager(getContext(), "user.db", null, 1);
         findViewById(R.id.confirm_username_btn).setOnClickListener(this);
+        findViewById(R.id.exit_username_btn).setOnClickListener(this);
+        findViewById(R.id.usernameExitbtn).setOnClickListener(this);
     }
 
     @Override
