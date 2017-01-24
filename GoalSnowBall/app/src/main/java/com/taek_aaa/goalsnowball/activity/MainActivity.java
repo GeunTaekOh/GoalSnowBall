@@ -1,5 +1,9 @@
 package com.taek_aaa.goalsnowball.activity;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -64,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DBManager dbmanager;
     UserDBManager userDBManager;
     CalendarDatas today;
+    public static String alarmStr = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawMainImage();
         draw();
         registerForContextMenu(imageView);
+
+
     }
 
     /**
@@ -191,7 +198,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    /** 이미지가 저장되어 있는 경우에 이미지를 그려줌 **/
+    /**
+     * 이미지가 저장되어 있는 경우에 이미지를 그려줌
+     **/
     protected void drawImage() {
         if (userDBManager.getPicturePath().equals("null")) {
             isPicture = false;
@@ -205,9 +214,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 photo = sizedPhoto;
                 imageView.setImageBitmap(sizedPhoto);
                 isPicture = true;
-            }else{
-                Toast.makeText(this, "경로에 사진이 없습니다.",Toast.LENGTH_SHORT).show();
-                isPicture=false;
+            } else {
+                Toast.makeText(this, "경로에 사진이 없습니다.", Toast.LENGTH_SHORT).show();
+                isPicture = false;
             }
         }
     }
@@ -252,24 +261,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 오늘의 목표를 텍스트뷰에 출력
      **/
     public void drawTodayGoal() {
-        todaytv.setText(dbmanager.getGoal(FROM_TODAY));
-        todaytv.setGravity(Gravity.CENTER);
+        if (dbmanager.getGoal(FROM_TODAY).equals("null")) {
+            String str = "오늘의 목표를 새로 설정하세요.";
+            alarm(str);
+        } else {
+            todaytv.setText(dbmanager.getGoal(FROM_TODAY));
+            todaytv.setGravity(Gravity.CENTER);
+        }
     }
 
     /**
      * 이번주 목표를 텍스트뷰에 출력
      **/
     public void drawWeekGoal() {
-        weektv.setText(dbmanager.getGoal(FROM_WEEK));
-        weektv.setGravity(Gravity.CENTER);
+        if (dbmanager.getGoal(FROM_WEEK).equals("null")) {
+            String str = "이번주의 목표를 새로 설정하세요.";
+            alarm(str);
+        } else {
+            weektv.setText(dbmanager.getGoal(FROM_WEEK));
+            weektv.setGravity(Gravity.CENTER);
+        }
     }
 
     /**
      * 이번달 목표를 텍스트뷰에 출력
      **/
     public void drawMonthGoal() {
-        monthtv.setText(dbmanager.getGoal(FROM_MONTH));
-        monthtv.setGravity(Gravity.CENTER);
+        if (dbmanager.getGoal(FROM_MONTH).equals("null")) {
+            String str = "이번달의 목표를 새로 설정하세요.";
+            alarm(str);
+        } else {
+            monthtv.setText(dbmanager.getGoal(FROM_MONTH));
+            monthtv.setGravity(Gravity.CENTER);
+        }
 
     }
 
@@ -461,15 +485,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     rotatedPicture = pictureController.rotate(photo, 90);
                     photo = rotatedPicture;
                     imageView.setImageBitmap(rotatedPicture);
-                    Log.e("rmsxor",""+photo);
+                    Log.e("rmsxor", "" + photo);
                 } else {
                     Toast.makeText(this, "기본 이미지는 회전을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case 3://사진삭제
-                if(userDBManager.getPicturePath().equals("null")){
-                    Toast.makeText(this, "아직 이미지를 설정하지 않았습니다. ",Toast.LENGTH_SHORT).show();
-                }else {
+                if (userDBManager.getPicturePath().equals("null")) {
+                    Toast.makeText(this, "아직 이미지를 설정하지 않았습니다. ", Toast.LENGTH_SHORT).show();
+                } else {
                     drawMainImage();
                     isPicture = false;
                     userDBManager.setPicturePath("null");
@@ -515,7 +539,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String getRealPathFromURI(Uri contentURI) {
         String result;
         Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) { // Source is Dropbox or other similar local file path
+        if (cursor == null) {
             result = contentURI.getPath();
         } else {
             cursor.moveToFirst();
@@ -524,6 +548,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             cursor.close();
         }
         return result;
+    }
+
+    public void alarm(String str) {
+
+
+        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification.Builder mBuilder = new Notification.Builder(this);
+        mBuilder.setSmallIcon(R.drawable.close);
+        mBuilder.setTicker("Notification.Builder");
+        mBuilder.setWhen(System.currentTimeMillis());
+        mBuilder.setContentTitle("GoalSnowBall의 목표를 설정하세요.");
+        mBuilder.setContentText("" + str);
+        mBuilder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
+        mBuilder.setContentIntent(pendingIntent);
+        mBuilder.setAutoCancel(true);
+
+        mBuilder.setPriority(Notification.PRIORITY_MAX);
+
+        nm.notify(111, mBuilder.build());
     }
 
 
