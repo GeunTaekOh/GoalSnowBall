@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.Service.NotificationService;
 import com.taek_aaa.goalsnowball.controller.PictureController;
 import com.taek_aaa.goalsnowball.controller.PicturePermission;
 import com.taek_aaa.goalsnowball.data.CalendarDatas;
@@ -68,7 +69,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DBManager dbmanager;
     UserDBManager userDBManager;
     CalendarDatas today;
-    public static String alarmStr = "";
+    NotificationManager notificationManager;
+    public static String notificationStringMessage = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,12 +91,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         PicturePermission.verifyStoragePermissions(this);
         init();     //나중에 디비로 구현하면 여기서 몇개 제외하기
 
+        Intent intent = new Intent(MainActivity.this, NotificationService.class);
+        startService(intent);
+
         drawMainImage();
         draw();
-        registerForContextMenu(imageView);
-        registerForContextMenu(todaytv);
-        registerForContextMenu(weektv);
-        registerForContextMenu(monthtv);
+
+
 
 
     }
@@ -108,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onStart();
         Log.e("rmsxor94", "onStart");
         draw();
+
     }
 
     /**
@@ -461,6 +465,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         todayGoalDialog = new TodayGoalDialog(this);
         weekGoalDialog = new WeekGoalDialog(this);
         monthGoalDialog = new MonthGoalDialog(this);
+        registerForContextMenu(imageView);
+        registerForContextMenu(todaytv);
+        registerForContextMenu(weektv);
+        registerForContextMenu(monthtv);
     }
 
     /**
@@ -586,12 +594,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void alarm(String str) {
-
-
-        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
         Notification.Builder mBuilder = new Notification.Builder(this);
-
 
         mBuilder.setSmallIcon(R.drawable.goal);
         mBuilder.setTicker("Notification.Builder");
@@ -604,7 +609,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         mBuilder.setPriority(Notification.PRIORITY_MAX);
 
-        nm.notify(111, mBuilder.build());
+
+        notificationManager.notify(111, mBuilder.build());
     }
 
 
