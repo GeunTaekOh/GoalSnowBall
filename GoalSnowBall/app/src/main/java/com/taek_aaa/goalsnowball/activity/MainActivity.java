@@ -241,6 +241,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
     }
+    /** 좌측 하단 텍스트뷰를 클릭하면 드로우바에서 목표 관리하는 액티비티를 보여줌 **/
+    public void onClickJustTextView(View v){
+        switch (v.getId()){
+            case R.id.justTodayGoaltv:
+                startActivity(new Intent(this, TodayGoalDoingActivity.class));
+                break;
+            case R.id.justWeekGoaltv:
+                startActivity(new Intent(this, WeekGoalDoingActivity.class));
+                break;
+            case R.id.justMonthGoaltv:
+                startActivity(new Intent(this, MonthGoalDoingActivity.class));
+                break;
+        }
+    }
 
     /**
      * 달성률 클릭 시

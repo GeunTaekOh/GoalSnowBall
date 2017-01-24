@@ -249,7 +249,10 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="20dp"
                 android:text="오늘의 목표 "
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:id="@+id/justTodayGoaltv"
+                android:onClick="onClickJustTextView"
+                />
 
             <View
                 android:layout_width="2dp"
@@ -290,7 +293,10 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="20dp"
                 android:text="이번주 목표 "
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:id="@+id/justWeekGoaltv"
+                android:onClick="onClickJustTextView"
+                />
 
             <View
                 android:layout_width="2dp"
@@ -331,7 +337,10 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="20dp"
                 android:text="이번달 목표"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:id="@+id/justMonthGoaltv"
+                android:onClick="onClickJustTextView"
+                />
 
             <View
                 android:layout_width="2dp"

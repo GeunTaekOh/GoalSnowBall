@@ -38,6 +38,12 @@ public class UserNameDialog extends Dialog implements View.OnClickListener {
                     dismiss();
                 }
                 break;
+            case R.id.exit_username_btn:
+                dismiss();
+                break;
+            case R.id.usernameExitbtn:
+                dismiss();
+                break;
         }
     }
 }
