@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <service
         android:name=".NotificationService"
@@ -42,6 +43,7 @@
             android:name=".Service.NotificationService"
             android:enabled="true"
             android:exported="true"></service>
+        <receiver android:name=".Service.BroadcastD$BroadcastD" />
     </application>
 
 </manifest>

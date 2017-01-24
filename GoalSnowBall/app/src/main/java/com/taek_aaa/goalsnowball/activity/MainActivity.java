@@ -1,9 +1,5 @@
 package com.taek_aaa.goalsnowball.activity;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -69,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DBManager dbmanager;
     UserDBManager userDBManager;
     CalendarDatas today;
-    NotificationManager notificationManager;
     public static String notificationStringMessage = "";
 
     @Override
@@ -89,16 +84,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         pictureController = new PictureController();
         PicturePermission.verifyStoragePermissions(this);
-        init();     //나중에 디비로 구현하면 여기서 몇개 제외하기
-
-        Intent intent = new Intent(MainActivity.this, NotificationService.class);
-        startService(intent);
+        init();
 
         drawMainImage();
         draw();
 
-
-
+        Intent intent = new Intent(MainActivity.this, NotificationService.class);       //알람 서비스 실행
+        startService(intent);
 
     }
 
@@ -111,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onStart();
         Log.e("rmsxor94", "onStart");
         draw();
+
 
     }
 
@@ -271,8 +264,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (dbmanager.getGoal(FROM_TODAY).equals("")) {
             todaytv.setText("");
             todaytv.setGravity(Gravity.CENTER);
-            String str = "오늘의 목표를 새로 설정하세요.";
-            alarm(str);
+            notificationStringMessage = "오늘의 목표를 새로 설정하세요.";
+            //alarm(str);
         } else {
             todaytv.setText(dbmanager.getGoal(FROM_TODAY));
             todaytv.setGravity(Gravity.CENTER);
@@ -286,8 +279,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (dbmanager.getGoal(FROM_WEEK).equals("")) {
             weektv.setText("");
             weektv.setGravity(Gravity.CENTER);
-            String str = "이번주의 목표를 새로 설정하세요.";
-            alarm(str);
+            notificationStringMessage = "이번주의 목표를 새로 설정하세요.";
+            //alarm(str);
         } else {
             weektv.setText(dbmanager.getGoal(FROM_WEEK));
             weektv.setGravity(Gravity.CENTER);
@@ -301,8 +294,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (dbmanager.getGoal(FROM_MONTH).equals("")) {
             monthtv.setText("");
             monthtv.setGravity(Gravity.CENTER);
-            String str = "이번달의 목표를 새로 설정하세요.";
-            alarm(str);
+            notificationStringMessage = "이번달의 목표를 새로 설정하세요.";
+            //alarm(str);
         } else {
             monthtv.setText(dbmanager.getGoal(FROM_MONTH));
             monthtv.setGravity(Gravity.CENTER);
@@ -592,26 +585,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         return result;
     }
-
-    public void alarm(String str) {
-        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
-        Notification.Builder mBuilder = new Notification.Builder(this);
-
-        mBuilder.setSmallIcon(R.drawable.goal);
-        mBuilder.setTicker("Notification.Builder");
-        mBuilder.setWhen(System.currentTimeMillis());
-        mBuilder.setContentTitle("GoalSnowBall의 목표를 설정하세요.");
-        mBuilder.setContentText("" + str);
-        mBuilder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
-        mBuilder.setContentIntent(pendingIntent);
-        mBuilder.setAutoCancel(true);
-
-        mBuilder.setPriority(Notification.PRIORITY_MAX);
-
-
-        notificationManager.notify(111, mBuilder.build());
-    }
-
-
 }
