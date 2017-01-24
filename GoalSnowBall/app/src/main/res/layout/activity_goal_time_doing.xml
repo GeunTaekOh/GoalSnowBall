@@ -5,17 +5,23 @@
     android:layout_gravity="center"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="48dp">
-
+        android:layout_below="@+id/linearLayout"
+        >
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#E5E4E2"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"/>
 
             <TextView
                 android:id="@+id/doing_current_time"
@@ -24,6 +30,12 @@
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:text="수행 시간 : " />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#E5E4E2"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"/>
 
 
             <TextView
@@ -33,7 +45,13 @@
                 android:layout_gravity="center"
                 android:layout_margin="10dp"
                 android:text=""
-                android:textSize="27dp" />
+                android:textSize="20dp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#E5E4E2"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"/>
 
             <TextView
                 android:id="@+id/successGetGoldtv"
@@ -42,10 +60,16 @@
                 android:layout_gravity="center"
                 android:text="성공시 획득 골드 : " />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#E5E4E2"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"/>
 
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/blckBoard"
@@ -80,13 +104,21 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/blckBoard"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:layout_marginTop="52dp"
+        android:gravity="center"
         android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#E5E4E2"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="15dp"/>
+
+
 
         <LinearLayout
             android:id="@+id/timerLine"
@@ -110,8 +142,8 @@
 
         <LinearLayout
             android:id="@+id/startAndEndLine"
-            android:layout_width="240dp"
-            android:layout_height="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="2dp"
             android:gravity="center"
             android:orientation="horizontal">
@@ -130,7 +162,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onClickTimerEndbtn"
-
                 android:text="end" />
         </LinearLayout>
 
