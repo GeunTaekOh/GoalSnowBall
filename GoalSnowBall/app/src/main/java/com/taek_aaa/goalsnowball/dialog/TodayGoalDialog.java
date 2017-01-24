@@ -76,7 +76,7 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
                     if (dbManager.hasGoal(FROM_TODAY)) {
                         Toast.makeText(getContext(), "이미 오늘의 목표를 설정하였습니다.", Toast.LENGTH_SHORT).show();
                     } else {
-                        dbManager.insert(FROM_TODAY, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 0);
+                        dbManager.insert(FROM_TODAY, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 2);
                     }
                     dismiss();
                 } catch (Exception e) {

@@ -36,14 +36,24 @@
                 android:layout_alignParentStart="true"
                 android:background="@drawable/fourth">
 
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/backgroundRelative"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginStart="15dp"
-                    android:background="#88F0F8FF"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -87,96 +97,43 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="3"
+                android:layout_marginBottom="15dp"
                 android:layout_marginLeft="50dp"
-                >
+                android:orientation="horizontal"
+                android:weightSum="3">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:text="브론즈"
-                    android:textSize="20dp"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    />
+                    android:textSize="20dp" />
 
 
                 <TextView
+                    android:id="@+id/userIdtv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:textSize="20dp"
-                    android:layout_weight="1"
                     android:layout_gravity="center"
-                    android:id="@+id/userIdtv"
+                    android:layout_weight="1"
                     android:onClick="onClickName"
-                    />
+                    android:text=""
+                    android:textSize="20dp" />
 
                 <TextView
                     android:id="@+id/mainGoldtv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:text="10G"
-                    android:textSize="20dp"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    />
+                    android:textSize="20dp" />
 
 
             </LinearLayout>
         </RelativeLayout>
 
-
-        <RelativeLayout
-            android:id="@+id/firststatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="5dp"
-            android:orientation="vertical">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="3"
-                android:layout_marginLeft="50dp"
-
-                >
-
-                <TextView
-                    android:id="@+id/grade"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Grade"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    />
-
-                <TextView
-                    android:id="@+id/uerName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="UserName"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    />
-
-                <TextView
-                    android:id="@+id/yourGoalMoney"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Gold"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    />
-
-
-            </LinearLayout>
-        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
@@ -196,38 +153,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="3"
                 android:layout_marginLeft="50dp"
-                >
+                android:orientation="horizontal"
+                android:weightSum="3">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:text="오늘 목표\n 달성률"
-                    android:textStyle="bold"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    />
+                    android:textStyle="bold" />
 
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:text="이번 주 목표\n 달성률"
-                    android:textStyle="bold"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="이번 달 목표\n 달성률"
-                    android:textStyle="bold"
-                    android:layout_weight="1"
                     android:layout_gravity="center"
-                    />
+                    android:layout_weight="1"
+                    android:text="이번 달 목표\n 달성률"
+                    android:textStyle="bold" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -254,9 +207,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="0"
                     android:onClick="onClickRate"
-                    />
+                    android:text="0" />
 
                 <TextView
                     android:id="@+id/percentWeek"
@@ -264,9 +216,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="0"
                     android:onClick="onClickRate"
-                    />
+                    android:text="0" />
 
                 <TextView
                     android:id="@+id/percentMonth"
@@ -274,9 +225,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="0"
                     android:onClick="onClickRate"
-                    />
+                    android:text="0" />
             </LinearLayout>
 
         </RelativeLayout>
@@ -305,6 +255,13 @@
                 android:layout_width="2dp"
                 android:layout_height="70dp"
                 android:background="#E5E4E2" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/todayBulb"
+                />
 
             <TextView
                 android:id="@+id/mainTodayGoalTv"
@@ -340,6 +297,13 @@
                 android:layout_height="70dp"
                 android:background="#E5E4E2" />
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/weekBulb"
+                />
+
             <TextView
                 android:id="@+id/mainWeekGoalTv"
                 android:layout_width="match_parent"
@@ -373,6 +337,13 @@
                 android:layout_width="2dp"
                 android:layout_height="70dp"
                 android:background="#E5E4E2" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/monthBulb"
+                />
+
 
             <TextView
                 android:id="@+id/mainMonthGoalTv"

@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     final int PICK_FROM_ALBUM = 101;
     Bitmap photo;
     public static LayoutInflater inflater;
-    ImageView imageView;
+    ImageView imageView, todayBulb, weekBulb, monthBulb;
     public static int viewHeight = 700;        //원하는 뷰의 높이(해상도)
     Boolean isPicture = false;
     TextView todaytv, weektv, monthtv, dDayWeektv, dDayMonthtv, mainGoldtv, percentToday, percentWeek, percentMonth, userNametv, userIdtv;
@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DBManager dbmanager;
     UserDBManager userDBManager;
     CalendarDatas today;
-    public static String notificationStringMessage = "";
     DataController dataController;
 
     @Override
@@ -262,49 +261,55 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
-     * 오늘의 목표를 텍스트뷰에 출력
+     * 오늘의 목표를 텍스트뷰에 출력     isSuccess가 0이면 없는것 //  1이면 성공 // 2이면 하는중 // 3이면 실패
      **/
     public void drawTodayGoal() {
-        if (dbmanager.getGoal(FROM_TODAY).equals("")) {
-            todaytv.setText("");
-            todaytv.setGravity(Gravity.CENTER);
-            notificationStringMessage = "오늘의 목표를 새로 설정하세요.";
-            //alarm(str);
-        } else {
-            todaytv.setText(dbmanager.getGoal(FROM_TODAY));
-            todaytv.setGravity(Gravity.CENTER);
+
+        if (dbmanager.getIsSuccess(FROM_TODAY) == 1) {
+            todayBulb.setImageResource(R.drawable.bulbsuccess);
+        } else if (dbmanager.getIsSuccess(FROM_TODAY)==2){
+            todayBulb.setImageResource(R.drawable.bulbdoing);
+        }else if(dbmanager.getIsSuccess(FROM_TODAY)==3){
+            todayBulb.setImageResource(R.drawable.bulbfail);
+        }else{
+            todayBulb.setImageResource(0);
         }
+        todaytv.setText(dbmanager.getGoal(FROM_TODAY));
+        todaytv.setGravity(Gravity.CENTER);
     }
 
     /**
-     * 이번주 목표를 텍스트뷰에 출력
+     * 이번주 목표를 텍스트뷰에 출력     isSuccess가 0이면 없는것 //  1이면 성공 // 2이면 하는중 // 3이면 실패
      **/
     public void drawWeekGoal() {
-        if (dbmanager.getGoal(FROM_WEEK).equals("")) {
-            weektv.setText("");
-            weektv.setGravity(Gravity.CENTER);
-            notificationStringMessage = "이번주의 목표를 새로 설정하세요.";
-            //alarm(str);
-        } else {
-            weektv.setText(dbmanager.getGoal(FROM_WEEK));
-            weektv.setGravity(Gravity.CENTER);
+        if (dbmanager.getIsSuccess(FROM_WEEK) == 1) {
+            weekBulb.setImageResource(R.drawable.bulbsuccess);
+        } else if(dbmanager.getIsSuccess(FROM_WEEK)==2){
+            weekBulb.setImageResource(R.drawable.bulbdoing);
+        }else if (dbmanager.getIsSuccess(FROM_WEEK)==3){
+            weekBulb.setImageResource(R.drawable.bulbfail);
+        }else{
+            weekBulb.setImageResource(0);
         }
+        weektv.setText(dbmanager.getGoal(FROM_WEEK));
+        weektv.setGravity(Gravity.CENTER);
     }
 
     /**
-     * 이번달 목표를 텍스트뷰에 출력
+     * 이번달 목표를 텍스트뷰에 출력     isSuccess가 0이면 없는것 //  1이면 성공 // 2이면 하는중 // 3이면 실패
      **/
     public void drawMonthGoal() {
-        if (dbmanager.getGoal(FROM_MONTH).equals("")) {
-            monthtv.setText("");
-            monthtv.setGravity(Gravity.CENTER);
-            notificationStringMessage = "이번달의 목표를 새로 설정하세요.";
-            //alarm(str);
-        } else {
-            monthtv.setText(dbmanager.getGoal(FROM_MONTH));
-            monthtv.setGravity(Gravity.CENTER);
+        if (dbmanager.getIsSuccess(FROM_MONTH) == 1) {
+            monthBulb.setImageResource(R.drawable.bulbsuccess);
+        } else if(dbmanager.getIsSuccess(FROM_MONTH)==2){
+            monthBulb.setImageResource(R.drawable.bulbdoing);
+        }else if(dbmanager.getIsSuccess(FROM_MONTH)==3){
+            monthBulb.setImageResource(R.drawable.bulbfail);
+        }else{
+            monthBulb.setImageResource(0);
         }
-
+        monthtv.setText(dbmanager.getGoal(FROM_MONTH));
+        monthtv.setGravity(Gravity.CENTER);
     }
 
     public void drawGoal() {
@@ -467,6 +472,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         registerForContextMenu(weektv);
         registerForContextMenu(monthtv);
         dataController = new DataController();
+        todayBulb = (ImageView) findViewById(R.id.todayBulb);
+        weekBulb = (ImageView) findViewById(R.id.weekBulb);
+        monthBulb = (ImageView) findViewById(R.id.monthBulb);
     }
 
     /**

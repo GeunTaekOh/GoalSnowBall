@@ -12,6 +12,8 @@ import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_TODAY;
  * Created by taek_aaa on 2017. 1. 11..
  */
 
+
+/**is success 가 0이면 저장 안함 1이면 성공 2이면 하는중 3이면 실패**/
 public class DBManager extends SQLiteOpenHelper {
 
     public DBManager(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {

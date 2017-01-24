@@ -19,7 +19,7 @@ public class UserDBManager extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE userInfo (_id INTEGER PRIMARY KEY AUTOINCREMENT, grade TEXT , name TEXT, gold INTEGER, picturePath TEXT);");
-        db.execSQL("INSERT INTO userInfo VALUES(NULL, '" + "브론즈" + "', '" + "userName" + "', " + 10 + ", '" + "null" + "');");
+        db.execSQL("INSERT INTO userInfo VALUES(NULL, '" + "브론즈" + "', '" + "Insert_Name" + "', " + 10 + ", '" + "null" + "');");
     }
 
     @Override
