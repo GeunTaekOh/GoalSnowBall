@@ -552,16 +552,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case 4:     //오늘 일정 삭제
-                dbmanager.delete(FROM_TODAY);
-                onStart();
+                if(dbmanager.getIsSuccess(FROM_TODAY)==1){
+                    Toast.makeText(this,"이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                }else {
+                    dbmanager.delete(FROM_TODAY);
+                    onStart();
+                }
                 break;
             case 5:     //이번주 일정 삭제
-                dbmanager.delete(FROM_WEEK);
-                onStart();
+                if(dbmanager.getIsSuccess(FROM_WEEK)==1){
+                    Toast.makeText(this,"이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                }else {
+                    dbmanager.delete(FROM_WEEK);
+                    onStart();
+                }
                 break;
             case 6:     //이번달 일정 삭제
-                dbmanager.delete(FROM_MONTH);
-                onStart();
+                if(dbmanager.getIsSuccess(FROM_MONTH)==1){
+                    Toast.makeText(this,"이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                }else {
+                    dbmanager.delete(FROM_MONTH);
+                    onStart();
+                }
                 break;
 
         }
