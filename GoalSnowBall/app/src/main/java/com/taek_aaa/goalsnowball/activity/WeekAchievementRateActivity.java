@@ -137,7 +137,7 @@ public class WeekAchievementRateActivity extends AchievementRateActivity {
             drawDue();
             drawDueTime();
         } catch (Exception e) {
-            Toast.makeText(getBaseContext(), "오늘의 목표를 먼저 입력하세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), "이번주의 목표를 먼저 입력하세요.", Toast.LENGTH_SHORT).show();
             finish();
         }
     }

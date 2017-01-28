@@ -22,7 +22,6 @@ public class CountDown extends CountDownTimer{
         super(millisInFuture, countDownInterval);
     }
 
-
     @Override
     public void onTick(long l) {
         dueTimeFinish.setText(formatTime(l,fromCountDownDday));
@@ -69,18 +68,16 @@ public class CountDown extends CountDownTimer{
 
         CalendarDatas calendarDatas = new CalendarDatas();
 
-        if(dday==0){
+        if(dday==0){                 //오늘 목표 달성률 남은 기간
             output = hour + " : " + min + " : " + sec;
-        }else if(dday==1){
+        }else if(dday==1){          //이번주 목표 달성률 남은 기간
             int countDownDday = calendarDatas.getDdayWeek(calendarDatas.dayOfWeekIndex) -1;
             output = ""+countDownDday+"일  "+hour + " : " + min + " : " + sec;
-        }else{
+        }else{                      //이번달 목표 달성률 남은 기간
             int countDownDday= calendarDatas.getEndOfMonth(calendarDatas.cYear, calendarDatas.cMonth) -1 ;
             countDownDday = (countDownDday - calendarDatas.cdate + 1);
             output = ""+countDownDday+"일  "+hour + " : " + min + " : " + sec;
         }
-
-
         return output;
     }//formatTime
 

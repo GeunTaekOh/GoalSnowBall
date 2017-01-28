@@ -216,7 +216,6 @@ public class DBManager extends SQLiteOpenHelper {
                 int dbWeekOfYear = cursor.getInt(cursor.getColumnIndex("weekOfYear"));
                 if ((dbYear == findYear) && (dbWeekOfYear == findWeekOfYear) && (dbWhatDateType == findWhatDateType)) {
                     result = cursor.getString(cursor.getColumnIndex("goal"));
-
                 }
             }
         }

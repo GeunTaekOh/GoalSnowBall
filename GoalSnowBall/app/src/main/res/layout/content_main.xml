@@ -244,11 +244,11 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="20dp"
-                android:text="오늘의 목표 "
+                android:text="오늘의 목표"
                 android:textStyle="bold"
                 android:id="@+id/justTodayGoaltv"
                 android:onClick="onClickJustTextView"
@@ -288,11 +288,11 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="20dp"
-                android:text="이번주 목표 "
+                android:text="이번주 목표"
                 android:textStyle="bold"
                 android:id="@+id/justWeekGoaltv"
                 android:onClick="onClickJustTextView"
@@ -332,7 +332,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_margin="20dp"

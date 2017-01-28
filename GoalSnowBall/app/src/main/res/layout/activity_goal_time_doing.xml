@@ -94,6 +94,7 @@
                 android:text=""
                 android:textColor="#ffffff"
                 android:textStyle="bold"
+                android:layout_marginBottom="15dp"
 
                 />
 

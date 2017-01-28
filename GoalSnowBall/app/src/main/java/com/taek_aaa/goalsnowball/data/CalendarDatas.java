@@ -21,6 +21,8 @@ public class CalendarDatas {
 
     public CalendarDatas() {
         today = Calendar.getInstance();
+        today.setFirstDayOfWeek(Calendar.MONDAY);
+        //today.setMinimalDaysInFirstWeek();
         cYear = today.get(Calendar.YEAR);
         hMonth = today.get(Calendar.MONTH) + 1;
         cMonth = today.get(Calendar.MONTH);
