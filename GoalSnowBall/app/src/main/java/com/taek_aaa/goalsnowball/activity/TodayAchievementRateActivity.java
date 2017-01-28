@@ -6,6 +6,10 @@ import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.taek_aaa.goalsnowball.controller.CountDown;
+
+import java.util.Calendar;
+
 import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.isSuccessToday;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.getGoldToday;
@@ -16,7 +20,7 @@ import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.getGoldToday;
 
 public class TodayAchievementRateActivity extends AchievementRateActivity{
 
-
+    CountDown countDown;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -27,10 +31,17 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
         } else {
             Log.e("lk","오류");
             typeOfContents = "error";
-
         }
         draw();
+        drawDueTime();
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        draw();
+    }
+
 
     public void drawGoal() {
         achievementStringtv.setText("" + dbManager.getGoal(FROM_TODAY));
@@ -112,6 +123,14 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
 
     }
 
+    public void drawDueTime(){
+        Calendar today = Calendar.getInstance();
+        long nowTime = (today.get(Calendar.HOUR_OF_DAY) * 60 * 60 + today.get(Calendar.MINUTE) * 60 + today.get(Calendar.SECOND))*1000;
+        countDown = new CountDown(finishTime - nowTime,1000);
+        countDown.start();
+        today=null;
+    }
+
     public void draw(){
         try {
             drawGoal();
@@ -122,12 +141,22 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
             drawBettingGold();
             drawBettingResult();
             drawDue();
+
         }
          catch (Exception e) {
             Toast.makeText(getBaseContext(), "오늘의 목표를 먼저 입력하세요.", Toast.LENGTH_SHORT).show();
             finish();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        countDown.onStop();
+        finish();
+
+    }
+
+
 
 
 }

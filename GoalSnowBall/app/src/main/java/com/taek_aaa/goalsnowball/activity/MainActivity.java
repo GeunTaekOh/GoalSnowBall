@@ -96,18 +96,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startService(intent);
 
     }
-
     /**
      * 가려젔다가 다시 시작되었을때 값들 업데이트
      **/
-
     @Override
     protected void onStart() {
         super.onStart();
         Log.e("rmsxor94", "onStart");
         draw();
-
-
     }
 
     /**

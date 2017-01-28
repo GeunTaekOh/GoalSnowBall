@@ -8,6 +8,8 @@ import android.widget.TextView;
 import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.data.DBManager;
 
+import static com.taek_aaa.goalsnowball.R.id.dueAchievementAmount;
+
 /**
  * Created by taek_aaa on 2017. 1. 21..
  */
@@ -17,6 +19,8 @@ public class AchievementRateActivity extends Activity implements AchievementRate
     String typeOfContents;
     ProgressBar progressBar;
     DBManager dbManager;
+    public static  TextView dueTimeFinish;
+    long finishTime = 1000 * 60 * 60 * 24;   //24시간
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +37,9 @@ public class AchievementRateActivity extends Activity implements AchievementRate
         remainAmounttv = (TextView) findViewById(R.id.remainAchievementAmount);
         betAmounttv = (TextView) findViewById(R.id.betAchievementAmount);
         resultBettv = (TextView) findViewById(R.id.resultBetAchievementAmount);
-        dueTv = (TextView) findViewById(R.id.dueAchievementAmount);
+        dueTv = (TextView) findViewById(dueAchievementAmount);
         progressBar = (ProgressBar) findViewById(R.id.progressbar);
+        dueTimeFinish = (TextView)findViewById(dueAchievementAmount);
 
 
     }
