@@ -5,6 +5,10 @@ import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.taek_aaa.goalsnowball.controller.CountDown;
+
+import java.util.Calendar;
+
 import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.activity.MainActivity.isSuccessMonth;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.getGoldMonth;
@@ -100,6 +104,16 @@ public class MonthAchievementRateActivity extends AchievementRateActivity {
 
 
     }
+    public void drawDueTime(){
+        Calendar today = Calendar.getInstance();
+        long nowTime = (today.get(Calendar.HOUR_OF_DAY) * 60 * 60 + today.get(Calendar.MINUTE) * 60 + today.get(Calendar.SECOND))*1000;
+        countDown = new CountDown(finishTime - nowTime,1000);
+        countDown.start();
+        today=null;
+        fromCountDownDday=2;
+
+
+    }
 
     public void draw() {
         try {
@@ -111,6 +125,7 @@ public class MonthAchievementRateActivity extends AchievementRateActivity {
             drawBettingGold();
             drawBettingResult();
             drawDue();
+            drawDueTime();
         } catch (Exception e) {
             Toast.makeText(getBaseContext(), "오늘의 목표를 먼저 입력하세요.", Toast.LENGTH_SHORT).show();
             finish();

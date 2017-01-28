@@ -6,6 +6,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.controller.CountDown;
 import com.taek_aaa.goalsnowball.data.DBManager;
 
 import static com.taek_aaa.goalsnowball.R.id.dueAchievementAmount;
@@ -21,6 +22,8 @@ public class AchievementRateActivity extends Activity implements AchievementRate
     DBManager dbManager;
     public static  TextView dueTimeFinish;
     long finishTime = 1000 * 60 * 60 * 24;   //24시간
+    CountDown countDown;
+    public static int fromCountDownDday;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

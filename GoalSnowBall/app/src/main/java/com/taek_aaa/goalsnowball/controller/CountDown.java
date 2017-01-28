@@ -3,7 +3,10 @@ package com.taek_aaa.goalsnowball.controller;
 import android.os.CountDownTimer;
 import android.os.Handler;
 
+import com.taek_aaa.goalsnowball.data.CalendarDatas;
+
 import static com.taek_aaa.goalsnowball.activity.AchievementRateActivity.dueTimeFinish;
+import static com.taek_aaa.goalsnowball.activity.AchievementRateActivity.fromCountDownDday;
 
 /**
  * Created by taek_aaa on 2017. 1. 19..
@@ -22,7 +25,7 @@ public class CountDown extends CountDownTimer{
 
     @Override
     public void onTick(long l) {
-        dueTimeFinish.setText(formatTime(l));
+        dueTimeFinish.setText(formatTime(l,fromCountDownDday));
     }
 
     @Override
@@ -43,7 +46,7 @@ public class CountDown extends CountDownTimer{
 
     }
 
-    public String formatTime(long millis) {
+    public String formatTime(long millis, int dday) {
         String output = "00:00:00";
         long seconds = millis / 1000;
         long minutes = seconds / 60;
@@ -64,7 +67,20 @@ public class CountDown extends CountDownTimer{
         if(hours < 10)
             hour = "0" + hours;
 
-        output = hour + " : " + min + " : " + sec;
+        CalendarDatas calendarDatas = new CalendarDatas();
+
+        if(dday==0){
+            output = hour + " : " + min + " : " + sec;
+        }else if(dday==1){
+            int countDownDday = calendarDatas.getDdayWeek(calendarDatas.dayOfWeekIndex) -1;
+            output = ""+countDownDday+"일  "+hour + " : " + min + " : " + sec;
+        }else{
+            int countDownDday= calendarDatas.getEndOfMonth(calendarDatas.cYear, calendarDatas.cMonth) -1 ;
+            countDownDday = (countDownDday - calendarDatas.cdate + 1);
+            output = ""+countDownDday+"일  "+hour + " : " + min + " : " + sec;
+        }
+
+
         return output;
     }//formatTime
 

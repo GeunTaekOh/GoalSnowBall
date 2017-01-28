@@ -20,7 +20,7 @@ import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.getGoldToday;
 
 public class TodayAchievementRateActivity extends AchievementRateActivity{
 
-    CountDown countDown;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -33,15 +33,8 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
             typeOfContents = "error";
         }
         draw();
-        drawDueTime();
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        draw();
     }
-
 
     public void drawGoal() {
         achievementStringtv.setText("" + dbManager.getGoal(FROM_TODAY));
@@ -119,8 +112,6 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
         }
         ////// 여기 실패해서 미획득 일때 구현하기
 
-
-
     }
 
     public void drawDueTime(){
@@ -129,6 +120,7 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
         countDown = new CountDown(finishTime - nowTime,1000);
         countDown.start();
         today=null;
+        fromCountDownDday=0;
     }
 
     public void draw(){
@@ -141,6 +133,7 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
             drawBettingGold();
             drawBettingResult();
             drawDue();
+            drawDueTime();
 
         }
          catch (Exception e) {
@@ -155,8 +148,4 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
         finish();
 
     }
-
-
-
-
 }

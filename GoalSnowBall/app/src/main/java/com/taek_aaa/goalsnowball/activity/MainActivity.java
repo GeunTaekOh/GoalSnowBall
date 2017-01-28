@@ -372,16 +372,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      **/
     public void drawDDay() {
         CalendarDatas calendarData = new CalendarDatas();
-        int cYear = calendarData.cYear;
-        int cMonth = calendarData.cMonth;
-        int cdate = calendarData.cdate;
+
         int endDate;
         dDayWeektv = (TextView) findViewById(R.id.d_week);
         dDayMonthtv = (TextView) findViewById(R.id.d_month);
         int countWeek = calendarData.getDdayWeek(calendarData.dayOfWeekIndex);
         dDayWeektv.setText("이번주   D - " + "" + countWeek);
-        endDate = calendarData.getEndOfMonth(cYear, cMonth);
-        dDayMonthtv.setText("이번달  D - " + "" + (endDate - cdate + 1));
+        endDate = calendarData.getEndOfMonth(calendarData.cYear, calendarData.cMonth);
+        dDayMonthtv.setText("이번달  D - " + "" + (endDate - calendarData.cdate + 1));
     }
 
     /**
