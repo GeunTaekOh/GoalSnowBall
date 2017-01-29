@@ -35,6 +35,7 @@ public class NotificationService extends Service {
         super.onCreate();
         dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
         Log.e("dhrms", "onCreate");
+        isRunning = true;
     }
 
 
@@ -46,7 +47,6 @@ public class NotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e("dhrms", "onStartCommand");
-        isRunning = true;
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -54,6 +54,7 @@ public class NotificationService extends Service {
                     try {
                         doNotification();
                         Thread.sleep(NOTIFICATION_TERM);
+
                     } catch (Exception e) {
 
                     }

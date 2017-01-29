@@ -31,6 +31,7 @@ public class CountDown extends CountDownTimer{
     public void onFinish() {
         handler.removeCallbacksAndMessages(updateTimeTask);
         dueTimeFinish.setText("Finish!");
+
         handler = null;
         handler = new Handler();
         cancel();

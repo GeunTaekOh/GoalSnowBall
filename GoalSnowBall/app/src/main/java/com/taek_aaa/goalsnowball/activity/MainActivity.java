@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.Service.CurrentTimeService;
 import com.taek_aaa.goalsnowball.Service.NotificationService;
 import com.taek_aaa.goalsnowball.controller.DataController;
 import com.taek_aaa.goalsnowball.controller.PictureController;
@@ -69,6 +70,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     UserDBManager userDBManager;
     CalendarDatas today;
     DataController dataController;
+    public static boolean isTodayDueFinish, isWeekDueFinish, isMonthDueFinish;
+    public static boolean isFailToday, isFailWeek, isFailMonth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,10 +96,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawMainImage();
         draw();
 
-        Intent intent = new Intent(MainActivity.this, NotificationService.class);       //알람 서비스 실행
-        startService(intent);
+        Intent notificationIntent = new Intent(MainActivity.this, NotificationService.class);       //알람 서비스 실행
+        startService(notificationIntent);
+
+        Intent timerIntent = new Intent(MainActivity.this, CurrentTimeService.class);
+        startService(timerIntent);
+
 
     }
+
     /**
      * 가려젔다가 다시 시작되었을때 값들 업데이트
      **/
@@ -104,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onStart();
         Log.e("rmsxor94", "onStart");
         draw();
+        checkFailStatus();
     }
 
     /**
@@ -237,9 +247,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
     }
-    /** 좌측 하단 텍스트뷰를 클릭하면 드로우바에서 목표 관리하는 액티비티를 보여줌 **/
-    public void onClickJustTextView(View v){
-        switch (v.getId()){
+
+    /**
+     * 좌측 하단 텍스트뷰를 클릭하면 드로우바에서 목표 관리하는 액티비티를 보여줌
+     **/
+    public void onClickJustTextView(View v) {
+        switch (v.getId()) {
             case R.id.justTodayGoaltv:
                 startActivity(new Intent(this, TodayGoalDoingActivity.class));
                 break;
@@ -277,11 +290,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (dbmanager.getIsSuccess(FROM_TODAY) == 1) {
             todayBulb.setImageResource(R.drawable.bulbsuccess);
-        } else if (dbmanager.getIsSuccess(FROM_TODAY)==2){
+        } else if (dbmanager.getIsSuccess(FROM_TODAY) == 2) {
             todayBulb.setImageResource(R.drawable.bulbdoing);
-        }else if(dbmanager.getIsSuccess(FROM_TODAY)==3){
+        } else if (dbmanager.getIsSuccess(FROM_TODAY) == 3) {
             todayBulb.setImageResource(R.drawable.bulbfail);
-        }else{
+        } else {
             todayBulb.setImageResource(0);
         }
         todaytv.setText(dbmanager.getGoal(FROM_TODAY));
@@ -294,11 +307,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void drawWeekGoal() {
         if (dbmanager.getIsSuccess(FROM_WEEK) == 1) {
             weekBulb.setImageResource(R.drawable.bulbsuccess);
-        } else if(dbmanager.getIsSuccess(FROM_WEEK)==2){
+        } else if (dbmanager.getIsSuccess(FROM_WEEK) == 2) {
             weekBulb.setImageResource(R.drawable.bulbdoing);
-        }else if (dbmanager.getIsSuccess(FROM_WEEK)==3){
+        } else if (dbmanager.getIsSuccess(FROM_WEEK) == 3) {
             weekBulb.setImageResource(R.drawable.bulbfail);
-        }else{
+        } else {
             weekBulb.setImageResource(0);
         }
         weektv.setText(dbmanager.getGoal(FROM_WEEK));
@@ -311,11 +324,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void drawMonthGoal() {
         if (dbmanager.getIsSuccess(FROM_MONTH) == 1) {
             monthBulb.setImageResource(R.drawable.bulbsuccess);
-        } else if(dbmanager.getIsSuccess(FROM_MONTH)==2){
+        } else if (dbmanager.getIsSuccess(FROM_MONTH) == 2) {
             monthBulb.setImageResource(R.drawable.bulbdoing);
-        }else if(dbmanager.getIsSuccess(FROM_MONTH)==3){
+        } else if (dbmanager.getIsSuccess(FROM_MONTH) == 3) {
             monthBulb.setImageResource(R.drawable.bulbfail);
-        }else{
+        } else {
             monthBulb.setImageResource(0);
         }
         monthtv.setText(dbmanager.getGoal(FROM_MONTH));
@@ -546,25 +559,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case 4:     //오늘 일정 삭제
-                if(dbmanager.getIsSuccess(FROM_TODAY)==1){
-                    Toast.makeText(this,"이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                }else {
+                if (dbmanager.getIsSuccess(FROM_TODAY) == 1) {
+                    Toast.makeText(this, "이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                } else {
                     dbmanager.delete(FROM_TODAY);
                     onStart();
                 }
                 break;
             case 5:     //이번주 일정 삭제
-                if(dbmanager.getIsSuccess(FROM_WEEK)==1){
-                    Toast.makeText(this,"이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                }else {
+                if (dbmanager.getIsSuccess(FROM_WEEK) == 1) {
+                    Toast.makeText(this, "이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                } else {
                     dbmanager.delete(FROM_WEEK);
                     onStart();
                 }
                 break;
             case 6:     //이번달 일정 삭제
-                if(dbmanager.getIsSuccess(FROM_MONTH)==1){
-                    Toast.makeText(this,"이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                }else {
+                if (dbmanager.getIsSuccess(FROM_MONTH) == 1) {
+                    Toast.makeText(this, "이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                } else {
                     dbmanager.delete(FROM_MONTH);
                     onStart();
                 }
@@ -608,4 +621,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         return result;
     }
+
+    public void checkFailStatus() {
+        if (isTodayDueFinish) {
+            if (dbmanager.getGoalAmount(FROM_TODAY) > dbmanager.getCurrentAmount(FROM_TODAY)) {
+                isFailToday=true;
+            }
+            isTodayDueFinish = false;
+        }
+        if (isWeekDueFinish) {
+            if (dbmanager.getGoalAmount(FROM_WEEK) > dbmanager.getCurrentAmount(FROM_WEEK)) {
+                isFailWeek=true;
+            }
+            isWeekDueFinish = false;
+        }
+        if (isMonthDueFinish) {
+            if(dbmanager.getGoalAmount(FROM_MONTH) > dbmanager.getCurrentAmount(FROM_MONTH)){
+                isFailMonth=true;
+            }
+            isMonthDueFinish = false;
+        }
+    }
+
 }
