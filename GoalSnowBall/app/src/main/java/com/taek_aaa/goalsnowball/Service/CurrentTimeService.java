@@ -58,7 +58,7 @@ public class CurrentTimeService extends Service {
         Log.i("now",""+now.hour+"시 "+now.minute+"분 "+now.seconds+"초 ");
 
         int endDay= now.getEndOfMonth(now.cYear,now.cMonth);
-        
+
         if(now.hour==23 && now.minute==59 && now.seconds==0){
             isTodayDueFinish=true;
             if(now.dayOfWeekIndex==1){      //일요일

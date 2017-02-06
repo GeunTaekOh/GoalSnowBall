@@ -211,6 +211,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 이미지가 저장되어 있는 경우에 이미지를 그려줌
      **/
     protected void drawImage() {
+        int iter= 0;
+        Bitmap rotatedPhoto;
         if (userDBManager.getPicturePath().equals("null")) {
             isPicture = false;
             drawMainImage();
@@ -221,7 +223,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 Bitmap sizedPhoto = pictureController.setSizedImage(myBitmap);
                 photo = sizedPhoto;
-                imageView.setImageBitmap(sizedPhoto);
+                iter = userDBManager.getRotationIter();
+                rotatedPhoto = pictureController.rotate(photo, iter*90);
+                photo = rotatedPhoto;
+                imageView.setImageBitmap(rotatedPhoto);
                 isPicture = true;
             } else {
                 Toast.makeText(this, "경로에 사진이 없습니다.", Toast.LENGTH_SHORT).show();
@@ -544,6 +549,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     photo = rotatedPicture;
                     imageView.setImageBitmap(rotatedPicture);
                     Log.e("rmsxor", "" + photo);
+                    userDBManager.addRotationIter();
                 } else {
                     Toast.makeText(this, "기본 이미지는 회전을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 }

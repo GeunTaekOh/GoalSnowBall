@@ -18,8 +18,8 @@ public class UserDBManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE userInfo (_id INTEGER PRIMARY KEY AUTOINCREMENT, grade TEXT , name TEXT, gold INTEGER, picturePath TEXT);");
-        db.execSQL("INSERT INTO userInfo VALUES(NULL, '" + "브론즈" + "', '" + "Insert_Name" + "', " + 10 + ", '" + "null" + "');");
+        db.execSQL("CREATE TABLE userInfo (_id INTEGER PRIMARY KEY AUTOINCREMENT, grade TEXT , name TEXT, gold INTEGER, picturePath TEXT, rotationIter INTEGER);");
+        db.execSQL("INSERT INTO userInfo VALUES(NULL, '" + "브론즈" + "', '" + "Insert_Name" + "', " + 10 + ", '" + "null" + "', " + 0 + ");");
     }
 
     @Override
@@ -31,6 +31,23 @@ public class UserDBManager extends SQLiteOpenHelper {
     public void insert(String grade, String name, int gold, String picturePath) {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("INSERT INTO userInfo VALUES(NULL, '" + grade + "', '" + name + "', " + gold + ", '" + picturePath + "');");
+        db.close();
+    }
+    public void addRotationIter(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM userInfo", null);
+        int iter=0;
+        while (cursor.moveToNext()) {
+            iter = cursor.getInt(cursor.getColumnIndex("rotationIter"));
+            Log.e("qwe", "gold : "+String.valueOf(iter));
+
+        }
+        iter++;
+        if(iter > 3 ){
+            iter = 0;
+        }
+        String sql =  "UPDATE userInfo SET rotationIter="+iter;
+        db.execSQL(sql);
         db.close();
     }
 
@@ -100,6 +117,17 @@ public class UserDBManager extends SQLiteOpenHelper {
             Log.e("qwe", String.valueOf(Path));
         }
         return Path;
+    }
+    public int getRotationIter() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM userInfo", null);
+        int iter=0;
+        while (cursor.moveToNext()) {
+            iter = cursor.getInt(cursor.getColumnIndex("rotationIter"));
+            Log.e("qwe", "gold : "+String.valueOf(iter));
+
+        }
+        return iter;
     }
 
 }
