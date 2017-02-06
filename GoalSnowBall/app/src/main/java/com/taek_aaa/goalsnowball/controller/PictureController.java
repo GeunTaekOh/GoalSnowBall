@@ -5,7 +5,7 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.util.Log;
 
-import static com.taek_aaa.goalsnowball.activity.MainActivity.viewHeight;
+import static com.taek_aaa.goalsnowball.data.CommonData.viewHeight;
 
 /**
  * Created by taek_aaa on 2017. 1. 7..

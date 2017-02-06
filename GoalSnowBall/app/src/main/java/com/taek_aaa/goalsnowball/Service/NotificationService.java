@@ -13,10 +13,10 @@ import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.activity.MainActivity;
 import com.taek_aaa.goalsnowball.data.DBManager;
 
-import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_MONTH;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_TODAY;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_WEEK;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.NOTIFICATION_TERM;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
+import static com.taek_aaa.goalsnowball.data.CommonData.NOTIFICATION_TERM;
 
 
 public class NotificationService extends Service {
@@ -104,6 +104,7 @@ public class NotificationService extends Service {
         } else if(monthNothing){
             setNotificationBuild("이번달의 목표를 새롭게 설정하세요.", pendingIntent);
         }
+
 
 
     }

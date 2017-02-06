@@ -6,13 +6,23 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.taek_aaa.goalsnowball.data.CalendarDatas;
+import com.taek_aaa.goalsnowball.data.DBManager;
+import com.taek_aaa.goalsnowball.dialog.FailDialog;
 
-import static com.taek_aaa.goalsnowball.activity.MainActivity.isMonthDueFinish;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.isTodayDueFinish;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.isWeekDueFinish;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
+import static com.taek_aaa.goalsnowball.data.CommonData.failFlag;
+import static com.taek_aaa.goalsnowball.data.CommonData.isFailMonth;
+import static com.taek_aaa.goalsnowball.data.CommonData.isFailWeek;
+import static com.taek_aaa.goalsnowball.data.CommonData.isMonthDueFinish;
+import static com.taek_aaa.goalsnowball.data.CommonData.isTodayDueFinish;
+import static com.taek_aaa.goalsnowball.data.CommonData.isWeekDueFinish;
 
 public class CurrentTimeService extends Service {
     Boolean isRunning;
+    DBManager dbManager;
+    FailDialog failDialog;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -24,14 +34,15 @@ public class CurrentTimeService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.e("now","온크리에이트 커런트");
-        isRunning=true;
+        dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
+        Log.e("now", "온크리에이트 커런트");
+        isRunning = true;
     }
 
 
     @Override
     public void onDestroy() {
-      //  Log.e("dhrms", "destroy");
+        //  Log.e("dhrms", "destroy");
     }
 
     @Override
@@ -53,21 +64,36 @@ public class CurrentTimeService extends Service {
         return START_STICKY;
     }
 
-    public void getCurrentTime(){
+    public void getCurrentTime() {
         CalendarDatas now = new CalendarDatas();
-        Log.i("now",""+now.hour+"시 "+now.minute+"분 "+now.seconds+"초 ");
+//        Log.i("now", "" + now.hour + "시 " + now.minute + "분 " + now.seconds + "초 ");
 
-        int endDay= now.getEndOfMonth(now.cYear,now.cMonth);
+        int endDay = now.getEndOfMonth(now.cYear, now.cMonth);
 
-        if(now.hour==23 && now.minute==59 && now.seconds==0){
-            isTodayDueFinish=true;
-            if(now.dayOfWeekIndex==1){      //일요일
-                isWeekDueFinish=true;
+        if (now.hour == 23 && now.minute == 59 && now.seconds == 0) {
+            isTodayDueFinish = true;
+            if (dbManager.getGoalAmount(FROM_TODAY) > dbManager.getCurrentAmount(FROM_TODAY)) {
+                dbManager.setIsSuccess(FROM_TODAY, 3);
+                failFlag = true;
             }
-            if(now.cdate==endDay){           //마지막일
-                isMonthDueFinish=true;
+
+            if (now.dayOfWeekIndex == 1) {      //일요일
+                isWeekDueFinish = true;
+                if (dbManager.getGoalAmount(FROM_WEEK) > dbManager.getCurrentAmount(FROM_WEEK)) {
+                    isFailWeek = true;
+                    dbManager.setIsSuccess(FROM_WEEK, 3);
+                    failFlag = true;
+                }
+
+            }
+            if (now.cdate == endDay) {           //마지막일
+                isMonthDueFinish = true;
+                if (dbManager.getGoalAmount(FROM_MONTH) > dbManager.getCurrentAmount(FROM_MONTH)) {
+                    isFailMonth = true;
+                    dbManager.setIsSuccess(FROM_MONTH, 3);
+                    failFlag = true;
+                }
             }
         }
-
     }
 }

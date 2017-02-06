@@ -16,7 +16,7 @@ public class CalendarDatas {
     public int cYear, hMonth, cMonth, cdate, dayOfWeekIndex;
     public int hour, minute, seconds;
     public int weekOfYear;
-    public static String[] dayOfWeekArray = {"", "일", "월", "화", "수", "목", "금", "토"};
+
 
 
     public CalendarDatas() {

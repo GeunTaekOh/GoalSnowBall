@@ -5,8 +5,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_MONTH;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_TODAY;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
+
 
 /**
  * Created by taek_aaa on 2017. 1. 11..

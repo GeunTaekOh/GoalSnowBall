@@ -20,10 +20,10 @@ public class AchievementRateActivity extends Activity implements AchievementRate
     String typeOfContents;
     ProgressBar progressBar;
     DBManager dbManager;
-    public static  TextView dueTimeFinish;
     long finishTime = 1000 * 60 * 60 * 24;   //24시간
     CountDown countDown;
     public static int fromCountDownDday;
+    public static  TextView dueTimeFinish;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

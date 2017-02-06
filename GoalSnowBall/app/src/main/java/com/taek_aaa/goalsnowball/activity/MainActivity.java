@@ -19,7 +19,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +35,7 @@ import com.taek_aaa.goalsnowball.controller.PicturePermission;
 import com.taek_aaa.goalsnowball.data.CalendarDatas;
 import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
+import com.taek_aaa.goalsnowball.dialog.FailDialog;
 import com.taek_aaa.goalsnowball.dialog.MonthGoalDialog;
 import com.taek_aaa.goalsnowball.dialog.TodayGoalDialog;
 import com.taek_aaa.goalsnowball.dialog.UserNameDialog;
@@ -43,36 +43,38 @@ import com.taek_aaa.goalsnowball.dialog.WeekGoalDialog;
 
 import java.io.File;
 
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
+import static com.taek_aaa.goalsnowball.data.CommonData.defaultHeight;
+import static com.taek_aaa.goalsnowball.data.CommonData.defaultWidth;
+import static com.taek_aaa.goalsnowball.data.CommonData.failFlag;
+import static com.taek_aaa.goalsnowball.data.CommonData.inflater;
+import static com.taek_aaa.goalsnowball.data.CommonData.isFailMonth;
+import static com.taek_aaa.goalsnowball.data.CommonData.isFailToday;
+import static com.taek_aaa.goalsnowball.data.CommonData.isFailWeek;
+import static com.taek_aaa.goalsnowball.data.CommonData.isMonthDueFinish;
+import static com.taek_aaa.goalsnowball.data.CommonData.isTodayDueFinish;
+import static com.taek_aaa.goalsnowball.data.CommonData.isWeekDueFinish;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    public final static int FROM_TODAY = 991;
-    public final static int FROM_WEEK = 992;
-    public final static int FROM_MONTH = 993;
-    public final static int NOTIFICATION_TERM = 12 * 1000 * 60 * 60;     //12시간 마다 확인
     final int PICK_FROM_ALBUM = 101;
     Bitmap photo;
-    public static LayoutInflater inflater;
     ImageView imageView, todayBulb, weekBulb, monthBulb;
-    public static int viewHeight = 700;        //원하는 뷰의 높이(해상도)
     Boolean isPicture = false;
     TextView todaytv, weektv, monthtv, dDayWeektv, dDayMonthtv, mainGoldtv, percentToday, percentWeek, percentMonth, userNametv, userIdtv;
     TodayGoalDialog todayGoalDialog;
     WeekGoalDialog weekGoalDialog;
     MonthGoalDialog monthGoalDialog;
     UserNameDialog userNameDialog;
-    public static String[] categoryPhysicalArrays = {"개", "쪽", "권", ""};
-    public static String[] categoryTimeArrays = {"이상", "이하"};
-    public static float defaultHeight, defaultWidth;
     PictureController pictureController;
-    public static boolean isSuccessToday = false, isSuccessWeek = false, isSuccessMonth = false;
     DBManager dbmanager;
     UserDBManager userDBManager;
     CalendarDatas today;
     DataController dataController;
-    public static boolean isTodayDueFinish, isWeekDueFinish, isMonthDueFinish;
-    public static boolean isFailToday, isFailWeek, isFailMonth;
-
+    FailDialog failDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawMainImage();
         draw();
-
+        drawImage();
         Intent notificationIntent = new Intent(MainActivity.this, NotificationService.class);       //알람 서비스 실행
         startService(notificationIntent);
 
@@ -211,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 이미지가 저장되어 있는 경우에 이미지를 그려줌
      **/
     protected void drawImage() {
-        int iter= 0;
+        int iter = 0;
         Bitmap rotatedPhoto;
         if (userDBManager.getPicturePath().equals("null")) {
             isPicture = false;
@@ -224,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Bitmap sizedPhoto = pictureController.setSizedImage(myBitmap);
                 photo = sizedPhoto;
                 iter = userDBManager.getRotationIter();
-                rotatedPhoto = pictureController.rotate(photo, iter*90);
+                rotatedPhoto = pictureController.rotate(photo, iter * 90);
                 photo = rotatedPhoto;
                 imageView.setImageBitmap(rotatedPhoto);
                 isPicture = true;
@@ -611,7 +613,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawMonthPercent();
         mainGoldtv.setText("" + userDBManager.getGold() + "Gold");
         drawDDay();
-        drawImage();
+
     }
 
     private String getRealPathFromURI(Uri contentURI) {
@@ -628,24 +630,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return result;
     }
 
+
     public void checkFailStatus() {
-        if (isTodayDueFinish) {
-            if (dbmanager.getGoalAmount(FROM_TODAY) > dbmanager.getCurrentAmount(FROM_TODAY)) {
-                isFailToday=true;
-            }
-            isTodayDueFinish = false;
-        }
-        if (isWeekDueFinish) {
-            if (dbmanager.getGoalAmount(FROM_WEEK) > dbmanager.getCurrentAmount(FROM_WEEK)) {
-                isFailWeek=true;
-            }
-            isWeekDueFinish = false;
-        }
-        if (isMonthDueFinish) {
-            if(dbmanager.getGoalAmount(FROM_MONTH) > dbmanager.getCurrentAmount(FROM_MONTH)){
-                isFailMonth=true;
-            }
+        Log.e("dhrms",""+failFlag);
+        if((dbmanager.getIsSuccess(FROM_TODAY)==3 || dbmanager.getIsSuccess(FROM_WEEK)==3 || dbmanager.getIsSuccess(FROM_MONTH)==3) && failFlag){
+            failDialog = new FailDialog(this);
+            failDialog.show();
+
+            isFailToday=false;
+            isFailWeek=false;
+            isFailMonth=false;
+            isTodayDueFinish=false;
+            isWeekDueFinish=false;
             isMonthDueFinish = false;
+            Log.d("dhrms","맨아래까지들어옴");
+            failDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialogInterface) {
+                    draw();
+                }
+            });
         }
     }
 

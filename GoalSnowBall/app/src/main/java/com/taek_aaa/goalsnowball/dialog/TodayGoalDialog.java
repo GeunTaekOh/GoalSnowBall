@@ -8,9 +8,10 @@ import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
 
-import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_TODAY;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryPhysicalArrays;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryTimeArrays;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
+import static com.taek_aaa.goalsnowball.data.CommonData.categoryPhysicalArrays;
+import static com.taek_aaa.goalsnowball.data.CommonData.categoryTimeArrays;
+import static com.taek_aaa.goalsnowball.data.CommonData.failBetToday;
 
 /**
  * Created by taek_aaa on 2017. 1. 10..
@@ -71,12 +72,14 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
                         title.setText("오늘의 목표를 입력하세요.");
                         editTextContents.setHint("목표를 추가하세요.");
                         dbData.bettingGold = Integer.parseInt(bettingGoldet.getText().toString());
+
                     }
 
                     if (dbManager.hasGoal(FROM_TODAY)) {
                         Toast.makeText(getContext(), "이미 오늘의 목표를 설정하였습니다.", Toast.LENGTH_SHORT).show();
                     } else {
                         dbManager.insert(FROM_TODAY, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 2);
+                        failBetToday = dbManager.getBettingGold(FROM_TODAY);
                     }
                     dismiss();
                 } catch (Exception e) {

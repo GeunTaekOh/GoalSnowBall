@@ -13,7 +13,7 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
         } catch (Exception e) {
             e.printStackTrace();
         }

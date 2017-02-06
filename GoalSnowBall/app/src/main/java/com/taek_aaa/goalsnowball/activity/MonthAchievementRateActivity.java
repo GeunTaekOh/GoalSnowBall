@@ -9,8 +9,8 @@ import com.taek_aaa.goalsnowball.controller.CountDown;
 
 import java.util.Calendar;
 
-import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_MONTH;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.isSuccessMonth;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
+import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessMonth;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.getGoldMonth;
 
 /**

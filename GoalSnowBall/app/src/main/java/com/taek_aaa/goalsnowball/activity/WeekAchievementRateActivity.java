@@ -9,8 +9,8 @@ import com.taek_aaa.goalsnowball.controller.CountDown;
 
 import java.util.Calendar;
 
-import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_WEEK;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.isSuccessWeek;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
+import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessWeek;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.getGoldWeek;
 
 /**

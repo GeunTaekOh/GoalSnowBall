@@ -8,9 +8,9 @@ import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
 
-import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_WEEK;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryPhysicalArrays;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.categoryTimeArrays;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
+import static com.taek_aaa.goalsnowball.data.CommonData.categoryPhysicalArrays;
+import static com.taek_aaa.goalsnowball.data.CommonData.categoryTimeArrays;
 
 /**
  * Created by taek_aaa on 2017. 1. 10..

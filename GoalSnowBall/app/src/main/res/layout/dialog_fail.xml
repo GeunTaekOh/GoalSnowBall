@@ -9,30 +9,41 @@
 
     <ImageView
         android:id="@+id/fireWork"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
+        android:layout_width="250dp"
+        android:layout_height="150dp"
         android:layout_centerInParent="true"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:background="@drawable/failquestion"
+        android:layout_margin="5dp"
+        />
 
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/cong"
-
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:background="@drawable/failstring"
+        android:layout_margin="5dp"
         />
 
     <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@drawable/fail"
+        android:layout_margin="5dp"
+        />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/coin"
+        android:id="@+id/failMsg"
         android:layout_gravity="center"
         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/SuccessCoinMsg"
+        android:id="@+id/failCoinMsg"
         android:layout_gravity="center"
         />
 

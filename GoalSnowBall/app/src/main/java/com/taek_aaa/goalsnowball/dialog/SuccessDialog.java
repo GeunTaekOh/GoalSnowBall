@@ -15,9 +15,9 @@ import com.taek_aaa.goalsnowball.data.CalendarDatas;
 import com.taek_aaa.goalsnowball.data.DBManager;
 
 import static android.media.AudioManager.STREAM_MUSIC;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_MONTH;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_TODAY;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_WEEK;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
 
 /**
  * Created by taek_aaa on 2017. 1. 17..

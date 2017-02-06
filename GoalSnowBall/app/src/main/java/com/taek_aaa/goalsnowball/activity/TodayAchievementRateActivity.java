@@ -10,8 +10,8 @@ import com.taek_aaa.goalsnowball.controller.CountDown;
 
 import java.util.Calendar;
 
-import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_TODAY;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.isSuccessToday;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
+import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessToday;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.getGoldToday;
 
 /**

@@ -12,8 +12,8 @@ import android.widget.Toast;
 import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
-import static com.taek_aaa.goalsnowball.activity.MainActivity.FROM_WEEK;
-import static com.taek_aaa.goalsnowball.activity.MainActivity.isSuccessWeek;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
+import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessWeek;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.SUCCESS_FROM_WEEK;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.whereSuccess;
 
