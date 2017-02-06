@@ -49,6 +49,7 @@ public class UserDBManager extends SQLiteOpenHelper {
         String sql =  "UPDATE userInfo SET rotationIter="+iter;
         db.execSQL(sql);
         db.close();
+        cursor.close();
     }
 
     public void setGrade(String str) {
@@ -85,6 +86,8 @@ public class UserDBManager extends SQLiteOpenHelper {
             grade = cursor.getString(cursor.getColumnIndex("grade"));
             Log.e("qwe", String.valueOf(grade));
         }
+        db.close();
+        cursor.close();
         return grade;
     }
     public String getName() {
@@ -95,6 +98,8 @@ public class UserDBManager extends SQLiteOpenHelper {
             name = cursor.getString(cursor.getColumnIndex("name"));
             Log.e("qwe", String.valueOf(name));
         }
+        db.close();
+        cursor.close();
         return name;
     }
     public int getGold() {
@@ -106,6 +111,8 @@ public class UserDBManager extends SQLiteOpenHelper {
             Log.e("qwe", "gold : "+String.valueOf(gold));
 
         }
+        db.close();
+        cursor.close();
         return gold;
     }
     public String getPicturePath() {
@@ -116,6 +123,8 @@ public class UserDBManager extends SQLiteOpenHelper {
             Path = cursor.getString(cursor.getColumnIndex("picturePath"));
             Log.e("qwe", String.valueOf(Path));
         }
+        db.close();
+        cursor.close();
         return Path;
     }
     public int getRotationIter() {
@@ -127,6 +136,8 @@ public class UserDBManager extends SQLiteOpenHelper {
             Log.e("qwe", "gold : "+String.valueOf(iter));
 
         }
+        db.close();
+        cursor.close();
         return iter;
     }
 

@@ -133,6 +133,9 @@ public class DBManager extends SQLiteOpenHelper {
                 }
             }
         }
+
+        db.close();
+        cursor.close();
         return result;
     }
 
@@ -176,6 +179,8 @@ public class DBManager extends SQLiteOpenHelper {
                 }
             }
         }
+        db.close();
+        cursor.close();
         return result;
     }
 
@@ -220,6 +225,8 @@ public class DBManager extends SQLiteOpenHelper {
                 }
             }
         }
+        db.close();
+        cursor.close();
         return result;
     }
 
@@ -263,6 +270,8 @@ public class DBManager extends SQLiteOpenHelper {
                 }
             }
         }
+        db.close();
+        cursor.close();
         return result;
     }
 
@@ -307,6 +316,8 @@ public class DBManager extends SQLiteOpenHelper {
                 }
             }
         }
+        db.close();
+        cursor.close();
         return result;
     }
 
@@ -358,6 +369,8 @@ public class DBManager extends SQLiteOpenHelper {
                 }
             }
         }
+        db.close();
+        cursor.close();
         return result;
     }
 
@@ -403,6 +416,8 @@ public class DBManager extends SQLiteOpenHelper {
                 }
             }
         }
+        db.close();
+        cursor.close();
         return result;
     }
 
@@ -449,6 +464,8 @@ public class DBManager extends SQLiteOpenHelper {
 
             }
         }
+        db.close();
+        cursor.close();
         return result;
     }
     public void delete(int findWhatDateType) {
