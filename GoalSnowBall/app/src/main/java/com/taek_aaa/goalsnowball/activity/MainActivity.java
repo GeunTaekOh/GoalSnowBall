@@ -543,7 +543,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      **/
     public boolean onContextItemSelected(MenuItem item) {
         // 롱클릭했을 때 나오는 context Menu 의 항목을 선택(클릭) 했을 때 호출
+        CalendarDatas calendarDatas = new CalendarDatas();
         switch (item.getItemId()) {
+
             case 1:// 사진추가
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
@@ -573,9 +575,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case 4:     //오늘 일정 삭제
+
                 if (dbmanager.getIsSuccess(FROM_TODAY) == 1) {
                     Toast.makeText(this, "이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                } else {
+                }else if(calendarDatas.hour>18){
+                    Toast.makeText(this,"목표를 삭제할 수 없습니다.",Toast.LENGTH_SHORT).show();
+                }
+                else {
                     dbmanager.delete(FROM_TODAY);
                     onStart();
                 }
@@ -583,6 +589,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case 5:     //이번주 일정 삭제
                 if (dbmanager.getIsSuccess(FROM_WEEK) == 1) {
                     Toast.makeText(this, "이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                }else if(calendarDatas.dayOfWeekIndex>5){
+                    Toast.makeText(this,"목표를 삭제할 수 없습니다.",Toast.LENGTH_SHORT).show();
                 } else {
                     dbmanager.delete(FROM_WEEK);
                     onStart();
@@ -591,6 +599,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case 6:     //이번달 일정 삭제
                 if (dbmanager.getIsSuccess(FROM_MONTH) == 1) {
                     Toast.makeText(this, "이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                }else if(calendarDatas.cdate>15){
+                    Toast.makeText(this, "목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     dbmanager.delete(FROM_MONTH);
                     onStart();
