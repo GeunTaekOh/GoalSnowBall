@@ -1,5 +1,6 @@
 package com.taek_aaa.goalsnowball.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -7,6 +8,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -43,6 +46,7 @@ import com.taek_aaa.goalsnowball.dialog.WeekGoalDialog;
 
 import java.io.File;
 
+import static android.media.AudioManager.STREAM_MUSIC;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
@@ -75,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     CalendarDatas today;
     DataController dataController;
     FailDialog failDialog;
+    SoundPool soundPool;
+    int tune;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -632,25 +638,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     public void checkFailStatus() {
-        Log.e("dhrms",""+failFlag);
-        if((dbmanager.getIsSuccess(FROM_TODAY)==3 || dbmanager.getIsSuccess(FROM_WEEK)==3 || dbmanager.getIsSuccess(FROM_MONTH)==3) && failFlag){
+        Log.e("dhrms", "" + failFlag);
+        if ((dbmanager.getIsSuccess(FROM_TODAY) == 3 || dbmanager.getIsSuccess(FROM_WEEK) == 3 || dbmanager.getIsSuccess(FROM_MONTH) == 3) && failFlag) {
             failDialog = new FailDialog(this);
             failDialog.show();
 
-            isFailToday=false;
-            isFailWeek=false;
-            isFailMonth=false;
-            isTodayDueFinish=false;
-            isWeekDueFinish=false;
+            isFailToday = false;
+            isFailWeek = false;
+            isFailMonth = false;
+            isTodayDueFinish = false;
+            isWeekDueFinish = false;
             isMonthDueFinish = false;
-            Log.d("dhrms","맨아래까지들어옴");
+            Log.d("dhrms", "맨아래까지들어옴");
             failDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialogInterface) {
+                    AudioManager mAudioManager = (AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE);
+                    if (mAudioManager.getRingerMode() == 2) {
+                        soundPool = new SoundPool(1, STREAM_MUSIC, 0);
+                        tune = soundPool.load(getBaseContext(), R.raw.failcoin, 1);
+                        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+                            @Override
+                            public void onLoadComplete(SoundPool soundPool, int i, int i1) {
+                                soundPool.play(tune, 1, 1, 0, 0, 1);
+                            }
+                        });
+                    }
                     draw();
                 }
             });
         }
     }
+
 
 }

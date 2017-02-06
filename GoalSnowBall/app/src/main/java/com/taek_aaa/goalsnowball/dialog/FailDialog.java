@@ -2,12 +2,15 @@ package com.taek_aaa.goalsnowball.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.widget.TextView;
 
 import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
 
+import static android.media.AudioManager.STREAM_MUSIC;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
@@ -26,6 +29,8 @@ public class FailDialog extends Dialog {
     String failWhere = "";
     DBManager dbManager;
     UserDBManager userDBManager;
+    SoundPool soundPool;
+    int tune;
 
     public FailDialog(Context context) {
         super(context);
@@ -54,6 +59,19 @@ public class FailDialog extends Dialog {
         gold -= totalLooseCoin;
         userDBManager.setGold(gold);
 
+
+        AudioManager mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        if (mAudioManager.getRingerMode() == 2) {                       //소리모드일때만 소리 출력
+            soundPool = new SoundPool(1, STREAM_MUSIC, 0);
+            tune = soundPool.load(getContext(), R.raw.failhorn, 1);
+            soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+                @Override
+                public void onLoadComplete(SoundPool soundPool, int i, int i1) {
+                    soundPool.play(tune, 1, 1, 0, 0, 1);
+                }
+            });
+
+        }
 
         failFlag = false;
     }

@@ -106,9 +106,11 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
         if(dbManager.getIsSuccess(FROM_TODAY)==1){
             //획득
             resultBettv.setText("획득하였습니다.");
-        }else{
+        }else if (dbManager.getIsSuccess(FROM_TODAY)==2){
             //도전중
             resultBettv.setText("도전중입니다.");
+        }else{
+            resultBettv.setText("실패하였습니다.");
         }
         ////// 여기 실패해서 미획득 일때 구현하기
 
