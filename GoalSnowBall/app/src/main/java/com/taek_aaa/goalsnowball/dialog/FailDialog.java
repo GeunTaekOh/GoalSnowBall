@@ -26,7 +26,6 @@ import static com.taek_aaa.goalsnowball.data.CommonData.failFlag;
 public class FailDialog extends Dialog {
     TextView failMsg, failCoinMsg;
     int totalLooseCoin = 0;
-    String failWhere = "";
     DBManager dbManager;
     UserDBManager userDBManager;
     SoundPool soundPool;

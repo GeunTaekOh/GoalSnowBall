@@ -649,7 +649,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void checkFailStatus() {
         Log.e("dhrms", "" + failFlag);
-        if ((dbmanager.getIsSuccess(FROM_TODAY) == 3 || dbmanager.getIsSuccess(FROM_WEEK) == 3 || dbmanager.getIsSuccess(FROM_MONTH) == 3) && failFlag) {
+        //if ((dbmanager.getIsSuccess(FROM_TODAY) == 3 || dbmanager.getIsSuccess(FROM_WEEK) == 3 || dbmanager.getIsSuccess(FROM_MONTH) == 3) && failFlag) {
+        if(failFlag){
             failDialog = new FailDialog(this);
             failDialog.show();
 
