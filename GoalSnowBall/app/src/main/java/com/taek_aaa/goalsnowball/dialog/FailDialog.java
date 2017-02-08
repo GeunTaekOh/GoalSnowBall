@@ -60,7 +60,7 @@ public class FailDialog extends Dialog {
 
 
         AudioManager mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        if (mAudioManager.getRingerMode() == 2) {                       //소리모드일때만 소리 출력
+        if ((mAudioManager.getRingerMode() == 2 ) && (userDBManager.getIsSound()==1)){                       //소리모드일때만 소리 출력
             soundPool = new SoundPool(1, STREAM_MUSIC, 0);
             tune = soundPool.load(getContext(), R.raw.failhorn, 1);
             soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {

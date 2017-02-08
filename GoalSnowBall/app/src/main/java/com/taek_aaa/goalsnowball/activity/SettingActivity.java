@@ -22,6 +22,7 @@ public class SettingActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+
         userDBManager = new UserDBManager(getBaseContext(), "user.db", null, 1);
 
         notiSwtich=(SwitchCompat)findViewById(R.id.switchButton);

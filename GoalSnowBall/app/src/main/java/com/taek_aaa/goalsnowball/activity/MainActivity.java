@@ -669,7 +669,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 @Override
                 public void onDismiss(DialogInterface dialogInterface) {
                     AudioManager mAudioManager = (AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE);
-                    if (mAudioManager.getRingerMode() == 2) {
+                    if ((mAudioManager.getRingerMode() == 2) && userDBManager.getIsSound()==1) {
                         soundPool = new SoundPool(1, STREAM_MUSIC, 0);
                         tune = soundPool.load(getBaseContext(), R.raw.failcoin, 1);
                         soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {

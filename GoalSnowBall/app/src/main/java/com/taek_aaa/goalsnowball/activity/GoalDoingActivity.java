@@ -108,7 +108,8 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface {
 
     protected void playCoinSound() {
         AudioManager mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        if (mAudioManager.getRingerMode() == 2) {
+
+        if ((mAudioManager.getRingerMode() == 2) && (userDBManager.getIsSound()==1)){
             soundPool = new SoundPool(1, STREAM_MUSIC, 0);
             tune = soundPool.load(this, R.raw.coin, 1);
             soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {

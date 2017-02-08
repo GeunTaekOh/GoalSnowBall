@@ -13,6 +13,7 @@ import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.data.CalendarDatas;
 import com.taek_aaa.goalsnowball.data.DBManager;
+import com.taek_aaa.goalsnowball.data.UserDBManager;
 
 import static android.media.AudioManager.STREAM_MUSIC;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
@@ -38,17 +39,20 @@ public class SuccessDialog extends Dialog {
     int tune;
     CalendarDatas today;
     DBManager dbManager;
+    UserDBManager userDBManager;
 
     public SuccessDialog(Context context) {
         super(context);
         setContentView(R.layout.dialog_success);
         dbManager = new DBManager(getContext(), "goaldb.db", null, 1);
+        userDBManager = new UserDBManager(getContext(), "user.db", null, 1);
         today = new CalendarDatas();
         fire = (ImageView) findViewById(R.id.fireWork);
         coin = (ImageView) findViewById(R.id.coin);
         msg = (TextView) findViewById(R.id.SuccessCoinMsg);
         AudioManager mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        if (mAudioManager.getRingerMode() == 2) {                       //소리모드일때만 소리 출력
+
+        if ((mAudioManager.getRingerMode() == 2) && (userDBManager.getIsSound()==1)) {                       //소리모드일때만 소리 출력
             soundPool = new SoundPool(1, STREAM_MUSIC, 0);
             tune = soundPool.load(getContext(), R.raw.clap, 1);
             soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
