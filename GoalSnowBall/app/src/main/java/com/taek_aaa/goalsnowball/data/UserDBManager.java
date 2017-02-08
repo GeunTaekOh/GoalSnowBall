@@ -18,8 +18,8 @@ public class UserDBManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE userInfo (_id INTEGER PRIMARY KEY AUTOINCREMENT, grade TEXT , name TEXT, gold INTEGER, picturePath TEXT, rotationIter INTEGER);");
-        db.execSQL("INSERT INTO userInfo VALUES(NULL, '" + "브론즈" + "', '" + "Insert_Name" + "', " + 10 + ", '" + "null" + "', " + 0 + ");");
+        db.execSQL("CREATE TABLE userInfo (_id INTEGER PRIMARY KEY AUTOINCREMENT, grade TEXT , name TEXT, gold INTEGER, picturePath TEXT, rotationIter INTEGER, isNoti INTEGER, isSound INTEGER);");
+        db.execSQL("INSERT INTO userInfo VALUES(NULL, '" + "브론즈" + "', '" + "Insert_Name" + "', " + 10 + ", '" + "null" + "', " + 0 + ", " + 1 + ", "+ 1+ " );");
     }
 
     @Override
@@ -63,7 +63,6 @@ public class UserDBManager extends SQLiteOpenHelper {
         String sql =  "UPDATE userInfo SET name='"+str+"';";
         db.execSQL(sql);
         db.close();
-
     }
     public void setGold(int gd){
         SQLiteDatabase db = getReadableDatabase();
@@ -77,6 +76,22 @@ public class UserDBManager extends SQLiteOpenHelper {
         db.execSQL(sql);
         db.close();
     }
+
+    public void setIsNoti(int a){
+        SQLiteDatabase db = getReadableDatabase();
+        String sql =  "UPDATE userInfo SET isNoti="+a+";";
+        db.execSQL(sql);
+        db.close();
+    }
+
+
+    public void setIsSound(int a){
+        SQLiteDatabase db = getReadableDatabase();
+        String sql =  "UPDATE userInfo SET isSound="+a+";";
+        db.execSQL(sql);
+        db.close();
+    }
+
 
     public String getGrade() {
         SQLiteDatabase db = getReadableDatabase();
@@ -140,5 +155,29 @@ public class UserDBManager extends SQLiteOpenHelper {
         cursor.close();
         return iter;
     }
+
+    public int getIsNoti() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM userInfo", null);
+        int a=0;
+        while (cursor.moveToNext()) {
+            a = cursor.getInt(cursor.getColumnIndex("isNoti"));
+        }
+        db.close();
+        cursor.close();
+        return a;
+    }
+    public int getIsSound() {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM userInfo", null);
+        int a=0;
+        while (cursor.moveToNext()) {
+            a = cursor.getInt(cursor.getColumnIndex("isSound"));
+        }
+        db.close();
+        cursor.close();
+        return a;
+    }
+
 
 }
