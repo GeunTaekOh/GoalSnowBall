@@ -38,6 +38,7 @@
         <activity android:name=".activity.TodayAchievementRateActivity" />
         <activity android:name=".activity.WeekAchievementRateActivity" />
         <activity android:name=".activity.MonthAchievementRateActivity" />
+        <activity android:name=".activity.SettingActivity"/>
 
         <service
             android:name=".Service.NotificationService"

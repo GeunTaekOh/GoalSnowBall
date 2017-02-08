@@ -11,7 +11,7 @@
             android:icon="@drawable/goalcheck"
             android:title="이번주 목표량 관리" />
         <item
-            android:id="@+id/nav_monthGoaslSetting"
+            android:id="@+id/nav_monthGoalSetting"
             android:icon="@drawable/goalcheck"
             android:title="이번달 목표량 관리" />
 
@@ -22,7 +22,7 @@
             <item
                 android:id="@+id/nav_totalGoalSetting"
                 android:icon="@drawable/goalsetting"
-                android:title="목표 관리" />
+                android:title="목표 기록" />
         </menu>
     </item>
 
@@ -30,8 +30,8 @@
         <menu>
             <item
                 android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:icon="@drawable/sms"
+                android:title="Contact Us" />
         </menu>
 
     </item>

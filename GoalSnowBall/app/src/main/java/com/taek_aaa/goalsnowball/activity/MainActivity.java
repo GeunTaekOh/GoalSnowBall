@@ -149,12 +149,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()){
+            case R.id.action_list:
+                break;
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingActivity.class));
+                break;
         }
+
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -164,18 +167,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_todayGoalSetting) {
-            startActivity(new Intent(this, TodayGoalDoingActivity.class));
-        } else if (id == R.id.nav_weekGoalSetting) {
-            startActivity(new Intent(this, WeekGoalDoingActivity.class));
-        } else if (id == R.id.nav_monthGoaslSetting) {
-            startActivity(new Intent(this, MonthGoalDoingActivity.class));
-        } else if (id == R.id.nav_totalGoalSetting) {
-
-        } else if (id == R.id.nav_share) {
-
+        switch (item.getItemId()) {
+            case R.id.nav_todayGoalSetting:
+                startActivity(new Intent(this, TodayGoalDoingActivity.class));
+                break;
+            case R.id.nav_weekGoalSetting:
+                startActivity(new Intent(this, WeekGoalDoingActivity.class));
+                break;
+            case R.id.nav_monthGoalSetting:
+                startActivity(new Intent(this, MonthGoalDoingActivity.class));
+                break;
+            case R.id.nav_totalGoalSetting:
+                break;
+            case R.id.nav_share:
+                break;
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -578,10 +583,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 if (dbmanager.getIsSuccess(FROM_TODAY) == 1) {
                     Toast.makeText(this, "이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                }else if(calendarDatas.hour>18){
-                    Toast.makeText(this,"목표를 삭제할 수 없습니다.",Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else if (calendarDatas.hour > 18) {
+                    Toast.makeText(this, "목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                } else {
                     dbmanager.delete(FROM_TODAY);
                     onStart();
                 }
@@ -589,8 +593,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case 5:     //이번주 일정 삭제
                 if (dbmanager.getIsSuccess(FROM_WEEK) == 1) {
                     Toast.makeText(this, "이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                }else if(calendarDatas.dayOfWeekIndex>5){
-                    Toast.makeText(this,"목표를 삭제할 수 없습니다.",Toast.LENGTH_SHORT).show();
+                } else if (calendarDatas.dayOfWeekIndex > 5) {
+                    Toast.makeText(this, "목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     dbmanager.delete(FROM_WEEK);
                     onStart();
@@ -599,7 +603,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case 6:     //이번달 일정 삭제
                 if (dbmanager.getIsSuccess(FROM_MONTH) == 1) {
                     Toast.makeText(this, "이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                }else if(calendarDatas.cdate>15){
+                } else if (calendarDatas.cdate > 15) {
                     Toast.makeText(this, "목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     dbmanager.delete(FROM_MONTH);
@@ -650,7 +654,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void checkFailStatus() {
         Log.e("dhrms", "" + failFlag);
         //if ((dbmanager.getIsSuccess(FROM_TODAY) == 3 || dbmanager.getIsSuccess(FROM_WEEK) == 3 || dbmanager.getIsSuccess(FROM_MONTH) == 3) && failFlag) {
-        if(failFlag){
+        if (failFlag) {
             failDialog = new FailDialog(this);
             failDialog.show();
 
