@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 photo = sizedPhoto;
                 try {
                     iter = userDBManager.getRotationIter();
-                } catch (Exception e){
+                } catch (Exception e) {
                     iter = 0;
                 }
                 rotatedPhoto = pictureController.rotate(photo, iter * 90);
@@ -436,9 +436,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         result = dataController.makePercent(current, goal);
         if (result == 100) {
-            if(dbmanager.getType(FROM_TODAY).equals("시간적양") && dbmanager.getUnit(FROM_TODAY).equals("이하")){
+            if (dbmanager.getType(FROM_TODAY).equals("시간적양") && dbmanager.getUnit(FROM_TODAY).equals("이하")) {
                 percentToday.setTextColor(Color.RED);
-            }else {
+            } else {
                 percentToday.setTextColor(Color.GREEN);
             }
         } else {
@@ -463,9 +463,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         result = dataController.makePercent(current, goal);
         if (result == 100) {
-            if(dbmanager.getType(FROM_WEEK).equals("시간적양") && dbmanager.getUnit(FROM_WEEK).equals("이하")){
+            if (dbmanager.getType(FROM_WEEK).equals("시간적양") && dbmanager.getUnit(FROM_WEEK).equals("이하")) {
                 percentToday.setTextColor(Color.RED);
-            }else {
+            } else {
                 percentToday.setTextColor(Color.GREEN);
             }
         } else {
@@ -490,9 +490,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         result = dataController.makePercent(current, goal);
         if (result == 100) {
-            if(dbmanager.getType(FROM_TODAY).equals("시간적양") && dbmanager.getUnit(FROM_TODAY).equals("이하")){
+            if (dbmanager.getType(FROM_TODAY).equals("시간적양") && dbmanager.getUnit(FROM_TODAY).equals("이하")) {
                 percentToday.setTextColor(Color.RED);
-            }else {
+            } else {
                 percentToday.setTextColor(Color.GREEN);
             }
         } else {
@@ -570,9 +570,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
 
             case 1:// 사진추가
-                if(isPicture){
-                    Toast.makeText(this,"이미 사진이 존재합니다.",Toast.LENGTH_SHORT).show();
-                }else {
+                if (isPicture) {
+                    Toast.makeText(this, "이미 사진이 존재합니다.", Toast.LENGTH_SHORT).show();
+                } else {
                     Intent intent = new Intent(Intent.ACTION_PICK);
                     intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
                     intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -588,7 +588,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     imageView.setImageBitmap(rotatedPicture);
                     Log.e("rmsxor", "" + photo);
                     userDBManager.addRotationIter();
-                    Log.e("rmsxor",""+userDBManager.getRotationIter());
+                    Log.e("rmsxor", "" + userDBManager.getRotationIter());
                 } else {
                     Toast.makeText(this, "기본 이미지는 회전을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 }
@@ -608,6 +608,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 if (dbmanager.getIsSuccess(FROM_TODAY) == 1) {
                     Toast.makeText(this, "이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                } else if (dbmanager.getIsSuccess(FROM_TODAY) == 3) {
+                    Toast.makeText(this, "이미 실패하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 } else if (calendarDatas.hour > 18) {
                     Toast.makeText(this, "목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 } else {
@@ -618,6 +620,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case 5:     //이번주 일정 삭제
                 if (dbmanager.getIsSuccess(FROM_WEEK) == 1) {
                     Toast.makeText(this, "이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                } else if (dbmanager.getIsSuccess(FROM_WEEK) == 3) {
+                    Toast.makeText(this, "이미 실패하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 } else if (calendarDatas.dayOfWeekIndex > 5) {
                     Toast.makeText(this, "목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 } else {
@@ -628,6 +632,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case 6:     //이번달 일정 삭제
                 if (dbmanager.getIsSuccess(FROM_MONTH) == 1) {
                     Toast.makeText(this, "이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                } else if (dbmanager.getIsSuccess(FROM_MONTH) == 3) {
+                    Toast.makeText(this, "이미 실패하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 } else if (calendarDatas.cdate > 15) {
                     Toast.makeText(this, "목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 } else {
