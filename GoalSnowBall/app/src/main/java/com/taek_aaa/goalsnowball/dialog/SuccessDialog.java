@@ -45,7 +45,7 @@ public class SuccessDialog extends Dialog {
         super(context);
         setContentView(R.layout.dialog_success);
         dbManager = new DBManager(getContext(), "goaldb.db", null, 1);
-        userDBManager = new UserDBManager(getContext(), "user.db", null, 1);
+        userDBManager = new UserDBManager(getContext(), "userdb.db", null, 1);
         today = new CalendarDatas();
         fire = (ImageView) findViewById(R.id.fireWork);
         coin = (ImageView) findViewById(R.id.coin);

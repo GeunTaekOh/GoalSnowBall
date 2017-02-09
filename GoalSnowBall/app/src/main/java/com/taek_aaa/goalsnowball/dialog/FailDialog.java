@@ -34,7 +34,7 @@ public class FailDialog extends Dialog {
     public FailDialog(Context context) {
         super(context);
         setContentView(R.layout.dialog_fail);
-        userDBManager = new UserDBManager(getContext(), "user.db", null, 1);
+        userDBManager = new UserDBManager(getContext(), "userdb.db", null, 1);
         dbManager = new DBManager(getContext(), "goaldb.db", null, 1);
 
         failMsg = (TextView)findViewById(R.id.failMsg);

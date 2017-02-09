@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_list:
                 break;
             case R.id.action_settings:
@@ -239,7 +239,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 Bitmap sizedPhoto = pictureController.setSizedImage(myBitmap);
                 photo = sizedPhoto;
-                iter = userDBManager.getRotationIter();
+                try {
+                    iter = userDBManager.getRotationIter();
+                } catch (Exception e){
+                    iter = 0;
+                }
                 rotatedPhoto = pictureController.rotate(photo, iter * 90);
                 photo = rotatedPhoto;
                 imageView.setImageBitmap(rotatedPhoto);
@@ -490,7 +494,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * init
      **/
     public void init() {
-        userDBManager = new UserDBManager(getBaseContext(), "user.db", null, 1);
+        userDBManager = new UserDBManager(getBaseContext(), "userdb.db", null, 1);
         dbmanager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
         imageView = (ImageView) findViewById(R.id.mainImageView);
         today = new CalendarDatas();
@@ -555,10 +559,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
 
             case 1:// 사진추가
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-                intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, PICK_FROM_ALBUM);
+                if(isPicture){
+                    Toast.makeText(this,"이미 사진이 존재합니다.",Toast.LENGTH_SHORT).show();
+                }else {
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                    intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, PICK_FROM_ALBUM);
+                    isPicture = true;
+                }
                 break;
             case 2:// 사진 회전
                 if (isPicture) {
@@ -568,6 +577,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     imageView.setImageBitmap(rotatedPicture);
                     Log.e("rmsxor", "" + photo);
                     userDBManager.addRotationIter();
+                    Log.e("rmsxor",""+userDBManager.getRotationIter());
                 } else {
                     Toast.makeText(this, "기본 이미지는 회전을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 }
@@ -579,6 +589,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     drawMainImage();
                     isPicture = false;
                     userDBManager.setPicturePath("null");
+                    userDBManager.setRotationIter(0);
                     Toast.makeText(this, "이미지가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -672,7 +683,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 @Override
                 public void onDismiss(DialogInterface dialogInterface) {
                     AudioManager mAudioManager = (AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE);
-                    if ((mAudioManager.getRingerMode() == 2) && userDBManager.getIsSound()==1) {
+                    if ((mAudioManager.getRingerMode() == 2) && userDBManager.getIsSound() == 1) {
                         soundPool = new SoundPool(1, STREAM_MUSIC, 0);
                         tune = soundPool.load(getBaseContext(), R.raw.failcoin, 1);
                         soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {

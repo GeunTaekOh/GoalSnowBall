@@ -22,7 +22,7 @@ public class UserNameDialog extends Dialog implements View.OnClickListener {
         setContentView(R.layout.dialog_username);
 
         usernameTv = (EditText) findViewById(R.id.usernametv);
-        userDBManager = new UserDBManager(getContext(), "user.db", null, 1);
+        userDBManager = new UserDBManager(getContext(), "userdb.db", null, 1);
         findViewById(R.id.confirm_username_btn).setOnClickListener(this);
         findViewById(R.id.exit_username_btn).setOnClickListener(this);
         findViewById(R.id.usernameExitbtn).setOnClickListener(this);

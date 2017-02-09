@@ -60,7 +60,7 @@ public class GoalDialog extends Dialog implements GoalDialogInterface{
 
 
     public void init() {
-        userDBManager = new UserDBManager(getContext(), "user.db", null, 1);
+        userDBManager = new UserDBManager(getContext(), "userdb.db", null, 1);
         editTextContents = (EditText) findViewById(R.id.DialogEditText);
         title = (TextView) findViewById(R.id.title_dialog);
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);

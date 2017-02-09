@@ -36,7 +36,7 @@ public class NotificationService extends Service {
     public void onCreate() {
         super.onCreate();
         dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
-        userDBManager = new UserDBManager(getBaseContext(), "user.db", null, 1);
+        userDBManager = new UserDBManager(getBaseContext(), "userdb.db", null, 1);
         Log.e("dhrms", "onCreate");
         isRunning = true;
     }

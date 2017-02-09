@@ -18,8 +18,8 @@ public class UserDBManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE userInfo (_id INTEGER PRIMARY KEY AUTOINCREMENT, grade TEXT , name TEXT, gold INTEGER, picturePath TEXT, rotationIter INTEGER, isNoti INTEGER, isSound INTEGER);");
-        db.execSQL("INSERT INTO userInfo VALUES(NULL, '" + "브론즈" + "', '" + "Insert_Name" + "', " + 10 + ", '" + "null" + "', " + 0 + ", " + 1 + ", "+ 1+ " );");
+        db.execSQL("CREATE TABLE userInfo (_id INTEGER PRIMARY KEY AUTOINCREMENT, grade TEXT, name TEXT, gold INTEGER, picturePath TEXT, rotationIter INTEGER, hasNotification INTEGER, hasSound INTEGER);");
+        db.execSQL("INSERT INTO userInfo VALUES(NULL, '" + "브론즈" + "', '" + "Insert_Name" + "', " + 10 + ", '" + "null" + "', " + 0 + ", " + 1 + ", "+ 1 + " );");
     }
 
     @Override
@@ -28,28 +28,19 @@ public class UserDBManager extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insert(String grade, String name, int gold, String picturePath) {
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("INSERT INTO userInfo VALUES(NULL, '" + grade + "', '" + name + "', " + gold + ", '" + picturePath + "');");
-        db.close();
-    }
     public void addRotationIter(){
+        int a = getRotationIter();
+        a = a+1;
+        if(a>3){
+            a=a%4;
+        }
+        setRotationIter(a);
+    }
+    public void setRotationIter(int a) {
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM userInfo", null);
-        int iter=0;
-        while (cursor.moveToNext()) {
-            iter = cursor.getInt(cursor.getColumnIndex("rotationIter"));
-            Log.e("qwe", "gold : "+String.valueOf(iter));
-
-        }
-        iter++;
-        if(iter > 3 ){
-            iter = 0;
-        }
-        String sql =  "UPDATE userInfo SET rotationIter="+iter;
+        String sql =  "UPDATE userInfo SET rotationIter="+a+";";
         db.execSQL(sql);
         db.close();
-        cursor.close();
     }
 
     public void setGrade(String str) {
@@ -79,7 +70,7 @@ public class UserDBManager extends SQLiteOpenHelper {
 
     public void setIsNoti(int a){
         SQLiteDatabase db = getReadableDatabase();
-        String sql =  "UPDATE userInfo SET isNoti="+a+";";
+        String sql =  "UPDATE userInfo SET hasNotification="+a+";";
         db.execSQL(sql);
         db.close();
     }
@@ -87,7 +78,7 @@ public class UserDBManager extends SQLiteOpenHelper {
 
     public void setIsSound(int a){
         SQLiteDatabase db = getReadableDatabase();
-        String sql =  "UPDATE userInfo SET isSound="+a+";";
+        String sql =  "UPDATE userInfo SET hasSound="+a;
         db.execSQL(sql);
         db.close();
     }
@@ -101,8 +92,8 @@ public class UserDBManager extends SQLiteOpenHelper {
             grade = cursor.getString(cursor.getColumnIndex("grade"));
             Log.e("qwe", String.valueOf(grade));
         }
-        db.close();
         cursor.close();
+        db.close();
         return grade;
     }
     public String getName() {
@@ -113,8 +104,8 @@ public class UserDBManager extends SQLiteOpenHelper {
             name = cursor.getString(cursor.getColumnIndex("name"));
             Log.e("qwe", String.valueOf(name));
         }
-        db.close();
         cursor.close();
+        db.close();
         return name;
     }
     public int getGold() {
@@ -126,8 +117,8 @@ public class UserDBManager extends SQLiteOpenHelper {
             Log.e("qwe", "gold : "+String.valueOf(gold));
 
         }
-        db.close();
         cursor.close();
+        db.close();
         return gold;
     }
     public String getPicturePath() {
@@ -138,8 +129,8 @@ public class UserDBManager extends SQLiteOpenHelper {
             Path = cursor.getString(cursor.getColumnIndex("picturePath"));
             Log.e("qwe", String.valueOf(Path));
         }
-        db.close();
         cursor.close();
+        db.close();
         return Path;
     }
     public int getRotationIter() {
@@ -148,11 +139,9 @@ public class UserDBManager extends SQLiteOpenHelper {
         int iter=0;
         while (cursor.moveToNext()) {
             iter = cursor.getInt(cursor.getColumnIndex("rotationIter"));
-            Log.e("qwe", "gold : "+String.valueOf(iter));
-
         }
-        db.close();
         cursor.close();
+        db.close();
         return iter;
     }
 
@@ -161,10 +150,10 @@ public class UserDBManager extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM userInfo", null);
         int a=0;
         while (cursor.moveToNext()) {
-            a = cursor.getInt(cursor.getColumnIndex("isNoti"));
+            a = cursor.getInt(cursor.getColumnIndex("hasNotification"));
         }
-        db.close();
         cursor.close();
+        db.close();
         return a;
     }
     public int getIsSound() {
@@ -172,10 +161,10 @@ public class UserDBManager extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM userInfo", null);
         int a=0;
         while (cursor.moveToNext()) {
-            a = cursor.getInt(cursor.getColumnIndex("isSound"));
+            a = cursor.getInt(cursor.getColumnIndex("hasSound"));
         }
-        db.close();
         cursor.close();
+        db.close();
         return a;
     }
 

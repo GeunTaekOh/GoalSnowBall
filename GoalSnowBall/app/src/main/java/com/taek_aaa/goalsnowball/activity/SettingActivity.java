@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.widget.CompoundButton;
 
 import com.taek_aaa.goalsnowball.R;
@@ -23,11 +24,12 @@ public class SettingActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
-        userDBManager = new UserDBManager(getBaseContext(), "user.db", null, 1);
-
+        userDBManager = new UserDBManager(getBaseContext(), "userdb.db", null, 1);
         notiSwtich=(SwitchCompat)findViewById(R.id.switchButton);
         soundSwitch=(SwitchCompat)findViewById(R.id.switchButton2);
 
+        Log.e("rmsxor","&&&&&&&&&"+userDBManager.getIsNoti());
+        Log.e("rmsxor","&&&&&&&&&&"+userDBManager.getIsSound());
         if(userDBManager.getIsNoti()==1){
             notiSwtich.setChecked(true);
         }else{
