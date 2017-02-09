@@ -38,6 +38,7 @@ import com.taek_aaa.goalsnowball.controller.PicturePermission;
 import com.taek_aaa.goalsnowball.data.CalendarDatas;
 import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
+import com.taek_aaa.goalsnowball.dialog.ContactUsDialog;
 import com.taek_aaa.goalsnowball.dialog.FailDialog;
 import com.taek_aaa.goalsnowball.dialog.MonthGoalDialog;
 import com.taek_aaa.goalsnowball.dialog.TodayGoalDialog;
@@ -177,9 +178,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_monthGoalSetting:
                 startActivity(new Intent(this, MonthGoalDoingActivity.class));
                 break;
-            case R.id.nav_totalGoalSetting:
+            case R.id.nav_listGoalItem:
                 break;
-            case R.id.nav_share:
+            case R.id.nav_contacUsItem:
+                ContactUsDialog contactUsDialog = new ContactUsDialog(this);
+                contactUsDialog.show();
                 break;
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

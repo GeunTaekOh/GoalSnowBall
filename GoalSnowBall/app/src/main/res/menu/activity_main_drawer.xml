@@ -20,7 +20,7 @@
     <item android:title="TotalGoal">
         <menu>
             <item
-                android:id="@+id/nav_totalGoalSetting"
+                android:id="@+id/nav_listGoalItem"
                 android:icon="@drawable/goalsetting"
                 android:title="목표 기록" />
         </menu>
@@ -29,7 +29,7 @@
     <item android:title="Communication">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_contacUsItem"
                 android:icon="@drawable/sms"
                 android:title="Contact Us" />
         </menu>

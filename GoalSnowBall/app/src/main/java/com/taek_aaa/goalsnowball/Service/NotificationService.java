@@ -22,7 +22,7 @@ import static com.taek_aaa.goalsnowball.data.CommonData.NOTIFICATION_TERM;
 
 public class NotificationService extends Service {
     NotificationManager notificationManager;
-    public Boolean isRunning, isSound;
+    public Boolean isRunning;
     DBManager dbManager;
     UserDBManager userDBManager;
 
@@ -51,16 +51,10 @@ public class NotificationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e("dhrms", "onStartCommand");
         int intToBooleanIsNoti = userDBManager.getIsNoti();
-        int intToBooleanIsSound = userDBManager.getIsSound();
         if(intToBooleanIsNoti==1){
             isRunning=true;
         }else{
             isRunning=false;
-        }
-        if(intToBooleanIsSound==1){
-            isSound=true;
-        }else{
-            isSound=false;
         }
 
         Thread thread = new Thread(new Runnable() {
@@ -88,7 +82,7 @@ public class NotificationService extends Service {
         mBuilder.setContentTitle("GoalSnowBall의 목표를 설정하세요.");
         mBuilder.setWhen(System.currentTimeMillis());
         mBuilder.setContentText("" + str);
-        if(isSound) {
+        if(userDBManager.getIsSound()==1) {
             mBuilder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
         }else{
             mBuilder.setDefaults(Notification.DEFAULT_VIBRATE);
