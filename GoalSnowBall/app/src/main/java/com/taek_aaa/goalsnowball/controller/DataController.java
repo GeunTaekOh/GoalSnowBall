@@ -4,7 +4,7 @@ package com.taek_aaa.goalsnowball.controller;
  * Created by taek_aaa on 2017. 1. 25..
  */
 
-public class DataController {
+public class DataController{
 
 
     public double makePercent(int current, int goal) {

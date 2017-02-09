@@ -121,8 +121,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onStart() {
         super.onStart();
         Log.e("rmsxor94", "onStart");
-        draw();
         checkFailStatus();
+        draw();
     }
 
     /**
@@ -436,7 +436,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         result = dataController.makePercent(current, goal);
         if (result == 100) {
-            percentToday.setTextColor(Color.GREEN);
+            if(dbmanager.getType(FROM_TODAY).equals("시간적양") && dbmanager.getUnit(FROM_TODAY).equals("이하")){
+                percentToday.setTextColor(Color.RED);
+            }else {
+                percentToday.setTextColor(Color.GREEN);
+            }
         } else {
             percentToday.setTextColor(Color.BLACK);
         }
@@ -459,7 +463,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         result = dataController.makePercent(current, goal);
         if (result == 100) {
-            percentWeek.setTextColor(Color.GREEN);
+            if(dbmanager.getType(FROM_WEEK).equals("시간적양") && dbmanager.getUnit(FROM_WEEK).equals("이하")){
+                percentToday.setTextColor(Color.RED);
+            }else {
+                percentToday.setTextColor(Color.GREEN);
+            }
         } else {
             percentWeek.setTextColor(Color.BLACK);
 
@@ -482,8 +490,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         result = dataController.makePercent(current, goal);
         if (result == 100) {
-            result = 100;
-            percentMonth.setTextColor(Color.GREEN);
+            if(dbmanager.getType(FROM_TODAY).equals("시간적양") && dbmanager.getUnit(FROM_TODAY).equals("이하")){
+                percentToday.setTextColor(Color.RED);
+            }else {
+                percentToday.setTextColor(Color.GREEN);
+            }
         } else {
             percentMonth.setTextColor(Color.BLACK);
         }

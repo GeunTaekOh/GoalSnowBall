@@ -22,4 +22,5 @@ public class CommonData {
     public static String[] dayOfWeekArray = {"", "일", "월", "화", "수", "목", "금", "토"};
     public static int failBetToday, failBetWeek, failBetMonth;
     public static boolean failFlag;
+    public static int totalLooseCoin = 0;
 }

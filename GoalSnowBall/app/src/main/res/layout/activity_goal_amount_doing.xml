@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/successGetGoldtv"
                 android:layout_gravity="center"
-                android:text="성공시 획득 골드 : "
+                android:text="배팅액 : "
                 />
 
             <View

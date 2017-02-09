@@ -11,13 +11,8 @@ import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
 
 import static android.media.AudioManager.STREAM_MUSIC;
-import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
-import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
-import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
-import static com.taek_aaa.goalsnowball.data.CommonData.failBetMonth;
-import static com.taek_aaa.goalsnowball.data.CommonData.failBetToday;
-import static com.taek_aaa.goalsnowball.data.CommonData.failBetWeek;
 import static com.taek_aaa.goalsnowball.data.CommonData.failFlag;
+import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
 
 /**
  * Created by taek_aaa on 2017. 1. 29..
@@ -25,20 +20,23 @@ import static com.taek_aaa.goalsnowball.data.CommonData.failFlag;
 
 public class FailDialog extends Dialog {
     TextView failMsg, failCoinMsg;
-    int totalLooseCoin = 0;
+
     DBManager dbManager;
     UserDBManager userDBManager;
     SoundPool soundPool;
     int tune;
+    private Context c;
 
     public FailDialog(Context context) {
         super(context);
+        this.c = context;
         setContentView(R.layout.dialog_fail);
         userDBManager = new UserDBManager(getContext(), "userdb.db", null, 1);
         dbManager = new DBManager(getContext(), "goaldb.db", null, 1);
 
         failMsg = (TextView)findViewById(R.id.failMsg);
         failCoinMsg = (TextView)findViewById(R.id.failCoinMsg);
+/*
 
         if(dbManager.getIsSuccess(FROM_TODAY)==3){
             failBetToday=dbManager.getBettingGold(FROM_TODAY);
@@ -52,14 +50,21 @@ public class FailDialog extends Dialog {
             failBetMonth=dbManager.getBettingGold(FROM_MONTH);
             totalLooseCoin += failBetMonth;
         }
+*/
 
         failCoinMsg.setText("실패하여서 총 "+totalLooseCoin+" Gold을 잃었습니다.");
         int gold = userDBManager.getGold();
         gold -= totalLooseCoin;
         userDBManager.setGold(gold);
+        totalLooseCoin = 0;
 
+        playFailSound();
 
-        AudioManager mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        failFlag = false;
+    }
+
+    public void playFailSound(){
+        AudioManager mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
         if ((mAudioManager.getRingerMode() == 2 ) && (userDBManager.getIsSound()==1)){                       //소리모드일때만 소리 출력
             soundPool = new SoundPool(1, STREAM_MUSIC, 0);
             tune = soundPool.load(getContext(), R.raw.failhorn, 1);
@@ -72,6 +77,5 @@ public class FailDialog extends Dialog {
 
         }
 
-        failFlag = false;
     }
 }

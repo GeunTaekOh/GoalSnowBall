@@ -58,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="성공시 획득 골드 : " />
+                android:text="배팅액 : " />
 
             <View
                 android:layout_width="match_parent"

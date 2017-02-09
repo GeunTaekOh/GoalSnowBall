@@ -10,10 +10,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.dialog.FailDialog;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
+import static com.taek_aaa.goalsnowball.data.CommonData.failFlag;
+import static com.taek_aaa.goalsnowball.data.CommonData.isFailMonth;
+import static com.taek_aaa.goalsnowball.data.CommonData.isFailToday;
+import static com.taek_aaa.goalsnowball.data.CommonData.isFailWeek;
+import static com.taek_aaa.goalsnowball.data.CommonData.isMonthDueFinish;
 import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessMonth;
+import static com.taek_aaa.goalsnowball.data.CommonData.isTodayDueFinish;
+import static com.taek_aaa.goalsnowball.data.CommonData.isWeekDueFinish;
+import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.SUCCESS_FROM_MONTH;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.whereSuccess;
 
@@ -149,10 +158,7 @@ public class MonthGoalDoingActivity extends GoalDoingActivity {
             Toast.makeText(getBaseContext(), "이미 성공하여서 Gold를 수령했습니다.", Toast.LENGTH_SHORT).show();
         } else {
             dbManager.setCurrentAmount(FROM_MONTH, temp);
-            if (dbManager.getCurrentAmount(FROM_MONTH) < dbManager.getGoalAmount(FROM_MONTH)) {
-                Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
-            } else if ((dbManager.getUnit(FROM_MONTH) == "이상") && (dbManager.getCurrentAmount(FROM_MONTH) >= dbManager.getGoalAmount(FROM_MONTH))) {  //이상이고 성공하면
-
+            if (dbManager.getUnit(FROM_MONTH).equals("이상") && dbManager.getCurrentAmount(FROM_MONTH) >= dbManager.getGoalAmount(FROM_MONTH)) {      //이상이고 성공
                 whereSuccess = SUCCESS_FROM_MONTH;
                 int a = (dbManager.getBettingGold(FROM_MONTH)) + (userDBManager.getGold());
                 userDBManager.setGold(a);
@@ -166,8 +172,23 @@ public class MonthGoalDoingActivity extends GoalDoingActivity {
                         playCoinSound();
                     }
                 });
-            } else {  //이하        나중에 이상이고 실패할때도 else if로 처리하기
 
+            } else if (dbManager.getUnit(FROM_MONTH).equals("이하") && dbManager.getCurrentAmount(FROM_MONTH) >= dbManager.getGoalAmount(FROM_MONTH)) {       //이하이고 실패
+                dbManager.setIsSuccess(FROM_MONTH,3);
+                failFlag = true;
+                totalLooseCoin = dbManager.getBettingGold(FROM_MONTH);
+                failDialog = new FailDialog(this);
+                failDialog.show();
+
+                isFailToday = false;
+                isFailWeek = false;
+                isFailMonth = false;
+                isTodayDueFinish = false;
+                isWeekDueFinish = false;
+                isMonthDueFinish = false;
+
+            } else {          // 그냥 단순히 저장되는 경우
+                Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
             }
         }
         timerInit();

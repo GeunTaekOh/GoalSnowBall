@@ -12,12 +12,14 @@ import com.taek_aaa.goalsnowball.dialog.FailDialog;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
+import static com.taek_aaa.goalsnowball.data.CommonData.failBetToday;
 import static com.taek_aaa.goalsnowball.data.CommonData.failFlag;
 import static com.taek_aaa.goalsnowball.data.CommonData.isFailMonth;
 import static com.taek_aaa.goalsnowball.data.CommonData.isFailWeek;
 import static com.taek_aaa.goalsnowball.data.CommonData.isMonthDueFinish;
 import static com.taek_aaa.goalsnowball.data.CommonData.isTodayDueFinish;
 import static com.taek_aaa.goalsnowball.data.CommonData.isWeekDueFinish;
+import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
 
 public class CurrentTimeService extends Service {
     Boolean isRunning;
@@ -74,6 +76,8 @@ public class CurrentTimeService extends Service {
             isTodayDueFinish = true;
             if (dbManager.getGoalAmount(FROM_TODAY) > dbManager.getCurrentAmount(FROM_TODAY)) {
                 dbManager.setIsSuccess(FROM_TODAY, 3);
+                failBetToday=dbManager.getBettingGold(FROM_TODAY);
+                totalLooseCoin += failBetToday;
                 failFlag = true;
             }
 
@@ -82,6 +86,8 @@ public class CurrentTimeService extends Service {
                 if (dbManager.getGoalAmount(FROM_WEEK) > dbManager.getCurrentAmount(FROM_WEEK)) {
                     isFailWeek = true;
                     dbManager.setIsSuccess(FROM_WEEK, 3);
+                    failBetToday=dbManager.getBettingGold(FROM_WEEK);
+                    totalLooseCoin += failBetToday;
                     failFlag = true;
                 }
 
@@ -91,6 +97,8 @@ public class CurrentTimeService extends Service {
                 if (dbManager.getGoalAmount(FROM_MONTH) > dbManager.getCurrentAmount(FROM_MONTH)) {
                     isFailMonth = true;
                     dbManager.setIsSuccess(FROM_MONTH, 3);
+                    failBetToday=dbManager.getBettingGold(FROM_MONTH);
+                    totalLooseCoin += failBetToday;
                     failFlag = true;
                 }
             }

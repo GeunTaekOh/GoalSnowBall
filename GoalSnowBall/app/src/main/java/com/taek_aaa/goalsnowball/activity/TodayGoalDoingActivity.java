@@ -10,11 +10,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.dialog.FailDialog;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.failFlag;
+import static com.taek_aaa.goalsnowball.data.CommonData.isFailMonth;
+import static com.taek_aaa.goalsnowball.data.CommonData.isFailToday;
+import static com.taek_aaa.goalsnowball.data.CommonData.isFailWeek;
+import static com.taek_aaa.goalsnowball.data.CommonData.isMonthDueFinish;
 import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessToday;
+import static com.taek_aaa.goalsnowball.data.CommonData.isTodayDueFinish;
+import static com.taek_aaa.goalsnowball.data.CommonData.isWeekDueFinish;
+import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.SUCCESS_FROM_TODAY;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.whereSuccess;
 
@@ -148,10 +156,6 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
 
         timeOfCurrenttv.setText("수행 시간 : " + dbManager.getCurrentAmount(FROM_TODAY) + "분");
         Button startbtn = (Button) findViewById(R.id.timerStartbtn);
-        timerInit();
-        stopWatchtv.setText("00:00:00");
-        startbtn.setVisibility(View.VISIBLE);
-        startbtn.setText("Start");
 
         if (dbManager.getIsSuccess(FROM_TODAY) == 3) {
             Toast.makeText(getBaseContext(), "이미 실패하였습니다. 저장하지 못하였습니다.", Toast.LENGTH_SHORT).show();
@@ -177,7 +181,16 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
             } else if (dbManager.getUnit(FROM_TODAY).equals("이하") && dbManager.getCurrentAmount(FROM_TODAY) >= dbManager.getGoalAmount(FROM_TODAY)) {       //이하이고 실패
                 dbManager.setIsSuccess(FROM_TODAY,3);
                 failFlag = true;
+                totalLooseCoin = dbManager.getBettingGold(FROM_TODAY);
+                failDialog = new FailDialog(this);
+                failDialog.show();
 
+                isFailToday = false;
+                isFailWeek = false;
+                isFailMonth = false;
+                isTodayDueFinish = false;
+                isWeekDueFinish = false;
+                isMonthDueFinish = false;
 
             } else {          // 그냥 단순히 저장되는 경우
                 Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
@@ -215,4 +228,5 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
                 break;
         }
     }
+
 }

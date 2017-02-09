@@ -14,8 +14,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.controller.DataController;
 import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
+import com.taek_aaa.goalsnowball.dialog.FailDialog;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
 import static android.media.AudioManager.STREAM_MUSIC;
@@ -46,14 +48,15 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface {
     UserDBManager userDBManager;
     DBManager dbManager;
     Context context;
-
+    DataController dataController;
+    FailDialog failDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
         userDBManager = new UserDBManager(getBaseContext(), "userdb.db", null, 1);
         context = getBaseContext();
-
+        dataController = new DataController();
     }
 
 
@@ -120,6 +123,7 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface {
             });
         }
     }
+
 
 }
 
