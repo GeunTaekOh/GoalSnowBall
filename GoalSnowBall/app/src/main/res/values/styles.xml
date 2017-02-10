@@ -19,7 +19,9 @@
     
     <style name="SplashTheme" parent="@android:style/Theme.Light.NoTitleBar">
 
-        <item name="android:windowBackground">@drawable/spash</item>
+        <item name="android:windowBackground">@drawable/goal7</item>
+        
+
     </style>
 
 

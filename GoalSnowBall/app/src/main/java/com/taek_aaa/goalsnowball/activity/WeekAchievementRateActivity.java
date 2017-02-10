@@ -30,8 +30,6 @@ public class WeekAchievementRateActivity extends AchievementRateActivity {
             typeOfContents = "error";
         }
         draw();
-
-
     }
 
     public void drawGoal() {
@@ -111,7 +109,6 @@ public class WeekAchievementRateActivity extends AchievementRateActivity {
             resultBettv.setText("실패하였습니다.");
         }
         ////// 여기 실패해서 미획득 일때 구현하기
-
 
     }
 
