@@ -490,4 +490,39 @@ public class DBManager extends SQLiteOpenHelper {
 
         db.close();
     }
+
+    public ListViewData getPreviousListViewData(int position){
+        ListViewData listViewData = new ListViewData();
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM database", null);
+        cursor.move(position);
+
+        listViewData.lvSuccess = cursor.getInt(cursor.getColumnIndex("isSuccess"));
+        listViewData.lvDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+
+        int year = cursor.getInt(cursor.getColumnIndex("year"));
+        int month = cursor.getInt(cursor.getColumnIndex("month"))+1;
+        int date = cursor.getInt(cursor.getColumnIndex("date"));
+
+        listViewData.lvDate = ""+year+"/"+""+month+"/"+""+date;
+        listViewData.lvgoal = cursor.getString(cursor.getColumnIndex("goal"));
+        listViewData.lvBettingGold=cursor.getInt(cursor.getColumnIndex("bettingGold"));
+
+        db.close();
+        cursor.close();
+        return listViewData;
+    }
+
+    public int getLastPosition(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM database", null);
+        int a;
+        cursor.moveToLast();
+        a = cursor.getPosition();
+        db.close();
+        cursor.close();
+        return a;
+    }
+
+
 }

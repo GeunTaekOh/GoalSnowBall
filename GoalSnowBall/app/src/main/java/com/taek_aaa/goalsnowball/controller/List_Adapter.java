@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.taek_aaa.goalsnowball.R;
@@ -61,10 +61,9 @@ public class List_Adapter extends BaseAdapter {
 
 
 
-        LinearLayout layout_view =  (LinearLayout)convertView.findViewById(R.id.vi_view);
+        ScrollView layout_view =  (ScrollView) convertView.findViewById(R.id.vi_view);
         int resId=  m_activity.getResources().getIdentifier(arr.get(position).bulbImageItem, "drawable", m_activity.getPackageName());
 
-        //imView.setImageResource(resId);
         imView.setBackgroundResource(resId);
         goaltv.setText(arr.get(position).goalItem);
         datetv.setText(arr.get(position).dateItem);
