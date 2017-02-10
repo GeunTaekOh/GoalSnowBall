@@ -466,9 +466,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         result = dataController.makePercent(current, goal);
         if (result == 100) {
             if(dbmanager.getType(FROM_WEEK).equals("시간적양") && dbmanager.getUnit(FROM_WEEK).equals("이하")){
-                percentToday.setTextColor(Color.RED);
+                percentWeek.setTextColor(Color.RED);
             }else {
-                percentToday.setTextColor(Color.GREEN);
+                percentWeek.setTextColor(Color.GREEN);
             }
         } else {
             percentWeek.setTextColor(Color.BLACK);
@@ -492,10 +492,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         result = dataController.makePercent(current, goal);
         if (result == 100) {
-            if(dbmanager.getType(FROM_TODAY).equals("시간적양") && dbmanager.getUnit(FROM_TODAY).equals("이하")){
-                percentToday.setTextColor(Color.RED);
+            if((dbmanager.getType(FROM_MONTH).equals("시간적양"))&&(dbmanager.getUnit(FROM_MONTH).equals("이하"))){
+                percentMonth.setTextColor(Color.RED);
             }else {
-                percentToday.setTextColor(Color.GREEN);
+                percentMonth.setTextColor(Color.GREEN);
             }
         } else {
             percentMonth.setTextColor(Color.BLACK);

@@ -59,8 +59,6 @@ public class List_Adapter extends BaseAdapter {
         TextView goldContent = (TextView)convertView.findViewById(R.id.goldContents);
         TextView whatDatetv =(TextView)convertView.findViewById(R.id.vi_dateStatus);
 
-
-
         ScrollView layout_view =  (ScrollView) convertView.findViewById(R.id.vi_view);
         int resId=  m_activity.getResources().getIdentifier(arr.get(position).bulbImageItem, "drawable", m_activity.getPackageName());
 
