@@ -273,7 +273,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:onClick="onClick"
+                android:onClick="onClickGoal"
                 android:text="" />
 
         </LinearLayout>
@@ -317,7 +317,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:onClick="onClick"
+                android:onClick="onClickGoal"
                 android:text="" />
 
         </LinearLayout>
@@ -361,7 +361,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:onClick="onClick"
+                android:onClick="onClickGoal"
                 android:text="" />
 
         </LinearLayout>

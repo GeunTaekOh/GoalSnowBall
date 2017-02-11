@@ -29,6 +29,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.Service.CurrentTimeService;
 import com.taek_aaa.goalsnowball.Service.NotificationService;
@@ -62,7 +65,7 @@ import static com.taek_aaa.goalsnowball.data.CommonData.isMonthDueFinish;
 import static com.taek_aaa.goalsnowball.data.CommonData.isTodayDueFinish;
 import static com.taek_aaa.goalsnowball.data.CommonData.isWeekDueFinish;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
 
     final int PICK_FROM_ALBUM = 101;
@@ -81,7 +84,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DataController dataController;
     FailDialog failDialog;
     SoundPool soundPool;
+    ShowcaseView showcaseView;
     int tune;
+    private Target t1,t2,t3,t4,t5,t6,t7;
+    private int contador = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -266,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * 목표 부분들을 누르면 다이알러그 보여줌
      **/
-    public void onClick(View v) {
+    public void onClickGoal(View v) {
         switch (v.getId()) {
             case R.id.mainTodayGoalTv:
                 todayGoalDialog.show();
@@ -278,6 +284,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 monthGoalDialog.show();
                 break;
         }
+
     }
 
     /**
@@ -541,6 +548,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         todayBulb = (ImageView) findViewById(R.id.todayBulb);
         weekBulb = (ImageView) findViewById(R.id.weekBulb);
         monthBulb = (ImageView) findViewById(R.id.monthBulb);
+
+        guid();
     }
 
     /**
@@ -726,5 +735,76 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    public void guid(){
+        t1 = new ViewTarget(R.id.mainImageView,this);
+        t2 = new ViewTarget(R.id.mainGradetv,this);
+        t3 = new ViewTarget(R.id.userIdtv,this);
+        t4 = new ViewTarget(R.id.mainGoldtv,this);
+        t5 = new ViewTarget(R.id.percentToday,this);
+        t6 = new ViewTarget(R.id.mainTodayGoalTv,this);
+        t7 = new ViewTarget(R.id.justTodayGoaltv,this);
+
+        showcaseView = new ShowcaseView.Builder(this)
+                .setTarget(Target.NONE)
+                .setContentTitle("사용 설명서")
+                .setOnClickListener(this)
+                .setContentText("어플리케이션 사용 방법을 설명합니다.")
+                .hideOnTouchOutside()
+                .build();
+        showcaseView.setButtonText("안내 시작");
+
+    }
+    @Override
+    public void onClick(View v){
+        switch(contador){
+            case 0:
+                showcaseView.setShowcase(t1,true);
+                showcaseView.setContentTitle("목표 이미지");
+                showcaseView.setContentText("길게 클릭하여서 사진 추가를 할 수 있습니다.\n 목표에 부합하는 사진을 추가하는 것이 바람직합니다.");
+                showcaseView.setButtonText("다음");
+                break;
+            case 1:
+                showcaseView.setShowcase(t2,true);
+                showcaseView.setContentTitle("등급");
+                showcaseView.setContentText("얼마나 성실히 하였는지와 Gold 값으로 등급을 매깁니다.");
+                showcaseView.setButtonText("다음");
+                break;
+            case 2:
+                showcaseView.setShowcase(t3,true);
+                showcaseView.setContentTitle("이름");
+                showcaseView.setContentText("클릭하여서 사용자의 이름을 입력하세요.");
+                showcaseView.setButtonText("다음");
+                break;
+            case 3:
+                showcaseView.setShowcase(t4,true);
+                showcaseView.setContentTitle("Gold");
+                showcaseView.setContentText("목표 성공과 실패 여부에 따라 베팅한 금액만큼 얻거나 잃습니다.");
+                showcaseView.setButtonText("다음");
+                break;
+            case 4:
+                showcaseView.setShowcase(t5,true);
+                showcaseView.setContentTitle("목표 달성률");
+                showcaseView.setContentText("목표 달성률을 보여주며 클릭시 자세한 정보를 보여줍니다.");
+                showcaseView.setButtonText("다음");
+                break;
+            case 5:
+                showcaseView.setShowcase(t6,true);
+                showcaseView.setContentTitle("오늘의 목표");
+                showcaseView.setContentText("클릭하여서 오늘의 목표를 입력하세요.");
+                showcaseView.setButtonText("다음");
+                break;
+            case 6:
+                showcaseView.setShowcase(t7,true);
+                showcaseView.setContentTitle("오늘의 목표 관리");
+                showcaseView.setContentText("클릭하여서 목표의 수행량을 입력하세요.");
+                showcaseView.setButtonText("시작");
+                break;
+            case 7:
+                showcaseView.hide();
+                contador=0;
+                break;
+        }
+        contador++;
+    }
 
 }
