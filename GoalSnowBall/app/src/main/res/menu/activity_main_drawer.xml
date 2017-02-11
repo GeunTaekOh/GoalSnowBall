@@ -22,7 +22,7 @@
             <item
                 android:id="@+id/nav_listGoalItem"
                 android:icon="@drawable/goalsetting"
-                android:title="목표 기록" />
+                android:title="목표 기록 일지" />
         </menu>
     </item>
 
@@ -31,7 +31,7 @@
             <item
                 android:id="@+id/nav_contacUsItem"
                 android:icon="@drawable/sms"
-                android:title="Contact Us" />
+                android:title="개발자와 연락하기" />
         </menu>
 
     </item>
