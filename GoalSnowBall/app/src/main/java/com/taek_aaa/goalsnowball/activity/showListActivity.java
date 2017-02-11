@@ -2,6 +2,7 @@ package com.taek_aaa.goalsnowball.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,11 +43,21 @@ public class showListActivity extends Activity {
         if(amountOfShowList > dbManager.getLastPosition()){
             amountOfShowList = dbManager.getLastPosition();
         }
+
+        if(dbManager.isEmptyDB()){
+            ListView lv = (ListView) findViewById(R.id.listView1);
+            Log.e("dhrms","리스트가 비어서 빈 이미지가 출력되야함");
+            lv.setBackgroundResource(R.drawable.empty2);
+
+        }
+
+
         countListtv.setText(""+amountOfShowList+" / "+""+dbManager.getLastPosition());
         setList();
     }
 
     private void setList() {
+        Log.e("dhrms","setList에 들어옴");
         m_arr = new ArrayList<Item>();
         ListView lv = (ListView) findViewById(R.id.listView1);
 

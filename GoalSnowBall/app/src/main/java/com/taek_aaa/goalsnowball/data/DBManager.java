@@ -531,5 +531,21 @@ public class DBManager extends SQLiteOpenHelper {
         return a;
     }
 
+    public boolean isEmptyDB(){
+        SQLiteDatabase db = getWritableDatabase();
+        String count = "SELECT count(*) FROM database";
+        Cursor mcursor = db.rawQuery(count, null);
+
+        boolean result;
+        mcursor.moveToFirst();
+        int icount = mcursor.getInt(0);
+
+        if(icount>0)
+            result=false;
+        else
+            result=true;
+
+        return result;
+    }
 
 }
