@@ -54,6 +54,7 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
+
         userDBManager = new UserDBManager(getBaseContext(), "userdb.db", null, 1);
         context = getBaseContext();
         dataController = new DataController();

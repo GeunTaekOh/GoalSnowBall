@@ -1,13 +1,18 @@
 package com.taek_aaa.goalsnowball.activity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
 
 /**
@@ -18,6 +23,9 @@ public class SettingActivity extends Activity {
 
     SwitchCompat notiSwtich, soundSwitch;
     UserDBManager userDBManager;
+    CheckBox checkBox;
+    DBManager dbManager;
+    SQLiteDatabase db, db2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +33,12 @@ public class SettingActivity extends Activity {
         setContentView(R.layout.activity_setting);
 
         userDBManager = new UserDBManager(getBaseContext(), "userdb.db", null, 1);
+        dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
         notiSwtich=(SwitchCompat)findViewById(R.id.switchButton);
         soundSwitch=(SwitchCompat)findViewById(R.id.switchButton2);
+        checkBox = (CheckBox)findViewById(R.id.checkbox);
 
-        Log.e("rmsxor","&&&&&&&&&"+userDBManager.getIsNoti());
-        Log.e("rmsxor","&&&&&&&&&&"+userDBManager.getIsSound());
+
         if(userDBManager.getIsNoti()==1){
             notiSwtich.setChecked(true);
         }else{
@@ -75,6 +84,45 @@ public class SettingActivity extends Activity {
             }
         });
 
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                db = dbManager.getWritableDatabase();
+                db2 = userDBManager.getWritableDatabase();
+
+                if(b){
+                    AlertDialog.Builder adb = new AlertDialog.Builder(SettingActivity.this);
+
+                    adb
+                            .setTitle("경고")
+                            .setCancelable(false)
+                            .setMessage("정말 데이터베이스를 삭제하시겠습니까?")
+                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                  //  dbManager.onUpgrade(db, 1, 2);
+                                    dbManager.deleteAll(db);
+                                    dbManager.close();
+                                    userDBManager.onUpgrade(db2,1,2);
+                                    userDBManager.close();
+
+                                    Toast.makeText(SettingActivity.this, "DB를 삭제하였습니다", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog ad = adb.create();
+                    ad.show();
+
+                }
+            }
+        });
 
 
     }

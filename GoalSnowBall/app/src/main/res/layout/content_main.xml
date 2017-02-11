@@ -108,7 +108,9 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:text="브론즈"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:id="@+id/mainGradetv"
+                    />
 
 
                 <TextView

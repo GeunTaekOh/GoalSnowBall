@@ -32,7 +32,12 @@ public class DBManager extends SQLiteOpenHelper {
      **/
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("drop table if exists database;");
+        db.execSQL("drop table database;");
+        onCreate(db);
+    }
+
+    public void deleteAll(SQLiteDatabase db){
+        db.execSQL("drop table database;");
         onCreate(db);
     }
 
@@ -518,7 +523,7 @@ public class DBManager extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM database", null);
         int a;
         cursor.moveToLast();
-        a = cursor.getPosition();
+        a = cursor.getPosition()+1;
         db.close();
         cursor.close();
         return a;

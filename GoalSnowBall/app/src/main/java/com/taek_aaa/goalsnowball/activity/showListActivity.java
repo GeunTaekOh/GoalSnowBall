@@ -36,11 +36,13 @@ public class showListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_showlist);
         dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
+
         listtv = (TextView)findViewById(R.id.listTopTv);
         countListtv = (TextView)findViewById(R.id.countListtv);
-
+        if(amountOfShowList > dbManager.getLastPosition()){
+            amountOfShowList = dbManager.getLastPosition();
+        }
         countListtv.setText(""+amountOfShowList+" / "+""+dbManager.getLastPosition());
-
         setList();
     }
 
@@ -51,19 +53,17 @@ public class showListActivity extends Activity {
         listViewPosition = dbManager.getLastPosition();
 
         for (int i = 0; i < amountOfShowList; i++) {
-            if (listViewPosition < 0) {
-                Toast.makeText(this, "마지막 데이터입니다.", Toast.LENGTH_SHORT).show();
+            if (listViewPosition <= 0) {
+                Toast.makeText(this, ""+dbManager.getLastPosition()+"개의 데이터가 존재합니다.", Toast.LENGTH_SHORT).show();
+                break;
             } else {
-
                 Item item = convertData(dbManager.getPreviousListViewData(listViewPosition));
-                m_arr.add(item);
+                    m_arr.add(item);
             }
 
             listViewPosition--;
         }
 
-
-        //m_arr.add(new Item("@drawable/bulbsuccess", "오늘 줄넘기 400개하기", "2017/02/10", "+", 5, "Today Mission"));
 
         adapter = new List_Adapter(showListActivity.this, m_arr);
         lv.setAdapter(adapter);

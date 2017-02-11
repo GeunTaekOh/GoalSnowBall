@@ -76,15 +76,18 @@ public class List_Adapter extends BaseAdapter {
    */
         layout_view.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-              //  GoIntent(position);
+
+
+
+           //     GoIntent(position);
             }
         });
         return convertView;
     }
 
-    //설명 4:
-   /* public void GoIntent(int a){
-        Intent intent = new Intent(m_activity, "가고싶은 클래스".class);
+    /*//설명 4:
+    public void GoIntent(int a){
+        Intent intent = new Intent(m_activity, TodayAchievementRateActivity.class);
         //putExtra 로 선택한 아이템의 정보를 인텐트로 넘겨 줄 수 있다.
         intent.putExtra("TITLE", arr.get(a).goalItem);
         intent.putExtra("EXPLAIN", arr.get(a).dateItem);
