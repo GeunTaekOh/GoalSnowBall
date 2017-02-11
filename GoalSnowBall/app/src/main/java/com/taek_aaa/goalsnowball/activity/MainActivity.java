@@ -3,6 +3,7 @@ package com.taek_aaa.goalsnowball.activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     SoundPool soundPool;
     ShowcaseView showcaseView;
     int tune;
-    private Target t1,t2,t3,t4,t5,t6,t7;
+    private Target t1, t2, t3, t4, t5, t6, t7;
     private int contador = 0;
 
     @Override
@@ -249,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 photo = sizedPhoto;
                 try {
                     iter = userDBManager.getRotationIter();
-                } catch (Exception e){
+                } catch (Exception e) {
                     iter = 0;
                 }
                 rotatedPhoto = pictureController.rotate(photo, iter * 90);
@@ -263,10 +264,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void drawUserStatus(){
+    public void drawUserStatus() {
         mainGoldtv.setText("" + userDBManager.getGold() + "Gold");
         userIdtv.setText("" + userDBManager.getName());
-        mainGradetv.setText(""+userDBManager.getGrade());
+        mainGradetv.setText("" + userDBManager.getGrade());
     }
 
     /**
@@ -450,9 +451,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         result = dataController.makePercent(current, goal);
         if (result == 100) {
-            if(dbManager.getType(FROM_TODAY).equals("시간적양") && dbManager.getUnit(FROM_TODAY).equals("이하")){
+            if (dbManager.getType(FROM_TODAY).equals("시간적양") && dbManager.getUnit(FROM_TODAY).equals("이하")) {
                 percentToday.setTextColor(Color.RED);
-            }else {
+            } else {
                 percentToday.setTextColor(Color.GREEN);
             }
         } else {
@@ -477,9 +478,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         result = dataController.makePercent(current, goal);
         if (result == 100) {
-            if(dbManager.getType(FROM_WEEK).equals("시간적양") && dbManager.getUnit(FROM_WEEK).equals("이하")){
+            if (dbManager.getType(FROM_WEEK).equals("시간적양") && dbManager.getUnit(FROM_WEEK).equals("이하")) {
                 percentWeek.setTextColor(Color.RED);
-            }else {
+            } else {
                 percentWeek.setTextColor(Color.GREEN);
             }
         } else {
@@ -504,9 +505,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         result = dataController.makePercent(current, goal);
         if (result == 100) {
-            if((dbManager.getType(FROM_MONTH).equals("시간적양"))&&(dbManager.getUnit(FROM_MONTH).equals("이하"))){
+            if ((dbManager.getType(FROM_MONTH).equals("시간적양")) && (dbManager.getUnit(FROM_MONTH).equals("이하"))) {
                 percentMonth.setTextColor(Color.RED);
-            }else {
+            } else {
                 percentMonth.setTextColor(Color.GREEN);
             }
         } else {
@@ -523,10 +524,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
         imageView = (ImageView) findViewById(R.id.mainImageView);
         today = new CalendarDatas();
-        mainGradetv = (TextView)findViewById(R.id.mainGradetv);
+        mainGradetv = (TextView) findViewById(R.id.mainGradetv);
         mainGoldtv = (TextView) findViewById(R.id.mainGoldtv);
         mainGoldtv.setText("" + userDBManager.getGold() + "Gold");
-        mainGradetv.setText(""+userDBManager.getGrade());
+        mainGradetv.setText("" + userDBManager.getGrade());
         percentToday = (TextView) findViewById(R.id.percentToday);
         percentWeek = (TextView) findViewById(R.id.percentWeek);
         percentMonth = (TextView) findViewById(R.id.percentMonth);
@@ -549,7 +550,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         weekBulb = (ImageView) findViewById(R.id.weekBulb);
         monthBulb = (ImageView) findViewById(R.id.monthBulb);
 
-        guid();
+        getPreferences();
+        if (getPreferences() == 1) {
+            guid();
+        }
     }
 
     /**
@@ -588,9 +592,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
 
             case 1:// 사진추가
-                if(isPicture){
-                    Toast.makeText(this,"이미 사진이 존재합니다.",Toast.LENGTH_SHORT).show();
-                }else {
+                if (isPicture) {
+                    Toast.makeText(this, "이미 사진이 존재합니다.", Toast.LENGTH_SHORT).show();
+                } else {
                     Intent intent = new Intent(Intent.ACTION_PICK);
                     intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
                     intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -606,7 +610,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     imageView.setImageBitmap(rotatedPicture);
                     Log.e("rmsxor", "" + photo);
                     userDBManager.addRotationIter();
-                    Log.e("rmsxor",""+userDBManager.getRotationIter());
+                    Log.e("rmsxor", "" + userDBManager.getRotationIter());
                 } else {
                     Toast.makeText(this, "기본 이미지는 회전을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 }
@@ -626,9 +630,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 if (dbManager.getIsSuccess(FROM_TODAY) == 1) {
                     Toast.makeText(this, "이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                }else if(dbManager.getIsSuccess(FROM_TODAY)==3){
+                } else if (dbManager.getIsSuccess(FROM_TODAY) == 3) {
                     Toast.makeText(this, "이미 실패하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                }else if (calendarDatas.hour > 18) {
+                } else if (calendarDatas.hour > 18) {
                     Toast.makeText(this, "목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 } else {
                     dbManager.delete(FROM_TODAY);
@@ -638,7 +642,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case 5:     //이번주 일정 삭제
                 if (dbManager.getIsSuccess(FROM_WEEK) == 1) {
                     Toast.makeText(this, "이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                }else if(dbManager.getIsSuccess(FROM_WEEK)==3){
+                } else if (dbManager.getIsSuccess(FROM_WEEK) == 3) {
                     Toast.makeText(this, "이미 실패하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 } else if (calendarDatas.dayOfWeekIndex > 5) {
                     Toast.makeText(this, "목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
@@ -650,7 +654,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case 6:     //이번달 일정 삭제
                 if (dbManager.getIsSuccess(FROM_MONTH) == 1) {
                     Toast.makeText(this, "이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                }else if(dbManager.getIsSuccess(FROM_MONTH)==3){
+                } else if (dbManager.getIsSuccess(FROM_MONTH) == 3) {
                     Toast.makeText(this, "이미 실패하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 } else if (calendarDatas.cdate > 15) {
                     Toast.makeText(this, "목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
@@ -735,14 +739,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void guid(){
-        t1 = new ViewTarget(R.id.mainImageView,this);
-        t2 = new ViewTarget(R.id.mainGradetv,this);
-        t3 = new ViewTarget(R.id.userIdtv,this);
-        t4 = new ViewTarget(R.id.mainGoldtv,this);
-        t5 = new ViewTarget(R.id.percentToday,this);
-        t6 = new ViewTarget(R.id.mainTodayGoalTv,this);
-        t7 = new ViewTarget(R.id.justTodayGoaltv,this);
+    public void guid() {
+        t1 = new ViewTarget(R.id.mainImageView, this);
+        t2 = new ViewTarget(R.id.mainGradetv, this);
+        t3 = new ViewTarget(R.id.userIdtv, this);
+        t4 = new ViewTarget(R.id.mainGoldtv, this);
+        t5 = new ViewTarget(R.id.percentToday, this);
+        t6 = new ViewTarget(R.id.mainTodayGoalTv, this);
+        t7 = new ViewTarget(R.id.justTodayGoaltv, this);
 
         showcaseView = new ShowcaseView.Builder(this)
                 .setTarget(Target.NONE)
@@ -753,58 +757,77 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .build();
         showcaseView.setButtonText("안내 시작");
 
+
+        setZeroPreferences();
     }
+
     @Override
-    public void onClick(View v){
-        switch(contador){
+    public void onClick(View v) {
+        switch (contador) {
             case 0:
-                showcaseView.setShowcase(t1,true);
+                showcaseView.setShowcase(t1, true);
                 showcaseView.setContentTitle("목표 이미지");
                 showcaseView.setContentText("길게 클릭하여서 사진 추가를 할 수 있습니다.\n 목표에 부합하는 사진을 추가하는 것이 바람직합니다.");
                 showcaseView.setButtonText("다음");
                 break;
             case 1:
-                showcaseView.setShowcase(t2,true);
+                showcaseView.setShowcase(t2, true);
                 showcaseView.setContentTitle("등급");
                 showcaseView.setContentText("얼마나 성실히 하였는지와 Gold 값으로 등급을 매깁니다.");
                 showcaseView.setButtonText("다음");
                 break;
             case 2:
-                showcaseView.setShowcase(t3,true);
+                showcaseView.setShowcase(t3, true);
                 showcaseView.setContentTitle("이름");
                 showcaseView.setContentText("클릭하여서 사용자의 이름을 입력하세요.");
                 showcaseView.setButtonText("다음");
                 break;
             case 3:
-                showcaseView.setShowcase(t4,true);
+                showcaseView.setShowcase(t4, true);
                 showcaseView.setContentTitle("Gold");
                 showcaseView.setContentText("목표 성공과 실패 여부에 따라 베팅한 금액만큼 얻거나 잃습니다.");
                 showcaseView.setButtonText("다음");
                 break;
             case 4:
-                showcaseView.setShowcase(t5,true);
+                showcaseView.setShowcase(t5, true);
                 showcaseView.setContentTitle("목표 달성률");
                 showcaseView.setContentText("목표 달성률을 보여주며 클릭시 자세한 정보를 보여줍니다.");
                 showcaseView.setButtonText("다음");
                 break;
             case 5:
-                showcaseView.setShowcase(t6,true);
+                showcaseView.setShowcase(t6, true);
                 showcaseView.setContentTitle("오늘의 목표");
                 showcaseView.setContentText("클릭하여서 오늘의 목표를 입력하세요.");
                 showcaseView.setButtonText("다음");
                 break;
             case 6:
-                showcaseView.setShowcase(t7,true);
+                showcaseView.setShowcase(t7, true);
                 showcaseView.setContentTitle("오늘의 목표 관리");
                 showcaseView.setContentText("클릭하여서 목표의 수행량을 입력하세요.");
                 showcaseView.setButtonText("시작");
                 break;
             case 7:
                 showcaseView.hide();
-                contador=0;
+                contador = 0;
                 break;
         }
         contador++;
     }
+
+    private int getPreferences() {
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        int a;
+        a = pref.getInt("isFirst", 1);
+        return a;
+    }
+
+    // 값 저장하기
+    private void setZeroPreferences() {
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("isFirst", 0);
+        editor.commit();
+    }
+
 
 }
