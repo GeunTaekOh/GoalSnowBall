@@ -638,7 +638,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 } else if (dbManager.getIsSuccess(FROM_TODAY) == 3) {
                     Toast.makeText(this, "이미 실패하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 } else if (calendarDatas.hour > 18) {
-                    Toast.makeText(this, "목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "오늘의 목표를 끝까지 도전 해보는건 어떨까요?", Toast.LENGTH_SHORT).show();
                 } else {
                     dbManager.delete(FROM_TODAY);
                     onStart();
@@ -650,7 +650,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 } else if (dbManager.getIsSuccess(FROM_WEEK) == 3) {
                     Toast.makeText(this, "이미 실패하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 } else if (calendarDatas.dayOfWeekIndex > 5) {
-                    Toast.makeText(this, "목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "이번주의 목표를 조금만 더 도전해볼까요?", Toast.LENGTH_SHORT).show();
                 } else {
                     dbManager.delete(FROM_WEEK);
                     onStart();
@@ -662,7 +662,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 } else if (dbManager.getIsSuccess(FROM_MONTH) == 3) {
                     Toast.makeText(this, "이미 실패하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 } else if (calendarDatas.cdate > 15) {
-                    Toast.makeText(this, "목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "이번달의 목표를 끝까지 응원합니다!", Toast.LENGTH_SHORT).show();
                 } else {
                     dbManager.delete(FROM_MONTH);
                     onStart();

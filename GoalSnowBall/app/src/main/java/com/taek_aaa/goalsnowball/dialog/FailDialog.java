@@ -52,9 +52,9 @@ public class FailDialog extends Dialog {
         }
 */
 
-        failCoinMsg.setText("실패하여서 총 "+totalLooseCoin+" Gold을 잃었습니다.");
+        failCoinMsg.setText("실패하여서 총 "+totalLooseCoin/2+" Gold을 잃었습니다.");
         int gold = userDBManager.getGold();
-        gold -= totalLooseCoin;
+        gold -= totalLooseCoin/2;
         userDBManager.setGold(gold);
         totalLooseCoin = 0;
 

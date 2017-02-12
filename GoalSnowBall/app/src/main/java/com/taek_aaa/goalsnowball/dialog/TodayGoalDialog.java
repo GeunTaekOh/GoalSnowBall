@@ -27,7 +27,11 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
         findViewById(R.id.DialogExitButton).setOnClickListener(this);
         findViewById(R.id.DialogX).setOnClickListener(this);
 
-        bettinggold = userDBManager.getGold() / 4;
+        if (userDBManager.getGold() < 0) {
+            bettinggold = 2;
+        } else {
+            bettinggold = userDBManager.getGold() / 4;
+        }
         bettingGoldet.setText("" + bettinggold);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -50,10 +54,13 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
             case R.id.DialogConfirmButton:
                 Log.e("test", "" + checkedId);
                 try {
-
-                    bettinggold = userDBManager.getGold() / 4;
                     if (Integer.parseInt(bettingGoldet.getText().toString()) > bettinggold) {
-                        Toast.makeText(getContext(), "배팅액은 총 보유 골드의 25%를 넘을 수 없습니다.", Toast.LENGTH_SHORT).show();
+                        if (userDBManager.getGold() <= 0) {
+                            Toast.makeText(getContext(), "보유 Gold가 0보다 작아서 2Gold 이하만 베팅 가능합니다.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "배팅액은 총 보유 골드의 25%를 넘을 수 없습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                        break;
                     } else {
                         int textAmount = Integer.parseInt(editTextAmonut.getText().toString());
                         textContents = editTextContents.getText().toString();

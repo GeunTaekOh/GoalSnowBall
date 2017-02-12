@@ -26,14 +26,21 @@ public class WeekGoalDialog extends GoalDialog implements View.OnClickListener {
         findViewById(R.id.DialogExitButton).setOnClickListener(this);
         findViewById(R.id.DialogX).setOnClickListener(this);
 
-        bettinggold = userDBManager.getGold() / 2;
+
+        if (userDBManager.getGold() < 0) {
+            bettinggold = 2;
+        } else {
+            bettinggold = userDBManager.getGold() / 2;
+        }
+
         bettingGoldet.setText("" + bettinggold);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                tempUnit=i;
+                tempUnit = i;
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -48,9 +55,13 @@ public class WeekGoalDialog extends GoalDialog implements View.OnClickListener {
             case R.id.DialogConfirmButton:
                 Log.e("test", "" + checkedId);
                 try {
-                    bettinggold = userDBManager.getGold() / 2;
                     if (Integer.parseInt(bettingGoldet.getText().toString()) > bettinggold) {
-                        Toast.makeText(getContext(), "배팅액은 총 보유 골드의 절반을 넘을 수 없습니다.", Toast.LENGTH_SHORT).show();
+                        if (userDBManager.getGold() <= 0) {
+                            Toast.makeText(getContext(), "보유 Gold가 0보다 작아서 2Gold 이하만 베팅 가능합니다.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "배팅액은 총 보유 골드의 절반을 넘을 수 없습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                        break;
                     } else {
                         int textAmount = Integer.parseInt(editTextAmonut.getText().toString());
                         textContents = editTextContents.getText().toString();
@@ -70,9 +81,9 @@ public class WeekGoalDialog extends GoalDialog implements View.OnClickListener {
                         editTextContents.setHint("목표를 입력하세요.");
                         dbData.bettingGold = Integer.parseInt(bettingGoldet.getText().toString());
                     }
-                    if(dbManager.hasGoal(FROM_WEEK)){
+                    if (dbManager.hasGoal(FROM_WEEK)) {
                         Toast.makeText(getContext(), "이미 이번주의 목표를 입력하였습니다.", Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else {
                         dbManager.insert(FROM_WEEK, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 2);
                     }
                     dismiss();
