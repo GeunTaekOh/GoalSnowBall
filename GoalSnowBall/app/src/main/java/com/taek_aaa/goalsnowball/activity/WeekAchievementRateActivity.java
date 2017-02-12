@@ -120,9 +120,7 @@ public class WeekAchievementRateActivity extends AchievementRateActivity {
         today=null;
         fromCountDownDday=1;
 
-
     }
-
 
     public void draw() {
         try {
