@@ -10,4 +10,6 @@ public class ListViewData {
     public String lvgoal;
     public String lvDate;
     public int lvBettingGold;
+    public int lvCurrentAmount;
+    public int lvGoalAmount;
 }

@@ -2,6 +2,8 @@ package com.taek_aaa.goalsnowball.controller;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +60,9 @@ public class List_Adapter extends BaseAdapter {
         TextView goldStatus = (TextView)convertView.findViewById(R.id.goldGetOrLoose);
         TextView goldContent = (TextView)convertView.findViewById(R.id.goldContents);
         TextView whatDatetv =(TextView)convertView.findViewById(R.id.vi_dateStatus);
+        TextView currentAmount = (TextView)convertView.findViewById(R.id.listCurrentdata);
+        TextView goalAmount = (TextView)convertView.findViewById(R.id.listGoaldata);
+        TextView just_gold = (TextView)convertView.findViewById(R.id.list_gold);
 
         ScrollView layout_view =  (ScrollView) convertView.findViewById(R.id.vi_view);
         int resId=  m_activity.getResources().getIdentifier(arr.get(position).bulbImageItem, "drawable", m_activity.getPackageName());
@@ -68,6 +73,19 @@ public class List_Adapter extends BaseAdapter {
         goldStatus.setText(arr.get(position).goldItem);
         goldContent.setText(""+arr.get(position).goldContent);
         whatDatetv.setText(arr.get(position).whatdatetype);
+        currentAmount.setText(""+arr.get(position).currentAmountItem);
+        goalAmount.setText(""+arr.get(position).goalAmounItem);
+
+        if((arr.get(position).bulbImageItem).equals("@drawable/bulbfail")){
+            goldStatus.setTextColor(Color.RED);
+            goldContent.setTextColor(Color.RED);
+            just_gold.setTextColor(Color.RED);
+        }else if((arr.get(position).bulbImageItem).equals("@drawable/bulbsuccess")){
+            goldStatus.setTextColor(Color.GREEN);
+            goldContent.setTextColor(Color.GREEN);
+            just_gold.setTextColor(Color.GREEN);
+
+        }
 
 
   /*  버튼에 이벤트처리를 하기위해선 setTag를 이용해서 사용할 수 있습니다.

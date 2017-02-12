@@ -46,12 +46,9 @@ public class showListActivity extends Activity {
 
         if(dbManager.isEmptyDB()){
             ListView lv = (ListView) findViewById(R.id.listView1);
-            Log.e("dhrms","리스트가 비어서 빈 이미지가 출력되야함");
             lv.setBackgroundResource(R.drawable.empty2);
 
         }
-
-
         countListtv.setText(""+amountOfShowList+" / "+""+dbManager.getLastPosition());
         setList();
     }
@@ -94,6 +91,7 @@ public class showListActivity extends Activity {
         if (listViewData.lvSuccess == 1) {  //성공
             bulbImage += "@drawable/bulbsuccess";
             looseOrGet = "+ ";
+
         } else if (listViewData.lvSuccess == 2) {  //하는중
             bulbImage += "@drawable/bulbdoing";
             looseOrGet = "미획득 ";
@@ -110,7 +108,7 @@ public class showListActivity extends Activity {
             whatDateType = "Month Mission";
         }
 
-        Item result = new Item(bulbImage, listViewData.lvgoal, listViewData.lvDate, looseOrGet, listViewData.lvBettingGold, whatDateType);
+        Item result = new Item(bulbImage, listViewData.lvgoal, listViewData.lvDate, looseOrGet, listViewData.lvBettingGold, whatDateType, listViewData.lvCurrentAmount,listViewData.lvGoalAmount);
         return result;
     }
 

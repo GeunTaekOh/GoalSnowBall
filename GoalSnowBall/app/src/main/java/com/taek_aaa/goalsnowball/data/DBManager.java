@@ -507,6 +507,7 @@ public class DBManager extends SQLiteOpenHelper {
         listViewData.lvSuccess = cursor.getInt(cursor.getColumnIndex("isSuccess"));
         listViewData.lvDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
 
+
         int year = cursor.getInt(cursor.getColumnIndex("year"));
         int month = cursor.getInt(cursor.getColumnIndex("month"))+1;
         int date = cursor.getInt(cursor.getColumnIndex("date"));
@@ -514,6 +515,8 @@ public class DBManager extends SQLiteOpenHelper {
         listViewData.lvDate = ""+year+"/"+""+month+"/"+""+date;
         listViewData.lvgoal = cursor.getString(cursor.getColumnIndex("goal"));
         listViewData.lvBettingGold=cursor.getInt(cursor.getColumnIndex("bettingGold"));
+        listViewData.lvCurrentAmount = cursor.getInt(cursor.getColumnIndex("currentAmount"));
+        listViewData.lvGoalAmount = cursor.getInt(cursor.getColumnIndex("amount"));
 
         db.close();
         cursor.close();
