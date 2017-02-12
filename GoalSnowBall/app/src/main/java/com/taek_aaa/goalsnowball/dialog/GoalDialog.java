@@ -2,6 +2,7 @@ package com.taek_aaa.goalsnowball.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -19,7 +20,7 @@ import com.taek_aaa.goalsnowball.data.UserDBManager;
  */
 
 public class GoalDialog extends Dialog implements GoalDialogInterface{
-    EditText editTextContents, editTextAmonut, bettingGoldet;
+    EditText editTextContents, editTextAmonut, bettingGoldet,hiddenEt;
     String textContents;
     TextView title;
     RadioGroup radioGroup;
@@ -47,11 +48,13 @@ public class GoalDialog extends Dialog implements GoalDialogInterface{
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinner.setAdapter(adapter);
                     editTextAmonut.setHint("양");
+                    hiddenEt.setVisibility(View.GONE);
                 } else {
                     ArrayAdapter adapter2 = ArrayAdapter.createFromResource(getContext(), R.array.upAndDown, android.R.layout.simple_spinner_item);
                     adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinner.setAdapter(adapter2);
-                    editTextAmonut.setHint("분");
+                    editTextAmonut.setHint("시");
+                    hiddenEt.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -72,6 +75,7 @@ public class GoalDialog extends Dialog implements GoalDialogInterface{
         default_radioButton_id = physicalRadio.getId();
         checkedId = radioGroup.getCheckedRadioButtonId();
         bettingGoldet = (EditText) findViewById(R.id.bettingGold);
+        hiddenEt = (EditText)findViewById(R.id.hiddenEt);
 
     }
 }

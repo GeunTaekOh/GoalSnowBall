@@ -8,7 +8,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="wrap_content"
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
@@ -64,6 +64,7 @@
             android:layout_gravity="center"
             android:layout_margin="5dp">
 
+
             <EditText
                 android:id="@+id/setting_amount"
                 android:layout_width="50dp"
@@ -72,6 +73,17 @@
                 android:hint="양"
                 android:singleLine="true"
                 android:inputType="number"
+                />
+
+            <EditText
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:hint="분"
+                android:singleLine="true"
+                android:inputType="number"
+                android:id="@+id/hiddenEt"
+                android:visibility="gone"
                 />
 
             <Spinner
@@ -164,11 +176,11 @@
         android:id="@+id/DialogX"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_alignParentTop="true"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:layout_toEndOf="@+id/linearLayout2"
-        android:layout_toRightOf="@+id/linearLayout2"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="@+id/linearLayout2"
         android:background="@drawable/close"
         android:padding="10dp" />
 

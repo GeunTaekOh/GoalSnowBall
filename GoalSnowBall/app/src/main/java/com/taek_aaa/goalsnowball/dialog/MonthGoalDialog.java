@@ -25,7 +25,7 @@ public class MonthGoalDialog extends GoalDialog implements View.OnClickListener 
         findViewById(R.id.DialogExitButton).setOnClickListener(this);
         findViewById(R.id.DialogX).setOnClickListener(this);
 
-        if (userDBManager.getGold() < 0) {
+        if (userDBManager.getGold() <= 0) {
             bettinggold = 2;
         } else {
             bettinggold = userDBManager.getGold();
@@ -61,7 +61,10 @@ public class MonthGoalDialog extends GoalDialog implements View.OnClickListener 
                         }
                         break;
                     } else {
-                        int textAmount = Integer.parseInt(editTextAmonut.getText().toString());
+                        int gethourValue = Integer.parseInt(editTextAmonut.getText().toString());
+                        int getMiniuteValue = Integer.parseInt(hiddenEt.getText().toString());
+                        int textAmount = gethourValue * 60 + getMiniuteValue;
+
                         textContents = editTextContents.getText().toString();
                         if (textContents.equals("")) {
                             throw new Exception();
