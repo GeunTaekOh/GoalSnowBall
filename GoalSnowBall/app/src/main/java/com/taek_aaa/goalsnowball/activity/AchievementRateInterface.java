@@ -5,14 +5,20 @@ package com.taek_aaa.goalsnowball.activity;
  */
 
 public interface AchievementRateInterface {
-    void drawGoal();
-    void drawGoalAmount(String str) throws Exception;
-    void drawCurrentAmount(String type) throws Exception;
-    void drawPercentProgressBar(String type) throws Exception;
-    void drawRemainAmount(String type) throws Exception;
-    void drawBettingGold();
-    void drawBettingResult();
-    void drawDueTime();
-    void draw();
+     void drawGoal(int from);
+
+    void drawGoalAmount(int from, String str) throws Exception;
+
+    void drawCurrentAmount(int from, String type) throws Exception;
+
+    void drawPercentProgressBar(int from, String type) throws Exception;
+
+    void drawRemainAmount(int from, String type) throws Exception;
+
+    void drawBettingGold(int from);
+
+    void drawBettingResult(int from);
+
+    void drawDueTime(int from);
 }
 
