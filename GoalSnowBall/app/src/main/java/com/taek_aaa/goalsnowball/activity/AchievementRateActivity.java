@@ -15,7 +15,7 @@ import static com.taek_aaa.goalsnowball.R.id.dueAchievementAmount;
  * Created by taek_aaa on 2017. 1. 21..
  */
 
-public class AchievementRateActivity extends Activity implements AchievementRateInterface {
+public class AchievementRateActivity extends Activity  {
     TextView achievementStringtv, achievementAmounttv, currentAmounttv, percentAmounttv, remainAmounttv, betAmounttv, resultBettv, dueTv;
     String typeOfContents;
     ProgressBar progressBar;
@@ -44,16 +44,6 @@ public class AchievementRateActivity extends Activity implements AchievementRate
         progressBar = (ProgressBar) findViewById(R.id.progressbar);
         dueTimeFinish = (TextView)findViewById(dueAchievementAmount);
 
-
-    }
-
-
-    public void drawDue() throws Exception {
-        /*CalendarDatas calendarDatas = new CalendarDatas();
-        //남은시간 타이머.
-        //00:00:00 이 밤 12시
-        CountDown countDown = new CountDown(600000,100);
-        countDown.start();*/
     }
 
 
@@ -66,4 +56,6 @@ public class AchievementRateActivity extends Activity implements AchievementRate
         }
         return result;
     }
+
+
 }

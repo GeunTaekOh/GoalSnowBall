@@ -13,7 +13,6 @@ import static com.taek_aaa.goalsnowball.data.CommonData.viewHeight;
 
 public class PictureController {      //최신폰은 버그로 exif 제대로 안되는듯 다이알로그만들어서 직접 수동 회전 하고 선택 할 수있게 하기
     public int exifOrientationToDegrees(int exifOrientation) {
-
         Log.e("test", "" + exifOrientation);
         switch (exifOrientation) {
             case ExifInterface.ORIENTATION_ROTATE_90:
@@ -58,8 +57,4 @@ public class PictureController {      //최신폰은 버그로 exif 제대로 �
         Bitmap sizedBitmap = Bitmap.createScaledBitmap(bitmap, (int) width, (int) height, true);
         return sizedBitmap;
     }
-
-
-
-
 }

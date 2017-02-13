@@ -236,6 +236,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /** 사진 임시 경로가 아닌 실제 경로를 가져옴 **/
+    public String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
+    }
+
+
     /**
      * 이미지가 저장되어 있는 경우에 이미지를 그려줌
      **/
@@ -705,21 +721,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    /** 사진 임시 경로가 아닌 실제 경로를 가져옴 **/
-    private String getRealPathFromURI(Uri contentURI) {
-        String result;
-        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) {
-            result = contentURI.getPath();
-        } else {
-            cursor.moveToFirst();
-            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            result = cursor.getString(idx);
-            cursor.close();
-        }
-        return result;
-    }
-
     /** 목표 달성 실패 여부 확인 후 실패시 실패 화면 띄움**/
     public void checkFailStatus() {
         Log.e("dhrms", "" + failFlag);
@@ -835,7 +836,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /** preference 값 가져오기 **/
-    private int getPreferences() {
+    public int getPreferences() {
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         int a;
         a = pref.getInt("isFirst", 1);
@@ -843,7 +844,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /** preference 인자값 으로 저장하기 **/
-    private void setPreferences(int a) {
+    public void setPreferences(int a) {
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putInt("isFirst", a);

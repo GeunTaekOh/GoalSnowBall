@@ -2,7 +2,6 @@ package com.taek_aaa.goalsnowball.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -18,7 +17,7 @@ import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.getGoldToday;
  * Created by taek_aaa on 2017. 1. 19..
  */
 
-public class TodayAchievementRateActivity extends AchievementRateActivity{
+public class TodayAchievementRateActivity extends AchievementRateActivity implements AchievementRateInterface{
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +28,9 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
         } else if (dbManager.getType(FROM_TODAY).equals("시간적양")) {
             typeOfContents = "시간적양";
         } else {
-            Log.e("lk","오류");
             typeOfContents = "error";
         }
         draw();
-
     }
 
     public void drawGoal() {
@@ -134,7 +131,6 @@ public class TodayAchievementRateActivity extends AchievementRateActivity{
             drawRemainAmount(typeOfContents);
             drawBettingGold();
             drawBettingResult();
-            drawDue();
             drawDueTime();
 
         }
