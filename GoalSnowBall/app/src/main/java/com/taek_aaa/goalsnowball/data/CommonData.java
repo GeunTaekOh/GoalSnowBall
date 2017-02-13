@@ -23,5 +23,18 @@ public class CommonData {
     public static int failBetToday, failBetWeek, failBetMonth;
     public static boolean failFlag;
     public static int totalLooseCoin = 0;
-    public static int listViewPosition=0;
+    public static int listViewPosition = 0;
+
+
+    public static void setFailStatus(boolean bool) {
+        isFailToday = bool;
+        isFailWeek = bool;
+        isFailMonth = bool;
+        isTodayDueFinish = bool;
+        isWeekDueFinish = bool;
+        isMonthDueFinish = bool;
+    }
+
+
+
 }

@@ -22,6 +22,7 @@ import static com.taek_aaa.goalsnowball.data.CommonData.isMonthDueFinish;
 import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessToday;
 import static com.taek_aaa.goalsnowball.data.CommonData.isTodayDueFinish;
 import static com.taek_aaa.goalsnowball.data.CommonData.isWeekDueFinish;
+import static com.taek_aaa.goalsnowball.data.CommonData.setFailStatus;
 import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.SUCCESS_FROM_TODAY;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.whereSuccess;
@@ -185,12 +186,8 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
                 failDialog = new FailDialog(this);
                 failDialog.show();
 
-                isFailToday = false;
-                isFailWeek = false;
-                isFailMonth = false;
-                isTodayDueFinish = false;
-                isWeekDueFinish = false;
-                isMonthDueFinish = false;
+                setFailStatus(false);
+
 
             } else {          // 그냥 단순히 저장되는 경우
                 Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();

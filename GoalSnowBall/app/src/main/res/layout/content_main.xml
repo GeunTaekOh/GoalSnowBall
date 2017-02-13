@@ -81,6 +81,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:scaleType="fitXY"
+                android:onClick="onClickMainImage"
 
                 />
             <!--android:background="@drawable/circle_border"-->

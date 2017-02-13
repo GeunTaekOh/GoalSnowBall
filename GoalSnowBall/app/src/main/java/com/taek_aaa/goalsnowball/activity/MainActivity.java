@@ -59,12 +59,7 @@ import static com.taek_aaa.goalsnowball.data.CommonData.defaultHeight;
 import static com.taek_aaa.goalsnowball.data.CommonData.defaultWidth;
 import static com.taek_aaa.goalsnowball.data.CommonData.failFlag;
 import static com.taek_aaa.goalsnowball.data.CommonData.inflater;
-import static com.taek_aaa.goalsnowball.data.CommonData.isFailMonth;
-import static com.taek_aaa.goalsnowball.data.CommonData.isFailToday;
-import static com.taek_aaa.goalsnowball.data.CommonData.isFailWeek;
-import static com.taek_aaa.goalsnowball.data.CommonData.isMonthDueFinish;
-import static com.taek_aaa.goalsnowball.data.CommonData.isTodayDueFinish;
-import static com.taek_aaa.goalsnowball.data.CommonData.isWeekDueFinish;
+import static com.taek_aaa.goalsnowball.data.CommonData.setFailStatus;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -104,20 +99,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
         init();
 
         pictureController = new PictureController();
+        //사진 권한
         PicturePermission.verifyStoragePermissions(this);
 
+        // draw 함수에 drawMainImage, drawImage 포함 시키지 않는 것이 더 효율적
         drawMainImage();
         draw();
         drawImage();
+
         Intent notificationIntent = new Intent(MainActivity.this, NotificationService.class);       //알람 서비스 실행
         startService(notificationIntent);
 
+        //현재 시간 받는 서비스 실행
         Intent timerIntent = new Intent(MainActivity.this, CurrentTimeService.class);
         startService(timerIntent);
-
 
     }
 
@@ -127,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStart() {
         super.onStart();
-        Log.e("rmsxor94", "onStart");
         checkFailStatus();
         draw();
         contador=0;
@@ -163,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(this, showListActivity.class));
                 break;
             case R.id.action_howtouse:
-                setOnePreferences();
+                setPreferences(1);
                 guid();
                 break;
             case R.id.action_settings:
@@ -232,7 +230,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(getBaseContext(), "사진을 입력하였습니다.", Toast.LENGTH_SHORT).show();
             isPicture = true;
         } catch (Exception e) {
-            e.getStackTrace();
+            Log.e("error",""+e.getStackTrace());
+            Toast.makeText(getBaseContext(),"사진을 입력하는 과정에서 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
             isPicture = false;
         }
     }
@@ -290,7 +289,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 monthGoalDialog.show();
                 break;
         }
-
     }
 
     /**
@@ -430,7 +428,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      **/
     public void drawDDay() {
         CalendarDatas calendarData = new CalendarDatas();
-
         int endDate;
         dDayWeektv = (TextView) findViewById(R.id.d_week);
         dDayMonthtv = (TextView) findViewById(R.id.d_month);
@@ -527,6 +524,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void init() {
         userDBManager = new UserDBManager(getBaseContext(), "userdb.db", null, 1);
         dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
+
         imageView = (ImageView) findViewById(R.id.mainImageView);
         today = new CalendarDatas();
         mainGradetv = (TextView) findViewById(R.id.mainGradetv);
@@ -555,26 +553,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         weekBulb = (ImageView) findViewById(R.id.weekBulb);
         monthBulb = (ImageView) findViewById(R.id.monthBulb);
 
+        //처음 어플 실행시켰을때 가이드 화면을 띄워줌
         getPreferences();
         if (getPreferences() == 1) {
             guid();
         }
     }
 
+    /** 메인이미지를 롱클릭이 아닌 그냥 클릭으로도 롱클릭 효과를 줌**/
+    public void onClickMainImage(View v){
+        registerForContextMenu(imageView);
+        openContextMenu(imageView);
+
+    }
+
     /**
      * 컨텍스트 메뉴
      **/
+
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        // 컨텍스트 메뉴가 최초로 한번만 호출되는 콜백 메서드
 
         menu.setHeaderTitle("어떤 작업을 수행하시겠습니까?");
-
         if (v == imageView) {
             String[] currencyUnit = {"사진 추가/수정", "사진 회전", "사진 삭제"};
             for (int i = 1; i <= 3; i++) {
                 menu.add(0, i, 100, currencyUnit[i - 1]);
             }
+            if(!isPicture){
+                menu.getItem(1).setVisible(false);
+                menu.getItem(2).setVisible(false);
+            }else{
+                menu.getItem(0).setVisible(false);
+            }
+
         } else if (v == todaytv) {
             String[] currencyUnit = {"오늘의 일정 삭제"};
             menu.add(0, 4, 100, currencyUnit[0]);
@@ -595,10 +607,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // 롱클릭했을 때 나오는 context Menu 의 항목을 선택(클릭) 했을 때 호출
         CalendarDatas calendarDatas = new CalendarDatas();
         switch (item.getItemId()) {
-
             case 1:// 사진추가
                 if (isPicture) {
-                    Toast.makeText(this, "이미 사진이 존재합니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "사진을 삭제하시고 추가하세요.", Toast.LENGTH_SHORT).show();
                 } else {
                     Intent intent = new Intent(Intent.ACTION_PICK);
                     intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
@@ -613,11 +624,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     rotatedPicture = pictureController.rotate(photo, 90);
                     photo = rotatedPicture;
                     imageView.setImageBitmap(rotatedPicture);
-                    Log.e("rmsxor", "" + photo);
                     userDBManager.addRotationIter();
-                    Log.e("rmsxor", "" + userDBManager.getRotationIter());
                 } else {
-                    Toast.makeText(this, "기본 이미지는 회전을 할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "아직 이미지를 설정하지 않았습니다.", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case 3://사진삭제
@@ -668,11 +677,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     onStart();
                 }
                 break;
-
         }
         return super.onContextItemSelected(item);
     }
 
+    /** 이름을 입력받는 창 출력 **/
     public void onClickName(View v) {
         userNameDialog.show();
         userNameDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -683,6 +692,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+    /** 화면에 무언가를 그려주는 메서드들**/
     public void draw() {
         drawGoal();
         drawGoalWhenDismiss();
@@ -695,6 +705,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    /** 사진 임시 경로가 아닌 실제 경로를 가져옴 **/
     private String getRealPathFromURI(Uri contentURI) {
         String result;
         Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
@@ -709,25 +720,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return result;
     }
 
-
+    /** 목표 달성 실패 여부 확인 후 실패시 실패 화면 띄움**/
     public void checkFailStatus() {
         Log.e("dhrms", "" + failFlag);
-        //if ((dbmanager.getIsSuccess(FROM_TODAY) == 3 || dbmanager.getIsSuccess(FROM_WEEK) == 3 || dbmanager.getIsSuccess(FROM_MONTH) == 3) && failFlag) {
         if (failFlag) {
             failDialog = new FailDialog(this);
             failDialog.show();
 
-            isFailToday = false;
-            isFailWeek = false;
-            isFailMonth = false;
-            isTodayDueFinish = false;
-            isWeekDueFinish = false;
-            isMonthDueFinish = false;
-            Log.d("dhrms", "맨아래까지들어옴");
+            setFailStatus(false);
+
             failDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialogInterface) {
                     AudioManager mAudioManager = (AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE);
+
                     if ((mAudioManager.getRingerMode() == 2) && userDBManager.getIsSound() == 1) {
                         soundPool = new SoundPool(1, STREAM_MUSIC, 0);
                         tune = soundPool.load(getBaseContext(), R.raw.failcoin, 1);
@@ -744,6 +750,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /** 안내해주는 showcaseView 오픈소스 출력 **/
     public void guid() {
         t1 = new ViewTarget(R.id.mainImageView, this);
         t2 = new ViewTarget(R.id.d_week, this);
@@ -758,21 +765,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setTarget(Target.NONE)
                 .setContentTitle("사용 설명서")
                 .setOnClickListener(this)
-                .setContentText("어플리케이션 사용 방법을 설명합니다.")
+                .setContentText("GoalSnowBall 사용 방법을 설명합니다.")
                 .build();
         showcaseView.setButtonText("안내 시작");
 
 
-        setZeroPreferences();
+        setPreferences(0);
     }
-
+    /** showcaseView 안내 내용 **/
     @Override
     public void onClick(View v) {
         switch (contador) {
             case 0:
                 showcaseView.setShowcase(t1, true);
                 showcaseView.setContentTitle("목표 이미지");
-                showcaseView.setContentText("길게 클릭하여서 사진 추가를 할 수 있습니다.\n 목표에 부합하는 사진을 추가하는 것이 바람직합니다.");
+                showcaseView.setContentText("클릭하여서 사진 추가를 할 수 있습니다.\n목표에 부합하는 사진을 추가하는 것이 바람직합니다.");
                 showcaseView.setButtonText("다음");
                 break;
 
@@ -810,7 +817,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case 6:
                 showcaseView.setShowcase(t7, true);
                 showcaseView.setContentTitle("오늘의 목표");
-                showcaseView.setContentText("클릭하여서 오늘의 목표를 입력하세요.");
+                showcaseView.setContentText("클릭하여서 오늘의 목표를 입력하세요.\n길게 클릭하여서 목표를 삭제할 수 있습니다.");
                 showcaseView.setButtonText("다음");
                 break;
             case 7:
@@ -827,6 +834,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         contador++;
     }
 
+    /** preference 값 가져오기 **/
     private int getPreferences() {
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         int a;
@@ -834,18 +842,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return a;
     }
 
-    // 값 저장하기
-    private void setZeroPreferences() {
+    /** preference 인자값 으로 저장하기 **/
+    private void setPreferences(int a) {
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putInt("isFirst", 0);
-        editor.commit();
-    }
-
-    private void setOnePreferences(){
-        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putInt("isFirst", 1);
+        editor.putInt("isFirst", a);
         editor.commit();
     }
 
