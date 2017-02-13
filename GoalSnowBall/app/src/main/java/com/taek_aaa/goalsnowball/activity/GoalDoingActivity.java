@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.controller.DataController;
@@ -28,38 +29,29 @@ import static android.media.AudioManager.STREAM_MUSIC;
 
 public class GoalDoingActivity extends Activity implements GoalDoingInterface {
 
-    TextView doingGoaltv, unittv;
+    TextView doingGoaltv, unittv,blackboardtv, timeOfCurrenttv, successGetGoldtv;
     EditText amountOfEdit;
     Boolean isAmount;
     Boolean isStartButtonClicked = true;      //start, pause구분
-    long starttime = 0L;
-    long timeInMilliseconds = 0L;
-    long timeSwapBuff = 0L;
-    long updatedtime = 0L;
-    int secs = 0;
-    int mins = 0;
-    int hours = 0;
+    long starttime = 0L, timeInMilliseconds = 0L, timeSwapBuff = 0L, updatedtime = 0L;
+    int secs = 0, mins = 0, hours = 0, tune, tmpAmount;
     Handler handler = new Handler();
-    TextView blackboardtv, timeOfCurrenttv, successGetGoldtv;
     SoundPool soundPool;
-    int tune;
-    int tmpAmount;
     SuccessDialog successDialog;
     UserDBManager userDBManager;
     DBManager dbManager;
     Context context;
     DataController dataController;
     FailDialog failDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
-
         userDBManager = new UserDBManager(getBaseContext(), "userdb.db", null, 1);
         context = getBaseContext();
         dataController = new DataController();
     }
-
 
     /**
      * 타이머 start 버튼 클릭 시
@@ -98,6 +90,7 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface {
         }
     };
 
+    /** 시간 초기화 **/
     public void timerInit() {
         starttime = 0L;
         timeInMilliseconds = 0L;
@@ -110,7 +103,8 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface {
         isStartButtonClicked = true;
     }
 
-    protected void playCoinSound() {
+    /** 성공시 동전 획득 소리 출력 **/
+    public void playCoinSound() {
         AudioManager mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
         if ((mAudioManager.getRingerMode() == 2) && (userDBManager.getIsSound()==1)){
@@ -125,6 +119,16 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface {
         }
     }
 
+
+    /**
+     * 수행량 저장하는 함수
+     **/
+    public void saveCurrentAmountToEditText(int from) {
+        dbManager.setCurrentAmount(from, Integer.parseInt(amountOfEdit.getText().toString()));
+        if (dbManager.getCurrentAmount(from) < dbManager.getGoalAmount(from)) {
+            Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 }
 

@@ -38,7 +38,6 @@ public class SettingActivity extends Activity {
         soundSwitch=(SwitchCompat)findViewById(R.id.switchButton2);
         checkBox = (CheckBox)findViewById(R.id.checkbox);
 
-
         if(userDBManager.getIsNoti()==1){
             notiSwtich.setChecked(true);
         }else{
@@ -123,7 +122,5 @@ public class SettingActivity extends Activity {
                 }
             }
         });
-
-
     }
 }

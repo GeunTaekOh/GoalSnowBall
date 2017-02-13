@@ -34,25 +34,20 @@ public class WeekGoalDoingActivity extends GoalDoingActivity {
             /** 물리적 양 일때 **/
             if (dbManager.getType(FROM_WEEK).equals("물리적양")) {
                 setContentView(R.layout.activity_goal_amount_doing);
-                Log.e("aa", "물리적양");
                 isAmount = true;
                 amountOfEdit = (EditText) findViewById(R.id.doing_current_amount);
                 unittv = (TextView) findViewById(R.id.doing_unit);
             } else if (dbManager.getType(FROM_WEEK).equals("시간적양")) {
                 /** 시간적 양 일때 **/
                 setContentView(R.layout.activity_goal_time_doing);
-                Log.e("aa", "시간적양");
-
                 TextView stopWatchtv = (TextView) findViewById(R.id.timerTextView);
                 stopWatchtv.setText("00:00:00");
                 timeOfCurrenttv = (TextView) findViewById(R.id.doing_current_time);
                 isAmount = false;
             }
-
             blackboardtv = (TextView) findViewById(R.id.doing_goalAmount);
             successGetGoldtv = (TextView) findViewById(R.id.successGetGoldtv);
             doingGoaltv = (TextView) findViewById(R.id.doing_goal);
-
 
             if (isAmount) {
                 amountOfEdit.post(new Runnable() {
@@ -68,29 +63,18 @@ public class WeekGoalDoingActivity extends GoalDoingActivity {
                 timeOfCurrenttv.setText("수행 시간 : " + dbManager.getCurrentAmount(FROM_WEEK) + "분");
                 blackboardtv.setText("목표량 : " + dbManager.getGoalAmount(FROM_WEEK) + "분 " + dbManager.getUnit(FROM_WEEK));
             }
-
             successGetGoldtv.setText("성공시 획득 골드 : " + "" + dbManager.getBettingGold(FROM_WEEK) + "Gold");
             doingGoaltv.setText("이번주의 목표 : " + dbManager.getGoal(FROM_WEEK));
         } catch (Exception e) {
             /** 목표 설정 안되어 있을 때 **/
             Toast.makeText(this, "이번주의 목표를 먼저 설정하세요.", Toast.LENGTH_SHORT).show();
             Log.e("error", "" + e.getStackTrace());
-            e.getStackTrace();
             finish();
         }
         tmpAmount = dbManager.getCurrentAmount(FROM_WEEK);
 
     }
 
-    /**
-     * 수행량 저장하는 함수
-     **/
-    public void saveCurrentAmountToEditText() {
-        dbManager.setCurrentAmount(FROM_WEEK, Integer.parseInt(amountOfEdit.getText().toString()));
-        if (dbManager.getCurrentAmount(FROM_WEEK) < dbManager.getGoalAmount(FROM_WEEK)) {
-            Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
-        }
-    }
 
 
     /**
@@ -102,7 +86,7 @@ public class WeekGoalDoingActivity extends GoalDoingActivity {
         } else if (dbManager.getIsSuccess(FROM_WEEK) == 1) {
             Toast.makeText(this, "이미 성공하여서 Gold를 수령했습니다.", Toast.LENGTH_SHORT).show();
         } else {
-            saveCurrentAmountToEditText();
+            saveCurrentAmountToEditText(FROM_WEEK);
             if (dbManager.getGoalAmount(FROM_WEEK) <= dbManager.getCurrentAmount(FROM_WEEK)) {
                 whereSuccess = SUCCESS_FROM_WEEK;
                 int a = (dbManager.getBettingGold(FROM_WEEK)) + (userDBManager.getGold());

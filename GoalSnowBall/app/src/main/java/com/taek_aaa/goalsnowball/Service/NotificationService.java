@@ -28,7 +28,6 @@ public class NotificationService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.e("dhrms", "bindtest");
         return null;
     }
 
@@ -37,7 +36,6 @@ public class NotificationService extends Service {
         super.onCreate();
         dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
         userDBManager = new UserDBManager(getBaseContext(), "userdb.db", null, 1);
-        Log.e("dhrms", "onCreate");
         isRunning = true;
     }
 
@@ -49,7 +47,6 @@ public class NotificationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("dhrms", "onStartCommand");
         int intToBooleanIsNoti = userDBManager.getIsNoti();
         if(intToBooleanIsNoti==1){
             isRunning=true;
@@ -102,7 +99,6 @@ public class NotificationService extends Service {
         weekNothing = dbManager.getGoal(FROM_WEEK).equals("");
         monthNothing = dbManager.getGoal(FROM_MONTH).equals("");
 
-
         if (todayNothing && weekNothing && monthNothing) {
             setNotificationBuild("오늘과 이번주와 이번달의 목표를 새롭게 설정하세요.", pendingIntent);
         } else if (todayNothing && weekNothing) {
@@ -118,8 +114,5 @@ public class NotificationService extends Service {
         } else if(monthNothing){
             setNotificationBuild("이번달의 목표를 새롭게 설정하세요.", pendingIntent);
         }
-
-
-
     }
 }

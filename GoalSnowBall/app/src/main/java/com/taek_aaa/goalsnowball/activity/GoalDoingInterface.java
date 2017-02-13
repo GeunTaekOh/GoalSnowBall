@@ -9,4 +9,6 @@ import android.view.View;
 public interface GoalDoingInterface {
     void onClickTimerStartbtn(View v);
     void timerInit();
+    void saveCurrentAmountToEditText(int from);
+    void playCoinSound();
 }

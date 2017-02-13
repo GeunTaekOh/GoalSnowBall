@@ -36,21 +36,6 @@ public class FailDialog extends Dialog {
 
         failMsg = (TextView)findViewById(R.id.failMsg);
         failCoinMsg = (TextView)findViewById(R.id.failCoinMsg);
-/*
-
-        if(dbManager.getIsSuccess(FROM_TODAY)==3){
-            failBetToday=dbManager.getBettingGold(FROM_TODAY);
-            totalLooseCoin += failBetToday;
-        }
-        if(dbManager.getIsSuccess(FROM_WEEK)==3){
-            failBetWeek=dbManager.getBettingGold(FROM_WEEK);
-            totalLooseCoin += failBetWeek;
-        }
-        if(dbManager.getIsSuccess(FROM_MONTH)==3){
-            failBetMonth=dbManager.getBettingGold(FROM_MONTH);
-            totalLooseCoin += failBetMonth;
-        }
-*/
 
         failCoinMsg.setText("실패하여서 총 "+totalLooseCoin/2+" Gold을 잃었습니다.");
         int gold = userDBManager.getGold();
@@ -63,7 +48,7 @@ public class FailDialog extends Dialog {
         failFlag = false;
     }
 
-    public void playFailSound(){
+    private void playFailSound(){
         AudioManager mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
         if ((mAudioManager.getRingerMode() == 2 ) && (userDBManager.getIsSound()==1)){                       //소리모드일때만 소리 출력
             soundPool = new SoundPool(1, STREAM_MUSIC, 0);

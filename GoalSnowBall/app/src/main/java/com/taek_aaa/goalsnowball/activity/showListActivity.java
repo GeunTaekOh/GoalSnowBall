@@ -47,7 +47,6 @@ public class showListActivity extends Activity {
         if(dbManager.isEmptyDB()){
             ListView lv = (ListView) findViewById(R.id.listView1);
             lv.setBackgroundResource(R.drawable.empty2);
-
         }
         countListtv.setText(""+amountOfShowList+" / "+""+dbManager.getLastPosition());
         setList();
@@ -68,22 +67,19 @@ public class showListActivity extends Activity {
                 Item item = convertData(dbManager.getPreviousListViewData(listViewPosition));
                     m_arr.add(item);
             }
-
             listViewPosition--;
         }
-
 
         adapter = new List_Adapter(showListActivity.this, m_arr);
         lv.setAdapter(adapter);
         lv.setDividerHeight(5);
     }
 
-    public void listUpdate() {
+    private void listUpdate() {
         adapter.notifyDataSetChanged(); //​리스트뷰 값들의 변화가 있을때 아이템들을 다시 배치 할 때 사용되는 메소드입니다.
     }
 
-
-    public Item convertData(ListViewData listViewData) {
+    private Item convertData(ListViewData listViewData) {
         String bulbImage = "";
         String looseOrGet = "";
         String whatDateType = "";

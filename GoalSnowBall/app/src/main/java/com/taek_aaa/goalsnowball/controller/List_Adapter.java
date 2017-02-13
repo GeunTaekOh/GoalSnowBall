@@ -3,13 +3,11 @@ package com.taek_aaa.goalsnowball.controller;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.taek_aaa.goalsnowball.R;
@@ -28,25 +26,23 @@ public class List_Adapter extends BaseAdapter {
     public List_Adapter(Activity act, ArrayList<Item> arr_item) {
         this.m_activity = act;
         arr = arr_item;
-        //설명 1:
-        mInflater =
-                (LayoutInflater)m_activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-
+        mInflater = (LayoutInflater)m_activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
-    //설명 2:
+
     @Override
     public int getCount() {
         return arr.size();
     }
+
     @Override
     public Object getItem(int position) {
         return arr.get(position);
     }
+
     public long getItemId(int position){
         return position;
     }
-    //설명 3:
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         if(convertView == null){
@@ -64,7 +60,7 @@ public class List_Adapter extends BaseAdapter {
         TextView goalAmount = (TextView)convertView.findViewById(R.id.listGoaldata);
         TextView just_gold = (TextView)convertView.findViewById(R.id.list_gold);
 
-        ScrollView layout_view =  (ScrollView) convertView.findViewById(R.id.vi_view);
+        //ScrollView layout_view =  (ScrollView) convertView.findViewById(R.id.vi_view);
         int resId=  m_activity.getResources().getIdentifier(arr.get(position).bulbImageItem, "drawable", m_activity.getPackageName());
 
         imView.setBackgroundResource(resId);
@@ -84,31 +80,7 @@ public class List_Adapter extends BaseAdapter {
             goldStatus.setTextColor(Color.GREEN);
             goldContent.setTextColor(Color.GREEN);
             just_gold.setTextColor(Color.GREEN);
-
         }
-
-
-  /*  버튼에 이벤트처리를 하기위해선 setTag를 이용해서 사용할 수 있습니다.
-       *   Button btn 가 있다면, btn.setTag(position)을 활용해서 각 버튼들
-       *   이벤트처리를 할 수 있습니다.
-   */
-        layout_view.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-
-
-
-           //     GoIntent(position);
-            }
-        });
         return convertView;
     }
-
-    /*//설명 4:
-    public void GoIntent(int a){
-        Intent intent = new Intent(m_activity, TodayAchievementRateActivity.class);
-        //putExtra 로 선택한 아이템의 정보를 인텐트로 넘겨 줄 수 있다.
-        intent.putExtra("TITLE", arr.get(a).goalItem);
-        intent.putExtra("EXPLAIN", arr.get(a).dateItem);
-        m_activity.startActivity(intent);
-    }*/
 }

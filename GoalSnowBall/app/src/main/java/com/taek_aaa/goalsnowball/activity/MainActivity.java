@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /** 사진 임시 경로가 아닌 실제 경로를 가져옴 **/
-    public String getRealPathFromURI(Uri contentURI) {
+    protected String getRealPathFromURI(Uri contentURI) {
         String result;
         Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
         if (cursor == null) {
@@ -284,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void drawUserStatus() {
+    private void drawUserStatus() {
         mainGoldtv.setText("" + userDBManager.getGold() + "Gold");
         userIdtv.setText("" + userDBManager.getName());
         mainGradetv.setText("" + userDBManager.getGrade());
@@ -345,7 +345,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * 오늘의 목표를 텍스트뷰에 출력     isSuccess가 0이면 없는것 //  1이면 성공 // 2이면 하는중 // 3이면 실패
      **/
-    public void drawTodayGoal() {
+    private void drawTodayGoal() {
 
         if (dbManager.getIsSuccess(FROM_TODAY) == 1) {
             todayBulb.setImageResource(R.drawable.bulbsuccess);
@@ -363,7 +363,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * 이번주 목표를 텍스트뷰에 출력     isSuccess가 0이면 없는것 //  1이면 성공 // 2이면 하는중 // 3이면 실패
      **/
-    public void drawWeekGoal() {
+    private void drawWeekGoal() {
         if (dbManager.getIsSuccess(FROM_WEEK) == 1) {
             weekBulb.setImageResource(R.drawable.bulbsuccess);
         } else if (dbManager.getIsSuccess(FROM_WEEK) == 2) {
@@ -380,7 +380,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * 이번달 목표를 텍스트뷰에 출력     isSuccess가 0이면 없는것 //  1이면 성공 // 2이면 하는중 // 3이면 실패
      **/
-    public void drawMonthGoal() {
+    private void drawMonthGoal() {
         if (dbManager.getIsSuccess(FROM_MONTH) == 1) {
             monthBulb.setImageResource(R.drawable.bulbsuccess);
         } else if (dbManager.getIsSuccess(FROM_MONTH) == 2) {
@@ -394,7 +394,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         monthtv.setGravity(Gravity.CENTER);
     }
 
-    public void drawGoal() {
+    private void drawGoal() {
         drawTodayGoal();
         drawWeekGoal();
         drawMonthGoal();
@@ -403,7 +403,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * 목표를 다이얼로그에서 설정하고 다이얼로그가 dismiss 되면 목표 출력
      **/
-    public void drawGoalWhenDismiss() {
+    private void drawGoalWhenDismiss() {
         todayGoalDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
@@ -429,7 +429,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * 이미지 선택 안했을 시에 이미지를 이미지뷰에 출력
      **/
-    public void drawMainImage() {
+    private void drawMainImage() {
         BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.profile);
         Bitmap bitmapDefault = drawable.getBitmap();
         Bitmap sizedBitmapDefault = pictureController.setSizedImage(bitmapDefault);
@@ -442,7 +442,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * 오늘쪽 상단의 디데이를 출력
      **/
-    public void drawDDay() {
+    private void drawDDay() {
         CalendarDatas calendarData = new CalendarDatas();
         int endDate;
         dDayWeektv = (TextView) findViewById(R.id.d_week);
@@ -456,7 +456,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * 오늘 목표 달성률 출력
      **/
-    public void drawTodayPercent() {
+    private void drawTodayPercent() {
         double result;
         int goal = dbManager.getGoalAmount(FROM_TODAY);
         int current;
@@ -484,7 +484,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * 이번주 목표 달성률 출력
      **/
-    public void drawWeekPercent() {
+    private void drawWeekPercent() {
         double result;
         int goal = dbManager.getGoalAmount(FROM_WEEK);
         int current;
@@ -511,7 +511,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * 이번달 목표 달성률 출력
      **/
-    public void drawMonthPercent() {
+    private void drawMonthPercent() {
         double result;
         int goal = dbManager.getGoalAmount(FROM_MONTH);
         int current;
@@ -537,7 +537,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * init
      **/
-    public void init() {
+    private void init() {
         userDBManager = new UserDBManager(getBaseContext(), "userdb.db", null, 1);
         dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
 
@@ -709,7 +709,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /** 화면에 무언가를 그려주는 메서드들**/
-    public void draw() {
+    private void draw() {
         drawGoal();
         drawGoalWhenDismiss();
         drawTodayPercent();
@@ -722,7 +722,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /** 목표 달성 실패 여부 확인 후 실패시 실패 화면 띄움**/
-    public void checkFailStatus() {
+    private void checkFailStatus() {
         Log.e("dhrms", "" + failFlag);
         if (failFlag) {
             failDialog = new FailDialog(this);
@@ -752,7 +752,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /** 안내해주는 showcaseView 오픈소스 출력 **/
-    public void guid() {
+    private void guid() {
         t1 = new ViewTarget(R.id.mainImageView, this);
         t2 = new ViewTarget(R.id.d_week, this);
         t3 = new ViewTarget(R.id.mainGradetv, this);
@@ -836,7 +836,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /** preference 값 가져오기 **/
-    public int getPreferences() {
+    private int getPreferences() {
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         int a;
         a = pref.getInt("isFirst", 1);
@@ -844,7 +844,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /** preference 인자값 으로 저장하기 **/
-    public void setPreferences(int a) {
+    private void setPreferences(int a) {
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putInt("isFirst", a);

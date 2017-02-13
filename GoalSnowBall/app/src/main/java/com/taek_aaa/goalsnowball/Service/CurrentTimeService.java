@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.taek_aaa.goalsnowball.data.CalendarDatas;
 import com.taek_aaa.goalsnowball.data.DBManager;
-import com.taek_aaa.goalsnowball.dialog.FailDialog;
 
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
@@ -24,7 +23,6 @@ import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
 public class CurrentTimeService extends Service {
     Boolean isRunning;
     DBManager dbManager;
-    FailDialog failDialog;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -54,7 +52,7 @@ public class CurrentTimeService extends Service {
             public void run() {
                 while (isRunning) {
                     try {
-                        getCurrentTime();
+                        getCurrentTimeCheckFail();
                         Thread.sleep(1000);
                     } catch (Exception e) {
 
@@ -66,7 +64,7 @@ public class CurrentTimeService extends Service {
         return START_STICKY;
     }
 
-    public void getCurrentTime() {
+    public void getCurrentTimeCheckFail() {
         CalendarDatas now = new CalendarDatas();
 //        Log.i("now", "" + now.hour + "시 " + now.minute + "분 " + now.seconds + "초 ");
 

@@ -1,7 +1,6 @@
 package com.taek_aaa.goalsnowball.dialog;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
@@ -18,23 +17,14 @@ import static com.taek_aaa.goalsnowball.data.CommonData.categoryTimeArrays;
 
 public class WeekGoalDialog extends GoalDialog implements View.OnClickListener {
 
-
     public WeekGoalDialog(Context context) {
         super(context);
         title.setText("이번주의 목표를 입력하세요.");
         findViewById(R.id.DialogConfirmButton).setOnClickListener(this);
         findViewById(R.id.DialogExitButton).setOnClickListener(this);
         findViewById(R.id.DialogX).setOnClickListener(this);
-
-
-        if (userDBManager.getGold() <= 0) {
-            bettinggold = 2;
-        } else {
-            bettinggold = userDBManager.getGold() / 2;
-        }
-
+        bettinggold = returnGold(FROM_WEEK);
         bettingGoldet.setText("" + bettinggold);
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -43,29 +33,27 @@ public class WeekGoalDialog extends GoalDialog implements View.OnClickListener {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
-
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.DialogConfirmButton:
-                Log.e("test", "" + checkedId);
                 try {
                     if (Integer.parseInt(bettingGoldet.getText().toString()) > bettinggold) {
-                        if (userDBManager.getGold() <= 0) {
-                            Toast.makeText(getContext(), "보유 Gold가 0보다 작아서 2Gold 이하만 베팅 가능합니다.", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getContext(), "배팅액은 총 보유 골드의 절반을 넘을 수 없습니다.", Toast.LENGTH_SHORT).show();
-                        }
+                        Toast.makeText(getContext(), "" + bettingToastMessage(FROM_WEEK), Toast.LENGTH_SHORT).show();
                         break;
                     } else {
                         int gethourValue = Integer.parseInt(editTextAmonut.getText().toString());
-                        int getMiniuteValue = Integer.parseInt(hiddenEt.getText().toString());
-                        int textAmount = gethourValue * 60 + getMiniuteValue;
+                        if (hiddenEt.getText().toString().equals("")) {
+                            getMiniuteValue = 0;
+                            textAmount = gethourValue;
+                        } else {
+                            getMiniuteValue = Integer.parseInt(hiddenEt.getText().toString());
+                            textAmount = gethourValue * 60 + getMiniuteValue;
+                        }
                         textContents = editTextContents.getText().toString();
                         if (textContents.equals("")) {
                             throw new Exception();

@@ -6,4 +6,6 @@ package com.taek_aaa.goalsnowball.dialog;
 
 public interface GoalDialogInterface {
     void init();
+    int returnGold(int from);
+    String bettingToastMessage(int from);
 }

@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.controller.CountDown;
+import com.taek_aaa.goalsnowball.controller.DataController;
 import com.taek_aaa.goalsnowball.data.DBManager;
 
 import java.util.Calendar;
@@ -35,6 +36,7 @@ public class AchievementRateActivity extends Activity implements AchievementRate
     CountDown countDown;
     public static int fromCountDownDday;
     public static TextView dueTimeFinish;
+    DataController dataController;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,18 +56,10 @@ public class AchievementRateActivity extends Activity implements AchievementRate
         dueTv = (TextView) findViewById(dueAchievementAmount);
         progressBar = (ProgressBar) findViewById(R.id.progressbar);
         dueTimeFinish = (TextView) findViewById(dueAchievementAmount);
+        dataController = new DataController();
 
     }
 
-    protected double makePercent(int current, int goal) {
-        double result = 0;
-        result = (double) current / (double) goal * 100;
-        result = Double.parseDouble(String.format("%.1f", result));
-        if (result >= 100.0) {
-            result = 100;
-        }
-        return result;
-    }
 
     protected String whatContentsType(int type) {
         String str;
@@ -119,7 +113,7 @@ public class AchievementRateActivity extends Activity implements AchievementRate
             throw new Exception();
         }
 
-        result = makePercent(current, goal);
+        result = dataController.makePercent(current, goal);
 
         if (result == 100) {
             percentAmounttv.setTextColor(Color.GREEN);

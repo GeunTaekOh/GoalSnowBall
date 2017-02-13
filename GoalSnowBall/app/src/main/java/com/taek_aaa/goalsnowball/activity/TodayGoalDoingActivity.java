@@ -15,13 +15,7 @@ import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.failFlag;
-import static com.taek_aaa.goalsnowball.data.CommonData.isFailMonth;
-import static com.taek_aaa.goalsnowball.data.CommonData.isFailToday;
-import static com.taek_aaa.goalsnowball.data.CommonData.isFailWeek;
-import static com.taek_aaa.goalsnowball.data.CommonData.isMonthDueFinish;
 import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessToday;
-import static com.taek_aaa.goalsnowball.data.CommonData.isTodayDueFinish;
-import static com.taek_aaa.goalsnowball.data.CommonData.isWeekDueFinish;
 import static com.taek_aaa.goalsnowball.data.CommonData.setFailStatus;
 import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.SUCCESS_FROM_TODAY;
@@ -38,18 +32,14 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
         super.onCreate(savedInstanceState);
         try {
             /** 물리적 양 일때 **/
-
             if (dbManager.getType(FROM_TODAY).equals("물리적양")) {
                 setContentView(R.layout.activity_goal_amount_doing);
-                Log.e("aa", "물리적양");
                 isAmount = true;
                 amountOfEdit = (EditText) findViewById(R.id.doing_current_amount);
                 unittv = (TextView) findViewById(R.id.doing_unit);
             } else if (dbManager.getType(FROM_TODAY).equals("시간적양")) {
                 /** 시간적 양 일때 **/
                 setContentView(R.layout.activity_goal_time_doing);
-                Log.e("aa", "시간적양");
-
                 TextView stopWatchtv = (TextView) findViewById(R.id.timerTextView);
                 stopWatchtv.setText("00:00:00");
                 timeOfCurrenttv = (TextView) findViewById(R.id.doing_current_time);
@@ -80,37 +70,21 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
             /** 목표 설정 안되어 있을 때 **/
             Toast.makeText(this, "오늘의 목표를 먼저 설정하세요.", Toast.LENGTH_SHORT).show();
             Log.e("error", "" + e.getStackTrace());
-            e.getStackTrace();
             finish();
         }
         tmpAmount = dbManager.getCurrentAmount(FROM_TODAY);
     }
 
     /**
-     * 수행량 저장하는 함수
-     **/
-    public void saveCurrentAmountToEditText() {
-        dbManager.setCurrentAmount(FROM_TODAY, Integer.parseInt(amountOfEdit.getText().toString()));
-        Log.e("db", "저장 디비 명령어 지나감");
-        Log.e("rmsxor94", "오늘 골 두잉 액티비티에 저장");
-        if (dbManager.getCurrentAmount(FROM_TODAY) < dbManager.getGoalAmount(FROM_TODAY)) {
-            Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    /**
      * 목표 수행량 저장하는 함수
      **/
     public void onClickSaveBtnGoal(View v) {
-
-        //물리적양일 경우임 저장버튼이 있는경우는 물리적 양일때만이기때문
-        //물리적양 일때 성공하면
         if (dbManager.getIsSuccess(FROM_TODAY) == 3) {
             Toast.makeText(context, "이미 실패하였습니다. 저장하지 못하였습니다.", Toast.LENGTH_SHORT).show();
         } else if (dbManager.getIsSuccess(FROM_TODAY) == 1) {
             Toast.makeText(this, "이미 성공하여서 Gold를 수령했습니다.", Toast.LENGTH_SHORT).show();
         } else {
-            saveCurrentAmountToEditText();
+            saveCurrentAmountToEditText(FROM_TODAY);
             if (dbManager.getGoalAmount(FROM_TODAY) <= dbManager.getCurrentAmount(FROM_TODAY)) {
                 whereSuccess = SUCCESS_FROM_TODAY;
                 int a = (dbManager.getBettingGold(FROM_TODAY)) + (userDBManager.getGold());
@@ -180,7 +154,7 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
                 });
 
             } else if (dbManager.getUnit(FROM_TODAY).equals("이하") && dbManager.getCurrentAmount(FROM_TODAY) >= dbManager.getGoalAmount(FROM_TODAY)) {       //이하이고 실패
-                dbManager.setIsSuccess(FROM_TODAY,3);
+                dbManager.setIsSuccess(FROM_TODAY, 3);
                 failFlag = true;
                 totalLooseCoin = dbManager.getBettingGold(FROM_TODAY);
                 failDialog = new FailDialog(this);
@@ -206,7 +180,6 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
     /**
      * upButton, downButton 클릭 시
      **/
-
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.upButton:

@@ -35,21 +35,17 @@ public class MonthGoalDoingActivity extends GoalDoingActivity {
             /** 물리적 양 일때 **/
             if (dbManager.getType(FROM_MONTH).equals("물리적양")) {
                 setContentView(R.layout.activity_goal_amount_doing);
-                Log.e("aa", "물리적양");
                 isAmount = true;
                 amountOfEdit = (EditText) findViewById(R.id.doing_current_amount);
                 unittv = (TextView) findViewById(R.id.doing_unit);
             } else if (dbManager.getType(FROM_MONTH).equals("시간적양")) {
                 /** 시간적 양 일때 **/
                 setContentView(R.layout.activity_goal_time_doing);
-                Log.e("aa", "시간적양");
-
                 TextView stopWatchtv = (TextView) findViewById(R.id.timerTextView);
                 stopWatchtv.setText("00:00:00");
                 timeOfCurrenttv = (TextView) findViewById(R.id.doing_current_time);
                 isAmount = false;
             }
-
             blackboardtv = (TextView) findViewById(R.id.doing_goalAmount);
             successGetGoldtv = (TextView) findViewById(R.id.successGetGoldtv);
             doingGoaltv = (TextView) findViewById(R.id.doing_goal);
@@ -74,21 +70,11 @@ public class MonthGoalDoingActivity extends GoalDoingActivity {
             doingGoaltv.setText("이번달의 목표 : " + dbManager.getGoal(FROM_MONTH));
         } catch (Exception e) {
             /** 목표 설정 안되어 있을 때 **/
+            Log.e("error", "" + e.getStackTrace());
             Toast.makeText(this, "이번달의 목표를 먼저 설정하세요.", Toast.LENGTH_SHORT).show();
             finish();
         }
         tmpAmount = dbManager.getCurrentAmount(FROM_MONTH);
-
-    }
-
-    /**
-     * 수행량 저장하는 함수
-     **/
-    public void saveCurrentAmountToEditText() {
-        dbManager.setCurrentAmount(FROM_MONTH, Integer.parseInt(amountOfEdit.getText().toString()));
-        if (dbManager.getCurrentAmount(FROM_MONTH) < dbManager.getGoalAmount(FROM_MONTH)) {
-            Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
-        }
     }
 
 
@@ -101,7 +87,7 @@ public class MonthGoalDoingActivity extends GoalDoingActivity {
         } else if (dbManager.getIsSuccess(FROM_MONTH) == 1) {
             Toast.makeText(this, "이미 성공하여서 Gold를 수령했습니다.", Toast.LENGTH_SHORT).show();
         } else {
-            saveCurrentAmountToEditText();
+            saveCurrentAmountToEditText(FROM_MONTH);
             if (dbManager.getGoalAmount(FROM_MONTH) <= dbManager.getCurrentAmount(FROM_MONTH)) {
                 whereSuccess = SUCCESS_FROM_MONTH;
                 int a = (dbManager.getBettingGold(FROM_MONTH)) + (userDBManager.getGold());
@@ -120,7 +106,6 @@ public class MonthGoalDoingActivity extends GoalDoingActivity {
 
         }
     }
-
 
     /**
      * 타이머 End 버튼 클릭시

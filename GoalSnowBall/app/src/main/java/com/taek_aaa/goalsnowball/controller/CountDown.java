@@ -12,8 +12,6 @@ import static com.taek_aaa.goalsnowball.activity.AchievementRateActivity.fromCou
  * Created by taek_aaa on 2017. 1. 19..
  */
 
-
-//아니면 시간적인양에서 이미 구현한거 함수로만들고 타이머 스톱워치 만들어서 가져다 쓰기
 public class CountDown extends CountDownTimer{
 
     Handler handler = new Handler();

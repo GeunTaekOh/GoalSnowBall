@@ -25,7 +25,6 @@ public class CommonData {
     public static int totalLooseCoin = 0;
     public static int listViewPosition = 0;
 
-
     public static void setFailStatus(boolean bool) {
         isFailToday = bool;
         isFailWeek = bool;
@@ -34,7 +33,4 @@ public class CommonData {
         isWeekDueFinish = bool;
         isMonthDueFinish = bool;
     }
-
-
-
 }

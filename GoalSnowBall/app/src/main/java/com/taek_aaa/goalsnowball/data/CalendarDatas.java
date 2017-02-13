@@ -17,12 +17,9 @@ public class CalendarDatas {
     public int hour, minute, seconds;
     public int weekOfYear;
 
-
-
     public CalendarDatas() {
         today = Calendar.getInstance();
         today.setFirstDayOfWeek(Calendar.MONDAY);
-        //today.setMinimalDaysInFirstWeek();
         cYear = today.get(Calendar.YEAR);
         hMonth = today.get(Calendar.MONTH) + 1;
         cMonth = today.get(Calendar.MONTH);
@@ -34,7 +31,7 @@ public class CalendarDatas {
         weekOfYear = today.get(Calendar.WEEK_OF_YEAR);
     }
 
-    public Boolean isYoonYear(int year) {
+    private Boolean isYoonYear(int year) {
         GregorianCalendar gr = new GregorianCalendar();
         return gr.isLeapYear(year);
     }
@@ -105,13 +102,11 @@ public class CalendarDatas {
         sYear = String.valueOf(year);
         if(month<10){
             sMonth="0"+month;
-            Log.e("rmsxor",sMonth);
         }else{
             sMonth = String.valueOf(month);
         }
         if(date<10){
             sDate="0"+date;
-            Log.e("rmsxor",sDate);
         }else{
             sDate = String.valueOf(date);
         }

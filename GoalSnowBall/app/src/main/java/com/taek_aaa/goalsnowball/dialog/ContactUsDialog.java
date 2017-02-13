@@ -20,7 +20,6 @@ public class ContactUsDialog extends Dialog implements View.OnClickListener{
         this.globalContext = context;
         setContentView(R.layout.dialog_contactus);
 
-
         findViewById(R.id.contactExitbtn).setOnClickListener(this);
         findViewById(R.id.mailBtn).setOnClickListener(this);
 

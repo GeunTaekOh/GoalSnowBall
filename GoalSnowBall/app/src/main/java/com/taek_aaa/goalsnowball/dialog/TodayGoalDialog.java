@@ -1,7 +1,6 @@
 package com.taek_aaa.goalsnowball.dialog;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
@@ -27,11 +26,7 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
         findViewById(R.id.DialogExitButton).setOnClickListener(this);
         findViewById(R.id.DialogX).setOnClickListener(this);
 
-        if (userDBManager.getGold() <= 0) {
-            bettinggold = 2;
-        } else {
-            bettinggold = userDBManager.getGold() / 4;
-        }
+        bettinggold = returnGold(FROM_TODAY);
         bettingGoldet.setText("" + bettinggold);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -44,7 +39,6 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
-
     }
 
 
@@ -52,20 +46,19 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.DialogConfirmButton:
-                Log.e("test", "" + checkedId);
                 try {
                     if (Integer.parseInt(bettingGoldet.getText().toString()) > bettinggold) {
-                        if (userDBManager.getGold() <= 0) {
-                            Toast.makeText(getContext(), "보유 Gold가 0보다 작아서 2Gold 이하만 베팅 가능합니다.", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getContext(), "배팅액은 총 보유 골드의 25%를 넘을 수 없습니다.", Toast.LENGTH_SHORT).show();
-                        }
+                        Toast.makeText(getContext(), "" + bettingToastMessage(FROM_TODAY), Toast.LENGTH_SHORT).show();
                         break;
                     } else {
                         int gethourValue = Integer.parseInt(editTextAmonut.getText().toString());
-                        int getMiniuteValue = Integer.parseInt(hiddenEt.getText().toString());
-                        int textAmount = gethourValue * 60 + getMiniuteValue;
-
+                        if (hiddenEt.getText().toString().equals("")) {
+                            getMiniuteValue = 0;
+                            textAmount = gethourValue;
+                        } else {
+                            getMiniuteValue = Integer.parseInt(hiddenEt.getText().toString());
+                            textAmount = gethourValue * 60 + getMiniuteValue;
+                        }
                         textContents = editTextContents.getText().toString();
                         if (textContents.equals("")) {
                             throw new Exception();
@@ -82,9 +75,7 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
                         title.setText("오늘의 목표를 입력하세요.");
                         editTextContents.setHint("목표를 추가하세요.");
                         dbData.bettingGold = Integer.parseInt(bettingGoldet.getText().toString());
-
                     }
-
                     if (dbManager.hasGoal(FROM_TODAY)) {
                         Toast.makeText(getContext(), "이미 오늘의 목표를 설정하였습니다.", Toast.LENGTH_SHORT).show();
                     } else {

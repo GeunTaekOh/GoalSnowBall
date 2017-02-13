@@ -15,6 +15,9 @@ import com.taek_aaa.goalsnowball.data.DBData;
 import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
 
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
+
 /**
  * Created by taek_aaa on 2017. 1. 21..
  */
@@ -26,13 +29,13 @@ public class GoalDialog extends Dialog implements GoalDialogInterface{
     RadioGroup radioGroup;
     Spinner spinner;
     RadioButton timeRadio, physicalRadio;
-    int checkedId;
-    int default_radioButton_id;
-    int bettinggold;
+    int checkedId, default_radioButton_id, bettinggold;
     UserDBManager userDBManager;
     DBManager dbManager;
     int tempUnit = 0;
     DBData dbData = new DBData();
+    int getMiniuteValue;
+    int textAmount;
 
     public GoalDialog(Context context) {
         super(context);
@@ -58,9 +61,7 @@ public class GoalDialog extends Dialog implements GoalDialogInterface{
                 }
             }
         });
-
     }
-
 
     public void init() {
         userDBManager = new UserDBManager(getContext(), "userdb.db", null, 1);
@@ -76,6 +77,40 @@ public class GoalDialog extends Dialog implements GoalDialogInterface{
         checkedId = radioGroup.getCheckedRadioButtonId();
         bettingGoldet = (EditText) findViewById(R.id.bettingGold);
         hiddenEt = (EditText)findViewById(R.id.hiddenEt);
-
     }
+
+    public int returnGold(int from){
+        int result=0;
+
+        if (userDBManager.getGold() <= 0) {
+            result = 2;
+        } else {
+            if(from==FROM_TODAY){
+                result = userDBManager.getGold() / 4;
+            }else if(from==FROM_WEEK){
+                result = userDBManager.getGold() / 2;
+            }else{
+                result = userDBManager.getGold();
+            }
+        }
+        return result;
+    }
+
+    public String bettingToastMessage(int from){
+        String msg="";
+
+        if (userDBManager.getGold() <= 0) {
+            msg = "보유 Gold가 0보다 작아서 2Gold 이하만 베팅 가능합니다.";
+        } else {
+            if(from==FROM_TODAY){
+                msg = "배팅액은 총 보유 골드의 25%를 넘을 수 없습니다.";
+            }else if(from==FROM_WEEK){
+                msg = "배팅액은 총 보유 골드의 절반을 넘을 수 없습니다.";
+            }else{
+                msg = "배팅액은 총 보유 골드를 넘을 수 없습니다.";
+            }
+        }
+        return msg;
+    }
+
 }
