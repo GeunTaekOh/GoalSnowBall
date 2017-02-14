@@ -7,22 +7,27 @@ import android.util.Log;
 
 import com.taek_aaa.goalsnowball.data.CalendarDatas;
 import com.taek_aaa.goalsnowball.data.DBManager;
+import com.taek_aaa.goalsnowball.data.UserDBManager;
 
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
+import static com.taek_aaa.goalsnowball.data.CommonData.failBetMonth;
 import static com.taek_aaa.goalsnowball.data.CommonData.failBetToday;
+import static com.taek_aaa.goalsnowball.data.CommonData.failBetWeek;
 import static com.taek_aaa.goalsnowball.data.CommonData.failFlag;
 import static com.taek_aaa.goalsnowball.data.CommonData.isFailMonth;
 import static com.taek_aaa.goalsnowball.data.CommonData.isFailWeek;
 import static com.taek_aaa.goalsnowball.data.CommonData.isMonthDueFinish;
 import static com.taek_aaa.goalsnowball.data.CommonData.isTodayDueFinish;
 import static com.taek_aaa.goalsnowball.data.CommonData.isWeekDueFinish;
+import static com.taek_aaa.goalsnowball.data.CommonData.levelUpFlag;
 import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
 
 public class CurrentTimeService extends Service {
     Boolean isRunning;
     DBManager dbManager;
+    UserDBManager userDBManager;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -35,6 +40,7 @@ public class CurrentTimeService extends Service {
     public void onCreate() {
         super.onCreate();
         dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
+        userDBManager = new UserDBManager(getBaseContext(), "userdb.db", null, 1);
         Log.e("now", "온크리에이트 커런트");
         isRunning = true;
     }
@@ -53,6 +59,7 @@ public class CurrentTimeService extends Service {
                 while (isRunning) {
                     try {
                         getCurrentTimeCheckFail();
+                        checkLevelUp();
                         Thread.sleep(1000);
                     } catch (Exception e) {
 
@@ -68,12 +75,12 @@ public class CurrentTimeService extends Service {
         CalendarDatas now = new CalendarDatas();
 //        Log.i("now", "" + now.hour + "시 " + now.minute + "분 " + now.seconds + "초 ");
 
-
-
         int endDay = now.getEndOfMonth(now.cYear, now.cMonth);
 
         if (now.hour == 23 && now.minute == 59 && now.seconds == 0) {
             isTodayDueFinish = true;
+            totalLooseCoin=0;
+
             if (dbManager.getGoalAmount(FROM_TODAY) > dbManager.getCurrentAmount(FROM_TODAY)) {
                 dbManager.setIsSuccess(FROM_TODAY, 3);
                 failBetToday=dbManager.getBettingGold(FROM_TODAY);
@@ -86,22 +93,57 @@ public class CurrentTimeService extends Service {
                 if (dbManager.getGoalAmount(FROM_WEEK) > dbManager.getCurrentAmount(FROM_WEEK)) {
                     isFailWeek = true;
                     dbManager.setIsSuccess(FROM_WEEK, 3);
-                    failBetToday=dbManager.getBettingGold(FROM_WEEK);
-                    totalLooseCoin += failBetToday;
+                    failBetWeek=dbManager.getBettingGold(FROM_WEEK);
+                    totalLooseCoin += failBetWeek;
                     failFlag = true;
                 }
-
             }
             if (now.cdate == endDay) {           //마지막일
                 isMonthDueFinish = true;
                 if (dbManager.getGoalAmount(FROM_MONTH) > dbManager.getCurrentAmount(FROM_MONTH)) {
                     isFailMonth = true;
                     dbManager.setIsSuccess(FROM_MONTH, 3);
-                    failBetToday=dbManager.getBettingGold(FROM_MONTH);
-                    totalLooseCoin += failBetToday;
+                    failBetMonth=dbManager.getBettingGold(FROM_MONTH);
+                    totalLooseCoin += failBetMonth;
                     failFlag = true;
                 }
             }
         }
     }
+
+    public void checkLevelUp(){
+        int gold = userDBManager.getGold();
+        int count = dbManager.getLastPosition();
+        if(gold < 100 && count < 10) {
+            userDBManager.setGrade("UnRank");
+            //}else if(gold >= 100 && count >= 10){
+        }else if(gold >= 0 && count>= 0){           // 테스트중 나중에 기준 바꾸기
+            Log.e("dhrms","레벨업");
+            userDBManager.setGrade("D");
+            levelUpFlag=true;
+        }else if (gold >= 300 && count >= 30){
+            userDBManager.setGrade("C");
+            levelUpFlag=true;
+        }else if (gold >= 500 && count >= 50){
+            userDBManager.setGrade("B");
+            levelUpFlag=true;
+        }else if (gold >= 1000 && count >= 100){
+            userDBManager.setGrade("A");
+            levelUpFlag=true;
+        }else if (gold >= 5000 && count >= 300){
+            userDBManager.setGrade("S");
+            levelUpFlag=true;
+        }else if (gold >= 20000 && count >= 500){
+            userDBManager.setGrade("SS");
+            levelUpFlag=true;
+        }else if (gold >= 100000 && count >= 1000){
+            userDBManager.setGrade("SSS");
+        }
+    }
+
+
+
+
+
 }
+

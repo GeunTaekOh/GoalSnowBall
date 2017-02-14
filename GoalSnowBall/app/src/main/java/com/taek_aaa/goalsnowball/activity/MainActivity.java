@@ -44,6 +44,7 @@ import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
 import com.taek_aaa.goalsnowball.dialog.ContactUsDialog;
 import com.taek_aaa.goalsnowball.dialog.FailDialog;
+import com.taek_aaa.goalsnowball.dialog.LevelUpDialog;
 import com.taek_aaa.goalsnowball.dialog.MonthGoalDialog;
 import com.taek_aaa.goalsnowball.dialog.TodayGoalDialog;
 import com.taek_aaa.goalsnowball.dialog.UserNameDialog;
@@ -59,6 +60,7 @@ import static com.taek_aaa.goalsnowball.data.CommonData.defaultHeight;
 import static com.taek_aaa.goalsnowball.data.CommonData.defaultWidth;
 import static com.taek_aaa.goalsnowball.data.CommonData.failFlag;
 import static com.taek_aaa.goalsnowball.data.CommonData.inflater;
+import static com.taek_aaa.goalsnowball.data.CommonData.levelUpFlag;
 import static com.taek_aaa.goalsnowball.data.CommonData.setFailStatus;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -84,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     int tune;
     private Target t1, t2, t3, t4, t5, t6, t7, t8;
     private int contador = 0;
+    LevelUpDialog levelUpDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent timerIntent = new Intent(MainActivity.this, CurrentTimeService.class);
         startService(timerIntent);
 
+
     }
 
     /**
@@ -127,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onStart() {
         super.onStart();
         checkFailStatus();
+        checkLevelUpStatus();
         draw();
         contador=0;
     }
@@ -748,6 +753,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     draw();
                 }
             });
+        }
+    }
+
+    private void checkLevelUpStatus(){
+        if(levelUpFlag){
+            levelUpDialog = new LevelUpDialog(this);
+            levelUpDialog.show();
+            drawUserStatus();
+            levelUpFlag=false;
         }
     }
 

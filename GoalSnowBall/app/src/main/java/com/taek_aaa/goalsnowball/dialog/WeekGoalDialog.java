@@ -10,6 +10,7 @@ import com.taek_aaa.goalsnowball.R;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
 import static com.taek_aaa.goalsnowball.data.CommonData.categoryPhysicalArrays;
 import static com.taek_aaa.goalsnowball.data.CommonData.categoryTimeArrays;
+import static com.taek_aaa.goalsnowball.data.CommonData.failBetWeek;
 
 /**
  * Created by taek_aaa on 2017. 1. 10..
@@ -46,22 +47,26 @@ public class WeekGoalDialog extends GoalDialog implements View.OnClickListener {
                         Toast.makeText(getContext(), "" + bettingToastMessage(FROM_WEEK), Toast.LENGTH_SHORT).show();
                         break;
                     } else {
-                        getMinuteValue = Integer.parseInt(hiddenEt.getText().toString());
+                        String getMinuteValueString = hiddenEt.getText().toString();
                         String gethourValueString = editTextAmonut.getText().toString();
                         if (gethourValueString.equals("")) {
                             gethourValue = 0;
                         } else {
                             gethourValue = Integer.parseInt(editTextAmonut.getText().toString());
                         }
-                        textAmount = gethourValue * 60 + getMinuteValue;
-                        textContents = editTextContents.getText().toString();
 
-                        if (textContents.equals("")) {
-                            throw new Exception();
+                        if (getMinuteValueString.equals("")) {
+                            getMinuteValue = 0;
+                        } else {
+                            getMinuteValue = Integer.parseInt(hiddenEt.getText().toString());
                         }
+                        textAmount = gethourValue * 60 + getMinuteValue;
+
+                        textContents = editTextContents.getText().toString();
                         if (physicalRadio.isChecked()) {
                             dbData.type = "물리적양";
                             dbData.unit = categoryPhysicalArrays[tempUnit];
+                            textAmount /= 60;
                         } else {
                             dbData.type = "시간적양";
                             dbData.unit = categoryTimeArrays[tempUnit];
@@ -76,6 +81,7 @@ public class WeekGoalDialog extends GoalDialog implements View.OnClickListener {
                         Toast.makeText(getContext(), "이미 이번주의 목표를 입력하였습니다.", Toast.LENGTH_SHORT).show();
                     } else {
                         dbManager.insert(FROM_WEEK, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 2);
+                        failBetWeek = dbManager.getBettingGold(FROM_WEEK);
                     }
                     dismiss();
                 } catch (Exception e) {

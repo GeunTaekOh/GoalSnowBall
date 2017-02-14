@@ -1,7 +1,6 @@
 package com.taek_aaa.goalsnowball.dialog;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
@@ -11,6 +10,7 @@ import com.taek_aaa.goalsnowball.R;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.data.CommonData.categoryPhysicalArrays;
 import static com.taek_aaa.goalsnowball.data.CommonData.categoryTimeArrays;
+import static com.taek_aaa.goalsnowball.data.CommonData.failBetMonth;
 
 /**
  * Created by taek_aaa on 2017. 1. 14..
@@ -46,7 +46,7 @@ public class MonthGoalDialog extends GoalDialog implements View.OnClickListener 
                         Toast.makeText(getContext(), "" + bettingToastMessage(FROM_MONTH), Toast.LENGTH_SHORT).show();
                         break;
                     } else {
-                        getMinuteValue = Integer.parseInt(hiddenEt.getText().toString());
+                        String getMinuteValueString = hiddenEt.getText().toString();
                         String gethourValueString = editTextAmonut.getText().toString();
                         if (gethourValueString.equals("")) {
                             gethourValue = 0;
@@ -54,16 +54,21 @@ public class MonthGoalDialog extends GoalDialog implements View.OnClickListener 
                             gethourValue = Integer.parseInt(editTextAmonut.getText().toString());
                         }
 
+                        if (getMinuteValueString.equals("")) {
+                            getMinuteValue = 0;
+                        } else {
+                            getMinuteValue = Integer.parseInt(hiddenEt.getText().toString());
+                        }
                         textAmount = gethourValue * 60 + getMinuteValue;
 
                         textContents = editTextContents.getText().toString();
                         if (textContents.equals("")) {
-                            Log.e("dhrms", "일부로 익셉션처리함");
                             throw new Exception();
                         }
                         if (physicalRadio.isChecked()) {
                             dbData.type = "물리적양";
                             dbData.unit = categoryPhysicalArrays[tempUnit];
+                            textAmount /= 60;
                         } else {
                             dbData.type = "시간적양";
                             dbData.unit = categoryTimeArrays[tempUnit];
@@ -78,6 +83,7 @@ public class MonthGoalDialog extends GoalDialog implements View.OnClickListener 
                         Toast.makeText(getContext(), "이미 이번달의 목표를 입력하였습니다.", Toast.LENGTH_SHORT).show();
                     } else {
                         dbManager.insert(FROM_MONTH, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 2);
+                        failBetMonth = dbManager.getBettingGold(FROM_MONTH);
                     }
                     dismiss();
                 } catch (Exception e) {

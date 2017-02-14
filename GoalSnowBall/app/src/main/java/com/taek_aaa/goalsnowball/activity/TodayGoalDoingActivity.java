@@ -45,7 +45,6 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
                 timeOfCurrenttv = (TextView) findViewById(R.id.doing_current_time);
                 isAmount = false;
             }
-
             blackboardtv = (TextView) findViewById(R.id.doing_goalAmount);
             successGetGoldtv = (TextView) findViewById(R.id.successGetGoldtv);
             doingGoaltv = (TextView) findViewById(R.id.doing_goal);
@@ -74,7 +73,6 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
         }
         tmpAmount = dbManager.getCurrentAmount(FROM_TODAY);
     }
-
     /**
      * 목표 수행량 저장하는 함수
      **/
@@ -97,11 +95,9 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
                 successDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {
-
                         playCoinSound();
                     }
                 });
-
             }
         }
     }
@@ -152,17 +148,13 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
                         playCoinSound();
                     }
                 });
-
             } else if (dbManager.getUnit(FROM_TODAY).equals("이하") && dbManager.getCurrentAmount(FROM_TODAY) >= dbManager.getGoalAmount(FROM_TODAY)) {       //이하이고 실패
                 dbManager.setIsSuccess(FROM_TODAY, 3);
                 failFlag = true;
                 totalLooseCoin = dbManager.getBettingGold(FROM_TODAY);
                 failDialog = new FailDialog(this);
                 failDialog.show();
-
                 setFailStatus(false);
-
-
             } else {          // 그냥 단순히 저장되는 경우
                 Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
             }
@@ -175,7 +167,6 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
         Log.e("dhrms", "마지막");
 
     }
-
 
     /**
      * upButton, downButton 클릭 시

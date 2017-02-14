@@ -20,7 +20,6 @@ import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
 
 public class FailDialog extends Dialog {
     TextView failMsg, failCoinMsg;
-
     DBManager dbManager;
     UserDBManager userDBManager;
     SoundPool soundPool;
@@ -59,8 +58,6 @@ public class FailDialog extends Dialog {
                     soundPool.play(tune, 1, 1, 0, 0, 1);
                 }
             });
-
         }
-
     }
 }

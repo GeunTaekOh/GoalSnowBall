@@ -51,14 +51,21 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
                         Toast.makeText(getContext(), "" + bettingToastMessage(FROM_TODAY), Toast.LENGTH_SHORT).show();
                         break;
                     } else {
-                        getMinuteValue = Integer.parseInt(hiddenEt.getText().toString());
+                        String getMinuteValueString = hiddenEt.getText().toString();
                         String gethourValueString = editTextAmonut.getText().toString();
                         if (gethourValueString.equals("")) {
                             gethourValue = 0;
                         } else {
                             gethourValue = Integer.parseInt(editTextAmonut.getText().toString());
                         }
+
+                        if (getMinuteValueString.equals("")) {
+                            getMinuteValue = 0;
+                        } else {
+                            getMinuteValue = Integer.parseInt(hiddenEt.getText().toString());
+                        }
                         textAmount = gethourValue * 60 + getMinuteValue;
+
                         textContents = editTextContents.getText().toString();
                         if (textContents.equals("")) {
                             throw new Exception();
@@ -66,6 +73,7 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
                         if (physicalRadio.isChecked()) {
                             dbData.type = "물리적양";
                             dbData.unit = categoryPhysicalArrays[tempUnit];
+                            textAmount /= 60;
                         } else {
                             dbData.type = "시간적양";
                             dbData.unit = categoryTimeArrays[tempUnit];
