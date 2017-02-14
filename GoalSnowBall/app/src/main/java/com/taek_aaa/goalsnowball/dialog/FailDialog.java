@@ -7,11 +7,11 @@ import android.media.SoundPool;
 import android.widget.TextView;
 
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.controller.DataController;
 import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
 
 import static android.media.AudioManager.STREAM_MUSIC;
-import static com.taek_aaa.goalsnowball.data.CommonData.failFlag;
 import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
 
 /**
@@ -25,11 +25,16 @@ public class FailDialog extends Dialog {
     SoundPool soundPool;
     int tune;
     private Context c;
+    DataController dataController;
+    Context context;
 
     public FailDialog(Context context) {
         super(context);
         this.c = context;
         setContentView(R.layout.dialog_fail);
+        context = getContext();
+
+        dataController = new DataController();
         userDBManager = new UserDBManager(getContext(), "userdb.db", null, 1);
         dbManager = new DBManager(getContext(), "goaldb.db", null, 1);
 
@@ -44,7 +49,9 @@ public class FailDialog extends Dialog {
 
         playFailSound();
 
-        failFlag = false;
+
+        dataController.setPreferencesFailFlag(context, 0);
+//        failFlag = false;
     }
 
     private void playFailSound(){

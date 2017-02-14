@@ -14,7 +14,6 @@ import com.taek_aaa.goalsnowball.dialog.FailDialog;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
-import static com.taek_aaa.goalsnowball.data.CommonData.failFlag;
 import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessToday;
 import static com.taek_aaa.goalsnowball.data.CommonData.setFailStatus;
 import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
@@ -150,7 +149,7 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
                 });
             } else if (dbManager.getUnit(FROM_TODAY).equals("이하") && dbManager.getCurrentAmount(FROM_TODAY) >= dbManager.getGoalAmount(FROM_TODAY)) {       //이하이고 실패
                 dbManager.setIsSuccess(FROM_TODAY, 3);
-                failFlag = true;
+                dataController.setPreferencesFailFlag(context, 1);
                 totalLooseCoin = dbManager.getBettingGold(FROM_TODAY);
                 failDialog = new FailDialog(this);
                 failDialog.show();

@@ -21,7 +21,6 @@ public class CommonData {
     public static boolean isFailToday, isFailWeek, isFailMonth;
     //public static String[] dayOfWeekArray = {"", "일", "월", "화", "수", "목", "금", "토"};
     public static int failBetToday, failBetWeek, failBetMonth;
-    public static boolean failFlag, levelUpFlag=false;
     public static int totalLooseCoin = 0;
     public static int listViewPosition = 0;
     public static int whatGradeTo;

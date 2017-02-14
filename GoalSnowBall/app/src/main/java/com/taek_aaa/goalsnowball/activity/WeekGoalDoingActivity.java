@@ -14,7 +14,6 @@ import com.taek_aaa.goalsnowball.dialog.FailDialog;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
-import static com.taek_aaa.goalsnowball.data.CommonData.failFlag;
 import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessWeek;
 import static com.taek_aaa.goalsnowball.data.CommonData.setFailStatus;
 import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
@@ -158,7 +157,7 @@ public class WeekGoalDoingActivity extends GoalDoingActivity {
 
             } else if (dbManager.getUnit(FROM_WEEK).equals("이하") && dbManager.getCurrentAmount(FROM_WEEK) >= dbManager.getGoalAmount(FROM_WEEK)) {       //이하이고 실패
                 dbManager.setIsSuccess(FROM_WEEK,3);
-                failFlag = true;
+                dataController.setPreferencesFailFlag(context, 1);
                 totalLooseCoin = dbManager.getBettingGold(FROM_WEEK);
                 failDialog = new FailDialog(this);
                 failDialog.show();

@@ -106,6 +106,7 @@
             android:layout_margin="5dp"
             android:hint="목표를 입력하세요."
             android:inputType="textAutoComplete"
+            android:maxLength="17"
             android:singleLine="true"
             />
 

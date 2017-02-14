@@ -9,10 +9,10 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.controller.DataController;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
 
 import static android.media.AudioManager.STREAM_MUSIC;
-import static com.taek_aaa.goalsnowball.data.CommonData.levelUpFlag;
 
 /**
  * Created by taek_aaa on 2017. 2. 14..
@@ -24,11 +24,13 @@ public class LevelUpDialog extends Dialog {
     SoundPool soundPool;
     UserDBManager userDBManager;
     ImageView leveluplogo;
+    DataController dataController;
 
     public LevelUpDialog(Context context) {
         super(context);
         this.c = context;
         setContentView(R.layout.dialog_levelup);
+        dataController = new DataController();
 
 
         leveluplogo = (ImageView) findViewById(R.id.levelup);
@@ -39,7 +41,7 @@ public class LevelUpDialog extends Dialog {
 
         playLevelUpSound();
 
-        levelUpFlag = false;
+        dataController.setPreferencesLevelUpFlag(c, 0);
 
     }
 

@@ -14,7 +14,6 @@ import com.taek_aaa.goalsnowball.dialog.FailDialog;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
-import static com.taek_aaa.goalsnowball.data.CommonData.failFlag;
 import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessMonth;
 import static com.taek_aaa.goalsnowball.data.CommonData.setFailStatus;
 import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
@@ -26,6 +25,7 @@ import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.whereSuccess;
  */
 
 public class MonthGoalDoingActivity extends GoalDoingActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,7 +155,7 @@ public class MonthGoalDoingActivity extends GoalDoingActivity {
 
             } else if (dbManager.getUnit(FROM_MONTH).equals("이하") && dbManager.getCurrentAmount(FROM_MONTH) >= dbManager.getGoalAmount(FROM_MONTH)) {       //이하이고 실패
                 dbManager.setIsSuccess(FROM_MONTH,3);
-                failFlag = true;
+                dataController.setPreferencesFailFlag(context, 1);
                 totalLooseCoin = dbManager.getBettingGold(FROM_MONTH);
                 failDialog = new FailDialog(this);
                 failDialog.show();

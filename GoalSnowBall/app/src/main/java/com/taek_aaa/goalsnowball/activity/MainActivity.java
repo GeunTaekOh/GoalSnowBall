@@ -3,7 +3,6 @@ package com.taek_aaa.goalsnowball.activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -58,9 +57,7 @@ import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
 import static com.taek_aaa.goalsnowball.data.CommonData.defaultHeight;
 import static com.taek_aaa.goalsnowball.data.CommonData.defaultWidth;
-import static com.taek_aaa.goalsnowball.data.CommonData.failFlag;
 import static com.taek_aaa.goalsnowball.data.CommonData.inflater;
-import static com.taek_aaa.goalsnowball.data.CommonData.levelUpFlag;
 import static com.taek_aaa.goalsnowball.data.CommonData.setFailStatus;
 import static com.taek_aaa.goalsnowball.data.CommonData.whatGradeTo;
 
@@ -88,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Target t1, t2, t3, t4, t5, t6, t7, t8;
     private int contador = 0;
     LevelUpDialog levelUpDialog;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        context = getBaseContext();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -167,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(this, showListActivity.class));
                 break;
             case R.id.action_howtouse:
-                setPreferencesIsFirstOpenApp(1);
+                dataController.setPreferencesIsFirstOpenApp(context,1);
                 guid();
                 break;
             case R.id.action_settings:
@@ -576,7 +575,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         monthBulb = (ImageView) findViewById(R.id.monthBulb);
 
         //처음 어플 실행시켰을때 가이드 화면을 띄워줌
-        if (getPreferencesIsFirstOpenApp() == 1) {
+        if (dataController.getPreferencesIsFirstOpenApp(context) == 1) {
             guid();
         }
     }
@@ -728,8 +727,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     /** 목표 달성 실패 여부 확인 후 실패시 실패 화면 띄움**/
     private void checkFailStatus() {
-        Log.e("dhrms", "" + failFlag);
-        if (failFlag) {
+        if (dataController.getPreferencesFailFlag(context)==1) {
             failDialog = new FailDialog(this);
             failDialog.show();
 
@@ -759,12 +757,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void checkLevelUpStatus(){
-        if(levelUpFlag && getPreferencesIsGradeChange()!=whatGradeTo){
+        if(dataController.getPreferencesLevelUpFlag(context)==1 && dataController.getPreferencesIsGradeChange(context)!=whatGradeTo){
             levelUpDialog = new LevelUpDialog(this);
             levelUpDialog.show();
             drawUserStatus();
-            levelUpFlag=false;
-            setPreferencesIsGradeChange(whatGradeTo);
+            dataController.setPreferencesLevelUpFlag(context, 0);
+            dataController.setPreferencesIsGradeChange(context, whatGradeTo);
         }
     }
 
@@ -787,7 +785,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .build();
         showcaseView.setButtonText("안내 시작");
 
-        setPreferencesIsFirstOpenApp(0);
+        dataController.setPreferencesIsFirstOpenApp(context,0);
     }
     /** showcaseView 안내 내용 **/
     @Override
@@ -850,38 +848,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         contador++;
     }
-
-    /** preference 값 가져오기 **/
-    private int getPreferencesIsFirstOpenApp() {
-        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-        int a;
-        a = pref.getInt("isFirst", 1);
-        return a;
-    }
-
-    /** preference 인자값 으로 저장하기 **/
-    private void setPreferencesIsFirstOpenApp(int a) {
-        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putInt("isFirst", a);
-        editor.commit();
-    }
-
-
-    /** preference 값 가져오기 **/
-    private int getPreferencesIsGradeChange() {
-        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-        int a;
-        a = pref.getInt("isGradeChange", 0);
-        return a;
-    }
-
-    /** preference 인자값 으로 저장하기 **/
-    private void setPreferencesIsGradeChange(int a) {
-        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putInt("isGradeChange", a);
-        editor.commit();
-    }
-
 }
