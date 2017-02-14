@@ -1,6 +1,7 @@
 package com.taek_aaa.goalsnowball.dialog;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
@@ -45,16 +46,19 @@ public class MonthGoalDialog extends GoalDialog implements View.OnClickListener 
                         Toast.makeText(getContext(), "" + bettingToastMessage(FROM_MONTH), Toast.LENGTH_SHORT).show();
                         break;
                     } else {
-                        int gethourValue = Integer.parseInt(editTextAmonut.getText().toString());
-                        if (hiddenEt.getText().toString().equals("")) {
-                            getMiniuteValue = 0;
-                            textAmount = gethourValue;
+                        getMinuteValue = Integer.parseInt(hiddenEt.getText().toString());
+                        String gethourValueString = editTextAmonut.getText().toString();
+                        if (gethourValueString.equals("")) {
+                            gethourValue = 0;
                         } else {
-                            getMiniuteValue = Integer.parseInt(hiddenEt.getText().toString());
-                            textAmount = gethourValue * 60 + getMiniuteValue;
+                            gethourValue = Integer.parseInt(editTextAmonut.getText().toString());
                         }
+
+                        textAmount = gethourValue * 60 + getMinuteValue;
+
                         textContents = editTextContents.getText().toString();
                         if (textContents.equals("")) {
+                            Log.e("dhrms", "일부로 익셉션처리함");
                             throw new Exception();
                         }
                         if (physicalRadio.isChecked()) {

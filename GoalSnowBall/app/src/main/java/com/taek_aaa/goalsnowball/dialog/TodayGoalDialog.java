@@ -51,14 +51,14 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
                         Toast.makeText(getContext(), "" + bettingToastMessage(FROM_TODAY), Toast.LENGTH_SHORT).show();
                         break;
                     } else {
-                        int gethourValue = Integer.parseInt(editTextAmonut.getText().toString());
-                        if (hiddenEt.getText().toString().equals("")) {
-                            getMiniuteValue = 0;
-                            textAmount = gethourValue;
+                        getMinuteValue = Integer.parseInt(hiddenEt.getText().toString());
+                        String gethourValueString = editTextAmonut.getText().toString();
+                        if (gethourValueString.equals("")) {
+                            gethourValue = 0;
                         } else {
-                            getMiniuteValue = Integer.parseInt(hiddenEt.getText().toString());
-                            textAmount = gethourValue * 60 + getMiniuteValue;
+                            gethourValue = Integer.parseInt(editTextAmonut.getText().toString());
                         }
+                        textAmount = gethourValue * 60 + getMinuteValue;
                         textContents = editTextContents.getText().toString();
                         if (textContents.equals("")) {
                             throw new Exception();

@@ -34,9 +34,8 @@ public class GoalDialog extends Dialog implements GoalDialogInterface{
     DBManager dbManager;
     int tempUnit = 0;
     DBData dbData = new DBData();
-    int getMiniuteValue;
+    int getMinuteValue, gethourValue;
     int textAmount;
-
     public GoalDialog(Context context) {
         super(context);
         setContentView(R.layout.dialog_goal);

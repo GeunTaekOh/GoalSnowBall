@@ -68,6 +68,8 @@ public class CurrentTimeService extends Service {
         CalendarDatas now = new CalendarDatas();
 //        Log.i("now", "" + now.hour + "시 " + now.minute + "분 " + now.seconds + "초 ");
 
+
+
         int endDay = now.getEndOfMonth(now.cYear, now.cMonth);
 
         if (now.hour == 23 && now.minute == 59 && now.seconds == 0) {

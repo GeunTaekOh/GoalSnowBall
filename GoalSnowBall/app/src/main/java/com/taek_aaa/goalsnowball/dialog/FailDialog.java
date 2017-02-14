@@ -37,9 +37,9 @@ public class FailDialog extends Dialog {
         failMsg = (TextView)findViewById(R.id.failMsg);
         failCoinMsg = (TextView)findViewById(R.id.failCoinMsg);
 
-        failCoinMsg.setText("실패하여서 총 "+totalLooseCoin/2+" Gold을 잃었습니다.");
+        failCoinMsg.setText("실패하여서 총 "+totalLooseCoin+" Gold을 잃었습니다.");
         int gold = userDBManager.getGold();
-        gold -= totalLooseCoin/2;
+        gold -= totalLooseCoin;
         userDBManager.setGold(gold);
         totalLooseCoin = 0;
 
