@@ -24,6 +24,15 @@ public class CommonData {
     public static boolean failFlag, levelUpFlag=false;
     public static int totalLooseCoin = 0;
     public static int listViewPosition = 0;
+    public static int whatGradeTo;
+    public final static int TO_D = 881;
+    public final static int TO_C = 882;
+    public final static int TO_B = 883;
+    public final static int TO_A = 884;
+    public final static int TO_S = 885;
+    public final static int TO_SS = 886;
+    public final static int TO_SSS = 887;
+    public final static int TO_MASTER = 888;
 
     public static void setFailStatus(boolean bool) {
         isFailToday = bool;

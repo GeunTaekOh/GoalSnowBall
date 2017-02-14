@@ -62,6 +62,7 @@ import static com.taek_aaa.goalsnowball.data.CommonData.failFlag;
 import static com.taek_aaa.goalsnowball.data.CommonData.inflater;
 import static com.taek_aaa.goalsnowball.data.CommonData.levelUpFlag;
 import static com.taek_aaa.goalsnowball.data.CommonData.setFailStatus;
+import static com.taek_aaa.goalsnowball.data.CommonData.whatGradeTo;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -166,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(this, showListActivity.class));
                 break;
             case R.id.action_howtouse:
-                setPreferences(1);
+                setPreferencesIsFirstOpenApp(1);
                 guid();
                 break;
             case R.id.action_settings:
@@ -575,8 +576,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         monthBulb = (ImageView) findViewById(R.id.monthBulb);
 
         //처음 어플 실행시켰을때 가이드 화면을 띄워줌
-        getPreferences();
-        if (getPreferences() == 1) {
+        if (getPreferencesIsFirstOpenApp() == 1) {
             guid();
         }
     }
@@ -756,12 +756,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+
+
     private void checkLevelUpStatus(){
-        if(levelUpFlag){
+        if(levelUpFlag && getPreferencesIsGradeChange()!=whatGradeTo){
             levelUpDialog = new LevelUpDialog(this);
             levelUpDialog.show();
             drawUserStatus();
             levelUpFlag=false;
+            setPreferencesIsGradeChange(whatGradeTo);
         }
     }
 
@@ -784,8 +787,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .build();
         showcaseView.setButtonText("안내 시작");
 
-
-        setPreferences(0);
+        setPreferencesIsFirstOpenApp(0);
     }
     /** showcaseView 안내 내용 **/
     @Override
@@ -850,7 +852,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /** preference 값 가져오기 **/
-    private int getPreferences() {
+    private int getPreferencesIsFirstOpenApp() {
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         int a;
         a = pref.getInt("isFirst", 1);
@@ -858,10 +860,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /** preference 인자값 으로 저장하기 **/
-    private void setPreferences(int a) {
+    private void setPreferencesIsFirstOpenApp(int a) {
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putInt("isFirst", a);
+        editor.commit();
+    }
+
+
+    /** preference 값 가져오기 **/
+    private int getPreferencesIsGradeChange() {
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        int a;
+        a = pref.getInt("isGradeChange", 0);
+        return a;
+    }
+
+    /** preference 인자값 으로 저장하기 **/
+    private void setPreferencesIsGradeChange(int a) {
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("isGradeChange", a);
         editor.commit();
     }
 

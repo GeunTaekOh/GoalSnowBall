@@ -12,6 +12,14 @@ import com.taek_aaa.goalsnowball.data.UserDBManager;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
+import static com.taek_aaa.goalsnowball.data.CommonData.TO_A;
+import static com.taek_aaa.goalsnowball.data.CommonData.TO_B;
+import static com.taek_aaa.goalsnowball.data.CommonData.TO_C;
+import static com.taek_aaa.goalsnowball.data.CommonData.TO_D;
+import static com.taek_aaa.goalsnowball.data.CommonData.TO_MASTER;
+import static com.taek_aaa.goalsnowball.data.CommonData.TO_S;
+import static com.taek_aaa.goalsnowball.data.CommonData.TO_SS;
+import static com.taek_aaa.goalsnowball.data.CommonData.TO_SSS;
 import static com.taek_aaa.goalsnowball.data.CommonData.failBetMonth;
 import static com.taek_aaa.goalsnowball.data.CommonData.failBetToday;
 import static com.taek_aaa.goalsnowball.data.CommonData.failBetWeek;
@@ -23,6 +31,7 @@ import static com.taek_aaa.goalsnowball.data.CommonData.isTodayDueFinish;
 import static com.taek_aaa.goalsnowball.data.CommonData.isWeekDueFinish;
 import static com.taek_aaa.goalsnowball.data.CommonData.levelUpFlag;
 import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
+import static com.taek_aaa.goalsnowball.data.CommonData.whatGradeTo;
 
 public class CurrentTimeService extends Service {
     Boolean isRunning;
@@ -114,36 +123,40 @@ public class CurrentTimeService extends Service {
     public void checkLevelUp(){
         int gold = userDBManager.getGold();
         int count = dbManager.getLastPosition();
-        if(gold < 100 && count < 10) {
-            userDBManager.setGrade("UnRank");
-            //}else if(gold >= 100 && count >= 10){
-        }else if(gold >= 0 && count>= 0){           // 테스트중 나중에 기준 바꾸기
-            Log.e("dhrms","레벨업");
-            userDBManager.setGrade("D");
+        if(gold >= 100 && count>= 10){
+            userDBManager.setGrade("D 등급");
             levelUpFlag=true;
+            whatGradeTo=TO_D;
         }else if (gold >= 300 && count >= 30){
-            userDBManager.setGrade("C");
+            userDBManager.setGrade("C 등급");
             levelUpFlag=true;
+            whatGradeTo=TO_C;
         }else if (gold >= 500 && count >= 50){
-            userDBManager.setGrade("B");
+            userDBManager.setGrade("B 등급");
             levelUpFlag=true;
+            whatGradeTo = TO_B;
         }else if (gold >= 1000 && count >= 100){
-            userDBManager.setGrade("A");
+            userDBManager.setGrade("A 등급");
             levelUpFlag=true;
+            whatGradeTo = TO_A;
         }else if (gold >= 5000 && count >= 300){
-            userDBManager.setGrade("S");
+            userDBManager.setGrade("S 등급");
             levelUpFlag=true;
+            whatGradeTo = TO_S;
         }else if (gold >= 20000 && count >= 500){
-            userDBManager.setGrade("SS");
+            userDBManager.setGrade("SS 등급");
             levelUpFlag=true;
+            whatGradeTo = TO_SS;
         }else if (gold >= 100000 && count >= 1000){
-            userDBManager.setGrade("SSS");
+            userDBManager.setGrade("SSS 등급");
+            levelUpFlag=true;
+            whatGradeTo = TO_SSS;
+        }else if(gold >= 1000000 && count >= 3000){
+            userDBManager.setGrade("Master");
+            levelUpFlag=true;
+            whatGradeTo = TO_MASTER;
         }
     }
-
-
-
-
 
 }
 
