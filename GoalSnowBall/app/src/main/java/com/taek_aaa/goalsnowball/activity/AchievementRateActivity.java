@@ -1,9 +1,11 @@
 package com.taek_aaa.goalsnowball.activity;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -110,9 +112,12 @@ public class AchievementRateActivity extends Activity implements AchievementRate
         int current;
 
         if (type.equals("물리적양") || (type.equals("시간적양"))) {
-            progressBar.setMax(dbManager.getGoalAmount(from));
-            progressBar.setProgress(dbManager.getCurrentAmount(from));
+            progressBar.setMax(dbManager.getGoalAmount(from) * 100);
+            progressBar.setProgress(dbManager.getCurrentAmount(from) * 100);
             progressBar.setVisibility(ProgressBar.VISIBLE);
+
+            setProgressAnimate();
+
             current = dbManager.getCurrentAmount(from);
         } else {
             throw new Exception();
@@ -184,6 +189,13 @@ public class AchievementRateActivity extends Activity implements AchievementRate
         } else {
             betAmounttv.setText("" + dbManager.getBettingGold(from) + " Gold");
         }
+    }
+
+    private void setProgressAnimate() {
+        ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", 0, progressBar.getProgress());
+        animation.setDuration(2500);
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.start();
     }
 
 }

@@ -82,6 +82,8 @@
                 android:layout_marginTop="30dp"
                 android:scaleType="fitXY"
                 android:onClick="onClickMainImage"
+                app:siBorderColor="#889BDDFF"
+
 
                 />
             <!--android:background="@drawable/circle_border"-->
