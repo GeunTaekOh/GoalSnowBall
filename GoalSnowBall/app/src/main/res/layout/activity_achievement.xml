@@ -43,7 +43,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="20dp"
-                android:text="목표량" />
+                android:text="목표량"
+                android:textStyle="bold"
+                android:textSize="14dp"
+                />
 
             <View
                 android:layout_width="2dp"
@@ -78,7 +81,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="20dp"
-                android:text="수행량" />
+                android:text="수행량"
+                android:textStyle="bold"
+                android:textSize="14dp"
+                />
 
             <View
                 android:layout_width="2dp"
@@ -111,7 +117,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="20dp"
-                android:text="달성률" />
+                android:text="달성률"
+                android:textSize="14dp"
+                android:textStyle="bold"/>
 
             <View
                 android:layout_width="2dp"
@@ -157,6 +165,8 @@
                 android:layout_gravity="center"
                 android:layout_margin="20dp"
                 android:text="잔여량"
+                android:textSize="14dp"
+                android:textStyle="bold"
 
                 />
 
@@ -192,7 +202,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="20dp"
-                android:text="배팅액" />
+                android:text="배팅액"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                />
 
             <View
                 android:layout_width="2dp"
@@ -226,7 +239,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="20dp"
-                android:text="획득 여부" />
+                android:text="획득 여부"
+                android:textSize="14dp"
+                android:textStyle="bold"/>
 
             <View
                 android:layout_width="2dp"
@@ -259,7 +274,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="20dp"
-                android:text="남은 기간" />
+                android:text="남은 기간"
+                android:textSize="14dp"
+                android:textStyle="bold"/>
 
             <View
                 android:layout_width="2dp"

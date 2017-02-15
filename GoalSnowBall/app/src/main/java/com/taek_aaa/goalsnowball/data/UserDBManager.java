@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 /**
  * Created by taek_aaa on 2017. 1. 20..
@@ -90,7 +89,6 @@ public class UserDBManager extends SQLiteOpenHelper {
         String grade="";
         while (cursor.moveToNext()) {
             grade = cursor.getString(cursor.getColumnIndex("grade"));
-            Log.e("qwe", String.valueOf(grade));
         }
         cursor.close();
         db.close();
@@ -102,7 +100,6 @@ public class UserDBManager extends SQLiteOpenHelper {
         String name="";
         while (cursor.moveToNext()) {
             name = cursor.getString(cursor.getColumnIndex("name"));
-            Log.e("qwe", String.valueOf(name));
         }
         cursor.close();
         db.close();
@@ -114,8 +111,6 @@ public class UserDBManager extends SQLiteOpenHelper {
         int gold=0;
         while (cursor.moveToNext()) {
             gold = cursor.getInt(cursor.getColumnIndex("gold"));
-            Log.e("qwe", "gold : "+String.valueOf(gold));
-
         }
         cursor.close();
         db.close();
@@ -127,7 +122,6 @@ public class UserDBManager extends SQLiteOpenHelper {
         String Path="";
         while (cursor.moveToNext()) {
             Path = cursor.getString(cursor.getColumnIndex("picturePath"));
-            Log.e("qwe", String.valueOf(Path));
         }
         cursor.close();
         db.close();
