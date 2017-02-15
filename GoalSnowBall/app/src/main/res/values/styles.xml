@@ -13,13 +13,11 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    </style>
 
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-
-
-
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
     <style name="SplashTheme" parent="@android:style/Theme.Light.NoTitleBar">
@@ -28,7 +26,7 @@
 
 
     <style name="TextAppearance.ShowcaseView.Detail" parent="android:style/TextAppearance">
-        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorGuide</item>
 
     </style>
 

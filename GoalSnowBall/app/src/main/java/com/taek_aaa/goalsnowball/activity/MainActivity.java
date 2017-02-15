@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     final int PICK_FROM_ALBUM = 101;
     Bitmap photo;
-    ImageView   todayBulb, weekBulb, monthBulb;
+    ImageView todayBulb, weekBulb, monthBulb;
     CircularImageView imageView;
     Boolean isPicture = false;
     TextView todaytv, weektv, monthtv, dDayWeektv, dDayMonthtv, mainGoldtv, percentToday, percentWeek, percentMonth, userNametv, userIdtv, mainGradetv;
@@ -155,6 +155,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else if (dataController.getPreferencesIsFirstOpenApp(context) == 1) {
+            showcaseView.hide();
+            dataController.setPreferencesIsFirstOpenApp(context, 0);
+            contador = 0;
         } else {
             if (System.currentTimeMillis() - lastTimeBackPressed < 1500) {
                 finish();
@@ -186,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.action_howtouse:
                 dataController.setPreferencesIsFirstOpenApp(context, 1);
-                guid();
+                guide();
                 break;
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingActivity.class));
@@ -601,7 +605,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //처음 어플 실행시켰을때 가이드 화면을 띄워줌
         if (dataController.getPreferencesIsFirstOpenApp(context) == 1) {
-            guid();
+            guide();
         }
     }
 
@@ -801,7 +805,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * 안내해주는 showcaseView 오픈소스 출력
      **/
-    private void guid() {
+    private void guide() {
         t1 = new ViewTarget(R.id.mainImageView, this);
         t2 = new ViewTarget(R.id.d_week, this);
         t3 = new ViewTarget(R.id.mainGradetv, this);
@@ -819,7 +823,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .build();
         showcaseView.setButtonText("안내 시작");
 
-        dataController.setPreferencesIsFirstOpenApp(context, 0);
+
     }
 
     /**
@@ -880,6 +884,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case 8:
                 showcaseView.hide();
+                dataController.setPreferencesIsFirstOpenApp(context, 0);
                 contador = 0;
                 break;
         }

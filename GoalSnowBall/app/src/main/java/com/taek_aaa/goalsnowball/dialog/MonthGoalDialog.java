@@ -24,6 +24,9 @@ public class MonthGoalDialog extends GoalDialog implements View.OnClickListener 
         findViewById(R.id.DialogExitButton).setOnClickListener(this);
         findViewById(R.id.DialogX).setOnClickListener(this);
         bettinggold = returnGold(FROM_MONTH);
+        if(bettinggold<=5){
+            bettinggold = 2;
+        }
         bettingGoldet.setText("" + bettinggold);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

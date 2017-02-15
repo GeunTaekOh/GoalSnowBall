@@ -25,6 +25,9 @@ public class WeekGoalDialog extends GoalDialog implements View.OnClickListener {
         findViewById(R.id.DialogExitButton).setOnClickListener(this);
         findViewById(R.id.DialogX).setOnClickListener(this);
         bettinggold = returnGold(FROM_WEEK);
+        if(bettinggold<=5){
+            bettinggold = 2;
+        }
         bettingGoldet.setText("" + bettinggold);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

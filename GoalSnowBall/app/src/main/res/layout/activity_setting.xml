@@ -79,7 +79,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="80dp"
                 android:text=""
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                />
 
         </LinearLayout>
     </LinearLayout>

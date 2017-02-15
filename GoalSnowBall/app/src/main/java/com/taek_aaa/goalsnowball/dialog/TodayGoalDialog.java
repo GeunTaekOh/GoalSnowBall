@@ -27,6 +27,9 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
         findViewById(R.id.DialogX).setOnClickListener(this);
 
         bettinggold = returnGold(FROM_TODAY);
+        if(bettinggold<=5){
+            bettinggold = 2;
+        }
         bettingGoldet.setText("" + bettinggold);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

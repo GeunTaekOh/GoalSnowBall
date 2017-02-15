@@ -98,8 +98,8 @@ public class GoalDialog extends Dialog implements GoalDialogInterface{
     public String bettingToastMessage(int from){
         String msg="";
 
-        if (userDBManager.getGold() <= 0) {
-            msg = "보유 Gold가 0보다 작아서 2Gold 이하만 베팅 가능합니다.";
+        if (userDBManager.getGold() <= 5) {
+            msg = "보유 Gold가 작아서 2Gold 이하만 베팅 가능합니다.";
         } else {
             if(from==FROM_TODAY){
                 msg = "배팅액은 총 보유 골드의 25%를 넘을 수 없습니다.";
