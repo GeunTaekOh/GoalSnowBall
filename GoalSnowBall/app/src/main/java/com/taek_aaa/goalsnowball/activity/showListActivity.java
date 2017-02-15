@@ -1,6 +1,8 @@
 package com.taek_aaa.goalsnowball.activity;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
@@ -37,7 +39,9 @@ public class showListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_showlist);
         dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
-
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(Color.parseColor("#99BADD"));
+        }
         listtv = (TextView)findViewById(R.id.listTopTv);
         countListtv = (TextView)findViewById(R.id.countListtv);
         if(amountOfShowList > dbManager.getLastPosition()){

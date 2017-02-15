@@ -3,6 +3,7 @@ package com.taek_aaa.goalsnowball.activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,9 +12,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -32,6 +35,7 @@ import android.widget.Toast;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.Target;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.github.siyamed.shapeimageview.CircularImageView;
 import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.Service.CurrentTimeService;
 import com.taek_aaa.goalsnowball.Service.NotificationService;
@@ -66,7 +70,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     final int PICK_FROM_ALBUM = 101;
     Bitmap photo;
-    ImageView imageView, todayBulb, weekBulb, monthBulb;
+    ImageView   todayBulb, weekBulb, monthBulb;
+    CircularImageView imageView;
     Boolean isPicture = false;
     TextView todaytv, weektv, monthtv, dDayWeektv, dDayMonthtv, mainGoldtv, percentToday, percentWeek, percentMonth, userNametv, userIdtv, mainGradetv;
     TodayGoalDialog todayGoalDialog;
@@ -86,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int contador = 0;
     LevelUpDialog levelUpDialog;
     Context context;
+    long lastTimeBackPressed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -121,6 +129,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent timerIntent = new Intent(MainActivity.this, CurrentTimeService.class);
         startService(timerIntent);
 
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(Color.parseColor("#99BADD"));
+        }
 
     }
 
@@ -133,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         checkFailStatus();
         checkLevelUpStatus();
         draw();
-        contador=0;
+        contador = 0;
     }
 
     /**
@@ -145,7 +156,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (System.currentTimeMillis() - lastTimeBackPressed < 1500) {
+                finish();
+                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+                }
+                return;
+            }
+            Toast.makeText(MainActivity.this, "'뒤로' 버튼을 한번 더 누르면 종료됩니다", Toast.LENGTH_SHORT).show();
+            lastTimeBackPressed = System.currentTimeMillis();
         }
     }
 
@@ -166,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(this, showListActivity.class));
                 break;
             case R.id.action_howtouse:
-                dataController.setPreferencesIsFirstOpenApp(context,1);
+                dataController.setPreferencesIsFirstOpenApp(context, 1);
                 guid();
                 break;
             case R.id.action_settings:
@@ -235,13 +254,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(getBaseContext(), "사진을 입력하였습니다.", Toast.LENGTH_SHORT).show();
             isPicture = true;
         } catch (Exception e) {
-            Log.e("error",""+e.getStackTrace());
-            Toast.makeText(getBaseContext(),"사진을 입력하는 과정에서 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+            Log.e("error", "" + e.getStackTrace());
+            Toast.makeText(getBaseContext(), "사진을 입력하는 과정에서 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
             isPicture = false;
         }
     }
 
-    /** 사진 임시 경로가 아닌 실제 경로를 가져옴 **/
+    /**
+     * 사진 임시 경로가 아닌 실제 경로를 가져옴
+     **/
     protected String getRealPathFromURI(Uri contentURI) {
         String result;
         Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
@@ -282,10 +303,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 photo = rotatedPhoto;
                 imageView.setImageBitmap(rotatedPhoto);
                 isPicture = true;
+
+
             } else {
                 Toast.makeText(this, "경로에 사진이 없습니다.", Toast.LENGTH_SHORT).show();
                 isPicture = false;
             }
+
+
         }
     }
 
@@ -435,12 +460,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 이미지 선택 안했을 시에 이미지를 이미지뷰에 출력
      **/
     private void drawMainImage() {
-        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.profile);
+        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.profile2);
         Bitmap bitmapDefault = drawable.getBitmap();
         Bitmap sizedBitmapDefault = pictureController.setSizedImage(bitmapDefault);
         defaultHeight = sizedBitmapDefault.getHeight();
         defaultWidth = sizedBitmapDefault.getWidth();
         imageView.setImageBitmap(sizedBitmapDefault);
+
     }
 
 
@@ -545,8 +571,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void init() {
         userDBManager = new UserDBManager(getBaseContext(), "userdb.db", null, 1);
         dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
-
-        imageView = (ImageView) findViewById(R.id.mainImageView);
+        imageView = (CircularImageView) findViewById(R.id.mainImageView);
         today = new CalendarDatas();
         mainGradetv = (TextView) findViewById(R.id.mainGradetv);
         mainGoldtv = (TextView) findViewById(R.id.mainGoldtv);
@@ -580,8 +605,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    /** 메인이미지를 롱클릭이 아닌 그냥 클릭으로도 롱클릭 효과를 줌**/
-    public void onClickMainImage(View v){
+    /**
+     * 메인이미지를 롱클릭이 아닌 그냥 클릭으로도 롱클릭 효과를 줌
+     **/
+    public void onClickMainImage(View v) {
         registerForContextMenu(imageView);
         openContextMenu(imageView);
 
@@ -596,14 +623,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         menu.setHeaderTitle("어떤 작업을 수행하시겠습니까?");
         if (v == imageView) {
-            String[] currencyUnit = {"사진 추가/수정", "사진 회전", "사진 삭제"};
+            String[] currencyUnit = {"사진 추가", "사진 회전", "사진 삭제"};
             for (int i = 1; i <= 3; i++) {
                 menu.add(0, i, 100, currencyUnit[i - 1]);
             }
-            if(!isPicture){
+            if (!isPicture) {
                 menu.getItem(1).setVisible(false);
                 menu.getItem(2).setVisible(false);
-            }else{
+            } else {
                 menu.getItem(0).setVisible(false);
             }
 
@@ -701,7 +728,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onContextItemSelected(item);
     }
 
-    /** 이름을 입력받는 창 출력 **/
+    /**
+     * 이름을 입력받는 창 출력
+     **/
     public void onClickName(View v) {
         userNameDialog.show();
         userNameDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -712,7 +741,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    /** 화면에 무언가를 그려주는 메서드들**/
+    /**
+     * 화면에 무언가를 그려주는 메서드들
+     **/
     private void draw() {
         drawGoal();
         drawGoalWhenDismiss();
@@ -725,9 +756,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    /** 목표 달성 실패 여부 확인 후 실패시 실패 화면 띄움**/
+    /**
+     * 목표 달성 실패 여부 확인 후 실패시 실패 화면 띄움
+     **/
     private void checkFailStatus() {
-        if (dataController.getPreferencesFailFlag(context)==1) {
+        if (dataController.getPreferencesFailFlag(context) == 1) {
             failDialog = new FailDialog(this);
             failDialog.show();
 
@@ -755,9 +788,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
-    private void checkLevelUpStatus(){
-        if(dataController.getPreferencesLevelUpFlag(context)==1 && dataController.getPreferencesIsGradeChange(context)!=whatGradeTo){
+    private void checkLevelUpStatus() {
+        if (dataController.getPreferencesLevelUpFlag(context) == 1 && dataController.getPreferencesIsGradeChange(context) != whatGradeTo) {
             levelUpDialog = new LevelUpDialog(this);
             levelUpDialog.show();
             drawUserStatus();
@@ -766,7 +798,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    /** 안내해주는 showcaseView 오픈소스 출력 **/
+    /**
+     * 안내해주는 showcaseView 오픈소스 출력
+     **/
     private void guid() {
         t1 = new ViewTarget(R.id.mainImageView, this);
         t2 = new ViewTarget(R.id.d_week, this);
@@ -785,9 +819,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .build();
         showcaseView.setButtonText("안내 시작");
 
-        dataController.setPreferencesIsFirstOpenApp(context,0);
+        dataController.setPreferencesIsFirstOpenApp(context, 0);
     }
-    /** showcaseView 안내 내용 **/
+
+    /**
+     * showcaseView 안내 내용
+     **/
     @Override
     public void onClick(View v) {
         switch (contador) {

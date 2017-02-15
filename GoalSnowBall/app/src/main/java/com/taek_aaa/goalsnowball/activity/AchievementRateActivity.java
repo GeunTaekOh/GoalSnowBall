@@ -2,6 +2,7 @@ package com.taek_aaa.goalsnowball.activity;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -57,6 +58,10 @@ public class AchievementRateActivity extends Activity implements AchievementRate
         progressBar = (ProgressBar) findViewById(R.id.progressbar);
         dueTimeFinish = (TextView) findViewById(dueAchievementAmount);
         dataController = new DataController();
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(Color.parseColor("#99BADD"));
+        }
 
     }
 

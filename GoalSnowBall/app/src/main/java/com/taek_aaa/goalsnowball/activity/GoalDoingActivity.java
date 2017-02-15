@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -51,6 +52,9 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface {
         userDBManager = new UserDBManager(getBaseContext(), "userdb.db", null, 1);
         context = getBaseContext();
         dataController = new DataController();
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(Color.parseColor("#99BADD"));
+        }
     }
 
     /**

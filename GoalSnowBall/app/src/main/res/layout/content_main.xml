@@ -36,7 +36,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentStart="true"
-                android:background="@drawable/fourth">
+                android:background="@drawable/third">
 
 
             </RelativeLayout>
@@ -72,14 +72,14 @@
                 </LinearLayout>
             </RelativeLayout>
 
-            <ImageView
+            <com.github.siyamed.shapeimageview.CircularImageView
                 android:id="@+id/mainImageView"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:scaleType="fitXY"
                 android:onClick="onClickMainImage"
 

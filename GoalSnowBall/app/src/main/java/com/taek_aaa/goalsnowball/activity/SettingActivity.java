@@ -3,6 +3,8 @@ package com.taek_aaa.goalsnowball.activity;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -31,6 +33,9 @@ public class SettingActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(Color.parseColor("#99BADD"));
+        }
 
         userDBManager = new UserDBManager(getBaseContext(), "userdb.db", null, 1);
         dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
