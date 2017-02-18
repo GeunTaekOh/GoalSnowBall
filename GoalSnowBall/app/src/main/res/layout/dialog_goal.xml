@@ -157,25 +157,25 @@
 
             <Button
                 android:id="@+id/DialogExitButton"
-                android:layout_width="125dp"
+                android:layout_width="115dp"
                 android:layout_weight="1"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="center"
-                android:background="@drawable/side_nav_bar"
+                android:background="@drawable/roundbutton"
                 android:text="취소"
                 android:textColor="#F5F5F5"
-                android:layout_marginRight="1dp"
+                android:layout_marginRight="10dp"
                 android:textSize="15dp"
                 />
 
             <Button
                 android:id="@+id/DialogConfirmButton"
-                android:layout_width="125dp"
+                android:layout_width="115dp"
                 android:layout_weight="1"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="center"
-                android:layout_marginLeft="1dp"
-                android:background="@drawable/side_nav_bar"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/roundbutton"
                 android:text="저장"
                 android:textColor="#F5F5F5"
                 android:textSize="15dp"
