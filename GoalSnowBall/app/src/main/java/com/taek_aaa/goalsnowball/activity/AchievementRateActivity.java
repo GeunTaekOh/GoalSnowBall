@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -196,6 +197,10 @@ public class AchievementRateActivity extends Activity implements AchievementRate
         animation.setDuration(2500);
         animation.setInterpolator(new DecelerateInterpolator());
         animation.start();
+    }
+
+    public void onClickBackSpace(View v){
+        onBackPressed();
     }
 
 }
