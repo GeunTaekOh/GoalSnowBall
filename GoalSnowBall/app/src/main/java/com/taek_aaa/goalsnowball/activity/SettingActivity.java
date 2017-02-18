@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Toast;
@@ -127,5 +128,9 @@ public class SettingActivity extends Activity {
                 }
             }
         });
+    }
+
+    public void onClickBackSpace(View v){
+        onBackPressed();
     }
 }

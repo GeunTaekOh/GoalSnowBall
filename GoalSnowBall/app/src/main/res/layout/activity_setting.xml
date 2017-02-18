@@ -14,11 +14,21 @@
         >
 
         <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:background="@drawable/pre2"
+            android:layout_margin="3dp"
+            android:id="@+id/backspace"
+            android:onClick="onClickBackSpace"
+            />
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/settings2"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="18dp"
             />
 
         <TextView
@@ -198,7 +208,7 @@
             <TextView
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:text="지금까지 모아둔 데이터를 삭제"
+                android:text="데이터를 삭제하여 초기 상태로 돌아감"
                 android:layout_margin="5dp"
                 android:paddingBottom="5dp"
                 />

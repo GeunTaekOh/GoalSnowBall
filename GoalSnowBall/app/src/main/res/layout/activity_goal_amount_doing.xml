@@ -1,214 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:orientation="vertical">
 
     <RelativeLayout
-        android:id="@+id/goalRelative"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-
-        >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/doing_goal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="15dp"
-                android:gravity="center"
-                android:text=""
-                android:textSize="20dp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#E5E4E2" />
-
-        </LinearLayout>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout"
-        android:layout_centerHorizontal="true"
-
-        >
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical">
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="15dp"
-                android:background="#E5E4E2" />
-
-            <TextView
-                android:id="@+id/successGetGoldtv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="배팅액 : " />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginBottom="15dp"
-                android:layout_marginTop="15dp"
-                android:background="#E5E4E2" />
-
-
-        </LinearLayout>
-
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/blckBoard"
-        android:layout_width="200dp"
-        android:layout_height="150dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="115dp"
-        android:background="@drawable/blackboard"
-
-        >
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="horizontal">
+            android:id="@+id/blckBoard"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bubble">
 
-            <TextView
-                android:id="@+id/doing_goalAmount"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:text=""
-                android:textColor="#ffffff"
-                android:textStyle="bold"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
 
-                />
+                <TextView
+                    android:id="@+id/doing_goal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:text=""
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/doing_goalAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:textSize="18dp"
+                    android:text="" />
+
+            </LinearLayout>
+
 
         </RelativeLayout>
 
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/blckBoard"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="52dp"
-        android:orientation="vertical">
-
-        <View
+        <RelativeLayout
+            android:id="@+id/emptyPerson"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginTop="15dp"
-            android:background="#E5E4E2" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_below="@+id/blckBoard"
 
-            <ImageButton
-                android:id="@+id/upButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginRight="80dp"
-                android:onClick="onClick"
-                android:src="@drawable/upbuttonimage" />
+            >
 
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="10dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/side2"
+
+                    />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/bettinggoldTv"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
+            android:layout_below="@+id/emptyPerson"
+            android:gravity="center"
+            >
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="수행 량 : " />
-
-            <EditText
-                android:id="@+id/doing_current_amount"
-                android:layout_width="60dp"
+                android:id="@+id/successGetGoldtv"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
-                android:cursorVisible="false"
-                android:hint="수행량"
-                android:inputType="number"
-                android:singleLine="true"
-
-                />
-
-            <TextView
-                android:id="@+id/doing_unit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="단위"
-
-                />
-
-            <Button
-                android:id="@+id/doing_confirmButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:onClick="onClickSaveBtnGoal"
-                android:text="저장" />
-        </LinearLayout>
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:text="배팅액 : " />
+        </RelativeLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_below="@+id/bettinggoldTv"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/downButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginRight="80dp"
-                android:onClick="onClick"
-                android:src="@drawable/downbuttonimage" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
+                android:background="#E5E4E2" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="수행 량 : " />
+
+                <EditText
+                    android:id="@+id/doing_current_amount"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="10dp"
+                    android:cursorVisible="false"
+                    android:hint="수행량"
+                    android:inputType="number"
+                    android:singleLine="true"
+
+                    />
+
+                <TextView
+                    android:id="@+id/doing_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="단위"
+
+                    />
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/upButton"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/roundbutton"
+                        android:onClick="onClick"
+                        android:src="@drawable/upbuttonimage" />
+
+                    <ImageButton
+                        android:id="@+id/downButton"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/roundbutton"
+                        android:onClick="onClick"
+                        android:src="@drawable/downbuttonimage" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <Button
+                    android:id="@+id/doing_confirmButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/roundbutton"
+                    android:onClick="onClickSaveBtnGoal"
+                    android:text="저장" />
+
+            </LinearLayout>
 
         </LinearLayout>
+    </RelativeLayout>
 
-    </LinearLayout>
-
-
-</RelativeLayout>
+</ScrollView>

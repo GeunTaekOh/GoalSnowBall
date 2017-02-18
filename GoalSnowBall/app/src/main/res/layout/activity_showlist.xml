@@ -13,11 +13,21 @@
         android:background="@drawable/side_nav_bar"
         >
         <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:background="@drawable/pre2"
+            android:layout_margin="3dp"
+            android:id="@+id/backspace"
+            android:onClick="onClickBackSpace"
+            />
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/notepad"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="18dp"
             />
 
 
@@ -26,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="?attr/actionBarSize"
             android:text="목표 일지"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:textColor="#F5F5F5"
             android:textSize="19dp"
             android:layout_gravity="center"

@@ -157,7 +157,7 @@
 
             <Button
                 android:id="@+id/DialogExitButton"
-                android:layout_width="115dp"
+                android:layout_width="100dp"
                 android:layout_weight="1"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="center"
@@ -170,7 +170,7 @@
 
             <Button
                 android:id="@+id/DialogConfirmButton"
-                android:layout_width="115dp"
+                android:layout_width="100dp"
                 android:layout_weight="1"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="center"

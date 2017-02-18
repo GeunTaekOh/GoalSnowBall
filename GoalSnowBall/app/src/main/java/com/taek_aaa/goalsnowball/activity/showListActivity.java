@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -110,6 +111,9 @@ public class showListActivity extends Activity {
 
         Item result = new Item(bulbImage, listViewData.lvgoal, listViewData.lvDate, looseOrGet, listViewData.lvBettingGold, whatDateType, listViewData.lvCurrentAmount,listViewData.lvGoalAmount);
         return result;
+    }
+    public void onClickBackSpace(View v){
+        onBackPressed();
     }
 
 }
