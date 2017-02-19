@@ -38,6 +38,7 @@ public class showListActivity extends Activity {
     private static int amountOfEvery;
     private static int amountOfDraw;
     private static int pos;
+    Boolean toastFlag = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,10 @@ public class showListActivity extends Activity {
                 if (i == SCROLL_STATE_IDLE) {
                     if (lv.getLastVisiblePosition() >= count - threshold) {
                         if(m_arr.size()==amountOfEvery){
-                            Toast.makeText(showListActivity.this, "마지막 데이터입니다.", Toast.LENGTH_SHORT).show();
+                            if(toastFlag) {
+                                Toast.makeText(showListActivity.this, "마지막 데이터입니다.", Toast.LENGTH_SHORT).show();
+                                toastFlag=false;
+                            }
                         }else {
                             setListMore();
                         }
@@ -134,7 +138,10 @@ public class showListActivity extends Activity {
         adapter = new List_Adapter(showListActivity.this, m_arr);
         lv.setAdapter(adapter);
         lv.setDividerHeight(5);
-        lv.setSelection(pos);
+        //lv.setSelection(pos);
+        View v = lv.getChildAt(0);
+        int top = (v == null) ? 0 : v.getTop();
+        lv.setSelectionFromTop(pos,top);
         amountOfDraw=m_arr.size();
         Log.e("dhrms","m_arr.size"+m_arr.size());
         pos =  lv.getFirstVisiblePosition();
