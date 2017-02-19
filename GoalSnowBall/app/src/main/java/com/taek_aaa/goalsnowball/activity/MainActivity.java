@@ -464,89 +464,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
-     * 오늘 목표 달성률 출력
+     * 주어진 상태의 목표 달성률 출력
      **/
+    private void drawWhenPercent(int from){
+        TextView tv;
+        if(from==FROM_TODAY){
+            tv = percentToday;
+        }else if(from==FROM_WEEK){
+            tv = percentWeek;
+        }else{
+            tv = percentMonth;
+        }
 
-    
-
-
-
-    private void drawTodayPercent() {
         double result;
-        int goal = dbManager.getGoalAmount(FROM_TODAY);
+        int goal = dbManager.getGoalAmount(from);
         int current;
-        if ((dbManager.getType(FROM_TODAY).toString().equals("물리적양")) || (dbManager.getType(FROM_TODAY).toString().equals("시간적양"))) {
-            current = dbManager.getCurrentAmount(FROM_TODAY);
+        if ((dbManager.getType(from).toString().equals("물리적양")) || (dbManager.getType(from).toString().equals("시간적양"))) {
+            current = dbManager.getCurrentAmount(from);
         } else {
             current = 0;
             goal = 10;
         }
         result = dataController.makePercent(current, goal);
         if (result == 100) {
-            if (dbManager.getType(FROM_TODAY).equals("시간적양") && dbManager.getUnit(FROM_TODAY).equals("이하")) {
-                percentToday.setTextColor(Color.parseColor("#FF1C00"));
+            if (dbManager.getType(from).equals("시간적양") && dbManager.getUnit(from).equals("이하")) {
+                tv.setTextColor(Color.parseColor("#FF1C00"));
             } else {
-                percentToday.setTextColor(Color.parseColor("#93C972"));
+                tv.setTextColor(Color.parseColor("#93C972"));
             }
         } else {
-            percentToday.setTextColor(Color.parseColor("#808080"));
+            tv.setTextColor(Color.parseColor("#808080"));
         }
-        percentToday.setText("" + result + "%");
+        tv.setText("" + result + "%");
 
     }
 
-    /**
-     * 이번주 목표 달성률 출력
-     **/
-    private void drawWeekPercent() {
-        double result;
-        int goal = dbManager.getGoalAmount(FROM_WEEK);
-        int current;
-        if ((dbManager.getType(FROM_WEEK).toString().equals("물리적양")) || (dbManager.getType(FROM_WEEK).toString().equals("시간적양"))) {
-            current = dbManager.getCurrentAmount(FROM_WEEK);
-        } else {
-            current = 0;
-            goal = 10;
-        }
-        result = dataController.makePercent(current, goal);
-        if (result == 100) {
-            if (dbManager.getType(FROM_WEEK).equals("시간적양") && dbManager.getUnit(FROM_WEEK).equals("이하")) {
-                percentWeek.setTextColor(Color.parseColor("#FF1C00"));
-            } else {
-                percentWeek.setTextColor(Color.parseColor("#93C972"));
-            }
-        } else {
-            percentWeek.setTextColor(Color.parseColor("#808080"));
-
-        }
-        percentWeek.setText("" + result + "%");
-    }
-
-    /**
-     * 이번달 목표 달성률 출력
-     **/
-    private void drawMonthPercent() {
-        double result;
-        int goal = dbManager.getGoalAmount(FROM_MONTH);
-        int current;
-        if ((dbManager.getType(FROM_MONTH).toString().equals("물리적양")) || (dbManager.getType(FROM_MONTH).toString().equals("시간적양"))) {
-            current = dbManager.getCurrentAmount(FROM_MONTH);
-        } else {
-            current = 0;
-            goal = 10;
-        }
-        result = dataController.makePercent(current, goal);
-        if (result == 100) {
-            if ((dbManager.getType(FROM_MONTH).equals("시간적양")) && (dbManager.getUnit(FROM_MONTH).equals("이하"))) {
-                percentMonth.setTextColor(Color.parseColor("#FF1C00"));
-            } else {
-                percentMonth.setTextColor(Color.parseColor("#93C972"));
-            }
-        } else {
-            percentMonth.setTextColor(Color.parseColor("#808080"));
-        }
-        percentMonth.setText("" + result + "%");
-    }
 
     /**
      * init
@@ -672,44 +624,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case 4:     //오늘 일정 삭제
-
-                if (dbManager.getIsSuccess(FROM_TODAY) == 1) {
-                    Toast.makeText(this, "이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                } else if (dbManager.getIsSuccess(FROM_TODAY) == 3) {
-                    Toast.makeText(this, "이미 실패하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                } else if (calendarDatas.hour > 18) {
-                    Toast.makeText(this, "오늘의 목표를 끝까지 도전 해보는건 어떨까요?", Toast.LENGTH_SHORT).show();
-                } else {
-                    dbManager.delete(FROM_TODAY);
-                    onStart();
-                }
+                deleteGoal(FROM_TODAY);
                 break;
             case 5:     //이번주 일정 삭제
-                if (dbManager.getIsSuccess(FROM_WEEK) == 1) {
-                    Toast.makeText(this, "이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                } else if (dbManager.getIsSuccess(FROM_WEEK) == 3) {
-                    Toast.makeText(this, "이미 실패하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                } else if (calendarDatas.dayOfWeekIndex > 5) {
-                    Toast.makeText(this, "이번주의 목표를 조금만 더 도전해볼까요?", Toast.LENGTH_SHORT).show();
-                } else {
-                    dbManager.delete(FROM_WEEK);
-                    onStart();
-                }
+               deleteGoal(FROM_WEEK);
                 break;
             case 6:     //이번달 일정 삭제
-                if (dbManager.getIsSuccess(FROM_MONTH) == 1) {
-                    Toast.makeText(this, "이미 달성하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                } else if (dbManager.getIsSuccess(FROM_MONTH) == 3) {
-                    Toast.makeText(this, "이미 실패하여서 목표를 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
-                } else if (calendarDatas.cdate > 15) {
-                    Toast.makeText(this, "이번달의 목표를 끝까지 응원합니다!", Toast.LENGTH_SHORT).show();
-                } else {
-                    dbManager.delete(FROM_MONTH);
-                    onStart();
-                }
+                deleteGoal(FROM_MONTH);
                 break;
         }
         return super.onContextItemSelected(item);
+    }
+
+    /** 주어진 상태의 일정 삭제**/
+    private void deleteGoal(int from){
+        CalendarDatas calendarDatas = new CalendarDatas();
+        String msg;
+        Boolean bool;
+
+        if(from==FROM_TODAY){
+            msg = "오늘의 목표를 끝까지 도전 해보는건 어떨까요?";
+            bool = calendarDatas.hour > 18;
+        }else if(from == FROM_WEEK){
+            msg ="이번주의 목표를 조금만 더 도전해볼까요?";
+            bool = calendarDatas.dayOfWeekIndex > 5;
+        }else{
+            msg = "이번달의 목표를 끝까지 응원합니다!";
+            bool = calendarDatas.cdate > 15;
+        }
+        if (dbManager.getIsSuccess(from) == 1) {
+            Toast.makeText(this, "이미 성공하여서 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
+        } else if (dbManager.getIsSuccess(from) == 3) {
+            Toast.makeText(this, "이미 실패하여서 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
+        } else if (bool) {
+            Toast.makeText(this, ""+msg, Toast.LENGTH_SHORT).show();
+        } else {
+            dbManager.delete(from);
+            onStart();
+        }
     }
 
     /**
@@ -736,9 +688,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void draw() {
         drawGoal();
         drawGoalWhenDismiss();
-        drawTodayPercent();
-        drawWeekPercent();
-        drawMonthPercent();
+        drawWhenPercent(FROM_TODAY);
+        drawWhenPercent(FROM_WEEK);
+        drawWhenPercent(FROM_MONTH);
         mainGoldtv.setText("" + userDBManager.getGold() + "Gold");
         drawDDay();
         drawUserStatus();

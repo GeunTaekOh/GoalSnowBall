@@ -22,6 +22,7 @@ public class List_Adapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Activity m_activity;
     private ArrayList<Item> arr;
+    String color;
 
     public List_Adapter(Activity act, ArrayList<Item> arr_item) {
         this.m_activity = act;
@@ -73,18 +74,16 @@ public class List_Adapter extends BaseAdapter {
         goalAmount.setText(""+arr.get(position).goalAmounItem);
 
         if((arr.get(position).bulbImageItem).equals("@drawable/bulbfail")){
-            goldStatus.setTextColor(Color.parseColor("#FF1C00"));
-            goldContent.setTextColor(Color.parseColor("#FF1C00"));
-            just_gold.setTextColor(Color.parseColor("#FF1C00"));
+            color = "#FF1C00";
         }else if((arr.get(position).bulbImageItem).equals("@drawable/bulbsuccess")){
-            goldStatus.setTextColor(Color.parseColor("#93C972"));
-            goldContent.setTextColor(Color.parseColor("#93C972"));
-            just_gold.setTextColor(Color.parseColor("#93C972"));
+            color = "#93C972";
         }else{
-            goldStatus.setTextColor(Color.parseColor("#808080"));
-            goldContent.setTextColor(Color.parseColor("#808080"));
-            just_gold.setTextColor(Color.parseColor("#808080"));
+            color = "#808080";
         }
+        goldStatus.setTextColor(Color.parseColor(color));
+        goldContent.setTextColor(Color.parseColor(color));
+        just_gold.setTextColor(Color.parseColor(color));
+
         return convertView;
     }
 }

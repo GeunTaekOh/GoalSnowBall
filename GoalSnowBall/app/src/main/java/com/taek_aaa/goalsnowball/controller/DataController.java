@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 public class DataController extends Activity{
 
 
+
     public double makePercent(int current, int goal) {
         double result = 0;
         result = (double) current / (double) goal * 100;
@@ -88,13 +89,30 @@ public class DataController extends Activity{
         editor.commit();
     }
 
+    public int getPreferencesLooseGold(Context context) {
+        SharedPreferences pref = context.getSharedPreferences("gold", MODE_PRIVATE);
+        int a;
+        a = pref.getInt("LooseGOld", 0);
+        return a;
+    }
+
+    /** preference 인자값 으로 저장하기 **/
+    public void setPreferencesLooseGold(Context context, int a) {
+        SharedPreferences pref = context.getSharedPreferences("gold", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("LooseGold", a);
+        editor.commit();
+    }
+
+
+
+
     public void setProgressAnimate(ProgressBar progressBar) {
         ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", 0, progressBar.getProgress());
         animation.setDuration(2500);
         animation.setInterpolator(new DecelerateInterpolator());
         animation.start();
     }
-
 
 
 

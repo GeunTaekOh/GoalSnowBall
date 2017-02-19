@@ -26,7 +26,6 @@ public class FailDialog extends Dialog {
     int tune;
     private Context c;
     DataController dataController;
-    Context context;
 
     public FailDialog(Context context) {
         super(context);
@@ -40,18 +39,18 @@ public class FailDialog extends Dialog {
 
         failMsg = (TextView)findViewById(R.id.failMsg);
         failCoinMsg = (TextView)findViewById(R.id.failCoinMsg);
-
+        totalLooseCoin = dataController.getPreferencesLooseGold(c);
         failCoinMsg.setText("실패하여서 총 "+totalLooseCoin+" Gold을 잃었습니다.");
         int gold = userDBManager.getGold();
         gold -= totalLooseCoin;
         userDBManager.setGold(gold);
         totalLooseCoin = 0;
+        dataController.setPreferencesLooseGold(c,0);
+
 
         playFailSound();
 
-
         dataController.setPreferencesFailFlag(context, 0);
-//        failFlag = false;
     }
 
     private void playFailSound(){

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 import com.taek_aaa.goalsnowball.R;
+import com.taek_aaa.goalsnowball.controller.DataController;
 import com.taek_aaa.goalsnowball.data.CalendarDatas;
 import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
@@ -40,9 +41,12 @@ public class SuccessDialog extends Dialog {
     CalendarDatas today;
     DBManager dbManager;
     UserDBManager userDBManager;
+    DataController dataController;
+    Context c;
 
     public SuccessDialog(Context context) {
         super(context);
+        this.c=context;
         setContentView(R.layout.dialog_success);
         dbManager = new DBManager(getContext(), "goaldb.db", null, 1);
         userDBManager = new UserDBManager(getContext(), "userdb.db", null, 1);
@@ -51,9 +55,9 @@ public class SuccessDialog extends Dialog {
         coin = (ImageView) findViewById(R.id.coin);
         msg = (TextView) findViewById(R.id.SuccessCoinMsg);
 
+        dataController = new DataController();
 
         playSuccessSound();
-
 
         GlideDrawableImageViewTarget imageViewTarget1 = new GlideDrawableImageViewTarget(fire);
         Glide.with(getContext()).load(R.raw.firework2).into(imageViewTarget1);
@@ -63,23 +67,28 @@ public class SuccessDialog extends Dialog {
         //오늘목표달성했을때
 
         if (whereSuccess == SUCCESS_FROM_TODAY) {
-            msg.setText("" + dbManager.getBettingGold(FROM_TODAY) + "Gold를 획득하였습니다.");
-            getGoldToday = dbManager.getBettingGold(FROM_TODAY);
-            dbManager.setIsSuccess(FROM_TODAY, 1);
-            whereSuccess = 0;
+            success(FROM_TODAY);
         } else if (whereSuccess == SUCCESS_FROM_WEEK) {
-            msg.setText("" + dbManager.getBettingGold(FROM_WEEK) + "Gold를 획득하였습니다.");
-            getGoldWeek = dbManager.getBettingGold(FROM_WEEK);
-            dbManager.setIsSuccess(FROM_WEEK, 1);
-            whereSuccess = 0;
+            success(FROM_WEEK);
         } else if (whereSuccess == SUCCESS_FROM_MONTH) {
-            msg.setText("" + dbManager.getBettingGold(FROM_MONTH) + "Gold를 획득하였습니다.");
-            getGoldMonth = dbManager.getBettingGold(FROM_MONTH);
-            dbManager.setIsSuccess(FROM_MONTH, 1);
-            whereSuccess = 0;
+            success(FROM_MONTH);
         } else {
             Log.e("error", "successDialog에서 에러");
         }
+    }
+
+
+    private void success(int from){
+        msg.setText("" + dbManager.getBettingGold(from) + "Gold를 획득하였습니다.");
+        if(from==FROM_TODAY){
+            getGoldToday = dbManager.getBettingGold(from);
+        }else if(from == FROM_WEEK){
+            getGoldWeek = dbManager.getBettingGold(from);
+        }else{
+            getGoldMonth = dbManager.getBettingGold(from);
+        }
+        dbManager.setIsSuccess(from, 1);
+        whereSuccess = 0;
     }
 
 
@@ -95,7 +104,6 @@ public class SuccessDialog extends Dialog {
 
                 }
             });
-
         }
         mAudioManager = null;
     }

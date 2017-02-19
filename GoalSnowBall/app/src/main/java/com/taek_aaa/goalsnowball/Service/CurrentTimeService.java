@@ -101,6 +101,7 @@ public class CurrentTimeService extends Service {
                 dbManager.setIsSuccess(FROM_TODAY, 3);
                 failBetToday=dbManager.getBettingGold(FROM_TODAY);
                 totalLooseCoin += failBetToday;
+                dataController.setPreferencesLooseGold(context,totalLooseCoin);
                 dataController.setPreferencesFailFlag(context, 1);
                 //failFlag = true;
             }
@@ -113,6 +114,7 @@ public class CurrentTimeService extends Service {
                     failBetWeek=dbManager.getBettingGold(FROM_WEEK);
                     totalLooseCoin += failBetWeek;
                     dataController.setPreferencesFailFlag(context, 1);
+                    dataController.setPreferencesLooseGold(context,totalLooseCoin);
                     //failFlag = true;
                 }
             }
@@ -124,6 +126,7 @@ public class CurrentTimeService extends Service {
                     failBetMonth=dbManager.getBettingGold(FROM_MONTH);
                     totalLooseCoin += failBetMonth;
                     dataController.setPreferencesFailFlag(context, 1);
+                    dataController.setPreferencesLooseGold(context,totalLooseCoin);
                     //failFlag = true;
                 }
             }
@@ -135,37 +138,39 @@ public class CurrentTimeService extends Service {
         int count = dbManager.getLastPosition();
         if(gold >= 100 && count>= 10){
             userDBManager.setGrade("D 등급");
-            dataController.setPreferencesLevelUpFlag(context, 1);
             whatGradeTo=TO_D;
+            dataController.setPreferencesLevelUpFlag(context, 1);
         }else if (gold >= 300 && count >= 30){
             userDBManager.setGrade("C 등급");
-            dataController.setPreferencesLevelUpFlag(context, 1);
             whatGradeTo=TO_C;
+            dataController.setPreferencesLevelUpFlag(context, 1);
         }else if (gold >= 500 && count >= 50){
             userDBManager.setGrade("B 등급");
-            dataController.setPreferencesLevelUpFlag(context, 1);
             whatGradeTo = TO_B;
+            dataController.setPreferencesLevelUpFlag(context, 1);
         }else if (gold >= 1000 && count >= 100){
             userDBManager.setGrade("A 등급");
-            dataController.setPreferencesLevelUpFlag(context, 1);
             whatGradeTo = TO_A;
+            dataController.setPreferencesLevelUpFlag(context, 1);
         }else if (gold >= 5000 && count >= 300){
             userDBManager.setGrade("S 등급");
-            dataController.setPreferencesLevelUpFlag(context, 1);
             whatGradeTo = TO_S;
+            dataController.setPreferencesLevelUpFlag(context, 1);
         }else if (gold >= 20000 && count >= 500){
             userDBManager.setGrade("SS 등급");
-            dataController.setPreferencesLevelUpFlag(context, 1);
             whatGradeTo = TO_SS;
+            dataController.setPreferencesLevelUpFlag(context, 1);
         }else if (gold >= 100000 && count >= 1000){
             userDBManager.setGrade("SSS 등급");
-            dataController.setPreferencesLevelUpFlag(context, 1);
             whatGradeTo = TO_SSS;
+            dataController.setPreferencesLevelUpFlag(context, 1);
         }else if(gold >= 1000000 && count >= 3000){
             userDBManager.setGrade("Master");
-            dataController.setPreferencesLevelUpFlag(context, 1);
             whatGradeTo = TO_MASTER;
+            dataController.setPreferencesLevelUpFlag(context, 1);
         }
+
+
     }
 
 }

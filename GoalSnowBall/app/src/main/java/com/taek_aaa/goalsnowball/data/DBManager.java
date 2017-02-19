@@ -25,8 +25,6 @@ public class DBManager extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // 새로운 Table 생성
         db.execSQL("CREATE TABLE database (_id INTEGER PRIMARY KEY AUTOINCREMENT, year INTEGER, month INTEGER, date INTEGER, weekOfYear INTEGER, whatDateType INTEGER , goal TEXT, type TEXT, amount INTEGER, unit TEXT, currentAmount INTEGER, bettingGold INTEGER, isSuccess INTEGER);");
-        //db.execSQL("INSERT INTO database VALUES(NULL, " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", " + 0 + ", '" + "" + "',  '" +"" + "', " + 0 + ", '" + "" + "', " + 0 + ", " + 0 + "," + 0 + " );");
-
     }
 
     /**

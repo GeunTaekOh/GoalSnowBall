@@ -40,6 +40,11 @@ public class GradeDialog extends Dialog implements View.OnClickListener {
         init();
         dataController = new DataController();
 
+        draw();
+
+    }
+
+    private void draw(){
         progressBarGold.setMax(needsGold[currentIndex] * 100);
         progressBarGold.setProgress(userDBManager.getGold() * 100);
         progressBarGold.setVisibility(ProgressBar.VISIBLE);

@@ -116,11 +116,8 @@ public class CalendarDatas {
 
         try {
             Date tempDate = df.parse(sResult);
-
-
             Calendar today = Calendar.getInstance();
             today.setTime(tempDate);
-
             result = today.get(Calendar.WEEK_OF_YEAR);
         }catch (Exception e){
             Log.e("rmsxor","캘린더데이타 오류");

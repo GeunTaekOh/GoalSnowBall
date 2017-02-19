@@ -41,6 +41,7 @@ public class LevelUpDialog extends Dialog {
 
         playLevelUpSound();
 
+
         dataController.setPreferencesLevelUpFlag(c, 0);
 
     }
