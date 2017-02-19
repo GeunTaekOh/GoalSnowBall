@@ -44,8 +44,9 @@ public class AchievementRateActivity extends Activity implements AchievementRate
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_achievement);
         dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
-        init();
         dataController = new DataController();
+        init();
+
     }
 
     private void init() {

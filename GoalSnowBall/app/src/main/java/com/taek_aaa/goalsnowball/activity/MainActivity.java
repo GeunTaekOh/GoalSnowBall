@@ -309,14 +309,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 photo = rotatedPhoto;
                 imageView.setImageBitmap(rotatedPhoto);
                 isPicture = true;
-
-
             } else {
                 Toast.makeText(this, "경로에 사진이 없습니다.", Toast.LENGTH_SHORT).show();
                 isPicture = false;
             }
-
-
         }
     }
 
@@ -379,61 +375,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
-     * 오늘의 목표를 텍스트뷰에 출력     isSuccess가 0이면 없는것 //  1이면 성공 // 2이면 하는중 // 3이면 실패
+     * 인자로 받은 날의 목표를 텍스트뷰에 출력     isSuccess가 0이면 없는것 //  1이면 성공 // 2이면 하는중 // 3이면 실패
      **/
-    private void drawTodayGoal() {
-
-        if (dbManager.getIsSuccess(FROM_TODAY) == 1) {
-            todayBulb.setImageResource(R.drawable.bulbsuccess);
-        } else if (dbManager.getIsSuccess(FROM_TODAY) == 2) {
-            todayBulb.setImageResource(R.drawable.bulbdoing);
-        } else if (dbManager.getIsSuccess(FROM_TODAY) == 3) {
-            todayBulb.setImageResource(R.drawable.bulbfail);
-        } else {
-            todayBulb.setImageResource(0);
+    private void drawGoalWhen(int from){
+        ImageView imageView;
+        TextView textView;
+        if(from==FROM_TODAY){
+            imageView = todayBulb;
+            textView = todaytv;
+        }else if(from==FROM_WEEK){
+            imageView = weekBulb;
+            textView = weektv;
+        }else{
+            imageView = monthBulb;
+            textView = monthtv;
         }
-        todaytv.setText(dbManager.getGoal(FROM_TODAY));
-        todaytv.setGravity(Gravity.CENTER);
-    }
 
-    /**
-     * 이번주 목표를 텍스트뷰에 출력     isSuccess가 0이면 없는것 //  1이면 성공 // 2이면 하는중 // 3이면 실패
-     **/
-    private void drawWeekGoal() {
-        if (dbManager.getIsSuccess(FROM_WEEK) == 1) {
-            weekBulb.setImageResource(R.drawable.bulbsuccess);
-        } else if (dbManager.getIsSuccess(FROM_WEEK) == 2) {
-            weekBulb.setImageResource(R.drawable.bulbdoing);
-        } else if (dbManager.getIsSuccess(FROM_WEEK) == 3) {
-            weekBulb.setImageResource(R.drawable.bulbfail);
+        if (dbManager.getIsSuccess(from) == 1) {
+            imageView.setImageResource(R.drawable.bulbsuccess);
+        } else if (dbManager.getIsSuccess(from) == 2) {
+            imageView.setImageResource(R.drawable.bulbdoing);
+        } else if (dbManager.getIsSuccess(from) == 3) {
+            imageView.setImageResource(R.drawable.bulbfail);
         } else {
-            weekBulb.setImageResource(0);
+            imageView.setImageResource(0);
         }
-        weektv.setText(dbManager.getGoal(FROM_WEEK));
-        weektv.setGravity(Gravity.CENTER);
-    }
-
-    /**
-     * 이번달 목표를 텍스트뷰에 출력     isSuccess가 0이면 없는것 //  1이면 성공 // 2이면 하는중 // 3이면 실패
-     **/
-    private void drawMonthGoal() {
-        if (dbManager.getIsSuccess(FROM_MONTH) == 1) {
-            monthBulb.setImageResource(R.drawable.bulbsuccess);
-        } else if (dbManager.getIsSuccess(FROM_MONTH) == 2) {
-            monthBulb.setImageResource(R.drawable.bulbdoing);
-        } else if (dbManager.getIsSuccess(FROM_MONTH) == 3) {
-            monthBulb.setImageResource(R.drawable.bulbfail);
-        } else {
-            monthBulb.setImageResource(0);
-        }
-        monthtv.setText(dbManager.getGoal(FROM_MONTH));
-        monthtv.setGravity(Gravity.CENTER);
+        textView.setText(dbManager.getGoal(from));
+        textView.setGravity(Gravity.CENTER);
     }
 
     private void drawGoal() {
-        drawTodayGoal();
-        drawWeekGoal();
-        drawMonthGoal();
+        drawGoalWhen(FROM_TODAY);
+        drawGoalWhen(FROM_WEEK);
+        drawGoalWhen(FROM_MONTH);
     }
 
     /**
@@ -443,21 +417,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         todayGoalDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-                drawTodayGoal();
+                drawGoalWhen(FROM_TODAY);
             }
         });
 
         weekGoalDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-                drawWeekGoal();
+                drawGoalWhen(FROM_WEEK);
             }
         });
 
         monthGoalDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-                drawMonthGoal();
+                drawGoalWhen(FROM_MONTH);
             }
         });
     }
@@ -472,7 +446,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         defaultHeight = sizedBitmapDefault.getHeight();
         defaultWidth = sizedBitmapDefault.getWidth();
         imageView.setImageBitmap(sizedBitmapDefault);
-
     }
 
 
@@ -493,6 +466,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * 오늘 목표 달성률 출력
      **/
+
+    
+
+
+
     private void drawTodayPercent() {
         double result;
         int goal = dbManager.getGoalAmount(FROM_TODAY);
@@ -503,7 +481,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             current = 0;
             goal = 10;
         }
-
         result = dataController.makePercent(current, goal);
         if (result == 100) {
             if (dbManager.getType(FROM_TODAY).equals("시간적양") && dbManager.getUnit(FROM_TODAY).equals("이하")) {

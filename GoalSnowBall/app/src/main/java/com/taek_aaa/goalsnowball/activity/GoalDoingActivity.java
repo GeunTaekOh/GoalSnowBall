@@ -122,6 +122,7 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface {
                 }
             });
         }
+        mAudioManager=null;
     }
 
 

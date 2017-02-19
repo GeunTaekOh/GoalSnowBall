@@ -57,7 +57,7 @@ public class LevelUpDialog extends Dialog {
                 }
             });
         }
-
+        mAudioManager=null;
     }
 
 

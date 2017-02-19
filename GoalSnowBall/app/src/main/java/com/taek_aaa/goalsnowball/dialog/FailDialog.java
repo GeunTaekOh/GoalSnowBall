@@ -66,5 +66,6 @@ public class FailDialog extends Dialog {
                 }
             });
         }
+        mAudioManager=null;
     }
 }

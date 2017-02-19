@@ -50,20 +50,9 @@ public class SuccessDialog extends Dialog {
         fire = (ImageView) findViewById(R.id.fireWork);
         coin = (ImageView) findViewById(R.id.coin);
         msg = (TextView) findViewById(R.id.SuccessCoinMsg);
-        AudioManager mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
-        if ((mAudioManager.getRingerMode() == 2) && (userDBManager.getIsSound()==1)) {                       //소리모드일때만 소리 출력
-            soundPool = new SoundPool(1, STREAM_MUSIC, 0);
-            tune = soundPool.load(getContext(), R.raw.clap, 1);
-            soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
-                @Override
-                public void onLoadComplete(SoundPool soundPool, int i, int i1) {
-                    soundPool.play(tune, 1, 1, 0, 0, 1);
 
-                }
-            });
-
-        }
+        playSuccessSound();
 
 
         GlideDrawableImageViewTarget imageViewTarget1 = new GlideDrawableImageViewTarget(fire);
@@ -93,5 +82,22 @@ public class SuccessDialog extends Dialog {
         }
     }
 
+
+    private void playSuccessSound() {
+        AudioManager mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
+        if ((mAudioManager.getRingerMode() == 2) && (userDBManager.getIsSound() == 1)) {                       //소리모드일때만 소리 출력
+            soundPool = new SoundPool(1, STREAM_MUSIC, 0);
+            tune = soundPool.load(getContext(), R.raw.clap, 1);
+            soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+                @Override
+                public void onLoadComplete(SoundPool soundPool, int i, int i1) {
+                    soundPool.play(tune, 1, 1, 0, 0, 1);
+
+                }
+            });
+
+        }
+        mAudioManager = null;
+    }
 
 }
