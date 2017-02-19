@@ -37,8 +37,8 @@ public class showListActivity extends Activity {
     ListView lv;
     private static int amountOfEvery;
     private static int amountOfDraw;
-    private static int pos;
     Boolean toastFlag = true;
+    private static int lastPos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,31 +61,36 @@ public class showListActivity extends Activity {
         countListtv.setText("" + amountOfShowList + " / " + "" + dbManager.getLastPosition());
         amountOfEvery = dbManager.getLastPosition();
 
+
         lv.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView absListView, int i) {
+
                 int threshold = 1;
                 int count = lv.getCount();
                 if (i == SCROLL_STATE_IDLE) {
                     if (lv.getLastVisiblePosition() >= count - threshold) {
-                        if(m_arr.size()==amountOfEvery){
-                            if(toastFlag) {
+                        if (m_arr.size() == amountOfEvery) {
+                            if (toastFlag) {
                                 Toast.makeText(showListActivity.this, "마지막 데이터입니다.", Toast.LENGTH_SHORT).show();
-                                toastFlag=false;
+                                toastFlag = false;
                             }
-                        }else {
+                        } else {
                             setListMore();
                         }
                     }
                 }
             }
+
+
             @Override
             public void onScroll(AbsListView absListView, int i, int i1, int i2) {
 
             }
         });
 
-        if(amountOfDraw<=amountOfEvery) {
+
+        if (amountOfDraw <= amountOfEvery) {
             setList();
         }
 
@@ -114,8 +119,8 @@ public class showListActivity extends Activity {
         lv.setAdapter(adapter);
         lv.setDividerHeight(5);
         amountOfDraw = m_arr.size();
-        Log.e("dhrms","m_arr.size"+m_arr.size());
-        pos =  lv.getFirstVisiblePosition();
+        Log.e("dhrms", "m_arr.size" + m_arr.size());
+        lastPos = amountOfShowList-6;
     }
 
     private void setListMore() {
@@ -126,10 +131,10 @@ public class showListActivity extends Activity {
                 Toast.makeText(this, "데이터를 더 가져옵니다.", Toast.LENGTH_SHORT).show();
                 break;
             } else {
-                if(m_arr.size()<=amountOfEvery) {
+                if (m_arr.size() <= amountOfEvery) {
                     Item item = convertData(dbManager.getPreviousListViewData(listViewPosition));
                     m_arr.add(item);
-                }else{
+                } else {
                     break;
                 }
             }
@@ -138,13 +143,10 @@ public class showListActivity extends Activity {
         adapter = new List_Adapter(showListActivity.this, m_arr);
         lv.setAdapter(adapter);
         lv.setDividerHeight(5);
-        //lv.setSelection(pos);
-        View v = lv.getChildAt(0);
-        int top = (v == null) ? 0 : v.getTop();
-        lv.setSelectionFromTop(pos,top);
-        amountOfDraw=m_arr.size();
-        Log.e("dhrms","m_arr.size"+m_arr.size());
-        pos =  lv.getFirstVisiblePosition();
+        lv.setSelection(lastPos);
+        amountOfDraw = m_arr.size();
+        Log.e("dhrms", "m_arr.size" + m_arr.size());
+        lastPos += amountOfShowList;
     }
 
 
@@ -187,7 +189,10 @@ public class showListActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-
+        amountOfEvery=0;
+        amountOfDraw=0;
+        lastPos=0;
+        toastFlag=true;
         finish();
     }
 
