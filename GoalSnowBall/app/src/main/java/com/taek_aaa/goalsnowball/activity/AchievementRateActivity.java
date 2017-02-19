@@ -1,12 +1,10 @@
 package com.taek_aaa.goalsnowball.activity;
 
-import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -47,6 +45,7 @@ public class AchievementRateActivity extends Activity implements AchievementRate
         setContentView(R.layout.activity_achievement);
         dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
         init();
+        dataController = new DataController();
     }
 
     private void init() {
@@ -117,7 +116,7 @@ public class AchievementRateActivity extends Activity implements AchievementRate
             progressBar.setProgress(dbManager.getCurrentAmount(from) * 100);
             progressBar.setVisibility(ProgressBar.VISIBLE);
 
-            setProgressAnimate();
+            dataController.setProgressAnimate(progressBar);
 
             current = dbManager.getCurrentAmount(from);
         } else {
@@ -193,12 +192,6 @@ public class AchievementRateActivity extends Activity implements AchievementRate
         }
     }
 
-    private void setProgressAnimate() {
-        ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", 0, progressBar.getProgress());
-        animation.setDuration(2500);
-        animation.setInterpolator(new DecelerateInterpolator());
-        animation.start();
-    }
 
     public void onClickBackSpace(View v){
         onBackPressed();

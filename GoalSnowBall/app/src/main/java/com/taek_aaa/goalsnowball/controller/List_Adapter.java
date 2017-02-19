@@ -73,9 +73,9 @@ public class List_Adapter extends BaseAdapter {
         goalAmount.setText(""+arr.get(position).goalAmounItem);
 
         if((arr.get(position).bulbImageItem).equals("@drawable/bulbfail")){
-            goldStatus.setTextColor(Color.RED);
-            goldContent.setTextColor(Color.RED);
-            just_gold.setTextColor(Color.RED);
+            goldStatus.setTextColor(Color.parseColor("#FF1C00"));
+            goldContent.setTextColor(Color.parseColor("#FF1C00"));
+            just_gold.setTextColor(Color.parseColor("#FF1C00"));
         }else if((arr.get(position).bulbImageItem).equals("@drawable/bulbsuccess")){
             goldStatus.setTextColor(Color.parseColor("#93C972"));
             goldContent.setTextColor(Color.parseColor("#93C972"));

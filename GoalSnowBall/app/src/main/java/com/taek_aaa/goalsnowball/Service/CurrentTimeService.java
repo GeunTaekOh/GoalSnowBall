@@ -40,6 +40,8 @@ public class CurrentTimeService extends Service {
     DataController dataController;
     Context context;
     public static String[] gradeArray = {"UnRank", "D", "C", "B", "A", "S", "SS", "SSS", "Master"};
+    public static int[] needsGold = {100, 300, 500, 1000, 5000, 20000, 100000, 1000000};
+    public static int[] needsAmount = {10, 30, 50, 100, 300, 500, 1000, 3000};
 
     @Override
     public IBinder onBind(Intent intent) {

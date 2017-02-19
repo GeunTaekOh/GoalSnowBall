@@ -1,8 +1,11 @@
 package com.taek_aaa.goalsnowball.controller;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.ProgressBar;
 
 /**
  * Created by taek_aaa on 2017. 1. 25..
@@ -83,6 +86,13 @@ public class DataController extends Activity{
         SharedPreferences.Editor editor = pref.edit();
         editor.putInt("levelFlag", a);
         editor.commit();
+    }
+
+    public void setProgressAnimate(ProgressBar progressBar) {
+        ObjectAnimator animation = ObjectAnimator.ofInt(progressBar, "progress", 0, progressBar.getProgress());
+        animation.setDuration(2500);
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.start();
     }
 
 
