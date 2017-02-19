@@ -39,6 +39,7 @@ public class CurrentTimeService extends Service {
     UserDBManager userDBManager;
     DataController dataController;
     Context context;
+    public static String[] gradeArray = {"UnRank", "D", "C", "B", "A", "S", "SS", "SSS", "Master"};
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -133,41 +134,33 @@ public class CurrentTimeService extends Service {
         if(gold >= 100 && count>= 10){
             userDBManager.setGrade("D 등급");
             dataController.setPreferencesLevelUpFlag(context, 1);
-            //levelUpFlag=true;
             whatGradeTo=TO_D;
         }else if (gold >= 300 && count >= 30){
             userDBManager.setGrade("C 등급");
-            //levelUpFlag=true;
             dataController.setPreferencesLevelUpFlag(context, 1);
             whatGradeTo=TO_C;
         }else if (gold >= 500 && count >= 50){
             userDBManager.setGrade("B 등급");
-            //levelUpFlag=true;
             dataController.setPreferencesLevelUpFlag(context, 1);
             whatGradeTo = TO_B;
         }else if (gold >= 1000 && count >= 100){
             userDBManager.setGrade("A 등급");
-            //levelUpFlag=true;
             dataController.setPreferencesLevelUpFlag(context, 1);
             whatGradeTo = TO_A;
         }else if (gold >= 5000 && count >= 300){
             userDBManager.setGrade("S 등급");
             dataController.setPreferencesLevelUpFlag(context, 1);
-         //   levelUpFlag=true;
             whatGradeTo = TO_S;
         }else if (gold >= 20000 && count >= 500){
             userDBManager.setGrade("SS 등급");
-            //levelUpFlag=true;
             dataController.setPreferencesLevelUpFlag(context, 1);
             whatGradeTo = TO_SS;
         }else if (gold >= 100000 && count >= 1000){
             userDBManager.setGrade("SSS 등급");
-            //levelUpFlag=true;
             dataController.setPreferencesLevelUpFlag(context, 1);
             whatGradeTo = TO_SSS;
         }else if(gold >= 1000000 && count >= 3000){
             userDBManager.setGrade("Master");
-            //levelUpFlag=true;
             dataController.setPreferencesLevelUpFlag(context, 1);
             whatGradeTo = TO_MASTER;
         }

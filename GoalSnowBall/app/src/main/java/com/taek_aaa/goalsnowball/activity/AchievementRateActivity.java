@@ -127,9 +127,10 @@ public class AchievementRateActivity extends Activity implements AchievementRate
         result = dataController.makePercent(current, goal);
 
         if (result == 100) {
-            percentAmounttv.setTextColor(Color.GREEN);
+            percentAmounttv.setTextColor(Color.parseColor("#93C972"));
         } else {
-            percentAmounttv.setTextColor(Color.BLACK);
+            percentAmounttv.setTextColor(Color.parseColor("#808080"));
+
         }
         percentAmounttv.setText("" + result + "%");
     }

@@ -77,9 +77,13 @@ public class List_Adapter extends BaseAdapter {
             goldContent.setTextColor(Color.RED);
             just_gold.setTextColor(Color.RED);
         }else if((arr.get(position).bulbImageItem).equals("@drawable/bulbsuccess")){
-            goldStatus.setTextColor(Color.GREEN);
-            goldContent.setTextColor(Color.GREEN);
-            just_gold.setTextColor(Color.GREEN);
+            goldStatus.setTextColor(Color.parseColor("#93C972"));
+            goldContent.setTextColor(Color.parseColor("#93C972"));
+            just_gold.setTextColor(Color.parseColor("#93C972"));
+        }else{
+            goldStatus.setTextColor(Color.parseColor("#808080"));
+            goldContent.setTextColor(Color.parseColor("#808080"));
+            just_gold.setTextColor(Color.parseColor("#808080"));
         }
         return convertView;
     }

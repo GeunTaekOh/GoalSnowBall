@@ -47,6 +47,7 @@ import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
 import com.taek_aaa.goalsnowball.dialog.ContactUsDialog;
 import com.taek_aaa.goalsnowball.dialog.FailDialog;
+import com.taek_aaa.goalsnowball.dialog.GradeDialog;
 import com.taek_aaa.goalsnowball.dialog.LevelUpDialog;
 import com.taek_aaa.goalsnowball.dialog.MonthGoalDialog;
 import com.taek_aaa.goalsnowball.dialog.TodayGoalDialog;
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Target t1, t2, t3, t4, t5, t6, t7, t8;
     private int contador = 0;
     LevelUpDialog levelUpDialog;
+    GradeDialog gradeDialog;
     Context context;
     long lastTimeBackPressed;
 
@@ -507,10 +509,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (dbManager.getType(FROM_TODAY).equals("시간적양") && dbManager.getUnit(FROM_TODAY).equals("이하")) {
                 percentToday.setTextColor(Color.RED);
             } else {
-                percentToday.setTextColor(Color.GREEN);
+                percentToday.setTextColor(Color.parseColor("#93C972"));
             }
         } else {
-            percentToday.setTextColor(Color.BLACK);
+            percentToday.setTextColor(Color.parseColor("#808080"));
         }
         percentToday.setText("" + result + "%");
 
@@ -534,10 +536,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (dbManager.getType(FROM_WEEK).equals("시간적양") && dbManager.getUnit(FROM_WEEK).equals("이하")) {
                 percentWeek.setTextColor(Color.RED);
             } else {
-                percentWeek.setTextColor(Color.GREEN);
+                percentWeek.setTextColor(Color.parseColor("#93C972"));
             }
         } else {
-            percentWeek.setTextColor(Color.BLACK);
+            percentWeek.setTextColor(Color.parseColor("#808080"));
 
         }
         percentWeek.setText("" + result + "%");
@@ -561,10 +563,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if ((dbManager.getType(FROM_MONTH).equals("시간적양")) && (dbManager.getUnit(FROM_MONTH).equals("이하"))) {
                 percentMonth.setTextColor(Color.RED);
             } else {
-                percentMonth.setTextColor(Color.GREEN);
+                percentMonth.setTextColor(Color.parseColor("#93C972"));
             }
         } else {
-            percentMonth.setTextColor(Color.BLACK);
+            percentMonth.setTextColor(Color.parseColor("#808080"));
         }
         percentMonth.setText("" + result + "%");
     }
@@ -602,6 +604,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         todayBulb = (ImageView) findViewById(R.id.todayBulb);
         weekBulb = (ImageView) findViewById(R.id.weekBulb);
         monthBulb = (ImageView) findViewById(R.id.monthBulb);
+        gradeDialog = new GradeDialog(this);
 
         //처음 어플 실행시켰을때 가이드 화면을 띄워줌
         if (dataController.getPreferencesIsFirstOpenApp(context) == 1) {
@@ -743,6 +746,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 userIdtv.setText(userDBManager.getName());
             }
         });
+    }
+
+    /** 다음 등급을 확인하는 창 출력**/
+    public void onClickGrade(View v){
+        gradeDialog.show();
     }
 
     /**
