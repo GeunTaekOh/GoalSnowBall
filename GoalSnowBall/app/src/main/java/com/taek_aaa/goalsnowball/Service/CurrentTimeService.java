@@ -32,11 +32,11 @@ import static com.taek_aaa.goalsnowball.data.CommonData.isTodayDueFinish;
 import static com.taek_aaa.goalsnowball.data.CommonData.isWeekDueFinish;
 import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
 import static com.taek_aaa.goalsnowball.data.CommonData.whatGradeTo;
+import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
+import static com.taek_aaa.goalsnowball.data.UserDBManager.userDBManagerInstance;
 
 public class CurrentTimeService extends Service {
     Boolean isRunning;
-    DBManager dbManager;
-    UserDBManager userDBManager;
     DataController dataController;
     Context context;
     public static String[] gradeArray = {"UnRank", "D", "C", "B", "A", "S", "SS", "SSS", "Master"};
@@ -53,8 +53,9 @@ public class CurrentTimeService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
-        userDBManager = new UserDBManager(getBaseContext(), "userdb.db", null, 1);
+        //dbManagerInstance = new dbManagerInstance(getBaseContext(), "goaldb.db", null, 1);
+        dbManagerInstance = DBManager.getInstance(getBaseContext());
+        userDBManagerInstance = UserDBManager.getInstance(getBaseContext());
         Log.e("now", "온크리에이트 커런트");
         isRunning = true;
         dataController = new DataController();
@@ -97,9 +98,9 @@ public class CurrentTimeService extends Service {
             isTodayDueFinish = true;
             totalLooseCoin=0;
 
-            if (dbManager.getGoalAmount(FROM_TODAY) > dbManager.getCurrentAmount(FROM_TODAY)) {
-                dbManager.setIsSuccess(FROM_TODAY, 3);
-                failBetToday=dbManager.getBettingGold(FROM_TODAY);
+            if (dbManagerInstance.getGoalAmount(FROM_TODAY) > dbManagerInstance.getCurrentAmount(FROM_TODAY)) {
+                dbManagerInstance.setIsSuccess(FROM_TODAY, 3);
+                failBetToday=dbManagerInstance.getBettingGold(FROM_TODAY);
                 totalLooseCoin += failBetToday;
                 dataController.setPreferencesLooseGold(context,totalLooseCoin);
                 dataController.setPreferencesFailFlag(context, 1);
@@ -108,10 +109,10 @@ public class CurrentTimeService extends Service {
 
             if (now.dayOfWeekIndex == 1) {      //일요일
                 isWeekDueFinish = true;
-                if (dbManager.getGoalAmount(FROM_WEEK) > dbManager.getCurrentAmount(FROM_WEEK)) {
+                if (dbManagerInstance.getGoalAmount(FROM_WEEK) > dbManagerInstance.getCurrentAmount(FROM_WEEK)) {
                     isFailWeek = true;
-                    dbManager.setIsSuccess(FROM_WEEK, 3);
-                    failBetWeek=dbManager.getBettingGold(FROM_WEEK);
+                    dbManagerInstance.setIsSuccess(FROM_WEEK, 3);
+                    failBetWeek=dbManagerInstance.getBettingGold(FROM_WEEK);
                     totalLooseCoin += failBetWeek;
                     dataController.setPreferencesFailFlag(context, 1);
                     dataController.setPreferencesLooseGold(context,totalLooseCoin);
@@ -120,10 +121,10 @@ public class CurrentTimeService extends Service {
             }
             if (now.cdate == endDay) {           //마지막일
                 isMonthDueFinish = true;
-                if (dbManager.getGoalAmount(FROM_MONTH) > dbManager.getCurrentAmount(FROM_MONTH)) {
+                if (dbManagerInstance.getGoalAmount(FROM_MONTH) > dbManagerInstance.getCurrentAmount(FROM_MONTH)) {
                     isFailMonth = true;
-                    dbManager.setIsSuccess(FROM_MONTH, 3);
-                    failBetMonth=dbManager.getBettingGold(FROM_MONTH);
+                    dbManagerInstance.setIsSuccess(FROM_MONTH, 3);
+                    failBetMonth=dbManagerInstance.getBettingGold(FROM_MONTH);
                     totalLooseCoin += failBetMonth;
                     dataController.setPreferencesFailFlag(context, 1);
                     dataController.setPreferencesLooseGold(context,totalLooseCoin);
@@ -134,38 +135,38 @@ public class CurrentTimeService extends Service {
     }
 
     public void checkLevelUp(){
-        int gold = userDBManager.getGold();
-        int count = dbManager.getLastPosition();
+        int gold = userDBManagerInstance.getGold();
+        int count = dbManagerInstance.getLastPosition();
         if(gold >= 100 && count>= 10){
-            userDBManager.setGrade("D 등급");
+            userDBManagerInstance.setGrade("D 등급");
             whatGradeTo=TO_D;
             dataController.setPreferencesLevelUpFlag(context, 1);
         }else if (gold >= 300 && count >= 30){
-            userDBManager.setGrade("C 등급");
+            userDBManagerInstance.setGrade("C 등급");
             whatGradeTo=TO_C;
             dataController.setPreferencesLevelUpFlag(context, 1);
         }else if (gold >= 500 && count >= 50){
-            userDBManager.setGrade("B 등급");
+            userDBManagerInstance.setGrade("B 등급");
             whatGradeTo = TO_B;
             dataController.setPreferencesLevelUpFlag(context, 1);
         }else if (gold >= 1000 && count >= 100){
-            userDBManager.setGrade("A 등급");
+            userDBManagerInstance.setGrade("A 등급");
             whatGradeTo = TO_A;
             dataController.setPreferencesLevelUpFlag(context, 1);
         }else if (gold >= 5000 && count >= 300){
-            userDBManager.setGrade("S 등급");
+            userDBManagerInstance.setGrade("S 등급");
             whatGradeTo = TO_S;
             dataController.setPreferencesLevelUpFlag(context, 1);
         }else if (gold >= 20000 && count >= 500){
-            userDBManager.setGrade("SS 등급");
+            userDBManagerInstance.setGrade("SS 등급");
             whatGradeTo = TO_SS;
             dataController.setPreferencesLevelUpFlag(context, 1);
         }else if (gold >= 100000 && count >= 1000){
-            userDBManager.setGrade("SSS 등급");
+            userDBManagerInstance.setGrade("SSS 등급");
             whatGradeTo = TO_SSS;
             dataController.setPreferencesLevelUpFlag(context, 1);
         }else if(gold >= 1000000 && count >= 3000){
-            userDBManager.setGrade("Master");
+            userDBManagerInstance.setGrade("Master");
             whatGradeTo = TO_MASTER;
             dataController.setPreferencesLevelUpFlag(context, 1);
         }

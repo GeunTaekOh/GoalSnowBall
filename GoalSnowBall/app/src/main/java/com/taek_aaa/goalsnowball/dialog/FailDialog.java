@@ -13,6 +13,8 @@ import com.taek_aaa.goalsnowball.data.UserDBManager;
 
 import static android.media.AudioManager.STREAM_MUSIC;
 import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
+import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
+import static com.taek_aaa.goalsnowball.data.UserDBManager.userDBManagerInstance;
 
 /**
  * Created by taek_aaa on 2017. 1. 29..
@@ -20,8 +22,6 @@ import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
 
 public class FailDialog extends Dialog {
     TextView failMsg, failCoinMsg;
-    DBManager dbManager;
-    UserDBManager userDBManager;
     SoundPool soundPool;
     int tune;
     private Context c;
@@ -34,16 +34,16 @@ public class FailDialog extends Dialog {
         context = getContext();
 
         dataController = new DataController();
-        userDBManager = new UserDBManager(getContext(), "userdb.db", null, 1);
-        dbManager = new DBManager(getContext(), "goaldb.db", null, 1);
+        userDBManagerInstance = UserDBManager.getInstance(getContext());
+        dbManagerInstance = DBManager.getInstance(getContext());
 
         failMsg = (TextView)findViewById(R.id.failMsg);
         failCoinMsg = (TextView)findViewById(R.id.failCoinMsg);
         totalLooseCoin = dataController.getPreferencesLooseGold(c);
         failCoinMsg.setText("실패하여서 총 "+totalLooseCoin+" Gold을 잃었습니다.");
-        int gold = userDBManager.getGold();
+        int gold = userDBManagerInstance.getGold();
         gold -= totalLooseCoin;
-        userDBManager.setGold(gold);
+        userDBManagerInstance.setGold(gold);
         totalLooseCoin = 0;
         dataController.setPreferencesLooseGold(c,0);
 
@@ -55,7 +55,7 @@ public class FailDialog extends Dialog {
 
     private void playFailSound(){
         AudioManager mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
-        if ((mAudioManager.getRingerMode() == 2 ) && (userDBManager.getIsSound()==1)){                       //소리모드일때만 소리 출력
+        if ((mAudioManager.getRingerMode() == 2 ) && (userDBManagerInstance.getIsSound()==1)){                       //소리모드일때만 소리 출력
             soundPool = new SoundPool(1, STREAM_MUSIC, 0);
             tune = soundPool.load(getContext(), R.raw.failhorn, 1);
             soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {

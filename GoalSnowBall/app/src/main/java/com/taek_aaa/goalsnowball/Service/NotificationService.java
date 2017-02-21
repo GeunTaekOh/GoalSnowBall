@@ -18,13 +18,14 @@ import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
 import static com.taek_aaa.goalsnowball.data.CommonData.NOTIFICATION_TERM;
+import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
+import static com.taek_aaa.goalsnowball.data.UserDBManager.userDBManagerInstance;
 
 
 public class NotificationService extends Service {
     NotificationManager notificationManager;
     public Boolean isRunning;
-    DBManager dbManager;
-    UserDBManager userDBManager;
+
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -34,8 +35,9 @@ public class NotificationService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
-        userDBManager = new UserDBManager(getBaseContext(), "userdb.db", null, 1);
+        //dbManagerInstance = new dbManagerInstance(getBaseContext(), "goaldb.db", null, 1);
+        dbManagerInstance = DBManager.getInstance(getBaseContext());
+        userDBManagerInstance = UserDBManager.getInstance(getBaseContext());
         isRunning = true;
     }
 
@@ -47,7 +49,7 @@ public class NotificationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        int intToBooleanIsNoti = userDBManager.getIsNoti();
+        int intToBooleanIsNoti = userDBManagerInstance.getIsNoti();
         if(intToBooleanIsNoti==1){
             isRunning=true;
         }else{
@@ -79,7 +81,7 @@ public class NotificationService extends Service {
         mBuilder.setContentTitle("GoalSnowBall의 목표를 설정하세요.");
         mBuilder.setWhen(System.currentTimeMillis());
         mBuilder.setContentText("" + str);
-        if(userDBManager.getIsSound()==1) {
+        if(userDBManagerInstance.getIsSound()==1) {
             mBuilder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
         }else{
             mBuilder.setDefaults(Notification.DEFAULT_VIBRATE);
@@ -95,9 +97,9 @@ public class NotificationService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 
         boolean todayNothing, weekNothing, monthNothing;
-        todayNothing = dbManager.getGoal(FROM_TODAY).equals("");
-        weekNothing = dbManager.getGoal(FROM_WEEK).equals("");
-        monthNothing = dbManager.getGoal(FROM_MONTH).equals("");
+        todayNothing = dbManagerInstance.getGoal(FROM_TODAY).equals("");
+        weekNothing = dbManagerInstance.getGoal(FROM_WEEK).equals("");
+        monthNothing = dbManagerInstance.getGoal(FROM_MONTH).equals("");
 
         if (todayNothing && weekNothing && monthNothing) {
             setNotificationBuild("오늘과 이번주와 이번달의 목표를 새롭게 설정하세요.", pendingIntent);

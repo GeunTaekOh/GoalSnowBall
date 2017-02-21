@@ -17,8 +17,25 @@ import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 /**is success 가 0이면 저장 안함 1이면 성공 2이면 하는중 3이면 실패**/
 public class DBManager extends SQLiteOpenHelper {
 
-    public DBManager(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+
+    public static DBManager dbManagerInstance;
+    private static final String DATABASE_NAME =  "goaldb.db";
+    private static final int DATABASE_VERSION = 1;
+
+    public static synchronized DBManager getInstance(Context context) {
+
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        // See this article for more information: http://bit.ly/6LRzfx
+        if (dbManagerInstance == null) {
+            dbManagerInstance = new DBManager(context.getApplicationContext());
+        }
+        return dbManagerInstance;
+    }
+
+
+    public DBManager(Context context){//, String name, SQLiteDatabase.CursorFactory factory, int version) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override

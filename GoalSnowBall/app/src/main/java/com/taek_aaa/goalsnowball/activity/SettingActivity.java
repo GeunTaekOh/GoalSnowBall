@@ -18,6 +18,9 @@ import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
 
+import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
+import static com.taek_aaa.goalsnowball.data.UserDBManager.userDBManagerInstance;
+
 /**
  * Created by taek_aaa on 2017. 2. 9..
  */
@@ -25,9 +28,7 @@ import com.taek_aaa.goalsnowball.data.UserDBManager;
 public class SettingActivity extends Activity {
 
     SwitchCompat notiSwtich, soundSwitch;
-    UserDBManager userDBManager;
     CheckBox checkBox;
-    DBManager dbManager;
     SQLiteDatabase db, db2;
 
     @Override
@@ -38,19 +39,19 @@ public class SettingActivity extends Activity {
             getWindow().setStatusBarColor(Color.parseColor("#99BADD"));
         }
 
-        userDBManager = new UserDBManager(getBaseContext(), "userdb.db", null, 1);
-        dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
+        userDBManagerInstance = UserDBManager.getInstance(getBaseContext());
+        dbManagerInstance = DBManager.getInstance(getBaseContext());
         notiSwtich=(SwitchCompat)findViewById(R.id.switchButton);
         soundSwitch=(SwitchCompat)findViewById(R.id.switchButton2);
         checkBox = (CheckBox)findViewById(R.id.checkbox);
 
-        if(userDBManager.getIsNoti()==1){
+        if(userDBManagerInstance.getIsNoti()==1){
             notiSwtich.setChecked(true);
         }else{
             notiSwtich.setChecked(false);
         }
 
-        if(userDBManager.getIsSound()==1){
+        if(userDBManagerInstance.getIsSound()==1){
             soundSwitch.setChecked(true);
         }else{
             soundSwitch.setChecked(false);
@@ -62,12 +63,12 @@ public class SettingActivity extends Activity {
                 if(isChecked) {
                     Snackbar.make(buttonView, "상단바에서 알림을 받으실 수 있습니다.", Snackbar.LENGTH_LONG)
                             .setAction("ACTION", null).show();
-                    userDBManager.setIsNoti(1);
+                    userDBManagerInstance.setIsNoti(1);
 
                 }else{
                     Snackbar.make(buttonView, "상단바에서 알림을 받으실 수 없습니다.", Snackbar.LENGTH_LONG)
                             .setAction("ACTION", null).show();
-                    userDBManager.setIsNoti(0);
+                    userDBManagerInstance.setIsNoti(0);
                 }
             }
         });
@@ -79,11 +80,11 @@ public class SettingActivity extends Activity {
                 if(isChecked) {
                     Snackbar.make(compoundButton, "소리모드일시 소리를 재생합니다.", Snackbar.LENGTH_SHORT)
                             .setAction("ACTION", null).show();
-                    userDBManager.setIsSound(1);
+                    userDBManagerInstance.setIsSound(1);
                 }else{
                     Snackbar.make(compoundButton, "소리모드일시에도 소리를 재생하지 않습니다.", Snackbar.LENGTH_SHORT)
                             .setAction("ACTION", null).show();
-                    userDBManager.setIsSound(0);
+                    userDBManagerInstance.setIsSound(0);
                 }
 
             }
@@ -93,8 +94,8 @@ public class SettingActivity extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                db = dbManager.getWritableDatabase();
-                db2 = userDBManager.getWritableDatabase();
+                db = dbManagerInstance.getWritableDatabase();
+                db2 = userDBManagerInstance.getWritableDatabase();
 
                 if(b){
                     AlertDialog.Builder adb = new AlertDialog.Builder(SettingActivity.this);
@@ -106,11 +107,11 @@ public class SettingActivity extends Activity {
                             .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                  //  dbManager.onUpgrade(db, 1, 2);
-                                    dbManager.deleteAll(db);
-                                    dbManager.close();
-                                    userDBManager.onUpgrade(db2,1,2);
-                                    userDBManager.close();
+                                  //  dbManagerInstance.onUpgrade(db, 1, 2);
+                                    dbManagerInstance.deleteAll(db);
+                                    dbManagerInstance.close();
+                                    userDBManagerInstance.onUpgrade(db2,1,2);
+                                    userDBManagerInstance.close();
 
                                     Toast.makeText(SettingActivity.this, "DB를 삭제하였습니다", Toast.LENGTH_SHORT).show();
                                 }

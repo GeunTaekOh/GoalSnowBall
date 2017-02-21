@@ -65,6 +65,8 @@ import static com.taek_aaa.goalsnowball.data.CommonData.defaultWidth;
 import static com.taek_aaa.goalsnowball.data.CommonData.inflater;
 import static com.taek_aaa.goalsnowball.data.CommonData.setFailStatus;
 import static com.taek_aaa.goalsnowball.data.CommonData.whatGradeTo;
+import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
+import static com.taek_aaa.goalsnowball.data.UserDBManager.userDBManagerInstance;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -80,8 +82,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     MonthGoalDialog monthGoalDialog;
     UserNameDialog userNameDialog;
     PictureController pictureController;
-    DBManager dbManager;
-    UserDBManager userDBManager;
     CalendarDatas today;
     DataController dataController;
     FailDialog failDialog;
@@ -257,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         try {
             Uri uri = data.getData();
             File imageFile = new File(getRealPathFromURI(uri));
-            userDBManager.setPicturePath(imageFile.toString());
+            userDBManagerInstance.setPicturePath(imageFile.toString());
             photo = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
             inflater = getLayoutInflater();
             Bitmap sizedPhoto = pictureController.setSizedImage(photo);
@@ -295,18 +295,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void drawImage() {
         int iter = 0;
         Bitmap rotatedPhoto;
-        if (userDBManager.getPicturePath().equals("null")) {
+        if (userDBManagerInstance.getPicturePath().equals("null")) {
             isPicture = false;
             drawMainImage();
         } else {
-            String picturePath = userDBManager.getPicturePath();
+            String picturePath = userDBManagerInstance.getPicturePath();
             File imgFile = new File("" + picturePath);
             if (imgFile.exists()) {
                 Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                 Bitmap sizedPhoto = pictureController.setSizedImage(myBitmap);
                 photo = sizedPhoto;
                 try {
-                    iter = userDBManager.getRotationIter();
+                    iter = userDBManagerInstance.getRotationIter();
                 } catch (Exception e) {
                     iter = 0;
                 }
@@ -322,9 +322,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void drawUserStatus() {
-        mainGoldtv.setText("" + userDBManager.getGold() + "Gold");
-        userIdtv.setText("" + userDBManager.getName());
-        mainGradetv.setText("" + userDBManager.getGrade());
+        mainGoldtv.setText("" + userDBManagerInstance.getGold() + "Gold");
+        userIdtv.setText("" + userDBManagerInstance.getName());
+        mainGradetv.setText("" + userDBManagerInstance.getGrade());
     }
 
     /**
@@ -396,16 +396,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             textView = monthtv;
         }
 
-        if (dbManager.getIsSuccess(from) == 1) {
+        if (dbManagerInstance.getIsSuccess(from) == 1) {
             imageView.setImageResource(R.drawable.bulbsuccess);
-        } else if (dbManager.getIsSuccess(from) == 2) {
+        } else if (dbManagerInstance.getIsSuccess(from) == 2) {
             imageView.setImageResource(R.drawable.bulbdoing);
-        } else if (dbManager.getIsSuccess(from) == 3) {
+        } else if (dbManagerInstance.getIsSuccess(from) == 3) {
             imageView.setImageResource(R.drawable.bulbfail);
         } else {
             imageView.setImageResource(0);
         }
-        textView.setText(dbManager.getGoal(from));
+        textView.setText(dbManagerInstance.getGoal(from));
         textView.setGravity(Gravity.CENTER);
     }
 
@@ -482,17 +482,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         double result;
-        int goal = dbManager.getGoalAmount(from);
+        int goal = dbManagerInstance.getGoalAmount(from);
         int current;
-        if ((dbManager.getType(from).toString().equals("물리적양")) || (dbManager.getType(from).toString().equals("시간적양"))) {
-            current = dbManager.getCurrentAmount(from);
+        if ((dbManagerInstance.getType(from).toString().equals("물리적양")) || (dbManagerInstance.getType(from).toString().equals("시간적양"))) {
+            current = dbManagerInstance.getCurrentAmount(from);
         } else {
             current = 0;
             goal = 10;
         }
         result = dataController.makePercent(current, goal);
         if (result == 100) {
-            if (dbManager.getType(from).equals("시간적양") && dbManager.getUnit(from).equals("이하")) {
+            if (dbManagerInstance.getType(from).equals("시간적양") && dbManagerInstance.getUnit(from).equals("이하")) {
                 tv.setTextColor(Color.parseColor("#FF1C00"));
             } else {
                 tv.setTextColor(Color.parseColor("#A7FC00"));
@@ -509,20 +509,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * init
      **/
     private void init() {
-        userDBManager = new UserDBManager(getBaseContext(), "userdb.db", null, 1);
-        dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
+        //userDBManagerInstance = new userDBManagerInstance(getBaseContext(), "userdb.db", null, 1);
+        userDBManagerInstance =UserDBManager.getInstance(getBaseContext());
+        dbManagerInstance = DBManager.getInstance(getBaseContext());
+
+        //dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
         imageView = (CircularImageView) findViewById(R.id.mainImageView);
         today = new CalendarDatas();
         mainGradetv = (TextView) findViewById(R.id.mainGradetv);
         mainGoldtv = (TextView) findViewById(R.id.mainGoldtv);
-        mainGoldtv.setText("" + userDBManager.getGold() + "Gold");
-        mainGradetv.setText("" + userDBManager.getGrade());
+        mainGoldtv.setText("" + userDBManagerInstance.getGold() + "Gold");
+        mainGradetv.setText("" + userDBManagerInstance.getGrade());
         percentToday = (TextView) findViewById(R.id.percentToday);
         percentWeek = (TextView) findViewById(R.id.percentWeek);
         percentMonth = (TextView) findViewById(R.id.percentMonth);
         userNametv = (TextView) findViewById(R.id.userIdtv);
         userIdtv = (TextView) findViewById(R.id.userIdtv);
-        userIdtv.setText("" + userDBManager.getName());
+        userIdtv.setText("" + userDBManagerInstance.getName());
         userNameDialog = new UserNameDialog(this);
         todaytv = (TextView) findViewById(R.id.mainTodayGoalTv);
         weektv = (TextView) findViewById(R.id.mainWeekGoalTv);
@@ -612,19 +615,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     rotatedPicture = pictureController.rotate(photo, 90);
                     photo = rotatedPicture;
                     imageView.setImageBitmap(rotatedPicture);
-                    userDBManager.addRotationIter();
+                    userDBManagerInstance.addRotationIter();
                 } else {
                     Toast.makeText(this, "아직 이미지를 설정하지 않았습니다.", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case 3://사진삭제
-                if (userDBManager.getPicturePath().equals("null")) {
+                if (userDBManagerInstance.getPicturePath().equals("null")) {
                     Toast.makeText(this, "아직 이미지를 설정하지 않았습니다. ", Toast.LENGTH_SHORT).show();
                 } else {
                     drawMainImage();
                     isPicture = false;
-                    userDBManager.setPicturePath("null");
-                    userDBManager.setRotationIter(0);
+                    userDBManagerInstance.setPicturePath("null");
+                    userDBManagerInstance.setRotationIter(0);
                     Toast.makeText(this, "이미지가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -657,14 +660,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             msg = "이번달의 목표를 끝까지 응원합니다!";
             bool = calendarDatas.cdate > 15;
         }
-        if (dbManager.getIsSuccess(from) == 1) {
+        if (dbManagerInstance.getIsSuccess(from) == 1) {
             Toast.makeText(this, "이미 성공하여서 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
-        } else if (dbManager.getIsSuccess(from) == 3) {
+        } else if (dbManagerInstance.getIsSuccess(from) == 3) {
             Toast.makeText(this, "이미 실패하여서 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
         } else if (bool) {
             Toast.makeText(this, ""+msg, Toast.LENGTH_SHORT).show();
         } else {
-            dbManager.delete(from);
+            dbManagerInstance.delete(from);
             onStart();
         }
     }
@@ -677,7 +680,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         userNameDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-                userIdtv.setText(userDBManager.getName());
+                userIdtv.setText(userDBManagerInstance.getName());
             }
         });
     }
@@ -696,7 +699,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawWhenPercent(FROM_TODAY);
         drawWhenPercent(FROM_WEEK);
         drawWhenPercent(FROM_MONTH);
-        mainGoldtv.setText("" + userDBManager.getGold() + "Gold");
+        mainGoldtv.setText("" + userDBManagerInstance.getGold() + "Gold");
         drawDDay();
         drawUserStatus();
 
@@ -717,7 +720,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onDismiss(DialogInterface dialogInterface) {
                     AudioManager mAudioManager = (AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE);
 
-                    if ((mAudioManager.getRingerMode() == 2) && userDBManager.getIsSound() == 1) {
+                    if ((mAudioManager.getRingerMode() == 2) && userDBManagerInstance.getIsSound() == 1) {
                         soundPool = new SoundPool(1, STREAM_MUSIC, 0);
                         tune = soundPool.load(getBaseContext(), R.raw.failcoin, 1);
                         soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {

@@ -17,6 +17,8 @@ import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessToday;
 import static com.taek_aaa.goalsnowball.data.CommonData.setFailStatus;
 import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
+import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
+import static com.taek_aaa.goalsnowball.data.UserDBManager.userDBManagerInstance;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.SUCCESS_FROM_TODAY;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.whereSuccess;
 
@@ -31,12 +33,12 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
         super.onCreate(savedInstanceState);
         try {
             /** 물리적 양 일때 **/
-            if (dbManager.getType(FROM_TODAY).equals("물리적양")) {
+            if (dbManagerInstance.getType(FROM_TODAY).equals("물리적양")) {
                 setContentView(R.layout.activity_goal_amount_doing);
                 isAmount = true;
                 amountOfEdit = (EditText) findViewById(R.id.doing_current_amount);
                 unittv = (TextView) findViewById(R.id.doing_unit);
-            } else if (dbManager.getType(FROM_TODAY).equals("시간적양")) {
+            } else if (dbManagerInstance.getType(FROM_TODAY).equals("시간적양")) {
                 /** 시간적 양 일때 **/
                 setContentView(R.layout.activity_goal_time_doing);
                 TextView stopWatchtv = (TextView) findViewById(R.id.timerTextView);
@@ -52,40 +54,40 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
                 amountOfEdit.post(new Runnable() {
                     @Override
                     public void run() {
-                        amountOfEdit.setText("" + dbManager.getCurrentAmount(FROM_TODAY));
+                        amountOfEdit.setText("" + dbManagerInstance.getCurrentAmount(FROM_TODAY));
                     }
                 });
-                blackboardtv.setText("목표량 : " + dbManager.getGoalAmount(FROM_TODAY) + "" + dbManager.getUnit(FROM_TODAY));
-                unittv.setText("" + dbManager.getUnit(FROM_TODAY));
+                blackboardtv.setText("목표량 : " + dbManagerInstance.getGoalAmount(FROM_TODAY) + "" + dbManagerInstance.getUnit(FROM_TODAY));
+                unittv.setText("" + dbManagerInstance.getUnit(FROM_TODAY));
             } else {
 
-                timeOfCurrenttv.setText("수행 시간 : " + dbManager.getCurrentAmount(FROM_TODAY) + "분");
-                blackboardtv.setText("목표량 : " + dbManager.getGoalAmount(FROM_TODAY) + "분 " + dbManager.getUnit(FROM_TODAY));
+                timeOfCurrenttv.setText("수행 시간 : " + dbManagerInstance.getCurrentAmount(FROM_TODAY) + "분");
+                blackboardtv.setText("목표량 : " + dbManagerInstance.getGoalAmount(FROM_TODAY) + "분 " + dbManagerInstance.getUnit(FROM_TODAY));
             }
-            successGetGoldtv.setText("성공시 획득 골드 : " + "" + dbManager.getBettingGold(FROM_TODAY) + "Gold");
-            doingGoaltv.setText("오늘의 목표 : " + dbManager.getGoal(FROM_TODAY));
+            successGetGoldtv.setText("성공시 획득 골드 : " + "" + dbManagerInstance.getBettingGold(FROM_TODAY) + "Gold");
+            doingGoaltv.setText("오늘의 목표 : " + dbManagerInstance.getGoal(FROM_TODAY));
         } catch (Exception e) {
             /** 목표 설정 안되어 있을 때 **/
             Toast.makeText(this, "오늘의 목표를 먼저 설정하세요.", Toast.LENGTH_SHORT).show();
             Log.e("error", "" + e.getStackTrace());
             finish();
         }
-        tmpAmount = dbManager.getCurrentAmount(FROM_TODAY);
+        tmpAmount = dbManagerInstance.getCurrentAmount(FROM_TODAY);
     }
     /**
      * 목표 수행량 저장하는 함수
      **/
     public void onClickSaveBtnGoal(View v) {
-        if (dbManager.getIsSuccess(FROM_TODAY) == 3) {
+        if (dbManagerInstance.getIsSuccess(FROM_TODAY) == 3) {
             Toast.makeText(context, "이미 실패하였습니다. 저장하지 못하였습니다.", Toast.LENGTH_SHORT).show();
-        } else if (dbManager.getIsSuccess(FROM_TODAY) == 1) {
+        } else if (dbManagerInstance.getIsSuccess(FROM_TODAY) == 1) {
             Toast.makeText(this, "이미 성공하여서 Gold를 수령했습니다.", Toast.LENGTH_SHORT).show();
         } else {
             saveCurrentAmountToEditText(FROM_TODAY);
-            if (dbManager.getGoalAmount(FROM_TODAY) <= dbManager.getCurrentAmount(FROM_TODAY)) {
+            if (dbManagerInstance.getGoalAmount(FROM_TODAY) <= dbManagerInstance.getCurrentAmount(FROM_TODAY)) {
                 whereSuccess = SUCCESS_FROM_TODAY;
-                int a = (dbManager.getBettingGold(FROM_TODAY)) + (userDBManager.getGold());
-                userDBManager.setGold(a);
+                int a = (dbManagerInstance.getBettingGold(FROM_TODAY)) + (userDBManagerInstance.getGold());
+                userDBManagerInstance.setGold(a);
 
                 successDialog = new SuccessDialog(this);
                 successDialog.show();
@@ -121,22 +123,22 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
         ihowlongtime = ihowlongtime / 60;
 
 
-        int temp = dbManager.getCurrentAmount(FROM_TODAY);
+        int temp = dbManagerInstance.getCurrentAmount(FROM_TODAY);
         temp += ihowlongtime;
 
-        timeOfCurrenttv.setText("수행 시간 : " + dbManager.getCurrentAmount(FROM_TODAY) + "분");
+        timeOfCurrenttv.setText("수행 시간 : " + dbManagerInstance.getCurrentAmount(FROM_TODAY) + "분");
         Button startbtn = (Button) findViewById(R.id.timerStartbtn);
 
-        if (dbManager.getIsSuccess(FROM_TODAY) == 3) {
+        if (dbManagerInstance.getIsSuccess(FROM_TODAY) == 3) {
             Toast.makeText(getBaseContext(), "이미 실패하였습니다. 저장하지 못하였습니다.", Toast.LENGTH_SHORT).show();
-        } else if (dbManager.getIsSuccess(FROM_TODAY) == 1) {
+        } else if (dbManagerInstance.getIsSuccess(FROM_TODAY) == 1) {
             Toast.makeText(getBaseContext(), "이미 성공하여서 Gold를 수령했습니다.", Toast.LENGTH_SHORT).show();
         } else {
-            dbManager.setCurrentAmount(FROM_TODAY, temp);
-            if (dbManager.getUnit(FROM_TODAY).equals("이상") && dbManager.getCurrentAmount(FROM_TODAY) >= dbManager.getGoalAmount(FROM_TODAY)) {      //이상이고 성공
+            dbManagerInstance.setCurrentAmount(FROM_TODAY, temp);
+            if (dbManagerInstance.getUnit(FROM_TODAY).equals("이상") && dbManagerInstance.getCurrentAmount(FROM_TODAY) >= dbManagerInstance.getGoalAmount(FROM_TODAY)) {      //이상이고 성공
                 whereSuccess = SUCCESS_FROM_TODAY;
-                int a = (dbManager.getBettingGold(FROM_TODAY)) + (userDBManager.getGold());
-                userDBManager.setGold(a);
+                int a = (dbManagerInstance.getBettingGold(FROM_TODAY)) + (userDBManagerInstance.getGold());
+                userDBManagerInstance.setGold(a);
 
                 successDialog = new SuccessDialog(this);
                 successDialog.show();
@@ -147,10 +149,10 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
                         playCoinSound();
                     }
                 });
-            } else if (dbManager.getUnit(FROM_TODAY).equals("이하") && dbManager.getCurrentAmount(FROM_TODAY) >= dbManager.getGoalAmount(FROM_TODAY)) {       //이하이고 실패
-                dbManager.setIsSuccess(FROM_TODAY, 3);
+            } else if (dbManagerInstance.getUnit(FROM_TODAY).equals("이하") && dbManagerInstance.getCurrentAmount(FROM_TODAY) >= dbManagerInstance.getGoalAmount(FROM_TODAY)) {       //이하이고 실패
+                dbManagerInstance.setIsSuccess(FROM_TODAY, 3);
                 dataController.setPreferencesFailFlag(context, 1);
-                totalLooseCoin = dbManager.getBettingGold(FROM_TODAY);
+                totalLooseCoin = dbManagerInstance.getBettingGold(FROM_TODAY);
                 failDialog = new FailDialog(this);
                 failDialog.show();
                 setFailStatus(false);
@@ -174,8 +176,8 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
         switch (v.getId()) {
             case R.id.upButton:
                 tmpAmount += 1;
-                if (tmpAmount > dbManager.getGoalAmount(FROM_TODAY)) {
-                    tmpAmount = dbManager.getGoalAmount(FROM_TODAY);
+                if (tmpAmount > dbManagerInstance.getGoalAmount(FROM_TODAY)) {
+                    tmpAmount = dbManagerInstance.getGoalAmount(FROM_TODAY);
                 }
                 amountOfEdit.setText("" + tmpAmount);
                 break;

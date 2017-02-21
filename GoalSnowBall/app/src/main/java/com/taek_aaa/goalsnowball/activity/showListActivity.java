@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
 import static com.taek_aaa.goalsnowball.data.CommonData.listViewPosition;
+import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
 
 /**
  * Created by taek_aaa on 2017. 2. 10..
@@ -30,7 +31,7 @@ public class showListActivity extends Activity {
 
     private ArrayList<Item> m_arr;
     private List_Adapter adapter;
-    DBManager dbManager;
+
     TextView listtv, countListtv;
     public static int amountShowList = 10;
     ListView lv;
@@ -43,22 +44,22 @@ public class showListActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_showlist);
-        dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
+        dbManagerInstance = DBManager.getInstance(getBaseContext());
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(Color.parseColor("#99BADD"));
         }
         listtv = (TextView) findViewById(R.id.listTopTv);
         countListtv = (TextView) findViewById(R.id.countListtv);
-        if (amountShowList > dbManager.getLastPosition()) {
-            amountShowList = dbManager.getLastPosition();
+        if (amountShowList > dbManagerInstance.getLastPosition()) {
+            amountShowList = dbManagerInstance.getLastPosition();
         }
         lv = (ListView) findViewById(R.id.listView1);
 
-        if (dbManager.isEmptyDB()) {
+        if (dbManagerInstance.isEmptyDB()) {
             lv.setBackgroundResource(R.drawable.empty2);
         }
-        countListtv.setText("" + amountShowList + " / " + "" + dbManager.getLastPosition());
-        amountOfEvery = dbManager.getLastPosition();
+        countListtv.setText("" + amountShowList + " / " + "" + dbManagerInstance.getLastPosition());
+        amountOfEvery = dbManagerInstance.getLastPosition();
 
 
         lv.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -101,14 +102,14 @@ public class showListActivity extends Activity {
         m_arr = new ArrayList<Item>();
         lv = (ListView) findViewById(R.id.listView1);
 
-        listViewPosition = dbManager.getLastPosition();
+        listViewPosition = dbManagerInstance.getLastPosition();
 
         for (int i = 0; i < amountShowList; i++) {
             if (listViewPosition <= 0) {
-                Toast.makeText(this, "" + dbManager.getLastPosition() + "개의 데이터가 존재합니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "" + dbManagerInstance.getLastPosition() + "개의 데이터가 존재합니다.", Toast.LENGTH_SHORT).show();
                 break;
             } else {
-                Item item = convertData(dbManager.getPreviousListViewData(listViewPosition));
+                Item item = convertData(dbManagerInstance.getPreviousListViewData(listViewPosition));
                 m_arr.add(item);
             }
             listViewPosition--;
@@ -127,7 +128,7 @@ public class showListActivity extends Activity {
                 break;
             } else {
                 if (m_arr.size() <= amountOfEvery) {
-                    Item item = convertData(dbManager.getPreviousListViewData(listViewPosition));
+                    Item item = convertData(dbManagerInstance.getPreviousListViewData(listViewPosition));
                     m_arr.add(item);
                     amountShowList++;
                 } else {
@@ -142,7 +143,7 @@ public class showListActivity extends Activity {
         lv.setSelection(lastPos);
         amountOfDraw = m_arr.size();
         lastPos += amountShowList;
-        countListtv.setText("" + amountShowList + " / " + "" + dbManager.getLastPosition());
+        countListtv.setText("" + amountShowList + " / " + "" + dbManagerInstance.getLastPosition());
     }
 
 

@@ -23,6 +23,8 @@ import com.taek_aaa.goalsnowball.dialog.FailDialog;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
 import static android.media.AudioManager.STREAM_MUSIC;
+import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
+import static com.taek_aaa.goalsnowball.data.UserDBManager.userDBManagerInstance;
 
 /**
  * Created by taek_aaa on 2017. 1. 21..
@@ -39,8 +41,7 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface {
     Handler handler = new Handler();
     SoundPool soundPool;
     SuccessDialog successDialog;
-    UserDBManager userDBManager;
-    DBManager dbManager;
+
     Context context;
     DataController dataController;
     FailDialog failDialog;
@@ -48,8 +49,8 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
-        userDBManager = new UserDBManager(getBaseContext(), "userdb.db", null, 1);
+        dbManagerInstance = DBManager.getInstance(getBaseContext());
+        userDBManagerInstance =UserDBManager.getInstance(getBaseContext());
         context = getBaseContext();
         dataController = new DataController();
         if (Build.VERSION.SDK_INT >= 21) {
@@ -112,7 +113,7 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface {
     public void playCoinSound() {
         AudioManager mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
-        if ((mAudioManager.getRingerMode() == 2) && (userDBManager.getIsSound()==1)){
+        if ((mAudioManager.getRingerMode() == 2) && (userDBManagerInstance.getIsSound()==1)){
             soundPool = new SoundPool(1, STREAM_MUSIC, 0);
             tune = soundPool.load(this, R.raw.coin, 1);
             soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
@@ -130,8 +131,8 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface {
      * 수행량 저장하는 함수
      **/
     public void saveCurrentAmountToEditText(int from) {
-        dbManager.setCurrentAmount(from, Integer.parseInt(amountOfEdit.getText().toString()));
-        if (dbManager.getCurrentAmount(from) < dbManager.getGoalAmount(from)) {
+        dbManagerInstance.setCurrentAmount(from, Integer.parseInt(amountOfEdit.getText().toString()));
+        if (dbManagerInstance.getCurrentAmount(from) < dbManagerInstance.getGoalAmount(from)) {
             Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
         }
     }

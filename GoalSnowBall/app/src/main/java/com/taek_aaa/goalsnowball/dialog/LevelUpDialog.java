@@ -13,6 +13,7 @@ import com.taek_aaa.goalsnowball.controller.DataController;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
 
 import static android.media.AudioManager.STREAM_MUSIC;
+import static com.taek_aaa.goalsnowball.data.UserDBManager.userDBManagerInstance;
 
 /**
  * Created by taek_aaa on 2017. 2. 14..
@@ -22,7 +23,6 @@ public class LevelUpDialog extends Dialog {
     int tune;
     private Context c;
     SoundPool soundPool;
-    UserDBManager userDBManager;
     ImageView leveluplogo;
     DataController dataController;
 
@@ -34,7 +34,7 @@ public class LevelUpDialog extends Dialog {
 
 
         leveluplogo = (ImageView) findViewById(R.id.levelup);
-        userDBManager = new UserDBManager(getContext(), "userdb.db", null, 1);
+        userDBManagerInstance = UserDBManager.getInstance(getContext());
 
         GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(leveluplogo);
         Glide.with(getContext()).load(R.raw.levelupimage).into(imageViewTarget);
@@ -48,7 +48,7 @@ public class LevelUpDialog extends Dialog {
 
     private void playLevelUpSound() {
         AudioManager mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
-        if ((mAudioManager.getRingerMode() == 2) && (userDBManager.getIsSound() == 1)) {                       //소리모드일때만 소리 출력
+        if ((mAudioManager.getRingerMode() == 2) && (userDBManagerInstance.getIsSound() == 1)) {                       //소리모드일때만 소리 출력
             soundPool = new SoundPool(1, STREAM_MUSIC, 0);
             tune = soundPool.load(getContext(), R.raw.levelup, 1);
             soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {

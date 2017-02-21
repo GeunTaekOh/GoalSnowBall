@@ -16,6 +16,8 @@ import static com.taek_aaa.goalsnowball.R.id.gradeExitbtn;
 import static com.taek_aaa.goalsnowball.Service.CurrentTimeService.gradeArray;
 import static com.taek_aaa.goalsnowball.Service.CurrentTimeService.needsAmount;
 import static com.taek_aaa.goalsnowball.Service.CurrentTimeService.needsGold;
+import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
+import static com.taek_aaa.goalsnowball.data.UserDBManager.userDBManagerInstance;
 
 /**
  * Created by taek_aaa on 2017. 2. 18..
@@ -24,8 +26,6 @@ import static com.taek_aaa.goalsnowball.Service.CurrentTimeService.needsGold;
 public class GradeDialog extends Dialog implements View.OnClickListener {
 
     private Context c;
-    UserDBManager userDBManager;
-    DBManager dbManager;
     TextView currentGradetv, nextGradetv, needsAmountLeft, needsAmountRight, needsGoldLeft, needsGoldRight;
     int result;
     int currentIndex;
@@ -46,11 +46,11 @@ public class GradeDialog extends Dialog implements View.OnClickListener {
 
     private void draw(){
         progressBarGold.setMax(needsGold[currentIndex] * 100);
-        progressBarGold.setProgress(userDBManager.getGold() * 100);
+        progressBarGold.setProgress(userDBManagerInstance.getGold() * 100);
         progressBarGold.setVisibility(ProgressBar.VISIBLE);
 
         progressBarAmount.setMax(needsAmount[currentIndex] * 100);
-        progressBarAmount.setProgress(dbManager.getLastPosition() * 100);
+        progressBarAmount.setProgress(dbManagerInstance.getLastPosition() * 100);
         progressBarAmount.setVisibility(ProgressBar.VISIBLE);
 
         dataController.setProgressAnimate(progressBarGold);
@@ -60,7 +60,7 @@ public class GradeDialog extends Dialog implements View.OnClickListener {
 
     private int getCurrentGrade() {
         String str;
-        str = userDBManager.getGrade();
+        str = userDBManagerInstance.getGrade();
         if (str.equals("UnRank")) {
             result = 0;
         } else if (str.equals("D 등급")) {
@@ -85,9 +85,8 @@ public class GradeDialog extends Dialog implements View.OnClickListener {
     }
 
     private void init() {
-        userDBManager = new UserDBManager(getContext(), "userdb.db", null, 1);
-        dbManager = new DBManager(getContext(), "goaldb.db", null, 1);
-
+        userDBManagerInstance = UserDBManager.getInstance(getContext());
+        dbManagerInstance = DBManager.getInstance(getContext());
         needsGoldLeft = (TextView) findViewById(R.id.needsGoldLeft);
         needsGoldRight = (TextView) findViewById(R.id.needsGoldRight);
         needsAmountLeft = (TextView) findViewById(R.id.needsAmountLeft);
@@ -112,8 +111,8 @@ public class GradeDialog extends Dialog implements View.OnClickListener {
         needsGoldRight.setText("" + needsGold[currentIndex]);
 
 
-        needsGoldLeft.setText("" + userDBManager.getGold());
-        needsAmountLeft.setText("" + dbManager.getLastPosition());
+        needsGoldLeft.setText("" + userDBManagerInstance.getGold());
+        needsAmountLeft.setText("" + dbManagerInstance.getLastPosition());
     }
 
 

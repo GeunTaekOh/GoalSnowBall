@@ -13,6 +13,7 @@ import com.taek_aaa.goalsnowball.controller.CountDown;
 import com.taek_aaa.goalsnowball.controller.DataController;
 import com.taek_aaa.goalsnowball.data.DBManager;
 
+
 import java.util.Calendar;
 
 import static com.taek_aaa.goalsnowball.R.id.dueAchievementAmount;
@@ -21,6 +22,8 @@ import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
 import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessMonth;
 import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessToday;
 import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessWeek;
+import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
+
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.getGoldMonth;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.getGoldToday;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.getGoldWeek;
@@ -33,7 +36,6 @@ public class AchievementRateActivity extends Activity implements AchievementRate
     TextView achievementStringtv, achievementAmounttv, currentAmounttv, percentAmounttv, remainAmounttv, betAmounttv, resultBettv, dueTv;
     String typeOfContents;
     ProgressBar progressBar;
-    DBManager dbManager;
     long finishTime = 1000 * 60 * 60 * 24;   //24시간
     CountDown countDown;
     public static int fromCountDownDday;
@@ -43,7 +45,7 @@ public class AchievementRateActivity extends Activity implements AchievementRate
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_achievement);
-        dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
+        dbManagerInstance = DBManager.getInstance(getBaseContext());
         dataController = new DataController();
         init();
 
@@ -71,9 +73,9 @@ public class AchievementRateActivity extends Activity implements AchievementRate
 
     protected String whatContentsType(int type) {
         String str;
-        if (dbManager.getType(type).equals("물리적양")) {
+        if (dbManagerInstance.getType(type).equals("물리적양")) {
             str = "물리적양";
-        } else if (dbManager.getType(type).equals("시간적양")) {
+        } else if (dbManagerInstance.getType(type).equals("시간적양")) {
             str = "시간적양";
         } else {
             str = "error";
@@ -83,15 +85,15 @@ public class AchievementRateActivity extends Activity implements AchievementRate
 
 
     public void drawGoal(int from) {
-        achievementStringtv.setText("" + dbManager.getGoal(from));
+        achievementStringtv.setText("" + dbManagerInstance.getGoal(from));
     }
 
 
     public void drawGoalAmount(int from, String type) throws Exception {
         if (type.equals("물리적양")) {
-            achievementAmounttv.setText("" + dbManager.getGoalAmount(from) + "" + dbManager.getUnit(from));
+            achievementAmounttv.setText("" + dbManagerInstance.getGoalAmount(from) + "" + dbManagerInstance.getUnit(from));
         } else if (type.equals("시간적양")) {
-            achievementAmounttv.setText("" + dbManager.getGoalAmount(from) + "분 " + dbManager.getUnit(from));
+            achievementAmounttv.setText("" + dbManagerInstance.getGoalAmount(from) + "분 " + dbManagerInstance.getUnit(from));
         } else {
             throw new Exception();
         }
@@ -99,9 +101,9 @@ public class AchievementRateActivity extends Activity implements AchievementRate
 
     public void drawCurrentAmount(int from, String type) throws Exception {
         if (type.equals("물리적양")) {
-            currentAmounttv.setText("" + dbManager.getCurrentAmount(from) + "" + dbManager.getUnit(from));
+            currentAmounttv.setText("" + dbManagerInstance.getCurrentAmount(from) + "" + dbManagerInstance.getUnit(from));
         } else if (type.equals("시간적양")) {
-            currentAmounttv.setText("" + dbManager.getCurrentAmount(from) + "분");
+            currentAmounttv.setText("" + dbManagerInstance.getCurrentAmount(from) + "분");
         } else {
             throw new Exception();
         }
@@ -109,17 +111,17 @@ public class AchievementRateActivity extends Activity implements AchievementRate
 
     public void drawPercentProgressBar(int from, String type) throws Exception {
         double result;
-        int goal = dbManager.getGoalAmount(from);
+        int goal = dbManagerInstance.getGoalAmount(from);
         int current;
 
         if (type.equals("물리적양") || (type.equals("시간적양"))) {
-            progressBar.setMax(dbManager.getGoalAmount(from) * 100);
-            progressBar.setProgress(dbManager.getCurrentAmount(from) * 100);
+            progressBar.setMax(dbManagerInstance.getGoalAmount(from) * 100);
+            progressBar.setProgress(dbManagerInstance.getCurrentAmount(from) * 100);
             progressBar.setVisibility(ProgressBar.VISIBLE);
 
             dataController.setProgressAnimate(progressBar);
 
-            current = dbManager.getCurrentAmount(from);
+            current = dbManagerInstance.getCurrentAmount(from);
         } else {
             throw new Exception();
         }
@@ -137,19 +139,19 @@ public class AchievementRateActivity extends Activity implements AchievementRate
 
     public void drawRemainAmount(int from, String type) throws Exception {
         if (type.equals("물리적양")) {
-            remainAmounttv.setText("" + (dbManager.getGoalAmount(from) - dbManager.getCurrentAmount(from)) + "" + dbManager.getUnit(from));
+            remainAmounttv.setText("" + (dbManagerInstance.getGoalAmount(from) - dbManagerInstance.getCurrentAmount(from)) + "" + dbManagerInstance.getUnit(from));
         } else if (type.equals("시간적양")) {
-            remainAmounttv.setText("" + (dbManager.getGoalAmount(from) - dbManager.getCurrentAmount(from)) + "분");
+            remainAmounttv.setText("" + (dbManagerInstance.getGoalAmount(from) - dbManagerInstance.getCurrentAmount(from)) + "분");
         } else {
             throw new Exception();
         }
     }
 
     public void drawBettingResult(int from) {
-        if (dbManager.getIsSuccess(from) == 1) {
+        if (dbManagerInstance.getIsSuccess(from) == 1) {
             //획득
             resultBettv.setText("획득하였습니다.");
-        } else if (dbManager.getIsSuccess(from) == 2) {
+        } else if (dbManagerInstance.getIsSuccess(from) == 2) {
             //도전중
             resultBettv.setText("도전중입니다.");
         } else {
@@ -189,7 +191,7 @@ public class AchievementRateActivity extends Activity implements AchievementRate
         if (isSuccess) {
             betAmounttv.setText("" + getGold + " Gold");
         } else {
-            betAmounttv.setText("" + dbManager.getBettingGold(from) + " Gold");
+            betAmounttv.setText("" + dbManagerInstance.getBettingGold(from) + " Gold");
         }
     }
 

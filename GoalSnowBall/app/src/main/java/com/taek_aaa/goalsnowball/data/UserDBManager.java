@@ -11,9 +11,31 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 //db 이름 userInfo
 public class UserDBManager extends SQLiteOpenHelper {
-    public UserDBManager(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+
+
+
+    public static UserDBManager userDBManagerInstance;
+    private static final String USERDATABASE_NAME = "userdb.db";
+    private static final int USERDATABASE_VERSION = 1;
+
+    public static synchronized UserDBManager getInstance(Context context) {
+
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        // See this article for more information: http://bit.ly/6LRzfx
+        if (userDBManagerInstance == null) {
+            userDBManagerInstance = new UserDBManager(context.getApplicationContext());
+        }
+        return userDBManagerInstance;
     }
+
+    public UserDBManager(Context context) {
+        super(context, USERDATABASE_NAME, null, USERDATABASE_VERSION);
+
+    }
+
+
+
 
     @Override
     public void onCreate(SQLiteDatabase db) {

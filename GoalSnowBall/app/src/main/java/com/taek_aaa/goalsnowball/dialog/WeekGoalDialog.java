@@ -11,6 +11,7 @@ import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
 import static com.taek_aaa.goalsnowball.data.CommonData.categoryPhysicalArrays;
 import static com.taek_aaa.goalsnowball.data.CommonData.categoryTimeArrays;
 import static com.taek_aaa.goalsnowball.data.CommonData.failBetWeek;
+import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
 
 /**
  * Created by taek_aaa on 2017. 1. 10..
@@ -80,11 +81,11 @@ public class WeekGoalDialog extends GoalDialog implements View.OnClickListener {
                         editTextContents.setHint("목표를 입력하세요.");
                         dbData.bettingGold = Integer.parseInt(bettingGoldet.getText().toString());
                     }
-                    if (dbManager.hasGoal(FROM_WEEK)) {
+                    if (dbManagerInstance.hasGoal(FROM_WEEK)) {
                         Toast.makeText(getContext(), "이미 이번주의 목표를 입력하였습니다.", Toast.LENGTH_SHORT).show();
                     } else {
-                        dbManager.insert(FROM_WEEK, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 2);
-                        failBetWeek = dbManager.getBettingGold(FROM_WEEK);
+                        dbManagerInstance.insert(FROM_WEEK, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 2);
+                        failBetWeek = dbManagerInstance.getBettingGold(FROM_WEEK);
                     }
                     dismiss();
                 } catch (Exception e) {

@@ -11,6 +11,7 @@ import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.data.CommonData.categoryPhysicalArrays;
 import static com.taek_aaa.goalsnowball.data.CommonData.categoryTimeArrays;
 import static com.taek_aaa.goalsnowball.data.CommonData.failBetMonth;
+import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
 
 /**
  * Created by taek_aaa on 2017. 1. 14..
@@ -82,11 +83,11 @@ public class MonthGoalDialog extends GoalDialog implements View.OnClickListener 
                         editTextContents.setHint("목표를 입력하세요.");
                         dbData.bettingGold = Integer.parseInt(bettingGoldet.getText().toString());
                     }
-                    if (dbManager.hasGoal(FROM_MONTH)) {
+                    if (dbManagerInstance.hasGoal(FROM_MONTH)) {
                         Toast.makeText(getContext(), "이미 이번달의 목표를 입력하였습니다.", Toast.LENGTH_SHORT).show();
                     } else {
-                        dbManager.insert(FROM_MONTH, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 2);
-                        failBetMonth = dbManager.getBettingGold(FROM_MONTH);
+                        dbManagerInstance.insert(FROM_MONTH, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 2);
+                        failBetMonth = dbManagerInstance.getBettingGold(FROM_MONTH);
                     }
                     dismiss();
                 } catch (Exception e) {

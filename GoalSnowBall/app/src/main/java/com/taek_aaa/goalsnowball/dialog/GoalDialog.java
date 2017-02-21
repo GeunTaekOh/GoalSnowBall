@@ -17,6 +17,8 @@ import com.taek_aaa.goalsnowball.data.UserDBManager;
 
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
+import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
+import static com.taek_aaa.goalsnowball.data.UserDBManager.userDBManagerInstance;
 
 /**
  * Created by taek_aaa on 2017. 1. 21..
@@ -30,8 +32,6 @@ public class GoalDialog extends Dialog implements GoalDialogInterface{
     Spinner spinner;
     RadioButton timeRadio, physicalRadio;
     int checkedId, default_radioButton_id, bettinggold;
-    UserDBManager userDBManager;
-    DBManager dbManager;
     int tempUnit = 0;
     DBData dbData = new DBData();
     int getMinuteValue, gethourValue;
@@ -39,7 +39,6 @@ public class GoalDialog extends Dialog implements GoalDialogInterface{
     public GoalDialog(Context context) {
         super(context);
         setContentView(R.layout.dialog_goal);
-        dbManager = new DBManager(getContext(), "goaldb.db", null, 1);
         init();
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -63,7 +62,8 @@ public class GoalDialog extends Dialog implements GoalDialogInterface{
     }
 
     public void init() {
-        userDBManager = new UserDBManager(getContext(), "userdb.db", null, 1);
+        userDBManagerInstance = UserDBManager.getInstance(getContext());
+        dbManagerInstance = DBManager.getInstance(getContext());
         editTextContents = (EditText) findViewById(R.id.DialogEditText);
         title = (TextView) findViewById(R.id.title_dialog);
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
@@ -81,15 +81,15 @@ public class GoalDialog extends Dialog implements GoalDialogInterface{
     public int returnGold(int from){
         int result=0;
 
-        if (userDBManager.getGold() <= 0) {
+        if (userDBManagerInstance.getGold() <= 0) {
             result = 2;
         } else {
             if(from==FROM_TODAY){
-                result = userDBManager.getGold() / 4;
+                result = userDBManagerInstance.getGold() / 4;
             }else if(from==FROM_WEEK){
-                result = userDBManager.getGold() / 2;
+                result = userDBManagerInstance.getGold() / 2;
             }else{
-                result = userDBManager.getGold();
+                result = userDBManagerInstance.getGold();
             }
         }
         return result;
@@ -98,7 +98,7 @@ public class GoalDialog extends Dialog implements GoalDialogInterface{
     public String bettingToastMessage(int from){
         String msg="";
 
-        if (userDBManager.getGold() <= 5) {
+        if (userDBManagerInstance.getGold() <= 5) {
             msg = "보유 Gold가 작아서 2Gold 이하만 베팅 가능합니다.";
         } else {
             if(from==FROM_TODAY){

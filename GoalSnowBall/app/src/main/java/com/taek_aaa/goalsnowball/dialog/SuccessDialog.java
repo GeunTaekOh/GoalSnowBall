@@ -20,6 +20,8 @@ import static android.media.AudioManager.STREAM_MUSIC;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
+import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
+import static com.taek_aaa.goalsnowball.data.UserDBManager.userDBManagerInstance;
 
 /**
  * Created by taek_aaa on 2017. 1. 17..
@@ -39,8 +41,6 @@ public class SuccessDialog extends Dialog {
     SoundPool soundPool;
     int tune;
     CalendarDatas today;
-    DBManager dbManager;
-    UserDBManager userDBManager;
     DataController dataController;
     Context c;
 
@@ -48,8 +48,9 @@ public class SuccessDialog extends Dialog {
         super(context);
         this.c=context;
         setContentView(R.layout.dialog_success);
-        dbManager = new DBManager(getContext(), "goaldb.db", null, 1);
-        userDBManager = new UserDBManager(getContext(), "userdb.db", null, 1);
+        //dbManagerInstance = new dbManagerInstance(getContext(), "goaldb.db", null, 1);
+        dbManagerInstance = DBManager.getInstance(getContext());
+        userDBManagerInstance =UserDBManager.getInstance(getContext());
         today = new CalendarDatas();
         fire = (ImageView) findViewById(R.id.fireWork);
         coin = (ImageView) findViewById(R.id.coin);
@@ -79,22 +80,22 @@ public class SuccessDialog extends Dialog {
 
 
     private void success(int from){
-        msg.setText("" + dbManager.getBettingGold(from) + "Gold를 획득하였습니다.");
+        msg.setText("" + dbManagerInstance.getBettingGold(from) + "Gold를 획득하였습니다.");
         if(from==FROM_TODAY){
-            getGoldToday = dbManager.getBettingGold(from);
+            getGoldToday = dbManagerInstance.getBettingGold(from);
         }else if(from == FROM_WEEK){
-            getGoldWeek = dbManager.getBettingGold(from);
+            getGoldWeek = dbManagerInstance.getBettingGold(from);
         }else{
-            getGoldMonth = dbManager.getBettingGold(from);
+            getGoldMonth = dbManagerInstance.getBettingGold(from);
         }
-        dbManager.setIsSuccess(from, 1);
+        dbManagerInstance.setIsSuccess(from, 1);
         whereSuccess = 0;
     }
 
 
     private void playSuccessSound() {
         AudioManager mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
-        if ((mAudioManager.getRingerMode() == 2) && (userDBManager.getIsSound() == 1)) {                       //소리모드일때만 소리 출력
+        if ((mAudioManager.getRingerMode() == 2) && (userDBManagerInstance.getIsSound() == 1)) {                       //소리모드일때만 소리 출력
             soundPool = new SoundPool(1, STREAM_MUSIC, 0);
             tune = soundPool.load(getContext(), R.raw.clap, 1);
             soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {

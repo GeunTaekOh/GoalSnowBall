@@ -17,6 +17,8 @@ import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessMonth;
 import static com.taek_aaa.goalsnowball.data.CommonData.setFailStatus;
 import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
+import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
+import static com.taek_aaa.goalsnowball.data.UserDBManager.userDBManagerInstance;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.SUCCESS_FROM_MONTH;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.whereSuccess;
 
@@ -33,12 +35,12 @@ public class MonthGoalDoingActivity extends GoalDoingActivity {
 
         try {
             /** 물리적 양 일때 **/
-            if (dbManager.getType(FROM_MONTH).equals("물리적양")) {
+            if (dbManagerInstance.getType(FROM_MONTH).equals("물리적양")) {
                 setContentView(R.layout.activity_goal_amount_doing);
                 isAmount = true;
                 amountOfEdit = (EditText) findViewById(R.id.doing_current_amount);
                 unittv = (TextView) findViewById(R.id.doing_unit);
-            } else if (dbManager.getType(FROM_MONTH).equals("시간적양")) {
+            } else if (dbManagerInstance.getType(FROM_MONTH).equals("시간적양")) {
                 /** 시간적 양 일때 **/
                 setContentView(R.layout.activity_goal_time_doing);
                 TextView stopWatchtv = (TextView) findViewById(R.id.timerTextView);
@@ -55,26 +57,26 @@ public class MonthGoalDoingActivity extends GoalDoingActivity {
                 amountOfEdit.post(new Runnable() {
                     @Override
                     public void run() {
-                        amountOfEdit.setText("" + dbManager.getCurrentAmount(FROM_MONTH));
+                        amountOfEdit.setText("" + dbManagerInstance.getCurrentAmount(FROM_MONTH));
                     }
                 });
 
-                blackboardtv.setText("목표량 : " + dbManager.getGoalAmount(FROM_MONTH) + "" + dbManager.getUnit(FROM_MONTH));
-                unittv.setText("" + dbManager.getUnit(FROM_MONTH));
+                blackboardtv.setText("목표량 : " + dbManagerInstance.getGoalAmount(FROM_MONTH) + "" + dbManagerInstance.getUnit(FROM_MONTH));
+                unittv.setText("" + dbManagerInstance.getUnit(FROM_MONTH));
             } else {
-                timeOfCurrenttv.setText("수행 시간 : " + dbManager.getCurrentAmount(FROM_MONTH) + "분");
-                blackboardtv.setText("목표량 : " + dbManager.getGoalAmount(FROM_MONTH) + "분 " + dbManager.getUnit(FROM_MONTH));
+                timeOfCurrenttv.setText("수행 시간 : " + dbManagerInstance.getCurrentAmount(FROM_MONTH) + "분");
+                blackboardtv.setText("목표량 : " + dbManagerInstance.getGoalAmount(FROM_MONTH) + "분 " + dbManagerInstance.getUnit(FROM_MONTH));
             }
 
-            successGetGoldtv.setText("성공시 획득 골드 : " + "" + dbManager.getBettingGold(FROM_MONTH) + "Gold");
-            doingGoaltv.setText("이번달의 목표 : " + dbManager.getGoal(FROM_MONTH));
+            successGetGoldtv.setText("성공시 획득 골드 : " + "" + dbManagerInstance.getBettingGold(FROM_MONTH) + "Gold");
+            doingGoaltv.setText("이번달의 목표 : " + dbManagerInstance.getGoal(FROM_MONTH));
         } catch (Exception e) {
             /** 목표 설정 안되어 있을 때 **/
             Log.e("error", "" + e.getStackTrace());
             Toast.makeText(this, "이번달의 목표를 먼저 설정하세요.", Toast.LENGTH_SHORT).show();
             finish();
         }
-        tmpAmount = dbManager.getCurrentAmount(FROM_MONTH);
+        tmpAmount = dbManagerInstance.getCurrentAmount(FROM_MONTH);
     }
 
 
@@ -82,16 +84,16 @@ public class MonthGoalDoingActivity extends GoalDoingActivity {
      * 목표 수행량 저장하는 함수
      **/
     public void onClickSaveBtnGoal(View v) {
-        if (dbManager.getIsSuccess(FROM_MONTH) == 3) {
+        if (dbManagerInstance.getIsSuccess(FROM_MONTH) == 3) {
             Toast.makeText(context, "이미 실패하였습니다. 저장하지 못하였습니다.", Toast.LENGTH_SHORT).show();
-        } else if (dbManager.getIsSuccess(FROM_MONTH) == 1) {
+        } else if (dbManagerInstance.getIsSuccess(FROM_MONTH) == 1) {
             Toast.makeText(this, "이미 성공하여서 Gold를 수령했습니다.", Toast.LENGTH_SHORT).show();
         } else {
             saveCurrentAmountToEditText(FROM_MONTH);
-            if (dbManager.getGoalAmount(FROM_MONTH) <= dbManager.getCurrentAmount(FROM_MONTH)) {
+            if (dbManagerInstance.getGoalAmount(FROM_MONTH) <= dbManagerInstance.getCurrentAmount(FROM_MONTH)) {
                 whereSuccess = SUCCESS_FROM_MONTH;
-                int a = (dbManager.getBettingGold(FROM_MONTH)) + (userDBManager.getGold());
-                userDBManager.setGold(a);
+                int a = (dbManagerInstance.getBettingGold(FROM_MONTH)) + (userDBManagerInstance.getGold());
+                userDBManagerInstance.setGold(a);
                 successDialog = new SuccessDialog(this);
                 successDialog.show();
                 isSuccessMonth = true;
@@ -125,23 +127,23 @@ public class MonthGoalDoingActivity extends GoalDoingActivity {
         ihowlongtime = Integer.valueOf(shour) * 60 * 60 + Integer.valueOf(sminute) * 60 + Integer.valueOf(sseconds);
         ihowlongtime = ihowlongtime / 60;
 
-        int temp = dbManager.getCurrentAmount(FROM_MONTH);
+        int temp = dbManagerInstance.getCurrentAmount(FROM_MONTH);
         temp += ihowlongtime;
 
-        timeOfCurrenttv.setText("수행 시간 : " + dbManager.getCurrentAmount(FROM_MONTH) + "분");
+        timeOfCurrenttv.setText("수행 시간 : " + dbManagerInstance.getCurrentAmount(FROM_MONTH) + "분");
 
         Button startbtn = (Button) findViewById(R.id.timerStartbtn);
 
-        if (dbManager.getIsSuccess(FROM_MONTH) == 3) {
+        if (dbManagerInstance.getIsSuccess(FROM_MONTH) == 3) {
             Toast.makeText(getBaseContext(), "이미 실패하였습니다. 저장하지 못하였습니다.", Toast.LENGTH_SHORT).show();
-        } else if (dbManager.getIsSuccess(FROM_MONTH) == 1) {
+        } else if (dbManagerInstance.getIsSuccess(FROM_MONTH) == 1) {
             Toast.makeText(getBaseContext(), "이미 성공하여서 Gold를 수령했습니다.", Toast.LENGTH_SHORT).show();
         } else {
-            dbManager.setCurrentAmount(FROM_MONTH, temp);
-            if (dbManager.getUnit(FROM_MONTH).equals("이상") && dbManager.getCurrentAmount(FROM_MONTH) >= dbManager.getGoalAmount(FROM_MONTH)) {      //이상이고 성공
+            dbManagerInstance.setCurrentAmount(FROM_MONTH, temp);
+            if (dbManagerInstance.getUnit(FROM_MONTH).equals("이상") && dbManagerInstance.getCurrentAmount(FROM_MONTH) >= dbManagerInstance.getGoalAmount(FROM_MONTH)) {      //이상이고 성공
                 whereSuccess = SUCCESS_FROM_MONTH;
-                int a = (dbManager.getBettingGold(FROM_MONTH)) + (userDBManager.getGold());
-                userDBManager.setGold(a);
+                int a = (dbManagerInstance.getBettingGold(FROM_MONTH)) + (userDBManagerInstance.getGold());
+                userDBManagerInstance.setGold(a);
 
                 successDialog = new SuccessDialog(this);
                 successDialog.show();
@@ -153,10 +155,10 @@ public class MonthGoalDoingActivity extends GoalDoingActivity {
                     }
                 });
 
-            } else if (dbManager.getUnit(FROM_MONTH).equals("이하") && dbManager.getCurrentAmount(FROM_MONTH) >= dbManager.getGoalAmount(FROM_MONTH)) {       //이하이고 실패
-                dbManager.setIsSuccess(FROM_MONTH,3);
+            } else if (dbManagerInstance.getUnit(FROM_MONTH).equals("이하") && dbManagerInstance.getCurrentAmount(FROM_MONTH) >= dbManagerInstance.getGoalAmount(FROM_MONTH)) {       //이하이고 실패
+                dbManagerInstance.setIsSuccess(FROM_MONTH,3);
                 dataController.setPreferencesFailFlag(context, 1);
-                totalLooseCoin = dbManager.getBettingGold(FROM_MONTH);
+                totalLooseCoin = dbManagerInstance.getBettingGold(FROM_MONTH);
                 failDialog = new FailDialog(this);
                 failDialog.show();
 
@@ -181,8 +183,8 @@ public class MonthGoalDoingActivity extends GoalDoingActivity {
         switch (v.getId()) {
             case R.id.upButton:
                 tmpAmount += 1;
-                if (tmpAmount > dbManager.getGoalAmount(FROM_MONTH)) {
-                    tmpAmount = dbManager.getGoalAmount(FROM_MONTH);
+                if (tmpAmount > dbManagerInstance.getGoalAmount(FROM_MONTH)) {
+                    tmpAmount = dbManagerInstance.getGoalAmount(FROM_MONTH);
                 }
                 amountOfEdit.setText("" + tmpAmount);
                 break;
