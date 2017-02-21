@@ -124,6 +124,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         draw();
         drawImage();
 
+        if(dataController.getPreferencesFailFlag(context)==1){
+            failDialog = new FailDialog(this);
+            failDialog.show();
+        }
+
         Intent notificationIntent = new Intent(MainActivity.this, NotificationService.class);       //알람 서비스 실행
         startService(notificationIntent);
 
@@ -490,7 +495,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (dbManager.getType(from).equals("시간적양") && dbManager.getUnit(from).equals("이하")) {
                 tv.setTextColor(Color.parseColor("#FF1C00"));
             } else {
-                tv.setTextColor(Color.parseColor("#93C972"));
+                tv.setTextColor(Color.parseColor("#A7FC00"));
             }
         } else {
             tv.setTextColor(Color.parseColor("#808080"));

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
@@ -33,7 +32,7 @@ public class showListActivity extends Activity {
     private List_Adapter adapter;
     DBManager dbManager;
     TextView listtv, countListtv;
-    int amountOfShowList = 10;
+    public static int amountShowList = 10;
     ListView lv;
     private static int amountOfEvery;
     private static int amountOfDraw;
@@ -50,15 +49,15 @@ public class showListActivity extends Activity {
         }
         listtv = (TextView) findViewById(R.id.listTopTv);
         countListtv = (TextView) findViewById(R.id.countListtv);
-        if (amountOfShowList > dbManager.getLastPosition()) {
-            amountOfShowList = dbManager.getLastPosition();
+        if (amountShowList > dbManager.getLastPosition()) {
+            amountShowList = dbManager.getLastPosition();
         }
         lv = (ListView) findViewById(R.id.listView1);
 
         if (dbManager.isEmptyDB()) {
             lv.setBackgroundResource(R.drawable.empty2);
         }
-        countListtv.setText("" + amountOfShowList + " / " + "" + dbManager.getLastPosition());
+        countListtv.setText("" + amountShowList + " / " + "" + dbManager.getLastPosition());
         amountOfEvery = dbManager.getLastPosition();
 
 
@@ -99,13 +98,12 @@ public class showListActivity extends Activity {
 
 
     private void setList() {
-        Log.e("dhrms", "setList에 들어옴");
         m_arr = new ArrayList<Item>();
         lv = (ListView) findViewById(R.id.listView1);
 
         listViewPosition = dbManager.getLastPosition();
 
-        for (int i = 0; i < amountOfShowList; i++) {
+        for (int i = 0; i < amountShowList; i++) {
             if (listViewPosition <= 0) {
                 Toast.makeText(this, "" + dbManager.getLastPosition() + "개의 데이터가 존재합니다.", Toast.LENGTH_SHORT).show();
                 break;
@@ -119,14 +117,11 @@ public class showListActivity extends Activity {
         lv.setAdapter(adapter);
         lv.setDividerHeight(5);
         amountOfDraw = m_arr.size();
-        Log.e("dhrms", "m_arr.size" + m_arr.size());
-        lastPos = amountOfShowList-6;
+        lastPos = amountShowList-6;
     }
 
     private void setListMore() {
-
-        Log.e("dhrms", "setListMore에 들어옴");
-        for (int i = 0; i < amountOfShowList; i++) {
+        for (int i = 0; i < amountShowList; i++) {
             if (listViewPosition <= 0) {
                 Toast.makeText(this, "데이터를 더 가져옵니다.", Toast.LENGTH_SHORT).show();
                 break;
@@ -134,6 +129,7 @@ public class showListActivity extends Activity {
                 if (m_arr.size() <= amountOfEvery) {
                     Item item = convertData(dbManager.getPreviousListViewData(listViewPosition));
                     m_arr.add(item);
+                    amountShowList++;
                 } else {
                     break;
                 }
@@ -145,8 +141,8 @@ public class showListActivity extends Activity {
         lv.setDividerHeight(5);
         lv.setSelection(lastPos);
         amountOfDraw = m_arr.size();
-        Log.e("dhrms", "m_arr.size" + m_arr.size());
-        lastPos += amountOfShowList;
+        lastPos += amountShowList;
+        countListtv.setText("" + amountShowList + " / " + "" + dbManager.getLastPosition());
     }
 
 
@@ -193,6 +189,7 @@ public class showListActivity extends Activity {
         amountOfDraw=0;
         lastPos=0;
         toastFlag=true;
+        amountShowList=10;
         finish();
     }
 

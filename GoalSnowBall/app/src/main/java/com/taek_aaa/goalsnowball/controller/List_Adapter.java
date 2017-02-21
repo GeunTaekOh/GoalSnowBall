@@ -76,7 +76,7 @@ public class List_Adapter extends BaseAdapter {
         if((arr.get(position).bulbImageItem).equals("@drawable/bulbfail")){
             color = "#FF1C00";
         }else if((arr.get(position).bulbImageItem).equals("@drawable/bulbsuccess")){
-            color = "#93C972";
+            color = "#A7FC00";
         }else{
             color = "#808080";
         }
