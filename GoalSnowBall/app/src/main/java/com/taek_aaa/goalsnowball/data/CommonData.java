@@ -35,6 +35,15 @@ public class CommonData {
     public static int myGreen;
     public static int myBlack;
     public static int headColor;
+    public final static int SUCCESS_STATUS = 1;
+    public final static int DOING_STATUS = 2;
+    public final static int FAIL_STATUS = 3;
+    public final static int DRAW_COUNT_DOWN_TODAY = 0;
+    public final static int DRAW_COUNT_DOWN_WEEK = 1;
+    public final static int DRAW_COUNT_DOWN_MONTH = 2;
+
+
+
 
 
     public static void setFailStatus(boolean bool) {

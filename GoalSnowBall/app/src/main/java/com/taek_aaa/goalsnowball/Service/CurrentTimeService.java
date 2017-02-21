@@ -53,7 +53,6 @@ public class CurrentTimeService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        //dbManagerInstance = new dbManagerInstance(getBaseContext(), "goaldb.db", null, 1);
         dbManagerInstance = DBManager.getInstance(getBaseContext());
         userDBManagerInstance = UserDBManager.getInstance(getBaseContext());
         Log.e("now", "온크리에이트 커런트");

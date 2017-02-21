@@ -13,7 +13,9 @@ import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.dialog.FailDialog;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
+import static com.taek_aaa.goalsnowball.data.CommonData.FAIL_STATUS;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
+import static com.taek_aaa.goalsnowball.data.CommonData.SUCCESS_STATUS;
 import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessWeek;
 import static com.taek_aaa.goalsnowball.data.CommonData.setFailStatus;
 import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
@@ -82,9 +84,9 @@ public class WeekGoalDoingActivity extends GoalDoingActivity {
      * 목표 수행량 저장하는 함수
      **/
     public void onClickSaveBtnGoal(View v) {
-        if (dbManagerInstance.getIsSuccess(FROM_WEEK) == 3) {
+        if (dbManagerInstance.getIsSuccess(FROM_WEEK) == FAIL_STATUS) {
             Toast.makeText(context, "이미 실패하였습니다. 저장하지 못하였습니다.", Toast.LENGTH_SHORT).show();
-        } else if (dbManagerInstance.getIsSuccess(FROM_WEEK) == 1) {
+        } else if (dbManagerInstance.getIsSuccess(FROM_WEEK) == SUCCESS_STATUS) {
             Toast.makeText(this, "이미 성공하여서 Gold를 수령했습니다.", Toast.LENGTH_SHORT).show();
         } else {
             saveCurrentAmountToEditText(FROM_WEEK);
@@ -136,9 +138,9 @@ public class WeekGoalDoingActivity extends GoalDoingActivity {
         Button startbtn = (Button) findViewById(R.id.timerStartbtn);
 
 
-        if (dbManagerInstance.getIsSuccess(FROM_WEEK) == 3) {
+        if (dbManagerInstance.getIsSuccess(FROM_WEEK) == FAIL_STATUS) {
             Toast.makeText(getBaseContext(), "이미 실패하였습니다. 저장하지 못하였습니다.", Toast.LENGTH_SHORT).show();
-        } else if (dbManagerInstance.getIsSuccess(FROM_WEEK) == 1) {
+        } else if (dbManagerInstance.getIsSuccess(FROM_WEEK) == SUCCESS_STATUS) {
             Toast.makeText(getBaseContext(), "이미 성공하여서 Gold를 수령했습니다.", Toast.LENGTH_SHORT).show();
         } else {
             dbManagerInstance.setCurrentAmount(FROM_WEEK, temp);

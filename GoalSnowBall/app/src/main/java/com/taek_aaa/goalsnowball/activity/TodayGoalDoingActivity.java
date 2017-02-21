@@ -13,7 +13,9 @@ import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.dialog.FailDialog;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
+import static com.taek_aaa.goalsnowball.data.CommonData.FAIL_STATUS;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
+import static com.taek_aaa.goalsnowball.data.CommonData.SUCCESS_STATUS;
 import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessToday;
 import static com.taek_aaa.goalsnowball.data.CommonData.setFailStatus;
 import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
@@ -78,9 +80,9 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
      * 목표 수행량 저장하는 함수
      **/
     public void onClickSaveBtnGoal(View v) {
-        if (dbManagerInstance.getIsSuccess(FROM_TODAY) == 3) {
+        if (dbManagerInstance.getIsSuccess(FROM_TODAY) == FAIL_STATUS) {
             Toast.makeText(context, "이미 실패하였습니다. 저장하지 못하였습니다.", Toast.LENGTH_SHORT).show();
-        } else if (dbManagerInstance.getIsSuccess(FROM_TODAY) == 1) {
+        } else if (dbManagerInstance.getIsSuccess(FROM_TODAY) == SUCCESS_STATUS) {
             Toast.makeText(this, "이미 성공하여서 Gold를 수령했습니다.", Toast.LENGTH_SHORT).show();
         } else {
             saveCurrentAmountToEditText(FROM_TODAY);

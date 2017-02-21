@@ -55,9 +55,12 @@ import com.taek_aaa.goalsnowball.dialog.WeekGoalDialog;
 import java.io.File;
 
 import static android.media.AudioManager.STREAM_MUSIC;
+import static com.taek_aaa.goalsnowball.data.CommonData.DOING_STATUS;
+import static com.taek_aaa.goalsnowball.data.CommonData.FAIL_STATUS;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
+import static com.taek_aaa.goalsnowball.data.CommonData.SUCCESS_STATUS;
 import static com.taek_aaa.goalsnowball.data.CommonData.defaultHeight;
 import static com.taek_aaa.goalsnowball.data.CommonData.defaultWidth;
 import static com.taek_aaa.goalsnowball.data.CommonData.headColor;
@@ -164,7 +167,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         checkFailStatus();
         checkLevelUpStatus();
         draw();
-        contador = 0;
     }
 
     /**
@@ -408,11 +410,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             textView = monthtv;
         }
 
-        if (dbManagerInstance.getIsSuccess(from) == 1) {
+        if (dbManagerInstance.getIsSuccess(from) == SUCCESS_STATUS) {
             imageView.setImageResource(R.drawable.bulbsuccess);
-        } else if (dbManagerInstance.getIsSuccess(from) == 2) {
+        } else if (dbManagerInstance.getIsSuccess(from) == DOING_STATUS) {
             imageView.setImageResource(R.drawable.bulbdoing);
-        } else if (dbManagerInstance.getIsSuccess(from) == 3) {
+        } else if (dbManagerInstance.getIsSuccess(from) == FAIL_STATUS) {
             imageView.setImageResource(R.drawable.bulbfail);
         } else {
             imageView.setImageResource(0);
@@ -687,9 +689,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             msg = "이번달의 목표를 끝까지 응원합니다!";
             bool = calendarDatas.cdate > 15;
         }
-        if (dbManagerInstance.getIsSuccess(from) == 1) {
+        if (dbManagerInstance.getIsSuccess(from) == SUCCESS_STATUS) {
             Toast.makeText(this, "이미 성공하여서 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
-        } else if (dbManagerInstance.getIsSuccess(from) == 3) {
+        } else if (dbManagerInstance.getIsSuccess(from) == FAIL_STATUS) {
             Toast.makeText(this, "이미 실패하여서 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
         } else if (bool) {
             Toast.makeText(this, "" + msg, Toast.LENGTH_SHORT).show();

@@ -18,7 +18,6 @@ public class TodayAchievementRateActivity extends AchievementRateActivity {
         typeOfContents = whatContentsType(FROM_TODAY);
         draw();
     }
-
     protected void draw(){
         try {
             drawGoal(FROM_TODAY);

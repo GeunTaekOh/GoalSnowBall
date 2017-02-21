@@ -15,8 +15,13 @@ import com.taek_aaa.goalsnowball.data.DBManager;
 import java.util.Calendar;
 
 import static com.taek_aaa.goalsnowball.R.id.dueAchievementAmount;
+import static com.taek_aaa.goalsnowball.data.CommonData.DOING_STATUS;
+import static com.taek_aaa.goalsnowball.data.CommonData.DRAW_COUNT_DOWN_MONTH;
+import static com.taek_aaa.goalsnowball.data.CommonData.DRAW_COUNT_DOWN_TODAY;
+import static com.taek_aaa.goalsnowball.data.CommonData.DRAW_COUNT_DOWN_WEEK;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
+import static com.taek_aaa.goalsnowball.data.CommonData.SUCCESS_STATUS;
 import static com.taek_aaa.goalsnowball.data.CommonData.headColor;
 import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessMonth;
 import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessToday;
@@ -148,10 +153,10 @@ public class AchievementRateActivity extends Activity implements AchievementRate
     }
 
     public void drawBettingResult(int from) {
-        if (dbManagerInstance.getIsSuccess(from) == 1) {
+        if (dbManagerInstance.getIsSuccess(from) == SUCCESS_STATUS) {
             //획득
             resultBettv.setText("획득하였습니다.");
-        } else if (dbManagerInstance.getIsSuccess(from) == 2) {
+        } else if (dbManagerInstance.getIsSuccess(from) == DOING_STATUS) {
             //도전중
             resultBettv.setText("도전중입니다.");
         } else {
@@ -166,11 +171,11 @@ public class AchievementRateActivity extends Activity implements AchievementRate
         countDown.start();
         today = null;
         if (from == FROM_TODAY) {
-            fromCountDownDday = 0;
+            fromCountDownDday = DRAW_COUNT_DOWN_TODAY;      //오늘
         } else if (from == FROM_WEEK) {
-            fromCountDownDday = 1;
+            fromCountDownDday = DRAW_COUNT_DOWN_WEEK;      //이번주
         } else {
-            fromCountDownDday = 2;
+            fromCountDownDday = DRAW_COUNT_DOWN_MONTH;      //이번달
         }
     }
 
