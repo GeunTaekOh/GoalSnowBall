@@ -1,7 +1,6 @@
 package com.taek_aaa.goalsnowball.activity;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +19,7 @@ import java.util.ArrayList;
 
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
+import static com.taek_aaa.goalsnowball.data.CommonData.headColor;
 import static com.taek_aaa.goalsnowball.data.CommonData.listViewPosition;
 import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
 
@@ -46,7 +46,7 @@ public class showListActivity extends Activity {
         setContentView(R.layout.activity_showlist);
         dbManagerInstance = DBManager.getInstance(getBaseContext());
         if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(Color.parseColor("#99BADD"));
+            getWindow().setStatusBarColor(headColor);
         }
         listtv = (TextView) findViewById(R.id.listTopTv);
         countListtv = (TextView) findViewById(R.id.countListtv);

@@ -4,4 +4,8 @@
     <color name="colorPrimaryDark">#99BADD</color>
     <color name="colorAccent">#92A1CF</color>
     <color name="colorGuide">#FF4081</color>
+    <color name="myRed">#FF1C00</color>
+    <color name="myBlack">#808080</color>
+    <color name="myGreen">#A7FC00</color>
+    <color name="headColor">#99BADD</color>
 </resources>

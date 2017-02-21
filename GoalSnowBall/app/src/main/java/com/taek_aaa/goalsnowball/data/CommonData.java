@@ -31,6 +31,11 @@ public class CommonData {
     public final static int TO_SS = 886;
     public final static int TO_SSS = 887;
     public final static int TO_MASTER = 888;
+    public static int myRed;
+    public static int myGreen;
+    public static int myBlack;
+    public static int headColor;
+
 
     public static void setFailStatus(boolean bool) {
         isFailToday = bool;

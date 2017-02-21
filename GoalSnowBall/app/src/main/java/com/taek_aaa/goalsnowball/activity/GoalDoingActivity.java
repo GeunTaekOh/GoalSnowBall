@@ -23,6 +23,7 @@ import com.taek_aaa.goalsnowball.dialog.FailDialog;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
 import static android.media.AudioManager.STREAM_MUSIC;
+import static com.taek_aaa.goalsnowball.data.CommonData.headColor;
 import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
 import static com.taek_aaa.goalsnowball.data.UserDBManager.userDBManagerInstance;
 
@@ -41,7 +42,6 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface {
     Handler handler = new Handler();
     SoundPool soundPool;
     SuccessDialog successDialog;
-
     Context context;
     DataController dataController;
     FailDialog failDialog;
@@ -54,7 +54,7 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface {
         context = getBaseContext();
         dataController = new DataController();
         if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(Color.parseColor("#99BADD"));
+            getWindow().setStatusBarColor(headColor);
         }
 
     }

@@ -1,7 +1,6 @@
 package com.taek_aaa.goalsnowball.activity;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -13,17 +12,18 @@ import com.taek_aaa.goalsnowball.controller.CountDown;
 import com.taek_aaa.goalsnowball.controller.DataController;
 import com.taek_aaa.goalsnowball.data.DBManager;
 
-
 import java.util.Calendar;
 
 import static com.taek_aaa.goalsnowball.R.id.dueAchievementAmount;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
+import static com.taek_aaa.goalsnowball.data.CommonData.headColor;
 import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessMonth;
 import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessToday;
 import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessWeek;
+import static com.taek_aaa.goalsnowball.data.CommonData.myBlack;
+import static com.taek_aaa.goalsnowball.data.CommonData.myGreen;
 import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
-
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.getGoldMonth;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.getGoldToday;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.getGoldWeek;
@@ -65,7 +65,7 @@ public class AchievementRateActivity extends Activity implements AchievementRate
         dataController = new DataController();
 
         if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(Color.parseColor("#99BADD"));
+            getWindow().setStatusBarColor(headColor);
         }
 
     }
@@ -129,9 +129,9 @@ public class AchievementRateActivity extends Activity implements AchievementRate
         result = dataController.makePercent(current, goal);
 
         if (result == 100) {
-            percentAmounttv.setTextColor(Color.parseColor("#A7FC00"));
+            percentAmounttv.setTextColor(myGreen);
         } else {
-            percentAmounttv.setTextColor(Color.parseColor("#808080"));
+            percentAmounttv.setTextColor(myBlack);
 
         }
         percentAmounttv.setText("" + result + "%");

@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -61,7 +60,11 @@ import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
 import static com.taek_aaa.goalsnowball.data.CommonData.defaultHeight;
 import static com.taek_aaa.goalsnowball.data.CommonData.defaultWidth;
+import static com.taek_aaa.goalsnowball.data.CommonData.headColor;
 import static com.taek_aaa.goalsnowball.data.CommonData.inflater;
+import static com.taek_aaa.goalsnowball.data.CommonData.myBlack;
+import static com.taek_aaa.goalsnowball.data.CommonData.myGreen;
+import static com.taek_aaa.goalsnowball.data.CommonData.myRed;
 import static com.taek_aaa.goalsnowball.data.CommonData.setFailStatus;
 import static com.taek_aaa.goalsnowball.data.CommonData.whatGradeTo;
 import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
@@ -94,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Context context;
     long lastTimeBackPressed;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +110,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         doNavigationView();
 
         init();
+
+        myRed = getResources().getColor(R.color.myRed);
+        myGreen = getResources().getColor(R.color.myGreen);
+        headColor = getResources().getColor(R.color.headColor);
+        myBlack = getResources().getColor(R.color.myBlack);
 
         //사진 권한
         PicturePermission.verifyStoragePermissions(this);
@@ -128,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startService(timerIntent);
 
         if (Build.VERSION.SDK_INT >= 21) {
-            getWindow().setStatusBarColor(Color.parseColor("#99BADD"));
+            getWindow().setStatusBarColor(headColor);
         }
 
     }
@@ -495,12 +504,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         result = dataController.makePercent(current, goal);
         if (result == 100) {
             if (dbManagerInstance.getType(from).equals("시간적양") && dbManagerInstance.getUnit(from).equals("이하")) {
-                tv.setTextColor(Color.parseColor("#FF1C00"));
+                tv.setTextColor(myRed);
             } else {
-                tv.setTextColor(Color.parseColor("#A7FC00"));
+                tv.setTextColor(myGreen);
             }
         } else {
-            tv.setTextColor(Color.parseColor("#808080"));
+            tv.setTextColor(myBlack);
         }
         tv.setText("" + result + "%");
     }
@@ -814,7 +823,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case 2:
                 showcaseView.setShowcase(t3, true);
                 showcaseView.setContentTitle("등급");
-                showcaseView.setContentText("얼마나 성실히 하였는지와 Gold 값으로 등급을 매깁니다.");
+                showcaseView.setContentText("클릭하여서 등급을 올리기 위해 필요한 조건을 볼 수 있습니다.");
                 showcaseView.setButtonText("다음");
                 break;
             case 3:

@@ -14,7 +14,6 @@ import android.widget.ProgressBar;
 public class DataController extends Activity{
 
 
-
     public double makePercent(int current, int goal) {
         double result = 0;
         result = (double) current / (double) goal * 100;
