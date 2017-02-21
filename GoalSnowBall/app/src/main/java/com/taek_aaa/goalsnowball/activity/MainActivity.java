@@ -22,7 +22,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.Menu;
@@ -103,19 +102,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
         context = getBaseContext();
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        doDrawerLayout(toolbar);
+        doNavigationView();
 
         init();
 
-        pictureController = new PictureController();
         //사진 권한
         PicturePermission.verifyStoragePermissions(this);
 
@@ -124,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         draw();
         drawImage();
 
-        if(dataController.getPreferencesFailFlag(context)==1){
+        if (dataController.getPreferencesFailFlag(context) == 1) {
             failDialog = new FailDialog(this);
             failDialog.show();
         }
@@ -140,6 +131,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getWindow().setStatusBarColor(Color.parseColor("#99BADD"));
         }
 
+    }
+
+    private void doDrawerLayout(Toolbar toolbar) {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+    }
+
+    private void doNavigationView() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     /**
@@ -253,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * 골라온 이미지를 이미지뷰에 입힘
      **/
-    protected void pictureSetToImageView(Intent data) {
+    private void pictureSetToImageView(Intent data) {
         try {
             Uri uri = data.getData();
             File imageFile = new File(getRealPathFromURI(uri));
@@ -265,7 +269,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(getBaseContext(), "사진을 입력하였습니다.", Toast.LENGTH_SHORT).show();
             isPicture = true;
         } catch (Exception e) {
-            Log.e("error", "" + e.getStackTrace());
             Toast.makeText(getBaseContext(), "사진을 입력하는 과정에서 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
             isPicture = false;
         }
@@ -382,16 +385,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * 인자로 받은 날의 목표를 텍스트뷰에 출력     isSuccess가 0이면 없는것 //  1이면 성공 // 2이면 하는중 // 3이면 실패
      **/
-    private void drawGoalWhen(int from){
+    private void drawGoalWhen(int from) {
         ImageView imageView;
         TextView textView;
-        if(from==FROM_TODAY){
+        if (from == FROM_TODAY) {
             imageView = todayBulb;
             textView = todaytv;
-        }else if(from==FROM_WEEK){
+        } else if (from == FROM_WEEK) {
             imageView = weekBulb;
             textView = weektv;
-        }else{
+        } else {
             imageView = monthBulb;
             textView = monthtv;
         }
@@ -471,16 +474,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * 주어진 상태의 목표 달성률 출력
      **/
-    private void drawWhenPercent(int from){
+    private void drawWhenPercent(int from) {
         TextView tv;
-        if(from==FROM_TODAY){
+        if (from == FROM_TODAY) {
             tv = percentToday;
-        }else if(from==FROM_WEEK){
+        } else if (from == FROM_WEEK) {
             tv = percentWeek;
-        }else{
+        } else {
             tv = percentMonth;
         }
-
         double result;
         int goal = dbManagerInstance.getGoalAmount(from);
         int current;
@@ -501,7 +503,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             tv.setTextColor(Color.parseColor("#808080"));
         }
         tv.setText("" + result + "%");
-
     }
 
 
@@ -509,44 +510,60 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * init
      **/
     private void init() {
-        //userDBManagerInstance = new userDBManagerInstance(getBaseContext(), "userdb.db", null, 1);
-        userDBManagerInstance =UserDBManager.getInstance(getBaseContext());
+        userDBManagerInstance = UserDBManager.getInstance(getBaseContext());
         dbManagerInstance = DBManager.getInstance(getBaseContext());
 
-        //dbManager = new DBManager(getBaseContext(), "goaldb.db", null, 1);
-        imageView = (CircularImageView) findViewById(R.id.mainImageView);
+        initView();
+        initDialog();
+        initSetText();
+        initRegistContextMenu();
+        ;
+
+        dataController = new DataController();
+        pictureController = new PictureController();
         today = new CalendarDatas();
+        //처음 어플 실행시켰을때 가이드 화면을 띄워줌
+        if (dataController.getPreferencesIsFirstOpenApp(context) == 1) {
+            guide();
+        }
+    }
+
+    private void initView() {
+        imageView = (CircularImageView) findViewById(R.id.mainImageView);
         mainGradetv = (TextView) findViewById(R.id.mainGradetv);
         mainGoldtv = (TextView) findViewById(R.id.mainGoldtv);
-        mainGoldtv.setText("" + userDBManagerInstance.getGold() + "Gold");
-        mainGradetv.setText("" + userDBManagerInstance.getGrade());
         percentToday = (TextView) findViewById(R.id.percentToday);
         percentWeek = (TextView) findViewById(R.id.percentWeek);
         percentMonth = (TextView) findViewById(R.id.percentMonth);
         userNametv = (TextView) findViewById(R.id.userIdtv);
         userIdtv = (TextView) findViewById(R.id.userIdtv);
-        userIdtv.setText("" + userDBManagerInstance.getName());
-        userNameDialog = new UserNameDialog(this);
         todaytv = (TextView) findViewById(R.id.mainTodayGoalTv);
         weektv = (TextView) findViewById(R.id.mainWeekGoalTv);
         monthtv = (TextView) findViewById(R.id.mainMonthGoalTv);
+        todayBulb = (ImageView) findViewById(R.id.todayBulb);
+        weekBulb = (ImageView) findViewById(R.id.weekBulb);
+        monthBulb = (ImageView) findViewById(R.id.monthBulb);
+    }
+
+    private void initDialog() {
+        userNameDialog = new UserNameDialog(this);
         todayGoalDialog = new TodayGoalDialog(this);
         weekGoalDialog = new WeekGoalDialog(this);
         monthGoalDialog = new MonthGoalDialog(this);
+        gradeDialog = new GradeDialog(this);
+    }
+
+    private void initSetText() {
+        mainGoldtv.setText("" + userDBManagerInstance.getGold() + "Gold");
+        mainGradetv.setText("" + userDBManagerInstance.getGrade());
+        userIdtv.setText("" + userDBManagerInstance.getName());
+    }
+
+    private void initRegistContextMenu() {
         registerForContextMenu(imageView);
         registerForContextMenu(todaytv);
         registerForContextMenu(weektv);
         registerForContextMenu(monthtv);
-        dataController = new DataController();
-        todayBulb = (ImageView) findViewById(R.id.todayBulb);
-        weekBulb = (ImageView) findViewById(R.id.weekBulb);
-        monthBulb = (ImageView) findViewById(R.id.monthBulb);
-        gradeDialog = new GradeDialog(this);
-
-        //처음 어플 실행시켰을때 가이드 화면을 띄워줌
-        if (dataController.getPreferencesIsFirstOpenApp(context) == 1) {
-            guide();
-        }
     }
 
     /**
@@ -561,7 +578,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * 컨텍스트 메뉴
      **/
-
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
@@ -635,7 +651,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 deleteGoal(FROM_TODAY);
                 break;
             case 5:     //이번주 일정 삭제
-               deleteGoal(FROM_WEEK);
+                deleteGoal(FROM_WEEK);
                 break;
             case 6:     //이번달 일정 삭제
                 deleteGoal(FROM_MONTH);
@@ -644,19 +660,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onContextItemSelected(item);
     }
 
-    /** 주어진 상태의 일정 삭제**/
-    private void deleteGoal(int from){
+    /**
+     * 주어진 상태의 일정 삭제
+     **/
+    private void deleteGoal(int from) {
         CalendarDatas calendarDatas = new CalendarDatas();
         String msg;
         Boolean bool;
 
-        if(from==FROM_TODAY){
+        if (from == FROM_TODAY) {
             msg = "오늘의 목표를 끝까지 도전 해보는건 어떨까요?";
             bool = calendarDatas.hour > 18;
-        }else if(from == FROM_WEEK){
-            msg ="이번주의 목표를 조금만 더 도전해볼까요?";
+        } else if (from == FROM_WEEK) {
+            msg = "이번주의 목표를 조금만 더 도전해볼까요?";
             bool = calendarDatas.dayOfWeekIndex > 5;
-        }else{
+        } else {
             msg = "이번달의 목표를 끝까지 응원합니다!";
             bool = calendarDatas.cdate > 15;
         }
@@ -665,7 +683,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (dbManagerInstance.getIsSuccess(from) == 3) {
             Toast.makeText(this, "이미 실패하여서 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
         } else if (bool) {
-            Toast.makeText(this, ""+msg, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "" + msg, Toast.LENGTH_SHORT).show();
         } else {
             dbManagerInstance.delete(from);
             onStart();
@@ -685,8 +703,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    /** 다음 등급을 확인하는 창 출력**/
-    public void onClickGrade(View v){
+    /**
+     * 다음 등급을 확인하는 창 출력
+     **/
+    public void onClickGrade(View v) {
         gradeDialog.show();
     }
 
