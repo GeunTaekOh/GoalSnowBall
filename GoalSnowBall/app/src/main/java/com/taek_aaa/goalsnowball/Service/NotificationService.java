@@ -35,7 +35,6 @@ public class NotificationService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        //dbManagerInstance = new dbManagerInstance(getBaseContext(), "goaldb.db", null, 1);
         dbManagerInstance = DBManager.getInstance(getBaseContext());
         userDBManagerInstance = UserDBManager.getInstance(getBaseContext());
         isRunning = true;
@@ -50,10 +49,10 @@ public class NotificationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         int intToBooleanIsNoti = userDBManagerInstance.getIsNoti();
-        if(intToBooleanIsNoti==1){
-            isRunning=true;
-        }else{
-            isRunning=false;
+        if (intToBooleanIsNoti == 1) {
+            isRunning = true;
+        } else {
+            isRunning = false;
         }
 
         Thread thread = new Thread(new Runnable() {
@@ -81,9 +80,9 @@ public class NotificationService extends Service {
         mBuilder.setContentTitle("GoalSnowBall의 목표를 설정하세요.");
         mBuilder.setWhen(System.currentTimeMillis());
         mBuilder.setContentText("" + str);
-        if(userDBManagerInstance.getIsSound()==1) {
+        if (userDBManagerInstance.getIsSound() == 1) {
             mBuilder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
-        }else{
+        } else {
             mBuilder.setDefaults(Notification.DEFAULT_VIBRATE);
         }
         mBuilder.setContentIntent(pendingIntent);
@@ -95,7 +94,6 @@ public class NotificationService extends Service {
     public void doNotification() {
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
-
         boolean todayNothing, weekNothing, monthNothing;
         todayNothing = dbManagerInstance.getGoal(FROM_TODAY).equals("");
         weekNothing = dbManagerInstance.getGoal(FROM_WEEK).equals("");

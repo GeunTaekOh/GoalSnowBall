@@ -76,7 +76,7 @@ public class CurrentTimeService extends Service {
                     try {
                         getCurrentTimeCheckFail();
                         checkLevelUp();
-                        Thread.sleep(1000);
+                        Thread.sleep(1000*60);
                     } catch (Exception e) {
 
                     }

@@ -14,7 +14,7 @@ public class UserDBManager extends SQLiteOpenHelper {
 
 
 
-    public static UserDBManager userDBManagerInstance;
+    public volatile static UserDBManager userDBManagerInstance;
     private static final String USERDATABASE_NAME = "userdb.db";
     private static final int USERDATABASE_VERSION = 1;
 

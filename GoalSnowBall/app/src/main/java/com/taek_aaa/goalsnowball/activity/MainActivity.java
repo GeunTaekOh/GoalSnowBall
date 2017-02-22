@@ -139,6 +139,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent timerIntent = new Intent(MainActivity.this, CurrentTimeService.class);
         startService(timerIntent);
 
+
+        if(dbManagerInstance.isNotWorkFailToday()){
+            dbManagerInstance.setDBFailToday(dbManagerInstance.getFirstTodayDoingIndex());
+        }
+
+
+
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(headColor);
         }
@@ -693,6 +700,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(this, "이미 성공하여서 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
         } else if (dbManagerInstance.getIsSuccess(from) == FAIL_STATUS) {
             Toast.makeText(this, "이미 실패하여서 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
+            dbManagerInstance.delete(from);
         } else if (bool) {
             Toast.makeText(this, "" + msg, Toast.LENGTH_SHORT).show();
         } else {

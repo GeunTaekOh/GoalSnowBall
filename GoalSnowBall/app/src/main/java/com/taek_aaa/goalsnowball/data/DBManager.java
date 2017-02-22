@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
@@ -14,12 +15,14 @@ import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
  */
 
 
-/**is success 가 0이면 저장 안함 1이면 성공 2이면 하는중 3이면 실패**/
+/**
+ * is success 가 0이면 저장 안함 1이면 성공 2이면 하는중 3이면 실패
+ **/
 public class DBManager extends SQLiteOpenHelper {
 
 
-    public static DBManager dbManagerInstance;
-    private static final String DATABASE_NAME =  "goaldb.db";
+    public volatile static DBManager dbManagerInstance;
+    private static final String DATABASE_NAME = "goaldb.db";
     private static final int DATABASE_VERSION = 1;
 
     public static synchronized DBManager getInstance(Context context) {
@@ -34,7 +37,7 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
 
-    public DBManager(Context context){//, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public DBManager(Context context) {//, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -53,7 +56,7 @@ public class DBManager extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void deleteAll(SQLiteDatabase db){
+    public void deleteAll(SQLiteDatabase db) {
         db.execSQL("drop table database;");
         onCreate(db);
     }
@@ -70,7 +73,6 @@ public class DBManager extends SQLiteOpenHelper {
         int weekOfYear = today.weekOfYear;
         db.execSQL("INSERT INTO database VALUES(NULL, " + year + ", " + month + ", " + date + ", " + weekOfYear + ", " + whatDateType + ", '" + goal + "','" + type + "', " + amount + ", '" + unit + "', " + currentAmount + ", " + bettingGold + "," + isSuccess + ");");  //string넣을때는 '' 하고그안에""해야
 
-        db.close();
     }
 
     public void setCurrentAmount(int findWhatDateType, int setAmount) {
@@ -91,7 +93,7 @@ public class DBManager extends SQLiteOpenHelper {
             String str = "UPDATE database SET currentAmount=" + setAmount + " WHERE year =" + findYear + " AND month = " + findMonth + " AND weekOfYear = " + findWeekOfyear + " AND whatDateType=" + findWhatDateType + ";";
             db.execSQL(str);
         }
-        db.close();
+
     }
 
 
@@ -113,7 +115,7 @@ public class DBManager extends SQLiteOpenHelper {
             String str = "UPDATE database SET isSuccess=" + status + " WHERE year =" + findYear + " AND month = " + findMonth + " AND weekOfYear = " + findWeekOfYear + " AND whatDateType=" + findWhatDateType + ";";
             db.execSQL(str);
         }
-        db.close();
+
     }
 
     public int getCurrentAmount(int findWhatDateType) {
@@ -156,7 +158,6 @@ public class DBManager extends SQLiteOpenHelper {
             }
         }
 
-        db.close();
         cursor.close();
         return result;
     }
@@ -201,7 +202,7 @@ public class DBManager extends SQLiteOpenHelper {
                 }
             }
         }
-        db.close();
+
         cursor.close();
         return result;
     }
@@ -247,7 +248,7 @@ public class DBManager extends SQLiteOpenHelper {
                 }
             }
         }
-        db.close();
+
         cursor.close();
         return result;
     }
@@ -292,7 +293,7 @@ public class DBManager extends SQLiteOpenHelper {
                 }
             }
         }
-        db.close();
+
         cursor.close();
         return result;
     }
@@ -338,7 +339,7 @@ public class DBManager extends SQLiteOpenHelper {
                 }
             }
         }
-        db.close();
+
         cursor.close();
         return result;
     }
@@ -391,7 +392,7 @@ public class DBManager extends SQLiteOpenHelper {
                 }
             }
         }
-        db.close();
+
         cursor.close();
         return result;
     }
@@ -438,7 +439,7 @@ public class DBManager extends SQLiteOpenHelper {
                 }
             }
         }
-        db.close();
+
         cursor.close();
         return result;
     }
@@ -486,10 +487,11 @@ public class DBManager extends SQLiteOpenHelper {
 
             }
         }
-        db.close();
+
         cursor.close();
         return result;
     }
+
     public void delete(int findWhatDateType) {
         SQLiteDatabase db = getReadableDatabase();
         CalendarDatas today = new CalendarDatas();
@@ -510,10 +512,10 @@ public class DBManager extends SQLiteOpenHelper {
         }
 
 
-        db.close();
+
     }
 
-    public ListViewData getPreviousListViewData(int position){
+    public ListViewData getPreviousListViewData(int position) {
         ListViewData listViewData = new ListViewData();
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM database", null);
@@ -524,46 +526,110 @@ public class DBManager extends SQLiteOpenHelper {
 
 
         int year = cursor.getInt(cursor.getColumnIndex("year"));
-        int month = cursor.getInt(cursor.getColumnIndex("month"))+1;
+        int month = cursor.getInt(cursor.getColumnIndex("month")) + 1;
         int date = cursor.getInt(cursor.getColumnIndex("date"));
 
-        listViewData.lvDate = ""+year+"/"+""+month+"/"+""+date;
+        listViewData.lvDate = "" + year + "/" + "" + month + "/" + "" + date;
         listViewData.lvgoal = cursor.getString(cursor.getColumnIndex("goal"));
-        listViewData.lvBettingGold=cursor.getInt(cursor.getColumnIndex("bettingGold"));
+        listViewData.lvBettingGold = cursor.getInt(cursor.getColumnIndex("bettingGold"));
         listViewData.lvCurrentAmount = cursor.getInt(cursor.getColumnIndex("currentAmount"));
         listViewData.lvGoalAmount = cursor.getInt(cursor.getColumnIndex("amount"));
 
-        db.close();
+
         cursor.close();
         return listViewData;
     }
 
-    public int getLastPosition(){
+    public int getLastPosition() {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM database", null);
         int a;
         cursor.moveToLast();
-        a = cursor.getPosition()+1;
-        db.close();
+        a = cursor.getPosition() + 1;
+
         cursor.close();
         return a;
     }
 
-    public boolean isEmptyDB(){
+    public boolean isEmptyDB() {
         SQLiteDatabase db = getWritableDatabase();
         String count = "SELECT count(*) FROM database";
-        Cursor mcursor = db.rawQuery(count, null);
+        Cursor cursor = db.rawQuery(count, null);
 
         boolean result;
-        mcursor.moveToFirst();
-        int icount = mcursor.getInt(0);
+        cursor.moveToFirst();
+        int icount = cursor.getInt(0);
 
-        if(icount>0)
-            result=false;
+        if (icount > 0)
+            result = false;
         else
-            result=true;
+            result = true;
 
+
+        cursor.close();
         return result;
     }
+
+    public Boolean isNotWorkFailToday(){
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM database", null);
+        Boolean isNotWork=false;
+        int count=0;
+
+        cursor.moveToLast();
+
+        while (cursor.moveToPrevious()) {
+            int dataType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+            int successType = cursor.getInt(cursor.getColumnIndex("isSuccess"));
+            Log.e("dbtest", "cursor.datatype : " + dataType);
+            Log.e("dbtest", "cursor.successtype : " + successType);
+            if (dataType == FROM_TODAY && successType == 2) {
+                count++;
+                if(count>1){
+                    isNotWork=true;
+                    break;
+                }
+            }
+
+        }
+        cursor.close();
+        return isNotWork;
+    }
+
+    public int getFirstTodayDoingIndex() {
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM database", null);
+        int firstTodayPosition = 0;
+
+        cursor.moveToLast();
+
+        while (cursor.moveToPrevious()) {
+            int dataType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+            int successType = cursor.getInt(cursor.getColumnIndex("isSuccess"));
+            Log.e("dbtest", "cursor.datatype : " + dataType);
+            Log.e("dbtest", "cursor.successtype : " + successType);
+            if (dataType == FROM_TODAY && successType == 2) {
+                firstTodayPosition = cursor.getPosition();
+                Log.e("dbtest", "cursor.getposition : " + cursor.getPosition());
+                break;
+            }
+
+        }
+        cursor.close();
+        return firstTodayPosition;
+    }
+
+    public void setDBFailToday(int pos) {
+        SQLiteDatabase db = getWritableDatabase();
+        String count = "SELECT count(*) FROM database";
+        Cursor cursor = db.rawQuery("SELECT * FROM database", null);
+
+        Log.e("dbtest","pos : "+pos);
+        String str = "UPDATE database SET isSuccess="+3+" WHERE _id<" + pos + " AND whatDateType=" + FROM_TODAY + " AND isSuccess=" + 2 + ";";
+        db.execSQL(str);
+
+        cursor.close();
+    }
+
 
 }
