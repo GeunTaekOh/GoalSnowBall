@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
@@ -512,7 +511,6 @@ public class DBManager extends SQLiteOpenHelper {
         }
 
 
-
     }
 
     public ListViewData getPreviousListViewData(int position) {
@@ -570,27 +568,22 @@ public class DBManager extends SQLiteOpenHelper {
         return result;
     }
 
-    public Boolean isNotWorkFailToday(){
+    public Boolean isNotWorkFailToday() {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM database", null);
-        Boolean isNotWork=false;
-        int count=0;
-
+        Boolean isNotWork = false;
+        int count = 0;
         cursor.moveToLast();
-
         while (cursor.moveToPrevious()) {
             int dataType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
             int successType = cursor.getInt(cursor.getColumnIndex("isSuccess"));
-            Log.e("dbtest", "cursor.datatype : " + dataType);
-            Log.e("dbtest", "cursor.successtype : " + successType);
             if (dataType == FROM_TODAY && successType == 2) {
                 count++;
-                if(count>1){
-                    isNotWork=true;
+                if (count > 1) {
+                    isNotWork = true;
                     break;
                 }
             }
-
         }
         cursor.close();
         return isNotWork;
@@ -600,20 +593,14 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM database", null);
         int firstTodayPosition = 0;
-
         cursor.moveToLast();
-
         while (cursor.moveToPrevious()) {
             int dataType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
             int successType = cursor.getInt(cursor.getColumnIndex("isSuccess"));
-            Log.e("dbtest", "cursor.datatype : " + dataType);
-            Log.e("dbtest", "cursor.successtype : " + successType);
             if (dataType == FROM_TODAY && successType == 2) {
                 firstTodayPosition = cursor.getPosition();
-                Log.e("dbtest", "cursor.getposition : " + cursor.getPosition());
                 break;
             }
-
         }
         cursor.close();
         return firstTodayPosition;
@@ -621,15 +608,9 @@ public class DBManager extends SQLiteOpenHelper {
 
     public void setDBFailToday(int pos) {
         SQLiteDatabase db = getWritableDatabase();
-        String count = "SELECT count(*) FROM database";
         Cursor cursor = db.rawQuery("SELECT * FROM database", null);
-
-        Log.e("dbtest","pos : "+pos);
-        String str = "UPDATE database SET isSuccess="+3+" WHERE _id<" + pos + " AND whatDateType=" + FROM_TODAY + " AND isSuccess=" + 2 + ";";
+        String str = "UPDATE database SET isSuccess=" + 3 + " WHERE _id<" + pos + " AND whatDateType=" + FROM_TODAY + " AND isSuccess=" + 2 + ";";
         db.execSQL(str);
-
         cursor.close();
     }
-
-
 }

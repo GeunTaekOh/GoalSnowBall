@@ -18,9 +18,9 @@ import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.SUCCESS_STATUS;
 import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessToday;
 import static com.taek_aaa.goalsnowball.data.CommonData.setFailStatus;
-import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
 import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
 import static com.taek_aaa.goalsnowball.data.UserDBManager.userDBManagerInstance;
+import static com.taek_aaa.goalsnowball.dialog.FailDialog.whereFail;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.SUCCESS_FROM_TODAY;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.whereSuccess;
 
@@ -154,7 +154,11 @@ public class TodayGoalDoingActivity extends GoalDoingActivity {
             } else if (dbManagerInstance.getUnit(FROM_TODAY).equals("이하") && dbManagerInstance.getCurrentAmount(FROM_TODAY) >= dbManagerInstance.getGoalAmount(FROM_TODAY)) {       //이하이고 실패
                 dbManagerInstance.setIsSuccess(FROM_TODAY, 3);
                 dataController.setPreferencesFailFlag(context, 1);
-                totalLooseCoin = dbManagerInstance.getBettingGold(FROM_TODAY);
+                //totalLooseCoin = dbManagerInstance.getBettingGold(FROM_TODAY);
+                //dataController.setPreferencesLooseGold(context,dbManagerInstance.getBettingGold(FROM_TODAY));
+                whereFail = FROM_TODAY;
+                int a = (userDBManagerInstance.getGold() - dbManagerInstance.getBettingGold(FROM_TODAY));
+                userDBManagerInstance.setGold(a);
                 failDialog = new FailDialog(this);
                 failDialog.show();
                 setFailStatus(false);

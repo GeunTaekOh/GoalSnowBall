@@ -15,12 +15,14 @@ import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
 import static com.taek_aaa.goalsnowball.data.CommonData.FAIL_STATUS;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
 import static com.taek_aaa.goalsnowball.data.CommonData.SUCCESS_STATUS;
 import static com.taek_aaa.goalsnowball.data.CommonData.isSuccessMonth;
 import static com.taek_aaa.goalsnowball.data.CommonData.setFailStatus;
-import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
 import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
 import static com.taek_aaa.goalsnowball.data.UserDBManager.userDBManagerInstance;
+import static com.taek_aaa.goalsnowball.dialog.FailDialog.whereFail;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.SUCCESS_FROM_MONTH;
 import static com.taek_aaa.goalsnowball.dialog.SuccessDialog.whereSuccess;
 
@@ -160,7 +162,12 @@ public class MonthGoalDoingActivity extends GoalDoingActivity {
             } else if (dbManagerInstance.getUnit(FROM_MONTH).equals("이하") && dbManagerInstance.getCurrentAmount(FROM_MONTH) >= dbManagerInstance.getGoalAmount(FROM_MONTH)) {       //이하이고 실패
                 dbManagerInstance.setIsSuccess(FROM_MONTH,3);
                 dataController.setPreferencesFailFlag(context, 1);
-                totalLooseCoin = dbManagerInstance.getBettingGold(FROM_MONTH);
+
+                whereFail = FROM_WEEK;
+                int a = (userDBManagerInstance.getGold() - dbManagerInstance.getBettingGold(FROM_TODAY));
+                userDBManagerInstance.setGold(a);
+
+                //totalLooseCoin = dbManagerInstance.getBettingGold(FROM_MONTH);
                 failDialog = new FailDialog(this);
                 failDialog.show();
 
