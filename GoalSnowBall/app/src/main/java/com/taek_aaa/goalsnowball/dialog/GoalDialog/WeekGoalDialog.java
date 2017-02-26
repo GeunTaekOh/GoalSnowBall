@@ -1,4 +1,4 @@
-package com.taek_aaa.goalsnowball.dialog;
+package com.taek_aaa.goalsnowball.dialog.GoalDialog;
 
 import android.content.Context;
 import android.view.View;
@@ -7,32 +7,29 @@ import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
 
-import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
 import static com.taek_aaa.goalsnowball.data.CommonData.categoryPhysicalArrays;
 import static com.taek_aaa.goalsnowball.data.CommonData.categoryTimeArrays;
-import static com.taek_aaa.goalsnowball.data.CommonData.failBetToday;
+import static com.taek_aaa.goalsnowball.data.CommonData.failBetWeek;
 import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
 
 /**
  * Created by taek_aaa on 2017. 1. 10..
  */
 
-public class TodayGoalDialog extends GoalDialog implements View.OnClickListener {
+public class WeekGoalDialog extends GoalDialog implements View.OnClickListener {
 
-
-    public TodayGoalDialog(Context context) {
+    public WeekGoalDialog(Context context) {
         super(context);
-        title.setText("오늘의 목표를 입력하세요.");
+        title.setText("이번주의 목표를 입력하세요.");
         findViewById(R.id.DialogConfirmButton).setOnClickListener(this);
         findViewById(R.id.DialogExitButton).setOnClickListener(this);
         findViewById(R.id.DialogX).setOnClickListener(this);
-
-        bettinggold = returnGold(FROM_TODAY);
+        bettinggold = returnGold(FROM_WEEK);
         if(bettinggold<=5){
             bettinggold = 2;
         }
         bettingGoldet.setText("" + bettinggold);
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -45,14 +42,13 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
         });
     }
 
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.DialogConfirmButton:
                 try {
                     if (Integer.parseInt(bettingGoldet.getText().toString()) > bettinggold) {
-                        Toast.makeText(getContext(), "" + bettingToastMessage(FROM_TODAY), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "" + bettingToastMessage(FROM_WEEK), Toast.LENGTH_SHORT).show();
                         break;
                     } else {
                         String getMinuteValueString = hiddenEt.getText().toString();
@@ -71,9 +67,6 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
                         textAmount = gethourValue * 60 + getMinuteValue;
 
                         textContents = editTextContents.getText().toString();
-                        if (textContents.equals("")) {
-                            throw new Exception();
-                        }
                         if (physicalRadio.isChecked()) {
                             dbData.type = "물리적양";
                             dbData.unit = categoryPhysicalArrays[tempUnit];
@@ -84,15 +77,15 @@ public class TodayGoalDialog extends GoalDialog implements View.OnClickListener 
                         }
                         dbData.goalAmount = textAmount;
                         dbData.goal = textContents;
-                        title.setText("오늘의 목표를 입력하세요.");
-                        editTextContents.setHint("목표를 추가하세요.");
+                        title.setText("이번주의 목표를 입력하세요.");
+                        editTextContents.setHint("목표를 입력하세요.");
                         dbData.bettingGold = Integer.parseInt(bettingGoldet.getText().toString());
                     }
-                    if (dbManagerInstance.hasGoal(FROM_TODAY)) {
-                        Toast.makeText(getContext(), "이미 오늘의 목표를 설정하였습니다.", Toast.LENGTH_SHORT).show();
+                    if (dbManagerInstance.hasGoal(FROM_WEEK)) {
+                        Toast.makeText(getContext(), "이미 이번주의 목표를 입력하였습니다.", Toast.LENGTH_SHORT).show();
                     } else {
-                        dbManagerInstance.insert(FROM_TODAY, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 2);
-                        failBetToday = dbManagerInstance.getBettingGold(FROM_TODAY);
+                        dbManagerInstance.insert(FROM_WEEK, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 2);
+                        failBetWeek = dbManagerInstance.getBettingGold(FROM_WEEK);
                     }
                     dismiss();
                 } catch (Exception e) {

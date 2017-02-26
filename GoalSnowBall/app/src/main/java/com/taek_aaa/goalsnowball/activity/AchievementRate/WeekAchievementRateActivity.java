@@ -1,4 +1,4 @@
-package com.taek_aaa.goalsnowball.activity;
+package com.taek_aaa.goalsnowball.activity.AchievementRate;
 
 import android.os.Bundle;
 import android.widget.Toast;

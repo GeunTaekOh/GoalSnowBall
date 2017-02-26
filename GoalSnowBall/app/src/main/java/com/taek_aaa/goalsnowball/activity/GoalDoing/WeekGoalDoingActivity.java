@@ -1,4 +1,4 @@
-package com.taek_aaa.goalsnowball.activity;
+package com.taek_aaa.goalsnowball.activity.GoalDoing;
 
 import android.content.DialogInterface;
 import android.os.Bundle;

@@ -11,11 +11,13 @@ import android.support.v7.widget.SwitchCompat;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
+import com.taek_aaa.goalsnowball.dialog.TimePickerDialog;
 
 import static com.taek_aaa.goalsnowball.data.CommonData.headColor;
 import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
@@ -30,6 +32,9 @@ public class SettingActivity extends Activity {
     SwitchCompat notiSwtich, soundSwitch;
     CheckBox checkBox;
     SQLiteDatabase db, db2;
+    TimePickerDialog timePickerDialog;
+    TextView showCurrentSettingTimeTv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,34 +42,44 @@ public class SettingActivity extends Activity {
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(headColor);
         }
+        timePickerDialog = new TimePickerDialog(this);
+        timePickerDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                drawSettingTime();
+            }
+        });
 
         userDBManagerInstance = UserDBManager.getInstance(getBaseContext());
         dbManagerInstance = DBManager.getInstance(getBaseContext());
-        notiSwtich=(SwitchCompat)findViewById(R.id.switchButton);
-        soundSwitch=(SwitchCompat)findViewById(R.id.switchButton2);
-        checkBox = (CheckBox)findViewById(R.id.checkbox);
+        notiSwtich = (SwitchCompat) findViewById(R.id.switchButton);
+        soundSwitch = (SwitchCompat) findViewById(R.id.switchButton2);
+        checkBox = (CheckBox) findViewById(R.id.checkbox);
+        showCurrentSettingTimeTv =(TextView)findViewById(R.id.yourSettingTimeTv);
 
-        if(userDBManagerInstance.getIsNoti()==1){
+        drawSettingTime();
+
+        if (userDBManagerInstance.getIsNoti() == 1) {
             notiSwtich.setChecked(true);
-        }else{
+        } else {
             notiSwtich.setChecked(false);
         }
 
-        if(userDBManagerInstance.getIsSound()==1){
+        if (userDBManagerInstance.getIsSound() == 1) {
             soundSwitch.setChecked(true);
-        }else{
+        } else {
             soundSwitch.setChecked(false);
         }
 
         notiSwtich.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
+                if (isChecked) {
                     Snackbar.make(buttonView, "상단바에서 알림을 받으실 수 있습니다.", Snackbar.LENGTH_LONG)
                             .setAction("ACTION", null).show();
                     userDBManagerInstance.setIsNoti(1);
 
-                }else{
+                } else {
                     Snackbar.make(buttonView, "상단바에서 알림을 받으실 수 없습니다.", Snackbar.LENGTH_LONG)
                             .setAction("ACTION", null).show();
                     userDBManagerInstance.setIsNoti(0);
@@ -76,11 +91,11 @@ public class SettingActivity extends Activity {
         soundSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked) {
+                if (isChecked) {
                     Snackbar.make(compoundButton, "소리모드일시 소리를 재생합니다.", Snackbar.LENGTH_SHORT)
                             .setAction("ACTION", null).show();
                     userDBManagerInstance.setIsSound(1);
-                }else{
+                } else {
                     Snackbar.make(compoundButton, "소리모드일시에도 소리를 재생하지 않습니다.", Snackbar.LENGTH_SHORT)
                             .setAction("ACTION", null).show();
                     userDBManagerInstance.setIsSound(0);
@@ -96,7 +111,7 @@ public class SettingActivity extends Activity {
                 db = dbManagerInstance.getWritableDatabase();
                 db2 = userDBManagerInstance.getWritableDatabase();
 
-                if(b){
+                if (b) {
                     AlertDialog.Builder adb = new AlertDialog.Builder(SettingActivity.this);
 
                     adb
@@ -106,10 +121,10 @@ public class SettingActivity extends Activity {
                             .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                  //  dbManagerInstance.onUpgrade(db, 1, 2);
+                                    //  dbManagerInstance.onUpgrade(db, 1, 2);
                                     dbManagerInstance.deleteAll(db);
                                     dbManagerInstance.close();
-                                    userDBManagerInstance.onUpgrade(db2,1,2);
+                                    userDBManagerInstance.onUpgrade(db2, 1, 2);
                                     userDBManagerInstance.close();
 
                                     Toast.makeText(SettingActivity.this, "DB를 삭제하였습니다", Toast.LENGTH_SHORT).show();
@@ -128,9 +143,35 @@ public class SettingActivity extends Activity {
                 }
             }
         });
+
     }
 
-    public void onClickBackSpace(View v){
+    @Override
+    protected void onStart() {
+        super.onStart();
+        drawSettingTime();
+
+    }
+    public void onClickBackSpace(View v) {
         onBackPressed();
+    }
+
+    public void onClickTimeSetting(View v) {
+        timePickerDialog.show();
+
+    }
+    public void drawSettingTime(){
+        int time = userDBManagerInstance.getNotiTime();
+        int minute = userDBManagerInstance.getNotiMinute();
+        String str = "";
+
+        if(time>=12){
+            time = time - 12;
+            str = "오후";
+        }else{
+            str = "오전";
+        }
+        showCurrentSettingTimeTv.setText("설정 시간 : " + str + " " + time+ "시 "+minute+"분");
+
     }
 }

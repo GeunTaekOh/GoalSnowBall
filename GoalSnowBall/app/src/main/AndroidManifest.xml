@@ -32,12 +32,12 @@
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.TodayGoalDoingActivity" />
-        <activity android:name=".activity.WeekGoalDoingActivity" />
-        <activity android:name=".activity.MonthGoalDoingActivity" />
-        <activity android:name=".activity.TodayAchievementRateActivity" />
-        <activity android:name=".activity.WeekAchievementRateActivity" />
-        <activity android:name=".activity.MonthAchievementRateActivity" />
+        <activity android:name=".activity.GoalDoing.TodayGoalDoingActivity" />
+        <activity android:name=".activity.GoalDoing.WeekGoalDoingActivity" />
+        <activity android:name=".activity.GoalDoing.MonthGoalDoingActivity" />
+        <activity android:name=".activity.AchievementRate.TodayAchievementRateActivity" />
+        <activity android:name=".activity.AchievementRate.WeekAchievementRateActivity" />
+        <activity android:name=".activity.AchievementRate.MonthAchievementRateActivity" />
         <activity android:name=".activity.SettingActivity"/>
         <activity android:name=".activity.showListActivity"/>
 

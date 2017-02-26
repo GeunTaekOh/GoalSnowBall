@@ -35,8 +35,8 @@ public class UserDBManager extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE userInfo (_id INTEGER PRIMARY KEY AUTOINCREMENT, grade TEXT, name TEXT, gold INTEGER, picturePath TEXT, rotationIter INTEGER, hasNotification INTEGER, hasSound INTEGER);");
-        db.execSQL("INSERT INTO userInfo VALUES(NULL, '" + "UnRank" + "', '" + "Insert_Name" + "', " + 10 + ", '" + "null" + "', " + 0 + ", " + 1 + ", "+ 1 + " );");
+        db.execSQL("CREATE TABLE userInfo (_id INTEGER PRIMARY KEY AUTOINCREMENT, grade TEXT, name TEXT, gold INTEGER, picturePath TEXT, rotationIter INTEGER, hasNotification INTEGER, hasSound INTEGER, notiTime INTEGER, notiMinute INTEGER);");
+        db.execSQL("INSERT INTO userInfo VALUES(NULL, '" + "UnRank" + "', '" + "Insert_Name" + "', " + 10 + ", '" + "null" + "', " + 0 + ", " + 1 + ", "+ 1 + "," + 0 + "," + 0 + " );");
     }
 
     @Override
@@ -96,6 +96,19 @@ public class UserDBManager extends SQLiteOpenHelper {
     public void setIsSound(int a){
         SQLiteDatabase db = getReadableDatabase();
         String sql =  "UPDATE userInfo SET hasSound="+a;
+        db.execSQL(sql);
+        db.close();
+    }
+
+    public void setNotiTime(int a){
+        SQLiteDatabase db = getReadableDatabase();
+        String sql =  "UPDATE userInfo SET notiTime="+a;
+        db.execSQL(sql);
+        db.close();
+    }
+    public void setNotiMinute(int a){
+        SQLiteDatabase db = getReadableDatabase();
+        String sql =  "UPDATE userInfo SET notiMinute="+a;
         db.execSQL(sql);
         db.close();
     }
@@ -174,6 +187,29 @@ public class UserDBManager extends SQLiteOpenHelper {
         int a=0;
         while (cursor.moveToNext()) {
             a = cursor.getInt(cursor.getColumnIndex("hasSound"));
+        }
+        cursor.close();
+        db.close();
+        return a;
+    }
+
+    public int getNotiTime(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM userInfo", null);
+        int a=0;
+        while (cursor.moveToNext()) {
+            a = cursor.getInt(cursor.getColumnIndex("notiTime"));
+        }
+        cursor.close();
+        db.close();
+        return a;
+    }
+    public int getNotiMinute(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM userInfo", null);
+        int a=0;
+        while (cursor.moveToNext()) {
+            a = cursor.getInt(cursor.getColumnIndex("notiMinute"));
         }
         cursor.close();
         db.close();

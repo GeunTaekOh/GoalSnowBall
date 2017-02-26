@@ -1,4 +1,4 @@
-package com.taek_aaa.goalsnowball.activity;
+package com.taek_aaa.goalsnowball.activity.AchievementRate;
 
 /**
  * Created by taek_aaa on 2017. 1. 19..

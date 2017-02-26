@@ -5,8 +5,8 @@ import android.os.Handler;
 
 import com.taek_aaa.goalsnowball.data.CalendarDatas;
 
-import static com.taek_aaa.goalsnowball.activity.AchievementRateActivity.dueTimeFinish;
-import static com.taek_aaa.goalsnowball.activity.AchievementRateActivity.fromCountDownDday;
+import static com.taek_aaa.goalsnowball.activity.AchievementRate.AchievementRateActivity.dueTimeFinish;
+import static com.taek_aaa.goalsnowball.activity.AchievementRate.AchievementRateActivity.fromCountDownDday;
 
 /**
  * Created by taek_aaa on 2017. 1. 19..

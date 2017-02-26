@@ -1,4 +1,4 @@
-package com.taek_aaa.goalsnowball.dialog;
+package com.taek_aaa.goalsnowball.dialog.GoalDialog;
 
 import android.app.Dialog;
 import android.content.Context;

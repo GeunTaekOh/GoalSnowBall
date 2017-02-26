@@ -1,4 +1,4 @@
-package com.taek_aaa.goalsnowball.dialog;
+package com.taek_aaa.goalsnowball.dialog.GoalDialog;
 
 /**
  * Created by taek_aaa on 2017. 1. 23..

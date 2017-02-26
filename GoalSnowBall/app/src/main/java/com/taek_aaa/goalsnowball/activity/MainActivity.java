@@ -37,6 +37,12 @@ import com.github.siyamed.shapeimageview.CircularImageView;
 import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.Service.CurrentTimeService;
 import com.taek_aaa.goalsnowball.Service.NotificationService;
+import com.taek_aaa.goalsnowball.activity.AchievementRate.MonthAchievementRateActivity;
+import com.taek_aaa.goalsnowball.activity.AchievementRate.TodayAchievementRateActivity;
+import com.taek_aaa.goalsnowball.activity.AchievementRate.WeekAchievementRateActivity;
+import com.taek_aaa.goalsnowball.activity.GoalDoing.MonthGoalDoingActivity;
+import com.taek_aaa.goalsnowball.activity.GoalDoing.TodayGoalDoingActivity;
+import com.taek_aaa.goalsnowball.activity.GoalDoing.WeekGoalDoingActivity;
 import com.taek_aaa.goalsnowball.controller.DataController;
 import com.taek_aaa.goalsnowball.controller.PictureController;
 import com.taek_aaa.goalsnowball.controller.PicturePermission;
@@ -45,12 +51,12 @@ import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
 import com.taek_aaa.goalsnowball.dialog.ContactUsDialog;
 import com.taek_aaa.goalsnowball.dialog.FailDialog;
+import com.taek_aaa.goalsnowball.dialog.GoalDialog.MonthGoalDialog;
+import com.taek_aaa.goalsnowball.dialog.GoalDialog.TodayGoalDialog;
+import com.taek_aaa.goalsnowball.dialog.GoalDialog.WeekGoalDialog;
 import com.taek_aaa.goalsnowball.dialog.GradeDialog;
 import com.taek_aaa.goalsnowball.dialog.LevelUpDialog;
-import com.taek_aaa.goalsnowball.dialog.MonthGoalDialog;
-import com.taek_aaa.goalsnowball.dialog.TodayGoalDialog;
 import com.taek_aaa.goalsnowball.dialog.UserNameDialog;
-import com.taek_aaa.goalsnowball.dialog.WeekGoalDialog;
 
 import java.io.File;
 
@@ -74,7 +80,7 @@ import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
 import static com.taek_aaa.goalsnowball.data.UserDBManager.userDBManagerInstance;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
-    
+
     final int PICK_FROM_ALBUM = 101;
     Bitmap photo;
     ImageView todayBulb, weekBulb, monthBulb;
@@ -111,6 +117,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         doDrawerLayout(toolbar);
         doNavigationView();
 
+        //사진 권한
+        PicturePermission.verifyStoragePermissions(this);
+
+
         init();
 
         myRed = getResources().getColor(R.color.myRed);
@@ -118,8 +128,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         headColor = getResources().getColor(R.color.headColor);
         myBlack = getResources().getColor(R.color.myBlack);
 
-        //사진 권한
-        PicturePermission.verifyStoragePermissions(this);
+
 
         // draw 함수에 drawMainImage, drawImage 포함 시키지 않는 것이 더 효율적
         //drawMainImage();
@@ -138,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent timerIntent = new Intent(MainActivity.this, CurrentTimeService.class);
         startService(timerIntent);
 
-        if(dbManagerInstance.isNotWorkFailToday()){
+        if (dbManagerInstance.isNotWorkFailToday()) {
             dbManagerInstance.setDBFailToday(dbManagerInstance.getFirstTodayDoingIndex());
         }
 
@@ -310,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void drawImage() {
         int iter = 0;
         Bitmap rotatedPhoto;
-        if (userDBManagerInstance.getPicturePath().equals("null")) {
+        if (userDBManagerInstance.getPicturePath().equals("null") || userDBManagerInstance.getPicturePath()==null) {
             isPicture = false;
             drawMainImage();
         } else {
@@ -397,10 +406,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * 인자로 받은 날의 목표를 텍스트뷰에 출력     isSuccess가 0이면 없는것 //  1이면 성공 // 2이면 하는중 // 3이면 실패
      **/
-    private void drawGoalWhen(int from) {
+    private void drawGoalWhen(int fromDateType) {
         ImageView imageView = null;
         TextView textView = null;
-        switch (from){
+
+        switch (fromDateType) {
             case FROM_TODAY:
                 imageView = todayBulb;
                 textView = todaytv;
@@ -415,7 +425,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
 
-        switch (dbManagerInstance.getIsSuccess(from)){
+        switch (dbManagerInstance.getIsSuccess(fromDateType)) {
             case SUCCESS_STATUS:
                 imageView.setImageResource(R.drawable.bulbsuccess);
                 break;
@@ -429,7 +439,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 imageView.setImageResource(0);
                 break;
         }
-        textView.setText(dbManagerInstance.getGoal(from));
+        textView.setText(dbManagerInstance.getGoal(fromDateType));
         textView.setGravity(Gravity.CENTER);
     }
 
@@ -496,12 +506,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 주어진 상태의 목표 달성률 출력
      **/
     private void drawWhenPercent(int fromDateType) {
-        TextView tv=null;
+        TextView tv = null;
         double result;
         int goal = dbManagerInstance.getGoalAmount(fromDateType);
         int current;
 
-        switch (fromDateType){
+        switch (fromDateType) {
             case FROM_TODAY:
                 tv = percentToday;
                 break;
@@ -689,10 +699,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      **/
     private void deleteGoal(int fromDateType) {
         CalendarDatas calendarDatas = new CalendarDatas();
-        String msg="";
-        Boolean bool=false;
+        String msg = "";
+        Boolean bool = false;
 
-        switch (fromDateType){
+        switch (fromDateType) {
             case FROM_TODAY:
                 msg = "오늘의 목표를 끝까지 도전 해보는건 어떨까요?";
                 bool = calendarDatas.hour > 18;
