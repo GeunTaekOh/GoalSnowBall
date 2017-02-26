@@ -19,10 +19,6 @@ public class UserDBManager extends SQLiteOpenHelper {
     private static final int USERDATABASE_VERSION = 1;
 
     public static synchronized UserDBManager getInstance(Context context) {
-
-        // Use the application context, which will ensure that you
-        // don't accidentally leak an Activity's context.
-        // See this article for more information: http://bit.ly/6LRzfx
         if (userDBManagerInstance == null) {
             userDBManagerInstance = new UserDBManager(context.getApplicationContext());
         }

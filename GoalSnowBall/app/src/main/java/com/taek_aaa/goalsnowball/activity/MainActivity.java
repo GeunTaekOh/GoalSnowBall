@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         PicturePermission.verifyStoragePermissions(this);
 
         // draw 함수에 drawMainImage, drawImage 포함 시키지 않는 것이 더 효율적
-        drawMainImage();
+        //drawMainImage();
         draw();
         drawImage();
 
@@ -139,17 +139,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent timerIntent = new Intent(MainActivity.this, CurrentTimeService.class);
         startService(timerIntent);
 
-
         if(dbManagerInstance.isNotWorkFailToday()){
             dbManagerInstance.setDBFailToday(dbManagerInstance.getFirstTodayDoingIndex());
         }
 
-
-
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(headColor);
         }
-
     }
 
     private void doDrawerLayout(Toolbar toolbar) {
@@ -258,7 +254,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     /**
      * intent 결과 처리
@@ -622,7 +617,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             String[] currencyUnit = {"이번달 일정 삭제"};
             menu.add(0, 6, 100, currencyUnit[0]);
         }
-
     }
 
     /**
@@ -774,7 +768,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
     private void checkLevelUpStatus() {
         if (dataController.getPreferencesLevelUpFlag(context) == 1 && dataController.getPreferencesIsGradeChange(context) != whatGradeTo) {
             levelUpDialog = new LevelUpDialog(this);
@@ -805,8 +798,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setContentText("GoalSnowBall 사용 방법을 설명합니다.")
                 .build();
         showcaseView.setButtonText("안내 시작");
-
-
     }
 
     /**

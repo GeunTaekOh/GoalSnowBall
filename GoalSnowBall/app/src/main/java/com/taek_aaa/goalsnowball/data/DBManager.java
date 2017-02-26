@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
+import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
 
 
 /**
@@ -25,10 +26,6 @@ public class DBManager extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     public static synchronized DBManager getInstance(Context context) {
-
-        // Use the application context, which will ensure that you
-        // don't accidentally leak an Activity's context.
-        // See this article for more information: http://bit.ly/6LRzfx
         if (dbManagerInstance == null) {
             dbManagerInstance = new DBManager(context.getApplicationContext());
         }
@@ -81,18 +78,22 @@ public class DBManager extends SQLiteOpenHelper {
         int findMonth = today.cMonth;
         int findDate = today.cdate;
         int findWeekOfyear = today.weekOfYear;
+        String str="";
 
-        if (findWhatDateType == FROM_TODAY) {
-            String str = "UPDATE database SET currentAmount=" + setAmount + " WHERE year = " + findYear + " AND month = " + findMonth + " AND date = " + findDate + " AND whatDateType=" + findWhatDateType + ";";
-            db.execSQL(str);
-        } else if (findWhatDateType == FROM_MONTH) {
-            String str = "UPDATE database SET currentAmount=" + setAmount + " WHERE year = " + findYear + " AND month = " + findMonth + " AND whatDateType=" + findWhatDateType + ";";
-            db.execSQL(str);
-        } else {
-            String str = "UPDATE database SET currentAmount=" + setAmount + " WHERE year =" + findYear + " AND month = " + findMonth + " AND weekOfYear = " + findWeekOfyear + " AND whatDateType=" + findWhatDateType + ";";
-            db.execSQL(str);
+        switch (findWhatDateType){
+            case FROM_TODAY :
+                str = "UPDATE database SET currentAmount=" + setAmount + " WHERE year = " + findYear + " AND month = " + findMonth + " AND date = " + findDate + " AND whatDateType=" + findWhatDateType + ";";
+                db.execSQL(str);
+                break;
+            case FROM_WEEK :
+                str = "UPDATE database SET currentAmount=" + setAmount + " WHERE year = " + findYear + " AND month = " + findMonth + " AND whatDateType=" + findWhatDateType + ";";
+                db.execSQL(str);
+                break;
+            case FROM_MONTH :
+                str = "UPDATE database SET currentAmount=" + setAmount + " WHERE year =" + findYear + " AND month = " + findMonth + " AND weekOfYear = " + findWeekOfyear + " AND whatDateType=" + findWhatDateType + ";";
+                db.execSQL(str);
+                break;
         }
-
     }
 
 
@@ -103,18 +104,22 @@ public class DBManager extends SQLiteOpenHelper {
         int findMonth = today.cMonth;
         int findDate = today.cdate;
         int findWeekOfYear = today.weekOfYear;
+        String str="";
 
-        if (findWhatDateType == FROM_TODAY) {
-            String str = "UPDATE database SET isSuccess=" + status + " WHERE year = " + findYear + " AND month = " + findMonth + " AND date = " + findDate + " AND whatDateType=" + findWhatDateType + ";";
-            db.execSQL(str);
-        } else if (findWhatDateType == FROM_MONTH) {
-            String str = "UPDATE database SET isSuccess=" + status + " WHERE year = " + findYear + " AND month = " + findMonth + " AND whatDateType=" + findWhatDateType + ";";
-            db.execSQL(str);
-        } else {
-            String str = "UPDATE database SET isSuccess=" + status + " WHERE year =" + findYear + " AND month = " + findMonth + " AND weekOfYear = " + findWeekOfYear + " AND whatDateType=" + findWhatDateType + ";";
-            db.execSQL(str);
+        switch (findWhatDateType){
+            case FROM_TODAY :
+                str = "UPDATE database SET isSuccess=" + status + " WHERE year = " + findYear + " AND month = " + findMonth + " AND date = " + findDate + " AND whatDateType=" + findWhatDateType + ";";
+                db.execSQL(str);
+                break;
+            case FROM_WEEK :
+                str = "UPDATE database SET isSuccess=" + status + " WHERE year = " + findYear + " AND month = " + findMonth + " AND whatDateType=" + findWhatDateType + ";";
+                db.execSQL(str);
+                break;
+            case FROM_MONTH :
+                str = "UPDATE database SET isSuccess=" + status + " WHERE year =" + findYear + " AND month = " + findMonth + " AND weekOfYear = " + findWeekOfYear + " AND whatDateType=" + findWhatDateType + ";";
+                db.execSQL(str);
+                break;
         }
-
     }
 
     public int getCurrentAmount(int findWhatDateType) {
@@ -127,6 +132,36 @@ public class DBManager extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery("SELECT * FROM database", null);
         int result = 0;
+
+        while (cursor.moveToNext()) {
+            int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+            int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+            int dbDate = cursor.getInt(cursor.getColumnIndex("date"));
+            int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+            int dbWeekOfYear = cursor.getInt(cursor.getColumnIndex("weekOfYear"));
+
+            switch (findWhatDateType) {
+                case FROM_TODAY:
+                    if ((dbYear == findYear) && (dbMonth == findMonth) && (dbDate == findDate) && (dbWhatDateType == findWhatDateType)) {
+                        result = cursor.getInt(cursor.getColumnIndex("currentAmount"));
+                    }
+                    break;
+                case FROM_WEEK:
+                    if ((dbYear == findYear) && (dbMonth == findMonth) && (dbWhatDateType == findWhatDateType)) {
+                        result = cursor.getInt(cursor.getColumnIndex("currentAmount"));
+                    }
+                    break;
+                case FROM_MONTH:
+                    if ((dbYear == findYear) && (dbWeekOfYear == findWeekOfYear) && (dbWhatDateType == findWhatDateType)) {
+                        result = cursor.getInt(cursor.getColumnIndex("currentAmount"));
+                        break;
+                    }
+            }
+
+
+
+        /*
+
         if (findWhatDateType == FROM_TODAY) {
             while (cursor.moveToNext()) {
                 int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
@@ -155,8 +190,8 @@ public class DBManager extends SQLiteOpenHelper {
                     result = cursor.getInt(cursor.getColumnIndex("currentAmount"));
                 }
             }
+        }*/
         }
-
         cursor.close();
         return result;
     }

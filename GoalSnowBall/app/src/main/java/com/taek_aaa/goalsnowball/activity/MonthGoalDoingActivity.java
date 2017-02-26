@@ -36,7 +36,6 @@ public class MonthGoalDoingActivity extends GoalDoingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         try {
             /** 물리적 양 일때 **/
             if (dbManagerInstance.getType(FROM_MONTH).equals("물리적양")) {
@@ -55,7 +54,6 @@ public class MonthGoalDoingActivity extends GoalDoingActivity {
             blackboardtv = (TextView) findViewById(R.id.doing_goalAmount);
             successGetGoldtv = (TextView) findViewById(R.id.successGetGoldtv);
             doingGoaltv = (TextView) findViewById(R.id.doing_goal);
-
 
             if (isAmount) {
                 amountOfEdit.post(new Runnable() {
@@ -109,7 +107,6 @@ public class MonthGoalDoingActivity extends GoalDoingActivity {
                     }
                 });
             }
-
         }
     }
 
@@ -181,7 +178,6 @@ public class MonthGoalDoingActivity extends GoalDoingActivity {
         stopWatchtv.setText("00:00:00");
         startbtn.setVisibility(View.VISIBLE);
         startbtn.setText("Start");
-
     }
 
 
@@ -206,5 +202,4 @@ public class MonthGoalDoingActivity extends GoalDoingActivity {
                 break;
         }
     }
-
 }

@@ -17,7 +17,6 @@ public class MonthAchievementRateActivity extends AchievementRateActivity{
         draw();
     }
 
-
     public void draw() {
         try {
             drawGoal(FROM_MONTH);
@@ -38,7 +37,5 @@ public class MonthAchievementRateActivity extends AchievementRateActivity{
     public void onBackPressed() {
         countDown.onStop();
         finish();
-
     }
-
 }

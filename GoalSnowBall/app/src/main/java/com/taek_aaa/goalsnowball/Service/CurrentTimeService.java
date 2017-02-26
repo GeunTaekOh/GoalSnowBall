@@ -136,6 +136,8 @@ public class CurrentTimeService extends Service {
     public void checkLevelUp(){
         int gold = userDBManagerInstance.getGold();
         int count = dbManagerInstance.getLastPosition();
+
+
         if(gold >= 100 && count>= 10){
             userDBManagerInstance.setGrade("D 등급");
             whatGradeTo=TO_D;
@@ -169,9 +171,6 @@ public class CurrentTimeService extends Service {
             whatGradeTo = TO_MASTER;
             dataController.setPreferencesLevelUpFlag(context, 1);
         }
-
-
     }
-
 }
 

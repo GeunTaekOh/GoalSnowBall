@@ -53,7 +53,6 @@ public class AchievementRateActivity extends Activity implements AchievementRate
         dbManagerInstance = DBManager.getInstance(getBaseContext());
         dataController = new DataController();
         init();
-
     }
 
     private void init() {
@@ -67,14 +66,11 @@ public class AchievementRateActivity extends Activity implements AchievementRate
         dueTv = (TextView) findViewById(dueAchievementAmount);
         progressBar = (ProgressBar) findViewById(R.id.progressbar);
         dueTimeFinish = (TextView) findViewById(dueAchievementAmount);
-        dataController = new DataController();
-
+        //dataController = new DataController();
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(headColor);
         }
-
     }
-
 
     protected String whatContentsType(int type) {
         String str;
@@ -88,11 +84,9 @@ public class AchievementRateActivity extends Activity implements AchievementRate
         return str;
     }
 
-
     public void drawGoal(int from) {
         achievementStringtv.setText("" + dbManagerInstance.getGoal(from));
     }
-
 
     public void drawGoalAmount(int from, String type) throws Exception {
         if (type.equals("물리적양")) {
@@ -137,7 +131,6 @@ public class AchievementRateActivity extends Activity implements AchievementRate
             percentAmounttv.setTextColor(myGreen);
         } else {
             percentAmounttv.setTextColor(myBlack);
-
         }
         percentAmounttv.setText("" + result + "%");
     }
@@ -204,5 +197,4 @@ public class AchievementRateActivity extends Activity implements AchievementRate
     public void onClickBackSpace(View v){
         onBackPressed();
     }
-
 }

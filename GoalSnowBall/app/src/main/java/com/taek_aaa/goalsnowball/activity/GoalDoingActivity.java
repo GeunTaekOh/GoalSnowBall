@@ -136,7 +136,6 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface {
             Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
         }
     }
-
 }
 
 

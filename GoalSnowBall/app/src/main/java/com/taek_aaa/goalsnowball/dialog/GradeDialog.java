@@ -41,7 +41,6 @@ public class GradeDialog extends Dialog implements View.OnClickListener {
         dataController = new DataController();
 
         draw();
-
     }
 
     private void draw(){
@@ -80,7 +79,6 @@ public class GradeDialog extends Dialog implements View.OnClickListener {
         } else if (str.equals("Master")) {
             result = 8;
         }
-
         return result;
     }
 
@@ -106,10 +104,8 @@ public class GradeDialog extends Dialog implements View.OnClickListener {
         currentGradetv.setText(gradeArray[currentIndex]);
         nextGradetv.setText(gradeArray[currentIndex + 1]);
 
-
         needsAmountRight.setText("" + needsAmount[currentIndex]);
         needsGoldRight.setText("" + needsGold[currentIndex]);
-
 
         needsGoldLeft.setText("" + userDBManagerInstance.getGold());
         needsAmountLeft.setText("" + dbManagerInstance.getLastPosition());
@@ -124,5 +120,4 @@ public class GradeDialog extends Dialog implements View.OnClickListener {
                 break;
         }
     }
-
 }

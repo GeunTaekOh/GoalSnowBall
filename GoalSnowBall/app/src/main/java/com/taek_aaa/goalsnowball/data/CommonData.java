@@ -43,9 +43,6 @@ public class CommonData {
     public final static int DRAW_COUNT_DOWN_MONTH = 2;
 
 
-
-
-
     public static void setFailStatus(boolean bool) {
         isFailToday = bool;
         isFailWeek = bool;

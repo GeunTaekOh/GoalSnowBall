@@ -21,7 +21,6 @@ import static com.taek_aaa.goalsnowball.data.CommonData.NOTIFICATION_TERM;
 import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
 import static com.taek_aaa.goalsnowball.data.UserDBManager.userDBManagerInstance;
 
-
 public class NotificationService extends Service {
     NotificationManager notificationManager;
     public Boolean isRunning;
