@@ -74,8 +74,7 @@ import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
 import static com.taek_aaa.goalsnowball.data.UserDBManager.userDBManagerInstance;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
-
-
+    
     final int PICK_FROM_ALBUM = 101;
     Bitmap photo;
     ImageView todayBulb, weekBulb, monthBulb;
@@ -399,27 +398,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 인자로 받은 날의 목표를 텍스트뷰에 출력     isSuccess가 0이면 없는것 //  1이면 성공 // 2이면 하는중 // 3이면 실패
      **/
     private void drawGoalWhen(int from) {
-        ImageView imageView;
-        TextView textView;
-        if (from == FROM_TODAY) {
-            imageView = todayBulb;
-            textView = todaytv;
-        } else if (from == FROM_WEEK) {
-            imageView = weekBulb;
-            textView = weektv;
-        } else {
-            imageView = monthBulb;
-            textView = monthtv;
+        ImageView imageView = null;
+        TextView textView = null;
+        switch (from){
+            case FROM_TODAY:
+                imageView = todayBulb;
+                textView = todaytv;
+                break;
+            case FROM_WEEK:
+                imageView = weekBulb;
+                textView = weektv;
+                break;
+            case FROM_MONTH:
+                imageView = monthBulb;
+                textView = monthtv;
+                break;
         }
 
-        if (dbManagerInstance.getIsSuccess(from) == SUCCESS_STATUS) {
-            imageView.setImageResource(R.drawable.bulbsuccess);
-        } else if (dbManagerInstance.getIsSuccess(from) == DOING_STATUS) {
-            imageView.setImageResource(R.drawable.bulbdoing);
-        } else if (dbManagerInstance.getIsSuccess(from) == FAIL_STATUS) {
-            imageView.setImageResource(R.drawable.bulbfail);
-        } else {
-            imageView.setImageResource(0);
+        switch (dbManagerInstance.getIsSuccess(from)){
+            case SUCCESS_STATUS:
+                imageView.setImageResource(R.drawable.bulbsuccess);
+                break;
+            case DOING_STATUS:
+                imageView.setImageResource(R.drawable.bulbdoing);
+                break;
+            case FAIL_STATUS:
+                imageView.setImageResource(R.drawable.bulbfail);
+                break;
+            default:
+                imageView.setImageResource(0);
+                break;
         }
         textView.setText(dbManagerInstance.getGoal(from));
         textView.setGravity(Gravity.CENTER);
@@ -487,27 +495,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * 주어진 상태의 목표 달성률 출력
      **/
-    private void drawWhenPercent(int from) {
-        TextView tv;
-        if (from == FROM_TODAY) {
-            tv = percentToday;
-        } else if (from == FROM_WEEK) {
-            tv = percentWeek;
-        } else {
-            tv = percentMonth;
-        }
+    private void drawWhenPercent(int fromDateType) {
+        TextView tv=null;
         double result;
-        int goal = dbManagerInstance.getGoalAmount(from);
+        int goal = dbManagerInstance.getGoalAmount(fromDateType);
         int current;
-        if ((dbManagerInstance.getType(from).toString().equals("물리적양")) || (dbManagerInstance.getType(from).toString().equals("시간적양"))) {
-            current = dbManagerInstance.getCurrentAmount(from);
+
+        switch (fromDateType){
+            case FROM_TODAY:
+                tv = percentToday;
+                break;
+            case FROM_WEEK:
+                tv = percentWeek;
+                break;
+            case FROM_MONTH:
+                tv = percentMonth;
+                break;
+        }
+
+        if ((dbManagerInstance.getType(fromDateType).toString().equals("물리적양")) || (dbManagerInstance.getType(fromDateType).toString().equals("시간적양"))) {
+            current = dbManagerInstance.getCurrentAmount(fromDateType);
         } else {
             current = 0;
             goal = 10;
         }
         result = dataController.makePercent(current, goal);
         if (result == 100) {
-            if (dbManagerInstance.getType(from).equals("시간적양") && dbManagerInstance.getUnit(from).equals("이하")) {
+            if (dbManagerInstance.getType(fromDateType).equals("시간적양") && dbManagerInstance.getUnit(fromDateType).equals("이하")) {
                 tv.setTextColor(myRed);
             } else {
                 tv.setTextColor(myGreen);
@@ -530,7 +544,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initDialog();
         initSetText();
         initRegistContextMenu();
-        ;
 
         dataController = new DataController();
         pictureController = new PictureController();
@@ -585,7 +598,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onClickMainImage(View v) {
         registerForContextMenu(imageView);
         openContextMenu(imageView);
-
     }
 
     /**
@@ -675,29 +687,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     /**
      * 주어진 상태의 일정 삭제
      **/
-    private void deleteGoal(int from) {
+    private void deleteGoal(int fromDateType) {
         CalendarDatas calendarDatas = new CalendarDatas();
-        String msg;
-        Boolean bool;
+        String msg="";
+        Boolean bool=false;
 
-        if (from == FROM_TODAY) {
-            msg = "오늘의 목표를 끝까지 도전 해보는건 어떨까요?";
-            bool = calendarDatas.hour > 18;
-        } else if (from == FROM_WEEK) {
-            msg = "이번주의 목표를 조금만 더 도전해볼까요?";
-            bool = calendarDatas.dayOfWeekIndex > 5;
-        } else {
-            msg = "이번달의 목표를 끝까지 응원합니다!";
-            bool = calendarDatas.cdate > 15;
+        switch (fromDateType){
+            case FROM_TODAY:
+                msg = "오늘의 목표를 끝까지 도전 해보는건 어떨까요?";
+                bool = calendarDatas.hour > 18;
+                break;
+            case FROM_WEEK:
+                msg = "이번주의 목표를 조금만 더 도전해볼까요?";
+                bool = calendarDatas.dayOfWeekIndex > 5;
+                break;
+            case FROM_MONTH:
+                msg = "이번달의 목표를 끝까지 응원합니다!";
+                bool = calendarDatas.cdate > 15;
+                break;
         }
-        if (dbManagerInstance.getIsSuccess(from) == SUCCESS_STATUS) {
+
+
+        if (dbManagerInstance.getIsSuccess(fromDateType) == SUCCESS_STATUS) {
             Toast.makeText(this, "이미 성공하여서 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
-        } else if (dbManagerInstance.getIsSuccess(from) == FAIL_STATUS) {
+        } else if (dbManagerInstance.getIsSuccess(fromDateType) == FAIL_STATUS) {
             Toast.makeText(this, "이미 실패하여서 삭제할 수 없습니다.", Toast.LENGTH_SHORT).show();
         } else if (bool) {
             Toast.makeText(this, "" + msg, Toast.LENGTH_SHORT).show();
         } else {
-            dbManagerInstance.delete(from);
+            dbManagerInstance.delete(fromDateType);
             onStart();
         }
     }

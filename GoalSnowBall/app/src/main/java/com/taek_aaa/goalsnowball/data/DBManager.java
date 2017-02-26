@@ -340,7 +340,6 @@ public class DBManager extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM database", null);
         boolean result = false;
 
-
         while (cursor.moveToNext()) {
             int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
             int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
