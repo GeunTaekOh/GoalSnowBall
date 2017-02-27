@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import static com.taek_aaa.goalsnowball.data.CalendarDatas.TODAY;
+import static com.taek_aaa.goalsnowball.data.CalendarDatas.YESTERDAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
@@ -62,7 +64,7 @@ public class DBManager extends SQLiteOpenHelper {
      **/
     public void insert(int whatDateType, String goal, String type, int amount, String unit, int currentAmount, int bettingGold, int isSuccess) {
         SQLiteDatabase db = getWritableDatabase();
-        CalendarDatas today = new CalendarDatas();
+        CalendarDatas today = new CalendarDatas(TODAY);
         int year = today.cYear;
         int month = today.cMonth;
         int date = today.cdate;
@@ -73,7 +75,7 @@ public class DBManager extends SQLiteOpenHelper {
 
     public void setCurrentAmount(int findWhatDateType, int setAmount) {
         SQLiteDatabase db = getReadableDatabase();
-        CalendarDatas today = new CalendarDatas();
+        CalendarDatas today = new CalendarDatas(TODAY);
         int findYear = today.cYear;
         int findMonth = today.cMonth;
         int findDate = today.cdate;
@@ -97,9 +99,14 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
 
-    public void setIsSuccess(int findWhatDateType, int status) {
+    public void setIsSuccess(int findWhatDateType, int status, int todayOrYesterday) {
         SQLiteDatabase db = getReadableDatabase();
-        CalendarDatas today = new CalendarDatas();
+        CalendarDatas today;
+        if(todayOrYesterday==TODAY){
+            today = new CalendarDatas(TODAY);
+        }else{
+            today = new CalendarDatas(YESTERDAY);
+        }
         int findYear = today.cYear;
         int findMonth = today.cMonth;
         int findDate = today.cdate;
@@ -122,9 +129,15 @@ public class DBManager extends SQLiteOpenHelper {
         }
     }
 
-    public int getCurrentAmount(int findWhatDateType) {
+    public int getCurrentAmount(int findWhatDateType, int todayOrYesterday) {
         SQLiteDatabase db = getReadableDatabase();
-        CalendarDatas today = new CalendarDatas();
+        CalendarDatas today;
+        if(todayOrYesterday==TODAY){
+            today = new CalendarDatas(TODAY);
+        }else{
+            today = new CalendarDatas(YESTERDAY);
+        }
+
         int findYear = today.cYear;
         int findMonth = today.cMonth;
         int findDate = today.cdate;
@@ -165,7 +178,7 @@ public class DBManager extends SQLiteOpenHelper {
 
     public int getIsSuccess(int findWhatDateType) {
         SQLiteDatabase db = getReadableDatabase();
-        CalendarDatas today = new CalendarDatas();
+        CalendarDatas today = new CalendarDatas(TODAY);
         int findYear = today.cYear;
         int findMonth = today.cMonth;
         int findDate = today.cdate;
@@ -207,7 +220,7 @@ public class DBManager extends SQLiteOpenHelper {
 
     public String getGoal(int findWhatDateType) {
         SQLiteDatabase db = getReadableDatabase();
-        CalendarDatas today = new CalendarDatas();
+        CalendarDatas today = new CalendarDatas(TODAY);
         int findYear = today.cYear;
         int findMonth = today.cMonth;
         int findDate = today.cdate;
@@ -246,9 +259,15 @@ public class DBManager extends SQLiteOpenHelper {
         return result;
     }
 
-    public int getGoalAmount(int findWhatDateType) {
+    public int getGoalAmount(int findWhatDateType, int todayOrYesterday) {
         SQLiteDatabase db = getReadableDatabase();
-        CalendarDatas today = new CalendarDatas();
+        CalendarDatas today;
+        if(todayOrYesterday==TODAY) {
+            today= new CalendarDatas(TODAY);
+        }else{
+            today = new CalendarDatas(YESTERDAY);
+        }
+
         int findYear = today.cYear;
         int findMonth = today.cMonth;
         int findDate = today.cdate;
@@ -287,9 +306,14 @@ public class DBManager extends SQLiteOpenHelper {
         return result;
     }
 
-    public int getBettingGold(int findWhatDateType) {
+    public int getBettingGold(int findWhatDateType, int todayOrYesterday) {
         SQLiteDatabase db = getReadableDatabase();
-        CalendarDatas today = new CalendarDatas();
+        CalendarDatas today;
+        if(todayOrYesterday==TODAY) {
+            today = new CalendarDatas(TODAY);
+        }else{
+            today = new CalendarDatas(YESTERDAY);
+        }
         int findYear = today.cYear;
         int findMonth = today.cMonth;
         int findDate = today.cdate;
@@ -331,7 +355,7 @@ public class DBManager extends SQLiteOpenHelper {
 
     public boolean hasGoal(int findWhatDateType) {
         SQLiteDatabase db = getReadableDatabase();
-        CalendarDatas today = new CalendarDatas();
+        CalendarDatas today = new CalendarDatas(TODAY);
         int findYear = today.cYear;
         int findMonth = today.cMonth;
         int findDate = today.cdate;
@@ -382,7 +406,7 @@ public class DBManager extends SQLiteOpenHelper {
 
     public String getType(int findWhatDateType) {
         SQLiteDatabase db = getReadableDatabase();
-        CalendarDatas today = new CalendarDatas();
+        CalendarDatas today = new CalendarDatas(TODAY);
         int findYear = today.cYear;
         int findMonth = today.cMonth;
         int findDate = today.cdate;
@@ -424,7 +448,7 @@ public class DBManager extends SQLiteOpenHelper {
 
     public String getUnit(int findWhatDateType) {
         SQLiteDatabase db = getReadableDatabase();
-        CalendarDatas today = new CalendarDatas();
+        CalendarDatas today = new CalendarDatas(TODAY);
         int findYear = today.cYear;
         int findMonth = today.cMonth;
         int findDate = today.cdate;
@@ -467,7 +491,7 @@ public class DBManager extends SQLiteOpenHelper {
 
     public void delete(int findWhatDateType) {
         SQLiteDatabase db = getReadableDatabase();
-        CalendarDatas today = new CalendarDatas();
+        CalendarDatas today = new CalendarDatas(TODAY);
         int findYear = today.cYear;
         int findMonth = today.cMonth;
         int findDate = today.cdate;
@@ -588,4 +612,49 @@ public class DBManager extends SQLiteOpenHelper {
         db.execSQL(str);
         cursor.close();
     }
+    ////////////////////////////////////
+
+    public int getYesterdayGoalAmount(int findWhatDateType) {
+        SQLiteDatabase db = getReadableDatabase();
+        CalendarDatas yesterday = new CalendarDatas(YESTERDAY);
+
+        int findYear = yesterday.cYear;
+        int findMonth = yesterday.cMonth;
+        int findDate = yesterday.cdate;
+        int findWeekOfYear = yesterday.weekOfYear;
+
+        Cursor cursor = db.rawQuery("SELECT * FROM database", null);
+        int result = 0;
+
+        while (cursor.moveToNext()) {
+            int dbYear = cursor.getInt(cursor.getColumnIndex("year"));
+            int dbMonth = cursor.getInt(cursor.getColumnIndex("month"));
+            int dbDate = cursor.getInt(cursor.getColumnIndex("date"));
+            int dbWhatDateType = cursor.getInt(cursor.getColumnIndex("whatDateType"));
+            int dbWeekOfYear = cursor.getInt(cursor.getColumnIndex("weekOfYear"));
+
+            switch (findWhatDateType) {
+                case FROM_TODAY:
+                    if ((dbYear == findYear) && (dbMonth == findMonth) && (dbDate == findDate) && (dbWhatDateType == findWhatDateType)) {
+                        result = cursor.getInt(cursor.getColumnIndex("amount"));
+                    }
+                    break;
+                case FROM_WEEK:
+                    if ((dbYear == findYear) && (dbWeekOfYear == findWeekOfYear) && (dbWhatDateType == findWhatDateType)) {
+                        result = cursor.getInt(cursor.getColumnIndex("amount"));
+                    }
+                    break;
+                case FROM_MONTH:
+                    if ((dbYear == findYear) && (dbMonth == findMonth) && (dbWhatDateType == findWhatDateType)) {
+                        result = cursor.getInt(cursor.getColumnIndex("amount"));
+                    }
+                    break;
+            }
+        }
+        cursor.close();
+        return result;
+    }
+
+
+
 }

@@ -36,7 +36,7 @@ import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.github.siyamed.shapeimageview.CircularImageView;
 import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.Service.CurrentTimeService;
-import com.taek_aaa.goalsnowball.Service.NotificationService;
+//import com.taek_aaa.goalsnowball.Service.NotificationService;
 import com.taek_aaa.goalsnowball.activity.AchievementRate.MonthAchievementRateActivity;
 import com.taek_aaa.goalsnowball.activity.AchievementRate.TodayAchievementRateActivity;
 import com.taek_aaa.goalsnowball.activity.AchievementRate.WeekAchievementRateActivity;
@@ -61,6 +61,7 @@ import com.taek_aaa.goalsnowball.dialog.UserNameDialog;
 import java.io.File;
 
 import static android.media.AudioManager.STREAM_MUSIC;
+import static com.taek_aaa.goalsnowball.data.CalendarDatas.TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.DOING_STATUS;
 import static com.taek_aaa.goalsnowball.data.CommonData.FAIL_STATUS;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
@@ -131,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         // draw 함수에 drawMainImage, drawImage 포함 시키지 않는 것이 더 효율적
-        //drawMainImage();
         draw();
         drawImage();
 
@@ -140,8 +140,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             failDialog.show();
         }
 
-        Intent notificationIntent = new Intent(MainActivity.this, NotificationService.class);       //알람 서비스 실행
-        startService(notificationIntent);
+        //Intent notificationIntent = new Intent(MainActivity.this, NotificationService.class);       //알람 서비스 실행
+        //startService(notificationIntent);
 
         //현재 시간 받는 서비스 실행
         Intent timerIntent = new Intent(MainActivity.this, CurrentTimeService.class);
@@ -492,7 +492,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 오늘쪽 상단의 디데이를 출력
      **/
     private void drawDDay() {
-        CalendarDatas calendarData = new CalendarDatas();
+        CalendarDatas calendarData = new CalendarDatas(TODAY);
         int endDate;
         dDayWeektv = (TextView) findViewById(R.id.d_week);
         dDayMonthtv = (TextView) findViewById(R.id.d_month);
@@ -508,7 +508,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void drawWhenPercent(int fromDateType) {
         TextView tv = null;
         double result;
-        int goal = dbManagerInstance.getGoalAmount(fromDateType);
+        int goal = dbManagerInstance.getGoalAmount(fromDateType,TODAY);
         int current;
 
         switch (fromDateType) {
@@ -524,7 +524,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         if ((dbManagerInstance.getType(fromDateType).toString().equals("물리적양")) || (dbManagerInstance.getType(fromDateType).toString().equals("시간적양"))) {
-            current = dbManagerInstance.getCurrentAmount(fromDateType);
+            current = dbManagerInstance.getCurrentAmount(fromDateType,TODAY);
         } else {
             current = 0;
             goal = 10;
@@ -557,7 +557,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         dataController = new DataController();
         pictureController = new PictureController();
-        today = new CalendarDatas();
+        today = new CalendarDatas(TODAY);
         //처음 어플 실행시켰을때 가이드 화면을 띄워줌
         if (dataController.getPreferencesIsFirstOpenApp(context) == 1) {
             guide();
@@ -646,7 +646,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      **/
     public boolean onContextItemSelected(MenuItem item) {
         // 롱클릭했을 때 나오는 context Menu 의 항목을 선택(클릭) 했을 때 호출
-        CalendarDatas calendarDatas = new CalendarDatas();
+        CalendarDatas calendarDatas = new CalendarDatas(TODAY);
         switch (item.getItemId()) {
             case 1:// 사진추가
                 if (isPicture) {
@@ -698,7 +698,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * 주어진 상태의 일정 삭제
      **/
     private void deleteGoal(int fromDateType) {
-        CalendarDatas calendarDatas = new CalendarDatas();
+        CalendarDatas calendarDatas = new CalendarDatas(TODAY);
         String msg = "";
         Boolean bool = false;
 

@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.taek_aaa.goalsnowball.R;
 
+import static com.taek_aaa.goalsnowball.data.CalendarDatas.TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.data.CommonData.categoryPhysicalArrays;
 import static com.taek_aaa.goalsnowball.data.CommonData.categoryTimeArrays;
@@ -87,7 +88,7 @@ public class MonthGoalDialog extends GoalDialog implements View.OnClickListener 
                         Toast.makeText(getContext(), "이미 이번달의 목표를 입력하였습니다.", Toast.LENGTH_SHORT).show();
                     } else {
                         dbManagerInstance.insert(FROM_MONTH, dbData.goal, dbData.type, dbData.goalAmount, dbData.unit, 0, dbData.bettingGold, 2);
-                        failBetMonth = dbManagerInstance.getBettingGold(FROM_MONTH);
+                        failBetMonth = dbManagerInstance.getBettingGold(FROM_MONTH,TODAY);
                     }
                     dismiss();
                 } catch (Exception e) {

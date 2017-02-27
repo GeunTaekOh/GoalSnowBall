@@ -7,6 +7,7 @@ import com.taek_aaa.goalsnowball.data.CalendarDatas;
 
 import static com.taek_aaa.goalsnowball.activity.AchievementRate.AchievementRateActivity.dueTimeFinish;
 import static com.taek_aaa.goalsnowball.activity.AchievementRate.AchievementRateActivity.fromCountDownDday;
+import static com.taek_aaa.goalsnowball.data.CalendarDatas.TODAY;
 
 /**
  * Created by taek_aaa on 2017. 1. 19..
@@ -65,7 +66,7 @@ public class CountDown extends CountDownTimer{
         if(hours < 10)
             hour = "0" + hours;
 
-        CalendarDatas calendarDatas = new CalendarDatas();
+        CalendarDatas calendarDatas = new CalendarDatas(TODAY);
 
         if(dday==0){                 //오늘 목표 달성률 남은 기간
             output = hour + " : " + min + " : " + sec;

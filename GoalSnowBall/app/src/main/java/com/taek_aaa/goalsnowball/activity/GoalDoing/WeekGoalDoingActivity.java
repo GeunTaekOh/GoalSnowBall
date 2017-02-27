@@ -13,6 +13,7 @@ import com.taek_aaa.goalsnowball.R;
 import com.taek_aaa.goalsnowball.dialog.FailDialog;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
+import static com.taek_aaa.goalsnowball.data.CalendarDatas.TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FAIL_STATUS;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
@@ -57,17 +58,17 @@ public class WeekGoalDoingActivity extends GoalDoingActivity {
                 amountOfEdit.post(new Runnable() {
                     @Override
                     public void run() {
-                        amountOfEdit.setText("" + dbManagerInstance.getCurrentAmount(FROM_WEEK));
+                        amountOfEdit.setText("" + dbManagerInstance.getCurrentAmount(FROM_WEEK,TODAY));
                     }
                 });
 
-                blackboardtv.setText("목표량 : " + dbManagerInstance.getGoalAmount(FROM_WEEK) + "" + dbManagerInstance.getUnit(FROM_WEEK));
+                blackboardtv.setText("목표량 : " + dbManagerInstance.getGoalAmount(FROM_WEEK,TODAY) + "" + dbManagerInstance.getUnit(FROM_WEEK));
                 unittv.setText("" + dbManagerInstance.getUnit(FROM_WEEK));
             } else {
-                timeOfCurrenttv.setText("수행 시간 : " + dbManagerInstance.getCurrentAmount(FROM_WEEK) + "분");
-                blackboardtv.setText("목표량 : " + dbManagerInstance.getGoalAmount(FROM_WEEK) + "분 " + dbManagerInstance.getUnit(FROM_WEEK));
+                timeOfCurrenttv.setText("수행 시간 : " + dbManagerInstance.getCurrentAmount(FROM_WEEK,TODAY) + "분");
+                blackboardtv.setText("목표량 : " + dbManagerInstance.getGoalAmount(FROM_WEEK,TODAY) + "분 " + dbManagerInstance.getUnit(FROM_WEEK));
             }
-            successGetGoldtv.setText("성공시 획득 골드 : " + "" + dbManagerInstance.getBettingGold(FROM_WEEK) + "Gold");
+            successGetGoldtv.setText("성공시 획득 골드 : " + "" + dbManagerInstance.getBettingGold(FROM_WEEK,TODAY) + "Gold");
             doingGoaltv.setText("이번주의 목표 : " + dbManagerInstance.getGoal(FROM_WEEK));
         } catch (Exception e) {
             /** 목표 설정 안되어 있을 때 **/
@@ -75,7 +76,7 @@ public class WeekGoalDoingActivity extends GoalDoingActivity {
             Log.e("error", "" + e.getStackTrace());
             finish();
         }
-        tmpAmount = dbManagerInstance.getCurrentAmount(FROM_WEEK);
+        tmpAmount = dbManagerInstance.getCurrentAmount(FROM_WEEK,TODAY);
 
     }
 
@@ -91,9 +92,9 @@ public class WeekGoalDoingActivity extends GoalDoingActivity {
             Toast.makeText(this, "이미 성공하여서 Gold를 수령했습니다.", Toast.LENGTH_SHORT).show();
         } else {
             saveCurrentAmountToEditText(FROM_WEEK);
-            if (dbManagerInstance.getGoalAmount(FROM_WEEK) <= dbManagerInstance.getCurrentAmount(FROM_WEEK)) {
+            if (dbManagerInstance.getGoalAmount(FROM_WEEK,TODAY) <= dbManagerInstance.getCurrentAmount(FROM_WEEK,TODAY)) {
                 whereSuccess = SUCCESS_FROM_WEEK;
-                int a = (dbManagerInstance.getBettingGold(FROM_WEEK)) + (userDBManagerInstance.getGold());
+                int a = (dbManagerInstance.getBettingGold(FROM_WEEK,TODAY)) + (userDBManagerInstance.getGold());
                 userDBManagerInstance.setGold(a);
 
                 successDialog = new SuccessDialog(this);
@@ -131,10 +132,10 @@ public class WeekGoalDoingActivity extends GoalDoingActivity {
         ihowlongtime = Integer.valueOf(shour) * 60 * 60 + Integer.valueOf(sminute) * 60 + Integer.valueOf(sseconds);
         ihowlongtime = ihowlongtime / 60;
 
-        int temp = dbManagerInstance.getCurrentAmount(FROM_WEEK);
+        int temp = dbManagerInstance.getCurrentAmount(FROM_WEEK,TODAY);
         temp += ihowlongtime;
 
-        timeOfCurrenttv.setText("수행 시간 : " + dbManagerInstance.getCurrentAmount(FROM_WEEK) + "분");
+        timeOfCurrenttv.setText("수행 시간 : " + dbManagerInstance.getCurrentAmount(FROM_WEEK,TODAY) + "분");
 
         Button startbtn = (Button) findViewById(R.id.timerStartbtn);
 
@@ -145,9 +146,9 @@ public class WeekGoalDoingActivity extends GoalDoingActivity {
             Toast.makeText(getBaseContext(), "이미 성공하여서 Gold를 수령했습니다.", Toast.LENGTH_SHORT).show();
         } else {
             dbManagerInstance.setCurrentAmount(FROM_WEEK, temp);
-            if (dbManagerInstance.getUnit(FROM_WEEK).equals("이상") && dbManagerInstance.getCurrentAmount(FROM_WEEK) >= dbManagerInstance.getGoalAmount(FROM_WEEK)) {      //이상이고 성공
+            if (dbManagerInstance.getUnit(FROM_WEEK).equals("이상") && dbManagerInstance.getCurrentAmount(FROM_WEEK,TODAY) >= dbManagerInstance.getGoalAmount(FROM_WEEK,TODAY)) {      //이상이고 성공
                 whereSuccess = SUCCESS_FROM_WEEK;
-                int a = (dbManagerInstance.getBettingGold(FROM_WEEK)) + (userDBManagerInstance.getGold());
+                int a = (dbManagerInstance.getBettingGold(FROM_WEEK,TODAY)) + (userDBManagerInstance.getGold());
                 userDBManagerInstance.setGold(a);
 
                 successDialog = new SuccessDialog(this);
@@ -160,11 +161,11 @@ public class WeekGoalDoingActivity extends GoalDoingActivity {
                     }
                 });
 
-            } else if (dbManagerInstance.getUnit(FROM_WEEK).equals("이하") && dbManagerInstance.getCurrentAmount(FROM_WEEK) >= dbManagerInstance.getGoalAmount(FROM_WEEK)) {       //이하이고 실패
-                dbManagerInstance.setIsSuccess(FROM_WEEK,3);
+            } else if (dbManagerInstance.getUnit(FROM_WEEK).equals("이하") && dbManagerInstance.getCurrentAmount(FROM_WEEK,TODAY) >= dbManagerInstance.getGoalAmount(FROM_WEEK,TODAY)) {       //이하이고 실패
+                dbManagerInstance.setIsSuccess(FROM_WEEK,3,TODAY);
                 dataController.setPreferencesFailFlag(context, 1);
                 whereFail = FROM_WEEK;
-                int a = (userDBManagerInstance.getGold() - dbManagerInstance.getBettingGold(FROM_TODAY));
+                int a = (userDBManagerInstance.getGold() - dbManagerInstance.getBettingGold(FROM_TODAY,TODAY));
                 userDBManagerInstance.setGold(a);
                 //totalLooseCoin = dbManagerInstance.getBettingGold(FROM_WEEK);
                 failDialog = new FailDialog(this);
@@ -191,8 +192,8 @@ public class WeekGoalDoingActivity extends GoalDoingActivity {
         switch (v.getId()) {
             case R.id.upButton:
                 tmpAmount += 1;
-                if (tmpAmount > dbManagerInstance.getGoalAmount(FROM_WEEK)) {
-                    tmpAmount = dbManagerInstance.getGoalAmount(FROM_WEEK);
+                if (tmpAmount > dbManagerInstance.getGoalAmount(FROM_WEEK,TODAY)) {
+                    tmpAmount = dbManagerInstance.getGoalAmount(FROM_WEEK,TODAY);
                 }
                 amountOfEdit.setText("" + tmpAmount);
                 break;

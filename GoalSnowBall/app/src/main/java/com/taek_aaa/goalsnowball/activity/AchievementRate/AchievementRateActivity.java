@@ -15,6 +15,7 @@ import com.taek_aaa.goalsnowball.data.DBManager;
 import java.util.Calendar;
 
 import static com.taek_aaa.goalsnowball.R.id.dueAchievementAmount;
+import static com.taek_aaa.goalsnowball.data.CalendarDatas.TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.DOING_STATUS;
 import static com.taek_aaa.goalsnowball.data.CommonData.DRAW_COUNT_DOWN_MONTH;
 import static com.taek_aaa.goalsnowball.data.CommonData.DRAW_COUNT_DOWN_TODAY;
@@ -90,9 +91,9 @@ public class AchievementRateActivity extends Activity implements AchievementRate
 
     public void drawGoalAmount(int from, String type) throws Exception {
         if (type.equals("물리적양")) {
-            achievementAmounttv.setText("" + dbManagerInstance.getGoalAmount(from) + "" + dbManagerInstance.getUnit(from));
+            achievementAmounttv.setText("" + dbManagerInstance.getGoalAmount(from,TODAY) + "" + dbManagerInstance.getUnit(from));
         } else if (type.equals("시간적양")) {
-            achievementAmounttv.setText("" + dbManagerInstance.getGoalAmount(from) + "분 " + dbManagerInstance.getUnit(from));
+            achievementAmounttv.setText("" + dbManagerInstance.getGoalAmount(from,TODAY) + "분 " + dbManagerInstance.getUnit(from));
         } else {
             throw new Exception();
         }
@@ -100,9 +101,9 @@ public class AchievementRateActivity extends Activity implements AchievementRate
 
     public void drawCurrentAmount(int from, String type) throws Exception {
         if (type.equals("물리적양")) {
-            currentAmounttv.setText("" + dbManagerInstance.getCurrentAmount(from) + "" + dbManagerInstance.getUnit(from));
+            currentAmounttv.setText("" + dbManagerInstance.getCurrentAmount(from,TODAY) + "" + dbManagerInstance.getUnit(from));
         } else if (type.equals("시간적양")) {
-            currentAmounttv.setText("" + dbManagerInstance.getCurrentAmount(from) + "분");
+            currentAmounttv.setText("" + dbManagerInstance.getCurrentAmount(from,TODAY) + "분");
         } else {
             throw new Exception();
         }
@@ -110,17 +111,17 @@ public class AchievementRateActivity extends Activity implements AchievementRate
 
     public void drawPercentProgressBar(int from, String type) throws Exception {
         double result;
-        int goal = dbManagerInstance.getGoalAmount(from);
+        int goal = dbManagerInstance.getGoalAmount(from,TODAY);
         int current;
 
         if (type.equals("물리적양") || (type.equals("시간적양"))) {
-            progressBar.setMax(dbManagerInstance.getGoalAmount(from) * 100);
-            progressBar.setProgress(dbManagerInstance.getCurrentAmount(from) * 100);
+            progressBar.setMax(dbManagerInstance.getGoalAmount(from,TODAY) * 100);
+            progressBar.setProgress(dbManagerInstance.getCurrentAmount(from,TODAY) * 100);
             progressBar.setVisibility(ProgressBar.VISIBLE);
 
             dataController.setProgressAnimate(progressBar);
 
-            current = dbManagerInstance.getCurrentAmount(from);
+            current = dbManagerInstance.getCurrentAmount(from,TODAY);
         } else {
             throw new Exception();
         }
@@ -137,9 +138,9 @@ public class AchievementRateActivity extends Activity implements AchievementRate
 
     public void drawRemainAmount(int from, String type) throws Exception {
         if (type.equals("물리적양")) {
-            remainAmounttv.setText("" + (dbManagerInstance.getGoalAmount(from) - dbManagerInstance.getCurrentAmount(from)) + "" + dbManagerInstance.getUnit(from));
+            remainAmounttv.setText("" + (dbManagerInstance.getGoalAmount(from,TODAY) - dbManagerInstance.getCurrentAmount(from,TODAY)) + "" + dbManagerInstance.getUnit(from));
         } else if (type.equals("시간적양")) {
-            remainAmounttv.setText("" + (dbManagerInstance.getGoalAmount(from) - dbManagerInstance.getCurrentAmount(from)) + "분");
+            remainAmounttv.setText("" + (dbManagerInstance.getGoalAmount(from,TODAY) - dbManagerInstance.getCurrentAmount(from,TODAY)) + "분");
         } else {
             throw new Exception();
         }
@@ -189,7 +190,7 @@ public class AchievementRateActivity extends Activity implements AchievementRate
         if (isSuccess) {
             betAmounttv.setText("" + getGold + " Gold");
         } else {
-            betAmounttv.setText("" + dbManagerInstance.getBettingGold(from) + " Gold");
+            betAmounttv.setText("" + dbManagerInstance.getBettingGold(from,TODAY) + " Gold");
         }
     }
 

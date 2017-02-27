@@ -16,9 +16,17 @@ public class CalendarDatas {
     public int cYear, hMonth, cMonth, cdate, dayOfWeekIndex;
     public int hour, minute, seconds;
     public int weekOfYear;
+    public final static int TODAY = 100;
+    public final static int YESTERDAY = 101;
 
-    public CalendarDatas() {
+
+    public CalendarDatas(int dayType) {
+
         today = Calendar.getInstance();
+        if(dayType == YESTERDAY){
+            today.add(Calendar.DATE, -1);
+        }
+
         today.setFirstDayOfWeek(Calendar.MONDAY);
         cYear = today.get(Calendar.YEAR);
         hMonth = today.get(Calendar.MONTH) + 1;

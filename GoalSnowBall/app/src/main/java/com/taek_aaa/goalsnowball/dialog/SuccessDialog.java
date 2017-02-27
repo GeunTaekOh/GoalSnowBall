@@ -17,6 +17,7 @@ import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
 
 import static android.media.AudioManager.STREAM_MUSIC;
+import static com.taek_aaa.goalsnowball.data.CalendarDatas.TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_MONTH;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.FROM_WEEK;
@@ -51,7 +52,7 @@ public class SuccessDialog extends Dialog {
         //dbManagerInstance = new dbManagerInstance(getContext(), "goaldb.db", null, 1);
         dbManagerInstance = DBManager.getInstance(getContext());
         userDBManagerInstance =UserDBManager.getInstance(getContext());
-        today = new CalendarDatas();
+        today = new CalendarDatas(TODAY);
         fire = (ImageView) findViewById(R.id.fireWork);
         coin = (ImageView) findViewById(R.id.coin);
         msg = (TextView) findViewById(R.id.SuccessCoinMsg);
@@ -80,15 +81,15 @@ public class SuccessDialog extends Dialog {
 
 
     private void success(int from){
-        msg.setText("" + dbManagerInstance.getBettingGold(from) + "Gold를 획득하였습니다.");
+        msg.setText("" + dbManagerInstance.getBettingGold(from,TODAY) + "Gold를 획득하였습니다.");
         if(from==FROM_TODAY){
-            getGoldToday = dbManagerInstance.getBettingGold(from);
+            getGoldToday = dbManagerInstance.getBettingGold(from,TODAY);
         }else if(from == FROM_WEEK){
-            getGoldWeek = dbManagerInstance.getBettingGold(from);
+            getGoldWeek = dbManagerInstance.getBettingGold(from,TODAY);
         }else{
-            getGoldMonth = dbManagerInstance.getBettingGold(from);
+            getGoldMonth = dbManagerInstance.getBettingGold(from,TODAY);
         }
-        dbManagerInstance.setIsSuccess(from, 1);
+        dbManagerInstance.setIsSuccess(from, 1,TODAY);
         whereSuccess = 0;
     }
 

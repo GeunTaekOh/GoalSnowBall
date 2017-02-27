@@ -12,6 +12,7 @@ import com.taek_aaa.goalsnowball.data.DBManager;
 import com.taek_aaa.goalsnowball.data.UserDBManager;
 
 import static android.media.AudioManager.STREAM_MUSIC;
+import static com.taek_aaa.goalsnowball.data.CalendarDatas.TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.totalLooseCoin;
 import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
 import static com.taek_aaa.goalsnowball.data.UserDBManager.userDBManagerInstance;
@@ -43,7 +44,7 @@ public class FailDialog extends Dialog {
         failCoinMsg = (TextView)findViewById(R.id.failCoinMsg);
         totalLooseCoin = dataController.getPreferencesLooseGold(c);
         //failCoinMsg.setText("실패하여서 총 "+totalLooseCoin+" Gold을 잃었습니다.");
-        failCoinMsg.setText("실패하여서 총 "+dbManagerInstance.getBettingGold(whereFail)+"Gold를 잃었습니다.");
+        failCoinMsg.setText("실패하여서 총 "+dbManagerInstance.getBettingGold(whereFail,TODAY)+"Gold를 잃었습니다.");
         int gold = userDBManagerInstance.getGold();
         gold -= totalLooseCoin;
         userDBManagerInstance.setGold(gold);

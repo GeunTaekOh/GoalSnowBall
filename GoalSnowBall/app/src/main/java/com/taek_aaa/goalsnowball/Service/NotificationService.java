@@ -1,3 +1,4 @@
+/*
 package com.taek_aaa.goalsnowball.Service;
 
 import android.app.Notification;
@@ -23,7 +24,7 @@ import static com.taek_aaa.goalsnowball.data.UserDBManager.userDBManagerInstance
 
 public class NotificationService extends Service {
     NotificationManager notificationManager;
-    public Boolean isRunning;
+    private Boolean isRunning;
 
 
     @Override
@@ -36,7 +37,7 @@ public class NotificationService extends Service {
         super.onCreate();
         dbManagerInstance = DBManager.getInstance(getBaseContext());
         userDBManagerInstance = UserDBManager.getInstance(getBaseContext());
-        isRunning = true;
+        isRunning = false;
     }
 
 
@@ -76,7 +77,7 @@ public class NotificationService extends Service {
         Notification.Builder mBuilder = new Notification.Builder(this);
         mBuilder.setSmallIcon(R.drawable.goal);
         mBuilder.setTicker("Notification.Builder");
-        mBuilder.setContentTitle("GoalSnowBall의 목표를 설정하세요.");
+        mBuilder.setContentTitle("주무시기 전에 미리 목표를 설정하세요.");
         mBuilder.setWhen(System.currentTimeMillis());
         mBuilder.setContentText("" + str);
         if (userDBManagerInstance.getIsSound() == 1) {
@@ -113,5 +114,14 @@ public class NotificationService extends Service {
         } else if(monthNothing){
             setNotificationBuild("이번달의 목표를 새롭게 설정하세요.", pendingIntent);
         }
+
+        this.isRunning=false;
     }
-}
+
+    public void setIsRunning(Boolean bool){
+        this.isRunning = bool;
+    }
+    public Boolean getIsRunning(){
+        return this.isRunning;
+    }
+}*/

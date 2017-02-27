@@ -23,6 +23,7 @@ import com.taek_aaa.goalsnowball.dialog.FailDialog;
 import com.taek_aaa.goalsnowball.dialog.SuccessDialog;
 
 import static android.media.AudioManager.STREAM_MUSIC;
+import static com.taek_aaa.goalsnowball.data.CalendarDatas.TODAY;
 import static com.taek_aaa.goalsnowball.data.CommonData.headColor;
 import static com.taek_aaa.goalsnowball.data.DBManager.dbManagerInstance;
 import static com.taek_aaa.goalsnowball.data.UserDBManager.userDBManagerInstance;
@@ -132,7 +133,7 @@ public class GoalDoingActivity extends Activity implements GoalDoingInterface {
      **/
     public void saveCurrentAmountToEditText(int from) {
         dbManagerInstance.setCurrentAmount(from, Integer.parseInt(amountOfEdit.getText().toString()));
-        if (dbManagerInstance.getCurrentAmount(from) < dbManagerInstance.getGoalAmount(from)) {
+        if (dbManagerInstance.getCurrentAmount(from,TODAY) < dbManagerInstance.getGoalAmount(from,TODAY)) {
             Toast.makeText(getBaseContext(), "수고하셨어요. 수행량이 저장되었습니다.", Toast.LENGTH_SHORT).show();
         }
     }
