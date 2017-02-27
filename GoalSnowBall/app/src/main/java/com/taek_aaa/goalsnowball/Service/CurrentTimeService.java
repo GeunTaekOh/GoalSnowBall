@@ -76,7 +76,7 @@ public class CurrentTimeService extends Service {
                     try {
                         getCurrentTimeCheckFail();
                         checkLevelUp();
-                        Thread.sleep(1000*60);
+                        Thread.sleep(1000);
                     } catch (Exception e) {
 
                     }
@@ -93,7 +93,7 @@ public class CurrentTimeService extends Service {
 
         int endDay = now.getEndOfMonth(now.cYear, now.cMonth);
 
-        if (now.hour == 23 && now.minute == 59 && now.seconds == 0) {
+        if (now.hour == 23 && now.minute == 59) {
             isTodayDueFinish = true;
             totalLooseCoin=0;
 

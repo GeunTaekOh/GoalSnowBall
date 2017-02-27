@@ -22,3 +22,7 @@ public interface AchievementRateInterface {
     void drawDueTime(int from);
 }
 
+
+
+
+
