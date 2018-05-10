@@ -38,6 +38,7 @@ Gold와 목표 성공률에 따라 등급이 메겨집니다.
 ---
 
 ## [추가한 기능] 
+
 2017. 02. 06.  이미지 회전된 상태까지 같이 DB에 저장    
 2017. 02. 06.  기간내 성공하지 못할 시에 실패 문구와 골드 차감 기능 구현  
 2017. 02. 06.  목표 설정 기간의 절반이 넘은 경우에는 목표를 삭제할 수 없게 구현  
@@ -68,8 +69,7 @@ Gold와 목표 성공률에 따라 등급이 메겨집니다.
 <center><img src="/res/readme1.png" width="259" height="479"></center>
 <center><img src="/res/readme2.png" width="259" height="479"></center>
 <center><img src="/res/readme3.png" width="259" height="479"></center>  
-* 어플리케이션 첫 시작 화면(기존에 실행하지 않은 경우)  
-* 첫 사용자 어플리케이션 가이드  
+* 어플리케이션 첫 시작 화면(기존에 실행하지 않은 경우 어플리케이션 가이드 기능)
 
 <center><img src="/res/readme3_2.png" width="259" height="479"></center>
 * 어플리케이션 메인 화면  
