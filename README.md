@@ -64,15 +64,11 @@ Gold와 목표 성공률에 따라 등급이 메겨집니다.
 2017. 02. 28.  코드 대폭 개선 및 설정한 시간에 알림 구현  
  
 ---
-.center {
-  display: block;
-  margin: auto;
-}
 
 <center><img src="/res/readme1.png" width="259" height="479"></center>
 <center><img src="/res/readme2.png" width="259" height="479"></center>
 <center><img src="/res/readme3.png" width="259" height="479"></center>  
-* 어플리케이션 첫 시작 화면(기존에 실행하지 않은 경우)   
+* 어플리케이션 첫 시작 화면(기존에 실행하지 않은 경우)  
 * 첫 사용자 어플리케이션 가이드  
 
 <center><img src="/res/readme3_2.png" width="259" height="479"></center>
