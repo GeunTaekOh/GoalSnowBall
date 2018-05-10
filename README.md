@@ -71,7 +71,7 @@ Gold와 목표 성공률에 따라 등급이 메겨집니다.
 * 어플리케이션 첫 시작 화면(기존에 실행하지 않은 경우)  
 * 첫 사용자 어플리케이션 가이드  
 
-![Alt text](/res/readme3_2.png)  
+<center><img src="/res/readme3_2.png" width="259" height="479"></center>
 * 어플리케이션 메인 화면  
 
 ![Alt text](/res/readme4.png)  
